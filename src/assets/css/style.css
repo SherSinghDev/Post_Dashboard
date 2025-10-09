@@ -12789,6 +12789,11 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
         .deznav .metismenu > li:hover > a svg path, .deznav .metismenu > li:focus > a svg path {
           fill: var(--primary);
           opacity: 0.5; }
+
+      .deznav .metismenu > li:hover > a svg path.no-color{
+        fill:transparent;
+        opacity:1;
+      }
       .deznav .metismenu > li.mm-active > a {
         color: var(--primary);
         font-weight: 400; }

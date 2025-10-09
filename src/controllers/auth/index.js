@@ -79,6 +79,12 @@ router.post('/register', async (req, res) => {
     res.json({ message, created })
 })
 
+// logout
+router.post('/logout', async (req, res) => {
+    req.session.userId = ''
+    res.json({ logout: true })
+})
+
 
 
 module.exports = router
