@@ -783,6 +783,11 @@
 				<div class="content-body">
 					<div class="container">
 						<div class="d-flex justify-content-between mb-4 flex-wrap">
+							<div class="input-group w-auto mb-2 mb-xxl-0">
+								<input type="text" placeholder="Search by name, pincode, tracking id"
+									class="form-control search-input" style="width: 300px;">
+								<!-- <button class="btn btn-primary search-btn" type="button">Search</button> -->
+							</div>
 							<ul class="revnue-tab nav nav-tabs" id="myTab" role="tablist">
 								<li class="nav-item" role="presentation">
 									<button class="nav-link active status-filter" id="status-tab" data-bs-toggle="tab"
@@ -805,6 +810,7 @@
 										aria-controls="canceled-tab-pane" aria-selected="false">Canceled</button>
 								</li>
 							</ul>
+
 							<div>
 								<a href="javascript:void(0)" class="btn btn-primary me-1" data-bs-toggle="modal"
 									data-bs-target=".new-record-modal">+ New Order</a>
@@ -822,90 +828,96 @@
 									<div class="tab-pane fade show active" id="status-tab-pane" role="tabpanel"
 										aria-labelledby="status-tab" tabindex="0">
 										<div class="card mt-2">
-											<div class="card-body p-0">
+											<div class="card-body">
 												<div
-													class="table-responsive active-projects style-1 ItemsCheckboxSec shorting ">
-													<table id="empoloyees-tbl" class="table main-table">
-														<thead>
-															<tr>
+													class="table-responsive active-projects style-1 ItemsCheckboxSec shorting text-center">
 
+
+													<div class="table-responsive">
+														<table class="table table-responsive-md main-table">
+															<thead>
+																
 																<th>USER ID</th>
 																<th>NAME</th>
 																<th>PINCODE</th>
 																<th>CITY</th>
 																<th>TRACKING ID</th>
 																<th>Status</th>
-																<th>Action</th>
+																<th>Track</th>
+																<th>Actions</th>
 																<th></th>
-															</tr>
-														</thead>
-														<tbody>
-															<% patients.forEach((p)=>{ %>
-																<tr id="tr-<%= p._id %>" data-filter="<%= p.parcelDetails.deliveryStatus %>">
-																	<td><span>
-																			<%=p.serialNumber %>
-																		</span></td>
-																	<td><span>
-																			<%=p.receiver.name %>
-																		</span></td>
-																	<td><span>
-																			<%=p.receiver.pincode %>
-																		</span></td>
-																	<td><span>
-																			<%=p.receiver.city %>
-																		</span></td>
-																	<td id="td-<%=p._id%>"><span>
-																			<%=p.parcelDetails.trackingId %>
-																		</span></td>
-																	<td id="status-<%= p._id %>">
-																		<% let classed; %>
+																
+															</thead>
+															<tbody>
+																<% patients.forEach((p)=>{ %>
+																	<tr id="tr-<%= p._id %>"
+																		data-filter="<%= p.parcelDetails.deliveryStatus %>">
+																		<td><span>
+																				<%=p.serialNumber %>
+																			</span></td>
+																		<td><span>
+																				<%=p.receiver.name %>
+																			</span></td>
+																		<td><span>
+																				<%=p.receiver.pincode %>
+																			</span></td>
+																		<td><span>
+																				<%=p.receiver.city %>
+																			</span></td>
+																		<td id="td-<%=p._id%>"><span>
+																				<%=p.parcelDetails.trackingId %>
+																			</span></td>
+																		<td id="status-<%= p._id %>">
+																			<% let classed; %>
 
-																			<% if(p.parcelDetails.deliveryStatus=='Delivered' ){ %>
-																				<% classed='success' %>
-																					<%}%>
+																				<% if(p.parcelDetails.deliveryStatus=='Delivered'
+																					){ %>
+																					<% classed='success' %>
+																						<%}%>
 
-																						<% if(p.parcelDetails.deliveryStatus=='On Delivery'
-																							){ %>
-																							<% classed='primary' %>
-																								<%}%>
+																							<% if(p.parcelDetails.deliveryStatus=='On Delivery'
+																								){ %>
+																								<% classed='primary' %>
+																									<%}%>
 
-																									<% if(p.parcelDetails.deliveryStatus=='Canceled'
-																										){ %>
-																										<% classed='danger'
-																											%>
-																											<%}%>
+																										<% if(p.parcelDetails.deliveryStatus=='Canceled'
+																											){ %>
+																											<% classed='danger'
+																												%>
+																												<%}%>
 
 
-																												<span
-																													class="badge badge-rounded badge-outline-<%-classed%> badge-lg">
-																													<%=p.parcelDetails.deliveryStatus%>
-																												</span>
-																	</td>
+																													<span
+																														class="badge badge-rounded badge-outline-<%-classed%> badge-lg">
+																														<%=p.parcelDetails.deliveryStatus%>
+																													</span>
+																		</td>
 
-																	<td>
-																		<div>
-																			<a href="javascript:void(0)"
-																				data-id="<%=p.parcelDetails.trackingId %>"
-																				class="btn-link me-1 track-btn">Track</a>
+																		<td>
+																			<div>
+																				<a href="javascript:void(0)"
+																					data-id="<%=p.parcelDetails.trackingId %>"
+																					class="btn-link me-1 track-btn">Track</a>
 
-																		</div>
-																	</td>
-																	<td>
-																		<a class="edit-btn btn btn-success"
-																			href="javascript:void(0);"
-																			data-bs-toggle="modal"
-																			data-bs-target=".update-modal"
-																			data-url="/patients/update/<%= p._id %>"
-																			data-tracking="<%=p.parcelDetails.trackingId %>"
-																			data-status="<%=p.parcelDetails.deliveryStatus %>">Edit</a>
-																		<a class="btn btn-danger delete-btn"
-																			data-id="<%= p._id %>"
-																			href="javascript:void(0);">Delete</a>
-																	</td>
-																</tr>
-																<% }) %>
-														</tbody>
-													</table>
+																			</div>
+																		</td>
+																		<td>
+																			<a class="edit-btn btn btn-success"
+																				href="javascript:void(0);"
+																				data-bs-toggle="modal"
+																				data-bs-target=".update-modal"
+																				data-url="/patients/update/<%= p._id %>"
+																				data-tracking="<%=p.parcelDetails.trackingId %>"
+																				data-status="<%=p.parcelDetails.deliveryStatus %>">Edit</a>
+																			<a class="btn btn-danger delete-btn"
+																				data-id="<%= p._id %>"
+																				href="javascript:void(0);">Delete</a>
+																		</td>
+																	</tr>
+																	<% }) %>
+															</tbody>
+														</table>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -1216,6 +1228,10 @@
 						tr.style.display = 'none'
 					}
 				})
+
+				let mainTr = document.querySelector('thead tr')
+				mainTr.style.display = 'table-row'
+				
 			})
 
 			$(document).on('click', '.logout-btn', function (e) {
@@ -1255,15 +1271,57 @@
 			})
 
 			var handleNavigation = function () {
-                $(".nav-control").on('click', function () {
+				$(".nav-control").on('click', function () {
 
-                    $('#main-wrapper').toggleClass("menu-toggle");
+					$('#main-wrapper').toggleClass("menu-toggle");
 
-                    $(".hamburger").toggleClass("is-active");
-                });
-            }
+					$(".hamburger").toggleClass("is-active");
+				});
+			}
 
-            handleNavigation()
+			handleNavigation()
+
+			$(document).on('keyup', '.search-input', function (e) {
+				let value = $(this).val().toLowerCase()
+				console.log(value);
+
+				let elem = []
+
+				$('tr td:nth-child(2)').each(function (i, e) {
+					if (e.innerText.toLowerCase().includes(value)) {
+						let parent = e.parentElement
+						elem.push(parent)
+					}
+				})
+
+				$('tr td:nth-child(3)').each(function (i, e) {
+					if (e.innerText.toLowerCase().includes(value)) {
+						let parent = e.parentElement
+						elem.push(parent)
+					}
+				})
+
+				$('tr td:nth-child(5)').each(function (i, e) {
+					if (e.innerText.toLowerCase().includes(value)) {
+						let parent = e.parentElement
+						elem.push(parent)
+					}
+				})
+
+				let mainTr = document.querySelector('thead tr')
+
+				elem.push(mainTr)
+
+				$('tr').css('display', 'none')
+
+				console.log(elem);
+
+				elem.forEach((el) => {
+					el.style.display = 'table-row'
+				})
+
+			})
+
 
 		</script>
 	</body>
