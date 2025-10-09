@@ -1186,6 +1186,17 @@
                     }
                 });
             })
+
+			var handleNavigation = function () {
+                $(".nav-control").on('click', function () {
+
+                    $('#main-wrapper').toggleClass("menu-toggle");
+
+                    $(".hamburger").toggleClass("is-active");
+                });
+            }
+
+            handleNavigation()
 		</script>
 	</body>
 
