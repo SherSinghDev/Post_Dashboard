@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>Salero Restaurant Admin Bootstrap 5 Template</title>
+
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="vh-100" style="background-image:url('images/bg.png'); background-position:center;">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <!-- <div class="text-center mb-3">
+										<a href="index.html"><img src="images/logo/logo-full.png" alt=""></a>
+									</div> -->
+                                    <h4 class="text-center mb-4">Sign up your account</h4>
+                                    <form action="index.html" id="register-form">
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Username</strong></label>
+                                            <input type="text" name="username" class="form-control"
+                                                placeholder="username">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Email</strong></label>
+                                            <input type="email" name="email" class="form-control"
+                                                placeholder="hello@example.com">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Register As</strong></label>
+                                            <select name="role" id="" class="form-select py-3">
+                                                <option value="">Choose Role</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="Coordinator">Coordinator</option>
+                                                <option value="Team Leader">Team Leader</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>City</strong></label>
+                                            <input type="text" name="city" class="form-control"
+                                                placeholder="Enter Your City">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Password</strong></label>
+                                            <input type="password" name="password" class="form-control"
+                                                placeholder="Create Password">
+                                        </div>
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--**********************************
+	Scripts
+***********************************-->
+        <!-- Required vendors -->
+        <script src="/vendor/global/global.min.js"></script>
+        <script src="/js/custom.js"></script>
+        <script src="/js/deznav-init.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+
+        <script>
+            $(document).on('submit', '#register-form', function (e) {
+                e.preventDefault()
+                let form = this
+
+                let { username, email, role, city, password } = form
+                let inputs = { username, email, role, city, password }
+                // console.log(inputs);
+
+                let err = []
+
+                for (let key in inputs) {
+                    if (!inputs[key].value) {
+                        let text = inputs[key].previousElementSibling.innerText
+                        text = (text == "Register As") ? 'Choose Role' : "Enter " + text
+                        err.push(text)
+                    }
+                }
+
+
+                if (err.length > 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        html: err.join('<br>'),
+                    });
+                }
+                else {
+                    let data = {}
+                    for (let key in inputs) {
+                        data = { ...data, [key]: inputs[key].value }
+                    }
+                    console.log(data);
+
+
+                    $.ajax({
+                        url: '/auth/register',
+                        method: "POST",
+                        data: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            if (data.created) {
+                                Swal.fire({
+                                    title: "Success!",
+                                    icon: "success",
+                                    text: data.message,
+                                    timer: 1000
+
+                                });
+                                window.location.href = '/users'
+                                e.target.reset()
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: data.message,
+                                    timer: 1000
+                                });
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    })
+                }
+            })
+        </script>
+
+</body>
+
+</html>
