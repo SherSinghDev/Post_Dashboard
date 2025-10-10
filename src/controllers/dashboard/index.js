@@ -141,13 +141,10 @@ const dummyPatients = [
 router.get('/', async (req, res) => {
     console.log(req.session);
     if (req.session.userId) {
-        // await Patient.deleteMany();
-        // await Patient.insertMany(dummyPatients)
         let users = (await Users.find()).length
         let patients = (await Patient.find()).length
-        // console.log(users,patients);
         
-        res.render('index',{users,patients})
+        res.render('index',{users,patients,page:"Dashboard"})
     }
     else {
         res.redirect('/auth/login')

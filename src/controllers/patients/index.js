@@ -8,9 +8,8 @@ let XLSX = require("xlsx")
 router.get('/', async (req, res) => {
     if (req.session.userId) {
         try {
-
             let patients = await Orders.find()
-            res.render('patients', { patients })
+            res.render('patients', { patients,page:"Patient Orders" })
         } catch (error) {
             console.log(error);
             res.redirect('/auth/login')

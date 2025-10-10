@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     if (req.session.userId) {
         try {
             let users = await Users.find()
-            res.render('users', { users })
+            res.render('users', { users,page:"Users" })
         } catch (error) {
             console.log(error);
             res.redirect('/auth/login')
