@@ -64,7 +64,7 @@
 					<div class="container">
 						<div class="d-flex justify-content-between mb-4 flex-wrap">
 							<div class="input-group w-auto mb-2 mb-xxl-0">
-								<input type="text" placeholder="Search by name, pincode, tracking id"
+								<input type="text" placeholder="Search by name, pincode, city, tracking id"
 									class="form-control search-input" style="width: 300px;">
 								<!-- <button class="btn btn-primary search-btn" type="button">Search</button> -->
 							</div>
@@ -293,7 +293,7 @@
         ***********************************-->
 		<div class="footer out-footer">
 			<div class="copyright">
-				<p>Copyright © Developed by <a href="https://dexignzone.com/" target="_blank">DexignZone</a> 2023</p>
+				<p>Copyright © Developed by <a href="https://logicwix.com/" target="_blank">LogicWix</a> 2025</p>
 			</div>
 		</div>
 		<!--**********************************
@@ -575,6 +575,12 @@
 				})
 
 				$('tr td:nth-child(3)').each(function (i, e) {
+					if (e.innerText.toLowerCase().includes(value)) {
+						let parent = e.parentElement
+						elem.push(parent)
+					}
+				})
+				$('tr td:nth-child(4)').each(function (i, e) {
 					if (e.innerText.toLowerCase().includes(value)) {
 						let parent = e.parentElement
 						elem.push(parent)
