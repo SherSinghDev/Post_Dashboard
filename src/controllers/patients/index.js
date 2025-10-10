@@ -104,7 +104,7 @@ router.post('/create', upload.single('myfile'), async (req, res) => {
             },
         }));
         // console.log(mappedData);
-        await Orders.deleteMany();
+        // await Orders.deleteMany();
         let orders = await Orders.insertMany(mappedData)
         console.log(orders);
         res.json({ created: true })

@@ -2,15 +2,15 @@ let  mongoose =  require("mongoose")
 
 const patientParcelSchema = new mongoose.Schema({
   serialNumber: { type: Number },
-  barcodeNo: { type: String, required: true },
-  physicalWeight: { type: Number },
+  barcodeNo: { type: String},
+  physicalWeight: { type: String },
   receiver: {
     name: { type: String },
     addressLine1: { type: String },
     addressLine2: { type: String },
     addressLine3: { type: String },
     city: { type: String },
-    pincode: { type: Number },
+    pincode: { type: String },
     stateUT: { type: String },
     contact: { type: String },
     altContact: { type: String },

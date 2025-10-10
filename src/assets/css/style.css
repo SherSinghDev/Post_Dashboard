@@ -9484,6 +9484,9 @@ label {
 [data-theme-version="dark"] .icon {
   background-color: #212130; }
 
+.icon img{
+  width: 200px;
+}
 @keyframes loaderCircle {}@keyframes loaderSize {
   0% {
     transform: scale(1) rotate(0); }
