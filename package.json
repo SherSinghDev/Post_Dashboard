@@ -17,6 +17,7 @@
     "express-session": "^1.18.2",
     "mongoose": "^8.18.1",
     "multer": "^2.0.2",
+    "nanoid": "^5.1.6",
     "xls-to-json": "^0.3.2",
     "xls-to-json-lc": "^0.3.4",
     "xlsx": "^0.18.5"

@@ -36,7 +36,7 @@
                                     <!-- <div class="text-center mb-3">
 										<a href="index.html"><img src="images/logo/logo-full.png" alt=""></a>
 									</div> -->
-                                    <h4 class="text-center mb-4">Sign up your account</h4>
+                                    <h4 class="text-center mb-4">Register New User</h4>
                                     <form action="index.html" id="register-form">
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Username</strong></label>
@@ -49,24 +49,30 @@
                                                 placeholder="hello@example.com">
                                         </div>
                                         <div class="mb-3">
+                                            <label class="mb-1"><strong>Password</strong></label>
+                                            <input type="password" name="password" class="form-control"
+                                                placeholder="Create Password">
+                                        </div>
+                                        <div class="mb-3">
                                             <label class="mb-1"><strong>Register As</strong></label>
-                                            <select name="role" id="" class="form-select py-3">
+                                            <select name="role" id="select-role" class="form-select py-3">
                                                 <option value="">Choose Role</option>
                                                 <option value="Admin">Admin</option>
-                                                <option value="Coordinator">Coordinator</option>
                                                 <option value="Team Leader">Team Leader</option>
+                                                <option value="Coordinator">Coordinator</option>
                                             </select>
+                                        </div>
+                                        <div class="mb-3 referred d-none">
+                                            <label class="mb-1"><strong>Referred By</strong></label>
+                                            <input type="text" name="referredBy" class="form-control"
+                                                placeholder="Enter Referred Id">
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>City</strong></label>
                                             <input type="text" name="city" class="form-control"
                                                 placeholder="Enter Your City">
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" name="password" class="form-control"
-                                                placeholder="Create Password">
-                                        </div>
+
                                         <div class="text-center mt-4">
                                             <button type="submit" class="btn btn-primary btn-block">Sign up</button>
                                         </div>
@@ -96,14 +102,26 @@
                 e.preventDefault()
                 let form = this
 
-                let { username, email, role, city, password } = form
-                let inputs = { username, email, role, city, password }
+
+                let { username, email, role, city, referredBy, password } = form
+                let inputs = { username, email, role, city, referredBy, password }
+                // if (role.value == "Coordinator") {
+                // }
+                // else {
+                //     inputs = { username, email, role, city, password }
+                // }
+
                 // console.log(inputs);
 
                 let err = []
 
                 for (let key in inputs) {
-                    if (!inputs[key].value) {
+                    // console.log(key);
+                    // console.log(!inputs[key].value && key != referredBy);
+                    
+                    if (!inputs[key].value && key != 'referredBy') {
+                        // console.log(key);
+                        
                         let text = inputs[key].previousElementSibling.innerText
                         text = (text == "Register As") ? 'Choose Role' : "Enter " + text
                         err.push(text)
@@ -159,6 +177,16 @@
                             console.log(err);
                         }
                     })
+                }
+            })
+
+            $(document).on('change', '#select-role', function (e) {
+
+                if (e.target.value == 'Coordinator') {
+                    $('.referred').removeClass('d-none')
+                }
+                else {
+                    $('.referred').addClass('d-none')
                 }
             })
         </script>

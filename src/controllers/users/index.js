@@ -8,7 +8,9 @@ router.get('/', async (req, res) => {
     if (req.session.userId) {
         try {
             let users = await Users.find()
-            res.render('users', { users,page:"Users" })
+            // console.log(users);
+
+            res.render('users', { users, page: "Users" })
         } catch (error) {
             console.log(error);
             res.redirect('/auth/login')
@@ -45,14 +47,37 @@ router.delete('/delete/:id', async (req, res) => {
 // update
 router.post('/update/:id', async (req, res) => {
     let { id } = req.params
-    await Patient.updateOne({ _id: id }, req.body)
-    let patient1 = await Patient.findOne({ _id: id })
+    await Users.updateOne({ _id: id }, req.body)
+    let patient1 = await Users.findOne({ _id: id })
     console.log(patient1);
     let tdHtml = `<span>${patient1.trackingId}</span>`
     let td = `#td-${id}`
     res.json({ message: "Updated Successfully", td, tdHtml, updated: true })
 })
 
+
+
+router.get('/userprofile/:id', async (req, res) => {
+    if (req.session.userId) {
+        let { id } = req.params
+        try {
+            let user = await Users.findOne({ _id: id })
+            // console.log(user);
+            let refCode = user.referralCode
+            let coord = await Users.find({ referredBy: refCode })
+            // console.log(coord);
+
+            res.render('profileDetails', { page: "User Details",user,coord })
+        } catch (error) {
+            console.log(error);
+            res.redirect('/auth/login')
+        }
+    }
+    else {
+        res.redirect('/auth/login')
+    }
+
+})
 
 
 module.exports = router

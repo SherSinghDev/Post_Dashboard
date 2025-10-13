@@ -57,27 +57,81 @@ router.get('/register', async (req, res) => {
     }
 })
 
-router.post('/register', async (req, res) => {
-    let { email, password } = req.body
-    let message;
-    let created = false
+// router.post('/register', async (req, res) => {
+//     let { email, password } = req.body
+//     let message;
+//     let created = false
+//     try {
+//         let isExists = await User.findOne({ email })
+//         if (!isExists) {
+//             let hashedPass = await bcrypt.hash(password, 10)
+//             await User.create({ ...req.body, password: hashedPass })
+//             message = "User Registered Successfully"
+//             created = true
+//         }
+//         else {
+//             message = "User Already Registered"
+//         }
+//     } catch (error) {
+//         message = "Error in Server"
+//         console.log(error);
+//     }
+//     res.json({ message, created })
+// })
+
+
+
+router.post("/register", async (req, res) => {
     try {
-        let isExists = await User.findOne({ email })
-        if (!isExists) {
-            let hashedPass = await bcrypt.hash(password, 10)
-            await User.create({ ...req.body, password: hashedPass })
-            message = "User Registered Successfully"
-            created = true
+        const { username, email, password, role,city, referredBy } = req.body;
+
+        // Check duplicate email
+        const existingUser = await User.findOne({ email });
+        if (existingUser)
+            return res.status(400).json({ message: "Email already exists", created: false });
+
+        // Encrypt password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        let teamLeaderId = null;
+        let finalReferredBy = null;
+
+        if (role === "Coordinator") {
+            // Must have a valid team leader referral
+            const leader = await User.findOne({ referralCode: referredBy });
+            if (!leader || leader.role !== "Team Leader") {
+                return res.status(400).json({ message: "Invalid referral code", created: false });
+            }
+            teamLeaderId = leader._id;
+            finalReferredBy = leader.referralCode;
         }
-        else {
-            message = "User Already Registered"
-        }
+
+        const user = new User({
+            name: username,
+            email,
+            password: hashedPassword,
+            role,
+            city,
+            teamLeaderId,
+            referredBy: finalReferredBy,
+        });
+
+        await user.save();
+
+        res.status(201).json({
+            message:
+                role === "Team Leader"
+                    ? "Team Leader registered successfully"
+                    : "Coordinator registered successfully",
+            //   referralCode: user.referralCode,
+            created: true
+        });
     } catch (error) {
-        message = "Error in Server"
         console.log(error);
+
+        res.status(500).json({ message: "Error in server", created: false });
     }
-    res.json({ message, created })
-})
+});
 
 // logout
 router.post('/logout', async (req, res) => {
