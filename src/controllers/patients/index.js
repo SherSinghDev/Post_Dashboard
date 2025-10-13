@@ -4,12 +4,14 @@ let Patient = require('../../modals/patients')
 let Orders = require('../../modals/orders')
 let upload = require('../../multer')
 let XLSX = require("xlsx")
+let Users = require('../../modals/users')
 
 router.get('/', async (req, res) => {
     if (req.session.userId) {
         try {
             let patients = await Orders.find()
-            res.render('patients', { patients,page:"Patient Orders" })
+            let user = await Users.findOne({_id:req.session.userId})
+            res.render('patients', { patients,user,page:"Patient Orders" })
         } catch (error) {
             console.log(error);
             res.redirect('/auth/login')

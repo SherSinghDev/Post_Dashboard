@@ -2,6 +2,7 @@ let express = require('express')
 let router = express.Router()
 let User = require('../../modals/users')
 let bcrypt = require("bcrypt")
+let Users = require('../../modals/users')
 
 // login
 router.get('/login', async (req, res) => {
@@ -50,11 +51,25 @@ router.post('/login', async (req, res) => {
 // register
 router.get('/register', async (req, res) => {
     if (req.session.userId) {
-        res.render('register')
+        try {
+            let user = await Users.findOne({ _id: req.session.userId })
+
+            if (user.role !== 'Team Leader') {
+                res.render('register', { user })
+            }
+            else {
+                let referral = user.referralCode
+                res.render('register', { user, referral })
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
     }
     else {
         res.redirect('/auth/login')
     }
+
 })
 
 // router.post('/register', async (req, res) => {
@@ -83,7 +98,7 @@ router.get('/register', async (req, res) => {
 
 router.post("/register", async (req, res) => {
     try {
-        const { username, email, password, role,city, referredBy } = req.body;
+        const { username, email, password, role, city, referredBy } = req.body;
 
         // Check duplicate email
         const existingUser = await User.findOne({ email });

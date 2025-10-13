@@ -7,13 +7,19 @@ let Users = require('../../modals/users')
 router.get('/', async (req, res) => {
     if (req.session.userId) {
         try {
-            let users = await Users.find()
-            // console.log(users);
+            let user = await Users.findOne({ _id: req.session.userId })
 
-            res.render('users', { users, page: "Users" })
+            if (user.role !== 'Admin') {
+                res.redirect('/')
+            }
+            else {
+                let users = await Users.find()
+                // console.log(users);
+                res.render('users', { users, user, page: "Users" })
+            }
+
         } catch (error) {
             console.log(error);
-            res.redirect('/auth/login')
         }
     }
     else {
@@ -67,7 +73,7 @@ router.get('/userprofile/:id', async (req, res) => {
             let coord = await Users.find({ referredBy: refCode })
             // console.log(coord);
 
-            res.render('profileDetails', { page: "User Details",user,coord })
+            res.render('profileDetails', { page: "User Details", user, coord })
         } catch (error) {
             console.log(error);
             res.redirect('/auth/login')
@@ -79,5 +85,28 @@ router.get('/userprofile/:id', async (req, res) => {
 
 })
 
+
+router.get('/coordinators', async(req, res) => {
+    if (req.session.userId) {
+        try {
+            let user = await Users.findOne({ _id: req.session.userId })
+
+            if (user.role !== 'Team Leader') {
+                res.redirect('/')
+            }
+            else {
+                let users = await Users.find({role:"Coordinator",referredBy:user.referralCode})
+                // console.log(users);
+                res.render('coordinator', { users, user, page: "My Coordinators" })
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else {
+        res.redirect('/auth/login')
+    }
+})
 
 module.exports = router

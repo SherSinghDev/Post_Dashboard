@@ -11,7 +11,7 @@ let session = require("express-session")
 mongoConnect()
 
 
-// middleares
+// middlewares
 app.use(express.static('./src/assets'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())

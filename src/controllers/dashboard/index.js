@@ -2,6 +2,7 @@ let express = require('express')
 let router = express.Router()
 let Patient = require('../../modals/patients')
 let Users = require('../../modals/users')
+let Orders = require('../../modals/orders')
 
 
 const dummyPatients = [
@@ -141,10 +142,12 @@ const dummyPatients = [
 router.get('/', async (req, res) => {
     console.log(req.session);
     if (req.session.userId) {
-        let users = (await Users.find()).length
-        let patients = (await Patient.find()).length
-        
-        res.render('index',{users,patients,page:"Dashboard"})
+        let teamLeaders = (await Users.find({ role: "Team Leader" })).length
+        let coordinators = (await Users.find({ role: "Coordinator" })).length
+        let patients = (await Orders.find()).length
+        let user = await Users.findOne({_id:req.session.userId})
+
+        res.render('index', { teamLeaders, coordinators, patients,user, page: "Dashboard" })
     }
     else {
         res.redirect('/auth/login')
