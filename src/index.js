@@ -5,6 +5,7 @@ let patientRouter = require('./controllers/patients/index')
 let dashboardRouter = require('./controllers/dashboard/index')
 let authRouter = require('./controllers/auth/index')
 let userRouter = require('./controllers/users/index')
+let membersRouter = require('./controllers/members/index')
 let session = require("express-session")
 
 // mongodb
@@ -33,6 +34,7 @@ app.use('/patients', patientRouter)
 app.use('/', dashboardRouter)
 app.use('/auth', authRouter)
 app.use('/users', userRouter)
+app.use('/members', membersRouter)
 
 
 

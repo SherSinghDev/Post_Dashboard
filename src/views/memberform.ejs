@@ -15,20 +15,20 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- PAGE TITLE HERE -->
-    <title>Salero Restaurant Admin Bootstrap 5 Template</title>
+    <title>BSRF Parcel Mangament System</title>
 
     <!-- FAVICONS ICON -->
-    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
     <link href="/css/style.css" rel="stylesheet">
 
 </head>
 
-<body class="vh-100" style="background-image:url('images/bg.png'); background-position:center;">
-    <div class="authincation h-100">
-        <div class="container h-100">
-            <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
+<body class="vh-100" style=" background-position:center; overflow: scroll;">
+    <div class="authincation py-5">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-10">
                     <div class="authincation-content">
                         <div class="row no-gutters">
                             <div class="col-xl-12">
@@ -36,50 +36,8 @@
                                     <!-- <div class="text-center mb-3">
 										<a href="index.html"><img src="images/logo/logo-full.png" alt=""></a>
 									</div> -->
-                                    <h4 class="text-center mb-4">Register New <%- (user.role=='Team Leader'
-                                            )? 'Coordinator' : 'User' %></h4>
-                                    <form action="index.html" id="register-form">
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Username</strong></label>
-                                            <input type="text" name="username" class="form-control"
-                                                placeholder="username">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Email</strong></label>
-                                            <input type="email" name="email" class="form-control"
-                                                placeholder="hello@example.com">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" name="password" class="form-control"
-                                                placeholder="Create Password">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Register As</strong></label>
-                                            <select name="role" id="select-role" class="form-select py-3">
-                                                <% if(user.role=='Admin' ) { %>
-                                                    <option value="">Choose Role</option>
-                                                    <option value="Admin">Admin</option>
-                                                    <option value="Team Leader">Team Leader</option>
-                                                    <% } %>
-                                                        <option value="Coordinator">Coordinator</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 referred <%- (user.role == 'Team Leader')? '' : 'd-none'%>">
-                                            <label class="mb-1"><strong>Referred By</strong></label>
-                                            <input type="text" value="<%= user.referralCode %>" name="referredBy"
-                                                class="form-control" placeholder="Enter Referred Id">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>City</strong></label>
-                                            <input type="text" name="city" class="form-control"
-                                                placeholder="Enter Your City">
-                                        </div>
 
-                                        <div class="text-center mt-4">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign up</button>
-                                        </div>
-                                    </form>
+
 
                                     <form action="/register" id="register-form" method="POST"
                                         enctype="multipart/form-data">
@@ -94,7 +52,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Gender</strong></label>
-                                                <select name="gender" class="form-select" required>
+                                                <select name="gender" style="padding-block: 11px;" class="form-select"
+                                                    required>
                                                     <option value="">Select Gender</option>
                                                     <option>Male</option>
                                                     <option>Female</option>
@@ -111,8 +70,16 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Relation Type</strong></label>
-                                                <input type="text" name="relationType" class="form-control"
-                                                    placeholder="S/O, D/O, W/O">
+                                                <div class="d-flex gap-2">
+                                                    <select name="relationOption" id="relationOption"
+                                                        style="padding-block: 11px; width: 100px;" class="form-select">
+                                                        <option value="s/o">S/O</option>
+                                                        <option value="d/o">D/O</option>
+                                                        <option value="w/o">W/O</option>
+                                                    </select>
+                                                    <input type="text" id="relationType" name="relationType" class="form-control"
+                                                        placeholder="Son of">
+                                                </div>
                                             </div>
                                         </div>
 
@@ -120,7 +87,8 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Profession</strong></label>
-                                                <select name="profession" class="form-select">
+                                                <select name="profession" style="padding-block: 11px;"
+                                                    class="form-select">
                                                     <option value="">Select Profession</option>
                                                     <option>Government Job</option>
                                                     <option>Private Job</option>
@@ -135,7 +103,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Blood Group</strong></label>
-                                                <select name="bloodGroup" class="form-select" required>
+                                                <select name="bloodGroup" style="padding-block: 11px;"
+                                                    class="form-select" required>
                                                     <option value="">Select Blood Group</option>
                                                     <option>A+</option>
                                                     <option>A-</option>
@@ -216,7 +185,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>ID Type</strong></label>
-                                                <select name="idType" class="form-select">
+                                                <select name="idType" style="padding-block: 11px;" class="form-select">
                                                     <option value="">Select ID Type</option>
                                                     <option>Aadhar Card</option>
                                                     <option>PAN Card</option>
@@ -241,7 +210,8 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Membership Type</strong></label>
-                                                <select name="membershipType" class="form-select" required>
+                                                <select name="membershipType" class="form-select"
+                                                    style="padding-block: 11px;" required>
                                                     <option value="">Select Membership</option>
                                                     <option>One year Membership Fee (₹365)</option>
                                                     <option>Life time membership Fee (₹500)</option>
@@ -256,12 +226,63 @@
                                             </div>
                                         </div>
 
+                                        <div class="text-center mt-4">
+                                            <button type="button" class="btn btn-primary pay-btn">Pay</button>
+                                        </div>
+
+                                        <div class="row my-3 pay-option">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body pb-0">
+                                                        <ul class="list-group list-group-flush">
+                                                            <li
+                                                                class="list-group-item d-flex px-0 justify-content-between">
+                                                                <strong>Bank Details :</strong>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex px-0 justify-content-between">
+                                                                <strong>CUSTOMER NAME </strong>
+                                                                <span class="mb-0">BINUPUR SEVA RESEARCH FOUNDATION
+                                                                    (BSRF)</span>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex px-0 justify-content-between">
+                                                                <strong>Account number</strong>
+                                                                <span class="mb-0">120028365298 </span>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex px-0 justify-content-between">
+                                                                <strong>IFSC</strong>
+                                                                <span class="mb-0">CNRB0019448</span>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex px-0 justify-content-between">
+                                                                <strong>Bank Name</strong>
+                                                                <span class="mb-0">CANARA BANK</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body pb-0 text-center">
+                                                        <img src="/images/qr/qr1.webp" class="w-75" alt="">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <!-- Payment Details -->
-                                        <h5 class="mt-4">Payment Details</h5>
-                                        <div class="row mb-3">
+                                        <h5 class="mt-4 pay-option">Payment Details</h5>
+                                        <div class="row mb-3 pay-option">
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Payment Mode</strong></label>
-                                                <select name="payment[mode]" class="form-select" required>
+                                                <select name="payment[mode]" style="padding-block: 11px;"
+                                                    class="form-select" required>
                                                     <option value="">Select Payment Mode</option>
                                                     <option>Bank Transfer Slip</option>
                                                     <option>Paytm</option>
@@ -274,27 +295,20 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="mb-1"><strong>Transaction ID</strong></label>
-                                                <input type="text" name="payment[transactionId]" class="form-control"
-                                                    placeholder="Enter Transaction ID">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Payment Date</strong></label>
-                                                <input type="date" name="payment[paymentDate]" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
                                                 <label class="mb-1"><strong>Upload Payment Receipt</strong></label>
                                                 <input type="file" name="payment[receiptUrl]" class="form-control">
                                             </div>
+
                                         </div>
 
-                                        <div class="text-center mt-4">
+
+
+                                        <div class="text-center mt-4 pay-option">
                                             <button type="submit" class="btn btn-primary btn-block">Submit
                                                 Registration</button>
                                         </div>
+
+
                                     </form>
 
 
@@ -305,111 +319,139 @@
                 </div>
             </div>
         </div>
+    </div>
 
-
-        <!--**********************************
+    <!--**********************************
 	Scripts
 ***********************************-->
-        <!-- Required vendors -->
-        <script src="/vendor/global/global.min.js"></script>
-        <script src="/js/custom.js"></script>
-        <script src="/js/deznav-init.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+    <!-- Required vendors -->
+    <script src="/vendor/global/global.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/deznav-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
 
-        <script>
-            $(document).on('submit', '#register-form', function (e) {
-                e.preventDefault()
-                let form = this
+    <script>
+        // $('.pay-option').css('display', 'none')
+        $('.pay-option').hide()
+
+        $('.pay-btn').click(function () {
+            // $('.pay-option').css('display', 'block')
+            $('.pay-option').show()
+        })
+
+        $(document).on('change', '#relationOption', function () {
+            let val = $(this).val()
+            // console.log(val);
+            let placeVal = ''
+
+            if(val=='s/o'){
+                placeVal = 'Son of'
+            }
+            if(val=='d/o'){
+                placeVal = 'Daughter of'
+            }
+            if(val=='w/o'){
+                placeVal = 'Wife of'
+            }
+
+            
+            
+            $('#relationType').attr('placeholder', placeVal)
+        })
+
+        $(document).on('submit', '#register-form', function (e) {
+            e.preventDefault()
+            let form = this
 
 
-                let { username, email, role, city, referredBy, password } = form
-                let inputs = { username, email, role, city, referredBy, password }
-                // if (role.value == "Coordinator") {
-                // }
-                // else {
-                //     inputs = { username, email, role, city, password }
-                // }
+            let { username, email, role, city, referredBy, password } = form
+            let inputs = { username, email, role, city, referredBy, password }
+            // if (role.value == "Coordinator") {
+            // }
+            // else {
+            //     inputs = { username, email, role, city, password }
+            // }
 
-                // console.log(inputs);
+            // console.log(inputs);
 
-                let err = []
+            let err = []
 
-                for (let key in inputs) {
+            for (let key in inputs) {
+                // console.log(key);
+                // console.log(!inputs[key].value && key != referredBy);
+
+                if (!inputs[key].value && key != 'referredBy') {
                     // console.log(key);
-                    // console.log(!inputs[key].value && key != referredBy);
 
-                    if (!inputs[key].value && key != 'referredBy') {
-                        // console.log(key);
-
-                        let text = inputs[key].previousElementSibling.innerText
-                        text = (text == "Register As") ? 'Choose Role' : "Enter " + text
-                        err.push(text)
-                    }
+                    let text = inputs[key].previousElementSibling.innerText
+                    text = (text == "Register As") ? 'Choose Role' : "Enter " + text
+                    err.push(text)
                 }
+            }
 
 
-                if (err.length > 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        html: err.join('<br>'),
-                    });
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+            }
+            else {
+                let data = {}
+                for (let key in inputs) {
+                    data = { ...data, [key]: inputs[key].value }
                 }
-                else {
-                    let data = {}
-                    for (let key in inputs) {
-                        data = { ...data, [key]: inputs[key].value }
-                    }
-                    console.log(data);
+                console.log(data);
 
 
-                    $.ajax({
-                        url: '/auth/register',
-                        method: "POST",
-                        data: JSON.stringify(data),
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        success: function (data) {
-                            console.log(data);
-                            if (data.created) {
-                                Swal.fire({
-                                    title: "Success!",
-                                    icon: "success",
-                                    text: data.message,
-                                    timer: 1000
+                $.ajax({
+                    url: '/auth/register',
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        if (data.created) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: data.message,
+                                timer: 1000
 
-                                });
-                                window.location.href = '/users'
-                                e.target.reset()
-                            }
-                            else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: data.message,
-                                    timer: 1000
-                                });
-                            }
-                        },
-                        error: function (err) {
-                            console.log(err);
+                            });
+                            window.location.href = '/users'
+                            e.target.reset()
                         }
-                    })
-                }
-            })
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: data.message,
+                                timer: 1000
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                })
+            }
+        })
 
-            $(document).on('change', '#select-role', function (e) {
+        $(document).on('change', '#select-role', function (e) {
 
-                if (e.target.value == 'Coordinator') {
-                    $('.referred').removeClass('d-none')
-                }
-                else {
-                    $('.referred').addClass('d-none')
-                }
-            })
-        </script>
+            if (e.target.value == 'Coordinator') {
+                $('.referred').removeClass('d-none')
+            }
+            else {
+                $('.referred').addClass('d-none')
+            }
+        })
+    </script>
 
 </body>
 
