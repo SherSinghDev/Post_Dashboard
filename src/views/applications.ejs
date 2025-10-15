@@ -21,7 +21,7 @@
                                                 class="form-control search-input" style="width: 300px;">
                                         </div>
 
-                                        
+
                                     </div>
 
                                     <div class="row">
@@ -41,6 +41,7 @@
                                                                     <th>Membership Type</th>
                                                                     <th>Referral</th>
                                                                     <th>Applied On</th>
+                                                                    <th>Approve Status</th>
                                                                     <th>Actions</th>
                                                                 </tr>
                                                             </thead>
@@ -58,7 +59,7 @@
                                                                                 <%= app.gender %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.city %>
+                                                                                <%= app.district %>
                                                                             </td>
                                                                             <td>
                                                                                 <%= app.state %>
@@ -76,6 +77,9 @@
                                                                                 <%= new
                                                                                     Date(app.createdAt).toLocaleDateString()
                                                                                     %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.approveStatus || 'N/A' %>
                                                                             </td>
                                                                             <td>
                                                                                 <a href="javascript:void(0)"
@@ -116,7 +120,9 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <div id="view-details" class="p-2"></div>
+                                            <div id="view-details" class="p-2">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -172,29 +178,53 @@
                             if (data.success) {
                                 const app = data.data;
                                 $('#view-details').html(`
-              <div class="row">
-                <div class="col-md-6 my-2"><strong>Name:</strong> ${app.name}</div>
-                <div class="col-md-6 my-2"><strong>Gender:</strong> ${app.gender}</div>
-                <div class="col-md-6 my-2"><strong>City:</strong> ${app.city}</div>
-                <div class="col-md-6 my-2"><strong>State:</strong> ${app.state}</div>
-                <div class="col-md-6 my-2"><strong>Mobile:</strong> ${app.mobile}</div>
-                <div class="col-md-6 my-2"><strong>Email:</strong> ${app.email || 'N/A'}</div>
-                <div class="col-md-6 my-2"><strong>Blood Group:</strong> ${app.bloodGroup}</div>
-                <div class="col-md-6 my-2"><strong>Membership Type:</strong> ${app.membershipType}</div>
-                <div class="col-md-6 my-2"><strong>Referred By:</strong> ${app.referredBy || 'N/A'}</div>
-                <div class="col-md-6 my-2"><strong>Profession:</strong> ${app.profession || 'N/A'}</div>
-                <div class="col-md-6 my-2"><strong>Full Address:</strong> ${app.fullAddress}</div>
-                <div class="col-md-6 my-2"><strong>Applied On:</strong> ${new Date(app.createdAt).toLocaleString()}</div>
-                <div class="col-md-12 mt-3">
-                  <strong>ID Document:</strong> 
-                  ${app.idDocument ? `<a href="${app.idDocument}" target="_blank">View</a>` : 'N/A'}
-                </div>
-                <div class="col-md-12 mt-2">
-                  <strong>Payment Receipt:</strong> 
-                  ${app.payment?.receiptUrl ? `<a href="${app.payment.receiptUrl}" target="_blank">View</a>` : 'N/A'}
-                </div>
-              </div>
-            `);
+                                  <div class="row">
+                                 <div class="col-12 text-center">
+                                                    <img src="${app.profilePicture}" class="mb-3"
+                                                        width="150" height="150" style="border-radius: 50%;" alt="">
+                                                </div>
+                                    <div class="col-md-6 my-2"><strong>Name:</strong> ${app.name}</div>
+                                    <div class="col-md-6 my-2"><strong>Gender:</strong> ${app.gender}</div>
+                                    <div class="col-md-6 my-2"><strong>City:</strong> ${app.district}</div>
+                                    <div class="col-md-6 my-2"><strong>State:</strong> ${app.state}</div>
+                                    <div class="col-md-6 my-2"><strong>Mobile:</strong> ${app.mobile}</div>
+                                    <div class="col-md-6 my-2"><strong>Email:</strong> ${app.email || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Blood Group:</strong> ${app.bloodGroup}</div>
+                                    <div class="col-md-6 my-2"><strong>Membership Type:</strong> ${app.membershipType}</div>
+                                    <div class="col-md-6 my-2"><strong>Referred By:</strong> ${app.referredBy || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Profession:</strong> ${app.profession || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Full Address:</strong> ${app.fullAddress}</div>
+                                    <div class="col-md-6 my-2"><strong>Applied On:</strong> ${new Date(app.createdAt).toLocaleString()}</div>
+                                    <div class="col-md-12 mt-3">
+                                    <strong>ID Document:</strong>
+                                    <div class="col-12 text-center">
+                                        <img src="${app.idDocument}" class="mb-3"
+                                            width="300" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <strong>Other Document:</strong>
+                                    <div class="col-12 text-center">
+                                        <img src="${app.otherDocument}" class="mb-3"
+                                            width="300" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <strong>Payment Receipt:</strong>
+                                    <div class="col-12 text-center">
+                                        <img src="${app.payment.receiptUrl}"
+                                            class="mb-3" width="300" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <a href="javascript:void(0)" data-id="${app._id}"
+                                        class="btn btn-sm btn-info approve-btn" id="approve-btn">Approve</a>
+                                    <a href="javascript:void(0)" data-id="${app._id}"
+                                        class="btn btn-sm btn-danger cancel-btn" id="cancel-btn">Cancel Approval</a>
+                                </div>
+                                  </div>
+                                `);
                                 $('.view-modal').modal('show');
                             }
                         })
@@ -212,7 +242,7 @@
                         confirmButtonText: "Yes, delete it!",
                     }).then(result => {
                         if (result.isConfirmed) {
-                            fetch(`/api/applications/${id}`, { method: "DELETE" })
+                            fetch(`/applications/delete/${id}`, { method: "DELETE" })
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.success) {
@@ -224,6 +254,88 @@
                         }
                     });
                 });
+
+                // approve
+                $(document).on('click', '#approve-btn, #cancel-btn', function () {
+                    const id = $(this).data('id');
+                    console.log(id);
+                    
+                    const action = this.id === 'approve-btn' ? 'approve' : 'cancel';
+                    console.log(action);
+                    
+
+                    fetch(`/applications/approve/${id}/${action}`, {
+                        method: 'POST',
+                    })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: `Application ${action === 'approve' ? 'Approved' : 'Cancelled'}!`,
+                                    timer: 1500,
+                                });
+                                $('#viewApplicationModal').modal('hide');
+                                setTimeout(() => window.location.reload(), 1500);
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Action failed',
+                                    text: data.message,
+                                });
+                            }
+                        })
+                        .catch((err) => console.log(err));
+                });
+
+
+
+                $(document).on('click', '.logout-btn', function (e) {
+                    Swal.fire({
+                        title: "Do you want to Logout?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: `/auth/logout`,
+                                method: "POST",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.logout) {
+                                        window.location.href = '/'
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
+                })
+
+                var handleNavigation = function () {
+                    $(".nav-control").on('click', function () {
+
+                        $('#main-wrapper').toggleClass("menu-toggle");
+
+                        $(".hamburger").toggleClass("is-active");
+                    });
+                }
+
+                handleNavigation()
             </script>
     </body>
 

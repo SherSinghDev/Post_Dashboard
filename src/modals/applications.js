@@ -97,6 +97,15 @@ const userApplySchema = new Schema({
       "Class 10th Marksheet",
     ],
   },
+  approveStatus: {
+    type: String,
+    enum: [
+      "Approved",
+      "Pending",
+      "Cancelled",
+    ],
+    default: "Pending",
+  },
   idDocument: {
     type: String,
   },

@@ -28,7 +28,7 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      const {
+      let {
         name,
         gender,
         dateOfBirth,
@@ -52,6 +52,9 @@ router.post(
         paymentMode
       } = req.body;
 
+      let referredName = (await Users.findOne({ referralCode: referredBy })).name
+      referredBy = `${referredName}(${referredBy})`
+
       // extract file paths safely
       const profilePicture = req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : null;
       const idDocument = req.files['idDocument'] ? `/uploads/documents/${req.files['idDocument'][0].filename}` : null;
@@ -59,7 +62,7 @@ router.post(
       const receiptUrl = req.files['receiptUrl'] ? `/uploads/documents/${req.files['receiptUrl'][0].filename}` : null;
 
       // create a new application document
-      const newApplication = new UserApplication({
+      let newApplication = new UserApplication({
         name,
         gender,
         dateOfBirth,
@@ -120,7 +123,7 @@ router.get('/applied', async (req, res) => {
     try {
       let user = await Users.findOne({ _id: req.session.userId })
       const applications = await UserApplication.find().sort({ createdAt: -1 });
-      res.render('applications', { applications, page: "All Applications",user });
+      res.render('applications', { applications, page: "All Applications", user });
     } catch (error) {
       console.log(error);
       res.redirect('/auth/login')
@@ -139,13 +142,13 @@ router.get('/one/:id', async (req, res) => {
     res.json({ success: true, data: app });
   } catch (err) {
     console.log(err);
-    
+
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
 // DELETE application
-router.delete('/api/applications/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
   try {
     await UserApplication.findByIdAndDelete(req.params.id);
     res.json({ success: true });
@@ -158,5 +161,63 @@ router.delete('/api/applications/:id', async (req, res) => {
 router.get('/', async (req, res) => {
   res.render('applicationform')
 })
+
+// Approve or Cancel Application
+router.post('/approve/:id/:action', async (req, res) => {
+  try {
+    const { action } = req.params;
+    const valid = ["approve", "cancel"].includes(action);
+    if (!valid) return res.json({ success: false, message: "Invalid action" });
+
+    const status = action === "approve" ? "Approved" : "Cancelled";
+    await UserApplication.findByIdAndUpdate(req.params.id, { approveStatus: status });
+
+    if (status === "Approved") {
+      let appUser = await UserApplication.findOne({ _id: req.params.id }).select('-approveStatus -_id -__v -createdAt')
+      let newUser = new Users({
+        payment: {
+          mode: appUser.payment.mode,
+          receiptUrl: appUser.payment.receiptUrl
+        },
+        name: appUser.name,
+        gender: appUser.gender,
+        dateOfBirth: appUser.dateOfBirth,
+        relationType: appUser.relationType,
+        relationWith: appUser.relationWith,
+        profession: appUser.profession,
+        bloodGroup: appUser.bloodGroup,
+        state: appUser.state,
+        district: appUser.district,
+        mobile: appUser.mobile,
+        role: appUser.role,
+        aadharNo: appUser.aadharNo,
+        block: appUser.block,
+        village: appUser.village,
+        fullAddress: appUser.fullAddress,
+        pinCode: appUser.pinCode,
+        email: appUser.email,
+        profilePicture: appUser.profilePicture,
+        idType: appUser.idType,
+        idDocument: appUser.idDocument,
+        otherDocument: appUser.otherDocument,
+        membershipType: appUser.membershipType,
+        referredBy: appUser.referredBy
+      })
+
+      await newUser.save()
+      console.log(newUser);
+    }
+
+
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+
+    res.json({ success: false, message: err.message });
+  }
+});
+
+
 
 module.exports = router;
