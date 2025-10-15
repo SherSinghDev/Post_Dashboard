@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./globals/head') %>
+
+    <body>
+        <%- include('./globals/preloader') %>
+
+            <div id="main-wrapper">
+                <%- include('globals/navHeader') %>
+                    <%- include('globals/header') %>
+                        <%- include('globals/sidebar') %>
+
+                            <!--**********************************
+          Content body start
+    ***********************************-->
+                            <div class="content-body">
+                                <div class="container">
+                                    <div class="d-flex justify-content-between mb-4 flex-wrap">
+                                        <div class="input-group w-auto mb-2 mb-xxl-0">
+                                            <input type="text" placeholder="Search by name, city, or mobile"
+                                                class="form-control search-input" style="width: 300px;">
+                                        </div>
+
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="card mt-2">
+                                                <div class="card-body">
+                                                    <div class="table-responsive text-center">
+                                                        <table class="table table-striped align-middle main-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Name</th>
+                                                                    <th>Gender</th>
+                                                                    <th>City</th>
+                                                                    <th>State</th>
+                                                                    <th>Mobile</th>
+                                                                    <th>Membership Type</th>
+                                                                    <th>Referral</th>
+                                                                    <th>Applied On</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% if (applications.length> 0) { %>
+                                                                    <% applications.forEach((app, index)=> { %>
+                                                                        <tr id="tr-<%= app._id %>">
+                                                                            <td>
+                                                                                <%= index + 1 %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.name %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.gender %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.city %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.state %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.mobile %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.membershipType %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.referredBy || 'N/A' %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= new
+                                                                                    Date(app.createdAt).toLocaleDateString()
+                                                                                    %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a href="javascript:void(0)"
+                                                                                    data-id="<%= app._id %>"
+                                                                                    class="btn btn-sm btn-info view-btn">View</a>
+                                                                                <a href="javascript:void(0)"
+                                                                                    data-id="<%= app._id %>"
+                                                                                    class="btn btn-sm btn-danger delete-btn">Delete</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% }) %>
+                                                                            <% } else { %>
+                                                                                <tr>
+                                                                                    <td colspan="10"
+                                                                                        class="text-center text-muted">
+                                                                                        No applications found</td>
+                                                                                </tr>
+                                                                                <% } %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--**********************************
+          Content body end
+    ***********************************-->
+
+                            <!-- View Modal -->
+                            <div class="modal fade view-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Application Details</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="view-details" class="p-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--**********************************
+          Footer start
+    ***********************************-->
+                            <div class="footer out-footer">
+                                <div class="copyright">
+                                    <p>Copyright © Developed by <a href="https://logicwix.com/"
+                                            target="_blank">LogicWix</a> 2025</p>
+                                </div>
+                            </div>
+                            <!--**********************************
+          Footer end
+    ***********************************-->
+
+            </div>
+
+            <!--**********************************
+        Scripts
+  ***********************************-->
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+            <!-- Dashboard 1 -->
+            <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="/js/plugins-init/datatables.init.js"></script>
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+            <script src="/js/pages/patients.js"></script>
+
+            <script>
+                // 🔍 Search filter
+                $(document).on('keyup', '.search-input', function () {
+                    const value = $(this).val().toLowerCase();
+                    $('tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                    });
+                });
+
+                // 👁 View application details
+                $(document).on('click', '.view-btn', function () {
+                    const id = $(this).data('id');
+                    fetch(`/applications/one/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const app = data.data;
+                                $('#view-details').html(`
+              <div class="row">
+                <div class="col-md-6 my-2"><strong>Name:</strong> ${app.name}</div>
+                <div class="col-md-6 my-2"><strong>Gender:</strong> ${app.gender}</div>
+                <div class="col-md-6 my-2"><strong>City:</strong> ${app.city}</div>
+                <div class="col-md-6 my-2"><strong>State:</strong> ${app.state}</div>
+                <div class="col-md-6 my-2"><strong>Mobile:</strong> ${app.mobile}</div>
+                <div class="col-md-6 my-2"><strong>Email:</strong> ${app.email || 'N/A'}</div>
+                <div class="col-md-6 my-2"><strong>Blood Group:</strong> ${app.bloodGroup}</div>
+                <div class="col-md-6 my-2"><strong>Membership Type:</strong> ${app.membershipType}</div>
+                <div class="col-md-6 my-2"><strong>Referred By:</strong> ${app.referredBy || 'N/A'}</div>
+                <div class="col-md-6 my-2"><strong>Profession:</strong> ${app.profession || 'N/A'}</div>
+                <div class="col-md-6 my-2"><strong>Full Address:</strong> ${app.fullAddress}</div>
+                <div class="col-md-6 my-2"><strong>Applied On:</strong> ${new Date(app.createdAt).toLocaleString()}</div>
+                <div class="col-md-12 mt-3">
+                  <strong>ID Document:</strong> 
+                  ${app.idDocument ? `<a href="${app.idDocument}" target="_blank">View</a>` : 'N/A'}
+                </div>
+                <div class="col-md-12 mt-2">
+                  <strong>Payment Receipt:</strong> 
+                  ${app.payment?.receiptUrl ? `<a href="${app.payment.receiptUrl}" target="_blank">View</a>` : 'N/A'}
+                </div>
+              </div>
+            `);
+                                $('.view-modal').modal('show');
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+
+                // 🗑 Delete
+                $(document).on('click', '.delete-btn', function () {
+                    const id = $(this).data('id');
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This will permanently delete the record.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, delete it!",
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            fetch(`/api/applications/${id}`, { method: "DELETE" })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        $(`#tr-${id}`).fadeOut(800);
+                                        Swal.fire("Deleted!", "Application deleted successfully.", "success");
+                                    }
+                                })
+                                .catch(err => console.error(err));
+                        }
+                    });
+                });
+            </script>
+    </body>
+
+</html>
