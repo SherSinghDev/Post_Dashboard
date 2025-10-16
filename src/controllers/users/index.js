@@ -37,8 +37,8 @@ router.delete('/delete/:id', async (req, res) => {
         // console.log(del);
         if (del.deletedCount) {
             deleted = true
-            tr = `#tr-${id}`
-            res.json({ deleted, tr })
+            let card = `#card-${id}`
+            res.json({ deleted, card })
         }
 
     } catch (error) {

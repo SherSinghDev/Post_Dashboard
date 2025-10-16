@@ -148,7 +148,7 @@
 										<h1 class="mb-3">Team Leaders</h1>
 										<% users.forEach((p)=>{%>
 											<%if(p.role=='Team Leader'){%>
-												<div class="col-xl-4 col-md-6">
+												<div class="col-xl-4 col-md-6" id="card-<%=p._id %>">
 													<div class="card">
 														<div class="card-header border-0 pb-0">
 															<h2
@@ -177,11 +177,7 @@
 																		</svg>
 																	</div>
 																	<div class="dropdown-menu dropdown-menu-end">
-																		<a class="dropdown-item edit-btn"
-																			data-bs-toggle="modal"
-																			data-bs-target=".bd-example-modal-lg"
-																			data-url="/patients/update/<%= p._id %>"
-																			href="javascript:void();">Edit</a>
+																		
 																		<a class="dropdown-item text-danger delete-btn"
 																			data-id="<%= p._id %>"
 																			href="javascript:void();;">Delete</a>
@@ -429,8 +425,8 @@
 											text: "Deleted Successfully",
 											timer: 1500
 										});
-										console.log(data.tr);
-										$(data.tr).fadeOut(1000)
+										
+										$(data.card).fadeOut(1000)
 									}
 									else {
 										Swal.fire({
