@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Patient Registration Form</title>
 
     <!-- Bootstrap CSS -->
@@ -11,7 +11,8 @@
 
     <!-- Google Font -->
     <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    
     <style>
         body {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
@@ -29,9 +30,9 @@
             transition: transform 0.3s ease;
         }
 
-        .form-card:hover {
+        /* .form-card:hover {
             transform: translateY(-5px);
-        }
+        } */
 
         h2 {
             font-weight: 600;
@@ -101,6 +102,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -126,16 +128,16 @@
                 </ul>
             </div>
             <h2 class="mt-5">🩺 Patient Registration Form</h2>
-            <form action="/submit-patient-form" method="POST">
+            <form action="/submit-patient-form" method="POST" id="patient-form" enctype="multipart/form-data">
 
                 <!-- Basic Info -->
                 <div class="form-section-title">Personal Information</div>
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">मरीज का नाम / Patient's Name *</label>
                         <input type="text" name="patientName" class="form-control" required />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">पिता/पति का नाम / Father's or Husband's Name *</label>
                         <input type="text" name="fatherOrHusbandName" class="form-control" required />
                     </div>
@@ -160,55 +162,55 @@
                 </div>
 
                 <!-- Address Section -->
-                <div class="form-section-title">Address Details</div>
+                <div class="form-section-title mt-4">Address Details</div>
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">मकान / सड़क / House / Flat / Street *</label>
                         <input type="text" name="houseOrStreet" class="form-control" required />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">इलाका / गाँव / मोहल्ला / Locality *</label>
                         <input type="text" name="locality" class="form-control" required />
                     </div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">शहर / तहसील / जिला / City / District *</label>
                         <input type="text" name="cityOrDistrict" class="form-control" required />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">राज्य / State *</label>
                         <input type="text" name="state" class="form-control" required />
                     </div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">LANDMARK / नज़दीकी प्रसिद्ध स्थान *</label>
                         <input type="text" name="landmark" class="form-control" required />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">पिन कोड / Pin Code *</label>
                         <input type="text" name="pinCode" class="form-control" required />
                     </div>
                 </div>
 
                 <!-- Contact Section -->
-                <div class="form-section-title">Contact Details</div>
+                <div class="form-section-title mt-4">Contact Details</div>
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">मोबाइल नंबर / Mobile Number *</label>
                         <input type="text" name="mobileNumber" class="form-control" required />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <label class="form-label">Emergency Contact Number</label>
                         <input type="text" name="emergencyContact" class="form-control" />
                     </div>
                 </div>
 
                 <!-- Medical Info -->
-                <div class="form-section-title">Medical Details</div>
+                <div class="form-section-title mt-4">Medical Details</div>
                 <div class="mb-3">
                     <label class="form-label">बीमारी का लक्षण / Name of Disease *</label>
                     <input type="text" name="diseaseName" class="form-control" required />
@@ -224,6 +226,102 @@
             </form>
         </div>
     </div>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+    <script>
+        $(document).on('submit', '#patient-form', function (e) {
+            e.preventDefault()
+            let form = this
+
+
+            let {
+                patientName,
+                fatherOrHusbandName,
+                gender,
+                houseOrStreet,
+                locality,
+                cityOrDistrict,
+                state,
+                landmark,
+                pinCode,
+                mobileNumber,
+                emergencyContact,
+                diseaseName,
+                medicalReport,
+            } = form
+
+            let inputs = {
+                patientName,
+                fatherOrHusbandName,
+                gender,
+                houseOrStreet,
+                locality,
+                cityOrDistrict,
+                state,
+                landmark,
+                pinCode,
+                mobileNumber,
+                emergencyContact,
+                diseaseName,
+                medicalReport,
+            }
+
+
+            let err = []
+
+            for (let key in inputs) {
+                if (!inputs[key].value) {
+                    let text = inputs[key].previousElementSibling?.innerText
+                    err.push(text)
+                }
+            }
+
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+            }
+            else {
+                fetch('/patientform/form', {
+                    method: "POST",
+                    body: new FormData(e.target),
+                })
+                    .then((data) => {
+                        return data.json()
+                    })
+                    .then((result) => {
+                        // console.log(result);
+                        if (result.created) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: result.message,
+                                timer: 2000
+
+                            });
+                            e.target.reset()
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.message,
+                                timer: 1000
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
+        })
+    </script>
 </body>
 
 </html>

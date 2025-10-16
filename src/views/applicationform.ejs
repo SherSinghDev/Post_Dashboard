@@ -427,13 +427,7 @@
                 referredBy,
                 paymentMode
             }
-            // if (role.value == "Coordinator") {
-            // }
-            // else {
-            //     inputs = { username, email, role, city, password }
-            // }
-
-            // console.log(inputs);
+            
 
             let err = []
 
@@ -462,42 +456,7 @@
                 for (let key in inputs) {
                     data = { ...data, [key]: inputs[key].value }
                 }
-                console.log(data);
-
-
-                // $.ajax({
-                //     url: '/application/apply',
-                //     method: "POST",
-                //     data: new FormData(e.target),
-                //     // headers: {
-                //     //     "Content-Type": "application/json"
-                //     // },
-                //     success: function (data) {
-                //         console.log(data);
-                //         if (data.created) {
-                //             Swal.fire({
-                //                 title: "Success!",
-                //                 icon: "success",
-                //                 text: data.message,
-                //                 timer: 1000
-
-                //             });
-                //             window.location.href = '/users'
-                //             e.target.reset()
-                //         }
-                //         else {
-                //             Swal.fire({
-                //                 icon: "error",
-                //                 title: "Oops...",
-                //                 text: data.message,
-                //                 timer: 1000
-                //             });
-                //         }
-                //     },
-                //     error: function (err) {
-                //         console.log(err);
-                //     }
-                // })
+                // console.log(data);
 
                 fetch('/applications/apply', {
                     method: "POST",

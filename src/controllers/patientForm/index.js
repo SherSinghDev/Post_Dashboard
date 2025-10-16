@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 let Users = require('../../modals/users')
-const UserApplication = require('../../modals/applications'); // adjust path as needed
+const PatientForm = require('../../modals/patientForm'); // adjust path as needed
 
 // ===== MULTER CONFIGURATION =====
 const storage = multer.diskStorage({
@@ -19,85 +19,51 @@ const upload = multer({ storage });
 
 // ===== POST ROUTE =====
 router.post(
-  '/apply',
-  upload.fields([
-    { name: 'profilePicture', maxCount: 1 },
-    { name: 'idDocument', maxCount: 1 },
-    { name: 'otherDocument', maxCount: 1 },
-    { name: 'receiptUrl', maxCount: 1 }
-  ]),
+  '/form',
+  upload.single('medicalReport'),
   async (req, res) => {
     try {
       let {
-        name,
+        patientName,
+        fatherOrHusbandName,
         gender,
-        dateOfBirth,
-        relationType,
-        relationWith,
-        profession,
-        bloodGroup,
+        houseOrStreet,
+        locality,
+        cityOrDistrict,
         state,
-        district,
-        mobile,
-        aadharNo,
-        block,
-        village,
-        fullAddress,
+        landmark,
         pinCode,
-        role,
-        email,
-        idType,
-        membershipType,
-        referredBy,
-        paymentMode
+        mobileNumber,
+        emergencyContact,
+        diseaseName,
       } = req.body;
 
-      let referredName = (await Users.findOne({ referralCode: referredBy })).name
-      referredBy = `${referredName}(${referredBy})`
-
       // extract file paths safely
-      const profilePicture = req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : null;
-      const idDocument = req.files['idDocument'] ? `/uploads/documents/${req.files['idDocument'][0].filename}` : null;
-      const otherDocument = req.files['otherDocument'] ? `/uploads/documents/${req.files['otherDocument'][0].filename}` : null;
-      const receiptUrl = req.files['receiptUrl'] ? `/uploads/documents/${req.files['receiptUrl'][0].filename}` : null;
-
+      let medicalReport = req.file ? `/uploads/documents/${req.file.filename}` : null;
+      
+      
       // create a new application document
-      let newApplication = new UserApplication({
-        name,
+      let newApplication = new PatientForm({
+        patientName,
+        fatherOrHusbandName,
         gender,
-        dateOfBirth,
-        relationType,
-        relationWith,
-        profession,
-        bloodGroup,
+        houseOrStreet,
+        locality,
+        cityOrDistrict,
         state,
-        district,
-        mobile,
-        aadharNo,
-        block,
-        village,
-        fullAddress,
+        landmark,
         pinCode,
-        email,
-        profilePicture,
-        idType,
-        idDocument,
-        otherDocument,
-        membershipType,
-        referredBy,
-        role,
-        payment: {
-          mode: paymentMode,
-          receiptUrl
-        }
+        mobileNumber,
+        emergencyContact,
+        diseaseName,
+        medicalReport
       });
 
       await newApplication.save();
 
       res.status(201).json({
         created: true,
-        message: 'Application submitted successfully!',
-        data: newApplication
+        message: 'Form submitted successfully!',
       });
     } catch (error) {
       console.error('Error saving user application:', error);
@@ -116,14 +82,14 @@ router.post(
 // })
 
 // GET all applications
-router.get('/applied', async (req, res) => {
+router.get('/patients', async (req, res) => {
 
 
   if (req.session.userId) {
     try {
       let user = await Users.findOne({ _id: req.session.userId })
-      const applications = await UserApplication.find().sort({ createdAt: -1 });
-      res.render('applications', { applications, page: "All Applications", user });
+      const applications = await PatientForm.find().sort({ createdAt: -1 });
+      res.render('forms', { applications, page: "Patient Form Data", user });
     } catch (error) {
       console.log(error);
       res.redirect('/auth/login')
