@@ -52,7 +52,8 @@ router.post(
         paymentMode
       } = req.body;
 
-      let referredName = (await Users.findOne({ referralCode: referredBy })).name
+      let referredUser = (await Users.findOne({ referralCode: referredBy }))
+      let referredName = referredUser?referredUser.name:''
       referredBy = `${referredName}(${referredBy})`
 
       // extract file paths safely

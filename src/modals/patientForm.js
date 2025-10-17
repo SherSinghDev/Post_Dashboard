@@ -59,7 +59,7 @@ const patientFormSchema = new Schema({
   },
   medicalReport: {
     type: String,
-    required: true,
+    // required: true,
   },
   createdAt: {
     type: Date,
