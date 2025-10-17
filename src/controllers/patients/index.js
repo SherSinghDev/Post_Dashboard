@@ -6,21 +6,79 @@ let upload = require('../../multer')
 let XLSX = require("xlsx")
 let Users = require('../../modals/users')
 
+// router.get('/', async (req, res) => {
+//     if (req.session.userId) {
+//         try {
+//             let patients = await Orders.find({
+//                 name: { $exists: true, $ne: "" }
+//             });
+//             let user = await Users.findOne({ _id: req.session.userId })
+//             res.render('patients', { patients, user, page: "Patient Orders" })
+//         } catch (error) {
+//             console.log(error);
+//             res.redirect('/auth/login')
+//         }
+//     }
+//     else {
+//         res.redirect('/auth/login')
+//     }
+// })
+
+
 router.get('/', async (req, res) => {
-    if (req.session.userId) {
-        try {
-            let patients = await Orders.find()
-            let user = await Users.findOne({_id:req.session.userId})
-            res.render('patients', { patients,user,page:"Patient Orders" })
-        } catch (error) {
-            console.log(error);
-            res.redirect('/auth/login')
-        }
+  if (!req.session.userId) {
+    return res.redirect('/auth/login');
+  }
+
+  try {
+    const user = await Users.findById(req.session.userId);
+    // Otherwise, render EJS page
+    res.render('patients', {
+      user,
+      page: "Patient Orders",
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.redirect('/auth/login');
+  }
+});
+
+// starting
+router.get("/get", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 50;
+    const skip = (page - 1) * limit;
+    const search = req.query.search || "";
+
+    let filter = { "receiver.name": { $exists: true, $ne: "" } };
+
+    if (search) {
+      filter.$or = [
+        { "receiver.name": { $regex: search, $options: "i" } },
+        { "receiver.city": { $regex: search, $options: "i" } },
+        { "receiver.pincode": { $regex: search, $options: "i" } },
+        { "parcelDetails.trackingId": { $regex: search, $options: "i" } },
+      ];
     }
-    else {
-        res.redirect('/auth/login')
-    }
-})
+
+    const [patients, total] = await Promise.all([
+      Orders.find(filter).skip(skip).limit(limit).lean(),
+      Orders.countDocuments(filter),
+    ]);
+
+    res.json({
+      patients,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 // create
 // router.post('/create', upload.single('myfile'), async (req, res) => {
@@ -146,7 +204,7 @@ router.post('/update/:id', async (req, res) => {
 
     try {
         await Orders.updateOne({ _id: id }, {
-            parcelDetails:{
+            parcelDetails: {
                 deliveryStatus: req.body.status,
                 trackingId: req.body.trackingId
             }

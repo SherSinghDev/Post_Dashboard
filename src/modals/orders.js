@@ -1,8 +1,8 @@
-let  mongoose =  require("mongoose")
+let mongoose = require("mongoose")
 
 const patientParcelSchema = new mongoose.Schema({
   serialNumber: { type: Number },
-  barcodeNo: { type: String},
+  barcodeNo: { type: String },
   physicalWeight: { type: String },
   receiver: {
     name: { type: String },
@@ -26,6 +26,15 @@ const patientParcelSchema = new mongoose.Schema({
     deliveryStatus: { type: String, default: "On Delivery" },
     trackingId: { type: String },
   },
+  otherStatus: {
+    patientStatus: { type: String, default: "" },
+    doctorStatus: { type: String, default: "" },
+    supportStatus: { type: String, default: "" },
+    officeStatus: { type: String, default: "" },
+    adminStatus: { type: String, default: "" },
+    postOfficeStatus: { type: String, default: "" },
+    // trackingIdStatus: { type: String },
+  },
   sender: {
     addressLine1: { type: String },
     addressLine2: { type: String },
@@ -37,4 +46,4 @@ const patientParcelSchema = new mongoose.Schema({
   },
 });
 
-module.exports =  mongoose.model("PatientParcel", patientParcelSchema);
+module.exports = mongoose.model("PatientParcel", patientParcelSchema);

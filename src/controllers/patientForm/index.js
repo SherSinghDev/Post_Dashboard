@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 let Users = require('../../modals/users')
+let Orders = require('../../modals/orders')
 const PatientForm = require('../../modals/patientForm'); // adjust path as needed
 
 // ===== MULTER CONFIGURATION =====
@@ -40,8 +41,8 @@ router.post(
 
       // extract file paths safely
       let medicalReport = req.file ? `/uploads/documents/${req.file.filename}` : null;
-      
-      
+
+
       // create a new application document
       let newApplication = new PatientForm({
         patientName,
@@ -101,11 +102,12 @@ router.get('/patients', async (req, res) => {
 });
 
 // GET single application (for View Modal)
-router.get('/one/:id', async (req, res) => {
+router.get('/report/:id', async (req, res) => {
   try {
-    const app = await UserApplication.findById(req.params.id);
+    const app = await PatientForm.findById(req.params.id);
     if (!app) return res.status(404).json({ success: false });
-    res.json({ success: true, data: app });
+    let report = app.medicalReport
+    res.json({ success: true, report });
   } catch (err) {
     console.log(err);
 
@@ -116,7 +118,7 @@ router.get('/one/:id', async (req, res) => {
 // DELETE application
 router.delete('/delete/:id', async (req, res) => {
   try {
-    await UserApplication.findByIdAndDelete(req.params.id);
+    await PatientForm.findByIdAndDelete(req.params.id);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -129,53 +131,62 @@ router.get('/', async (req, res) => {
 })
 
 // Approve or Cancel Application
-router.post('/approve/:id/:action', async (req, res) => {
+router.post('/approve/:id', async (req, res) => {
   try {
-    const { action } = req.params;
-    const valid = ["approve", "cancel"].includes(action);
-    if (!valid) return res.json({ success: false, message: "Invalid action" });
+    let {
+      patientStatus,
+      doctorStatus,
+      supportStatus,
+      officeStatus,
+      adminStatus,
+      postOfficeStatus,
+      trackingIdStatus,
+    } = req.body
 
-    const status = action === "approve" ? "Approved" : "Cancelled";
-    await UserApplication.findByIdAndUpdate(req.params.id, { approveStatus: status });
+    let formUser = await PatientForm.findOne({ _id: req.params.id }).select(' -_id -__v')
+    
+    let newOrder = new Orders({
+      serialNumber: 1,
+      barcodeNo: trackingIdStatus,
+      physicalWeight: "",
+      receiver: {
+        name: formUser.patientName,
+        addressLine1: formUser.houseOrStreet,
+        addressLine2: formUser.landmark,
+        addressLine3: formUser.locality,
+        city: formUser.cityOrDistrict,
+        pincode: formUser.pinCode,
+        stateUT: formUser.state,
+        contact: formUser.mobileNumber,
+        altContact: formUser.emergencyContact,
+        email: 'N/A',
+        kyc: "",
+        taxRef: "",
+      },
+      parcelDetails: {
+        
+        bulkReference: "",
+        bookingDate: formUser.createdAt,
+        trackingId: trackingIdStatus,
+      },
+      otherStatus: {
+        patientStatus,
+        doctorStatus,
+        supportStatus,
+        officeStatus,
+        adminStatus,
+        postOfficeStatus,
+      },
+      sender: {
+        addressLine1: "",
+        addressLine2: "",
+        addressLine3: "",
+      },
+      
+    })
 
-    if (status === "Approved") {
-      let appUser = await UserApplication.findOne({ _id: req.params.id }).select('-approveStatus -_id -__v -createdAt')
-      let newUser = new Users({
-        payment: {
-          mode: appUser.payment.mode,
-          receiptUrl: appUser.payment.receiptUrl
-        },
-        name: appUser.name,
-        gender: appUser.gender,
-        dateOfBirth: appUser.dateOfBirth,
-        relationType: appUser.relationType,
-        relationWith: appUser.relationWith,
-        profession: appUser.profession,
-        bloodGroup: appUser.bloodGroup,
-        state: appUser.state,
-        district: appUser.district,
-        mobile: appUser.mobile,
-        role: appUser.role,
-        aadharNo: appUser.aadharNo,
-        block: appUser.block,
-        village: appUser.village,
-        fullAddress: appUser.fullAddress,
-        pinCode: appUser.pinCode,
-        email: appUser.email,
-        profilePicture: appUser.profilePicture,
-        idType: appUser.idType,
-        idDocument: appUser.idDocument,
-        otherDocument: appUser.otherDocument,
-        membershipType: appUser.membershipType,
-        referredBy: appUser.referredBy
-      })
-
-      await newUser.save()
-      console.log(newUser);
-    }
-
-
-
+    await newOrder.save()
+    await PatientForm.deleteOne({ _id: req.params.id })
     res.json({ success: true });
   } catch (err) {
     console.log(err);

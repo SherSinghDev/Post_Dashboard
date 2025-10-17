@@ -8,187 +8,130 @@
         Preloader start
     ********************-->
 		<%- include('./globals/preloader') %>
-		<!--*******************
+			<!--*******************
         Preloader end
     ********************-->
 
-		<!--**********************************
+			<!--**********************************
         Main wrapper start
     ***********************************-->
-		<div id="main-wrapper">
-			<!--**********************************
+			<div id="main-wrapper">
+				<!--**********************************
             Nav header start
         ***********************************-->
-			<%- include('globals/navHeader') %>
-			<!--**********************************
+				<%- include('globals/navHeader') %>
+					<!--**********************************
             Nav header end
         ***********************************-->
 
-			<!--**********************************
+					<!--**********************************
             Chat box start
         ***********************************-->
-			
-			<!--**********************************
+
+					<!--**********************************
             Chat box End
         ***********************************-->
 
-			<!--**********************************
+					<!--**********************************
             Header start
         ***********************************-->
-			<%- include('globals/header') %>
-			<!--**********************************
+					<%- include('globals/header') %>
+						<!--**********************************
             Header end ti-comment-alt
         ***********************************-->
 
-			<!--**********************************
+						<!--**********************************
             Sidebar start
         ***********************************-->
-			<%- include('globals/sidebar') %>
+						<%- include('globals/sidebar') %>
 
-				<!--**********************************
+							<!--**********************************
             Sidebar end
         ***********************************-->
 
-				<!--**********************************
+							<!--**********************************
             Content body start
         ***********************************-->
-				<div class="content-body">
-					<div class="container">
-						<div class="d-flex justify-content-between mb-4 flex-wrap">
-							<div class="input-group w-auto mb-2 mb-xxl-0">
-								<input type="text" placeholder="Search by name, pincode, city, tracking id"
-									class="form-control search-input" style="width: 300px;">
-								<!-- <button class="btn btn-primary search-btn" type="button">Search</button> -->
-							</div>
-							<ul class="revnue-tab nav nav-tabs" id="myTab" role="tablist">
-								<li class="nav-item" role="presentation">
-									<button class="nav-link active status-filter" id="status-tab" data-bs-toggle="tab"
-										data-bs-target="#status-tab-pane" type="button" role="tab"
-										aria-controls="status-tab-pane" aria-selected="true">All Status</button>
-								</li>
-								<li class="nav-item" role="presentation">
-									<button class="nav-link status-filter" id="delivery-tab" data-bs-toggle="tab"
-										data-bs-target="#status-tab-pane" type="button" role="tab"
-										aria-controls="delivery-tab-pane" aria-selected="false">On Delivery</button>
-								</li>
-								<li class="nav-item" role="presentation">
-									<button class="nav-link status-filter" id="delivered-tab" data-bs-toggle="tab"
-										data-bs-target="#status-tab-pane" type="button" role="tab"
-										aria-controls="delivered-tab-pane" aria-selected="false">Delivered</button>
-								</li>
-								<li class="nav-item" role="presentation">
-									<button class="nav-link status-filter" id="canceled-tab" data-bs-toggle="tab"
-										data-bs-target="#status-tab-pane" type="button" role="tab"
-										aria-controls="canceled-tab-pane" aria-selected="false">Canceled</button>
-								</li>
-							</ul>
+							<div class="content-body">
+								<div class="container">
+									<div class="d-flex justify-content-between mb-4 flex-wrap">
+										<div class="input-group w-auto mb-2 mb-xxl-0">
+											<input type="text" placeholder="Search by name, pincode, city, tracking id"
+												class="form-control search-input" style="width: 300px;">
+											<!-- <button class="btn btn-primary search-btn" type="button">Search</button> -->
+										</div>
+										<!-- <ul class="revnue-tab nav nav-tabs" id="myTab" role="tablist">
+											<li class="nav-item" role="presentation">
+												<button class="nav-link active status-filter" id="status-tab"
+													data-bs-toggle="tab" data-bs-target="#status-tab-pane" type="button"
+													role="tab" aria-controls="status-tab-pane" aria-selected="true">All
+													Status</button>
+											</li>
+											<li class="nav-item" role="presentation">
+												<button class="nav-link status-filter" id="delivery-tab"
+													data-bs-toggle="tab" data-bs-target="#status-tab-pane" type="button"
+													role="tab" aria-controls="delivery-tab-pane"
+													aria-selected="false">On Delivery</button>
+											</li>
+											<li class="nav-item" role="presentation">
+												<button class="nav-link status-filter" id="delivered-tab"
+													data-bs-toggle="tab" data-bs-target="#status-tab-pane" type="button"
+													role="tab" aria-controls="delivered-tab-pane"
+													aria-selected="false">Delivered</button>
+											</li>
+											<li class="nav-item" role="presentation">
+												<button class="nav-link status-filter" id="canceled-tab"
+													data-bs-toggle="tab" data-bs-target="#status-tab-pane" type="button"
+													role="tab" aria-controls="canceled-tab-pane"
+													aria-selected="false">Canceled</button>
+											</li>
+										</ul> -->
 
-							<div>
-								<a href="javascript:void(0)" class="btn btn-primary me-1" data-bs-toggle="modal"
-									data-bs-target=".new-record-modal">+ New Order</a>
-								<select class="bootstrap-select form-select default-select h-select ms-1"
-									aria-label="Default select example">
-									<option selected="">Week</option>
-									<option value="1">Month</option>
-									<option value="2">Daily</option>
-								</select>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-xl-12">
-								<div class="tab-content" id="myTabContent">
-									<div class="tab-pane fade show active" id="status-tab-pane" role="tabpanel"
-										aria-labelledby="status-tab" tabindex="0">
-										<div class="card mt-2">
-											<div class="card-body">
-												<div
-													class="table-responsive active-projects style-1 ItemsCheckboxSec shorting text-center">
-
-
-													<div class="table-responsive">
-														<table class="table table-responsive-md main-table">
-															<thead>
-																
-																<th>USER ID</th>
-																<th>NAME</th>
-																<th>PINCODE</th>
-																<th>CITY</th>
-																<th>TRACKING ID</th>
-																<th>Status</th>
-																<th>Track</th>
-																<th>Actions</th>
-																<th></th>
-																
-															</thead>
-															<tbody>
-																<% patients.forEach((p)=>{ %>
-																	<tr id="tr-<%= p._id %>"
-																		data-filter="<%= p.parcelDetails.deliveryStatus %>">
-																		<td><span>
-																				<%=p.serialNumber %>
-																			</span></td>
-																		<td><span>
-																				<%=p.receiver.name %>
-																			</span></td>
-																		<td><span>
-																				<%=p.receiver.pincode %>
-																			</span></td>
-																		<td><span>
-																				<%=p.receiver.city %>
-																			</span></td>
-																		<td id="td-<%=p._id%>"><span>
-																				<%=p.parcelDetails.trackingId %>
-																			</span></td>
-																		<td id="status-<%= p._id %>">
-																			<% let classed; %>
-
-																				<% if(p.parcelDetails.deliveryStatus=='Delivered'
-																					){ %>
-																					<% classed='success' %>
-																						<%}%>
-
-																							<% if(p.parcelDetails.deliveryStatus=='On Delivery'
-																								){ %>
-																								<% classed='primary' %>
-																									<%}%>
-
-																										<% if(p.parcelDetails.deliveryStatus=='Canceled'
-																											){ %>
-																											<% classed='danger'
-																												%>
-																												<%}%>
+										<div>
+											<a href="javascript:void(0)" class="btn btn-primary me-1"
+												data-bs-toggle="modal" data-bs-target=".new-record-modal">+ New
+												Order</a>
+											<select class="bootstrap-select form-select default-select h-select ms-1"
+												aria-label="Default select example">
+												<option selected="">Week</option>
+												<option value="1">Month</option>
+												<option value="2">Daily</option>
+											</select>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xl-12">
+											<div class="tab-content" id="myTabContent">
+												<div class="tab-pane fade show active" id="status-tab-pane"
+													role="tabpanel" aria-labelledby="status-tab" tabindex="0">
+													<div class="card mt-2">
+														<div class="card-body">
+															<div
+																class="table-responsive active-projects style-1 ItemsCheckboxSec shorting text-center">
 
 
-																													<span
-																														class="badge badge-rounded badge-outline-<%-classed%> badge-lg">
-																														<%=p.parcelDetails.deliveryStatus%>
-																													</span>
-																		</td>
+																<div class="table-responsive">
+																	<table class="table table-responsive-md main-table">
+																		<thead>
 
-																		<td>
-																			<div>
-																				<a href="javascript:void(0)"
-																					data-id="<%=p.parcelDetails.trackingId %>"
-																					class="btn-link me-1 track-btn">Track</a>
+																			<th>USER ID</th>
+																			<th>NAME</th>
+																			<th>PINCODE</th>
+																			<th>CITY</th>
+																			<th>TRACKING ID</th>
+																			<th>Status</th>
+																			<th>Track</th>
+																			<th>Actions</th>
+																			<th></th>
 
-																			</div>
-																		</td>
-																		<td>
-																			<a class="edit-btn btn btn-success"
-																				href="javascript:void(0);"
-																				data-bs-toggle="modal"
-																				data-bs-target=".update-modal"
-																				data-url="/patients/update/<%= p._id %>"
-																				data-tracking="<%=p.parcelDetails.trackingId %>"
-																				data-status="<%=p.parcelDetails.deliveryStatus %>">Edit</a>
-																			<a class="btn btn-danger delete-btn"
-																				data-id="<%= p._id %>"
-																				href="javascript:void(0);">Delete</a>
-																		</td>
-																	</tr>
-																	<% }) %>
-															</tbody>
-														</table>
+																		</thead>
+																		<tbody id="patients-body"></tbody>
+																	</table>
+																	<div class="pagination-container mt-3 text-center">
+																	</div>
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -196,412 +139,444 @@
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-		</div>
+			</div>
 
-		<!--**********************************
+			<!--**********************************
             Content body end
         ***********************************-->
 
 
-		<!-- Modal -->
-		<!-- create -->
-		<div class="modal fade bd-example-modal-lg new-record-modal" tabindex="-1" style="display: none;"
-			aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Create New Records</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal">
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="basic-form">
-							<form id="create-record">
-								<div class="row">
-									<div class="mb-3">
-										<label class="form-label">Upload Excel File</label>
-										<input type="file" name="myfile" class="form-control">
-									</div>
-								</div>
-
-							</form>
+			<!-- Modal -->
+			<!-- create -->
+			<div class="modal fade bd-example-modal-lg new-record-modal" tabindex="-1" style="display: none;"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Create New Records</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal">
+							</button>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger light close-btn"
-							data-bs-dismiss="modal">Close</button>
-						<button type="submit" form="create-record" class="btn btn-primary">Save changes</button>
+						<div class="modal-body">
+							<div class="basic-form">
+								<form id="create-record">
+									<div class="row">
+										<div class="mb-3">
+											<label class="form-label">Upload Excel File</label>
+											<input type="file" name="myfile" class="form-control">
+										</div>
+									</div>
+
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger light close-btn"
+								data-bs-dismiss="modal">Close</button>
+							<button type="submit" form="create-record" class="btn btn-primary">Save changes</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- update -->
-		<div class="modal fade bd-example-modal-lg update-modal" tabindex="-1" style="display: none;"
-			aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Edit Tracking Records</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal">
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="basic-form">
-							<form id="tracking-update">
-
-								<div class="row">
-									<div class="mb-3">
-										<label class="form-label">Tracking Id</label>
-										<input type="text" name="trackingid" class="form-control">
-									</div>
-								</div>
-								<div class="row">
-									<div class="mb-3">
-										<label class="form-label">Status</label>
-										<select name="status" id="" class="form-select">
-											<option value="Delivered">Delivered</option>
-											<option value="On Delivery">On Delivery</option>
-											<option value="Canceled">Canceled</option>
-										</select>
-									</div>
-								</div>
-							</form>
+			<!-- update -->
+			<div class="modal fade bd-example-modal-lg update-modal" tabindex="-1" style="display: none;"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Edit Tracking Records</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal">
+							</button>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger light close-btn"
-							data-bs-dismiss="modal">Close</button>
-						<button type="submit" form="tracking-update" class="btn btn-primary">Save changes</button>
+						<div class="modal-body">
+							<div class="basic-form">
+								<form id="tracking-update">
+
+									<div class="row">
+										<div class="mb-3">
+											<label class="form-label">Tracking Id</label>
+											<input type="text" name="trackingid" class="form-control">
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<label class="form-label">Status</label>
+											<select name="status" id="" class="form-select">
+												<option value="Delivered">Delivered</option>
+												<option value="On Delivery">On Delivery</option>
+												<option value="Canceled">Canceled</option>
+											</select>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger light close-btn"
+								data-bs-dismiss="modal">Close</button>
+							<button type="submit" form="tracking-update" class="btn btn-primary">Save changes</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<!--**********************************
+			<!--**********************************
             Footer start
         ***********************************-->
-		<div class="footer out-footer">
-			<div class="copyright">
-				<p>Copyright © Developed by <a href="https://logicwix.com/" target="_blank">LogicWix</a> 2025</p>
-			</div>
-		</div>
-		<!--**********************************
+			
+			<!--**********************************
             Footer end
         ***********************************-->
 
-		<!--**********************************
+			<!--**********************************
            Support ticket button start
         ***********************************-->
 
-		<!--**********************************
+			<!--**********************************
            Support ticket button end
         ***********************************-->
 
 
-		</div>
-		<!--**********************************
+			</div>
+			<!--**********************************
         Main wrapper end
     ***********************************-->
 
-		<!--**********************************
+			<!--**********************************
         Scripts
     ***********************************-->
-		<!-- Required vendors -->
-		<script src="/vendor/global/global.min.js"></script>
-		<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+			<!-- Required vendors -->
+			<script src="/vendor/global/global.min.js"></script>
+			<script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
-		<!-- Dashboard 1 -->
-		<script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
-		<script src="/js/plugins-init/datatables.init.js"></script>
-
-
-		<!-- JS for dotted map -->
+			<!-- Dashboard 1 -->
+			<script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+			<script src="/js/plugins-init/datatables.init.js"></script>
 
 
-
-
-		<!-- Apex Chart -->
+			<!-- JS for dotted map -->
 
 
 
-		<!-- Vectormap -->
 
-		<script src="/js/custom.js"></script>
-		<script src="/js/deznav-init.js"></script>
-		<script src="/js/demo.js"></script>
-		<script src="/js/styleSwitcher.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
-		<script src="/js/pages/patients.js"></script>
-		<script>
-			// create records
-			$(document).on('submit', "#create-record", function (e) {
-				e.preventDefault()
-				let file = this.myfile
-				// console.log(file.files[0]);
-
-				let data = new FormData()
-				data.append('myfile', file.files[0])
+			<!-- Apex Chart -->
 
 
-				fetch('/patients/create', {
-					method: "POST",
-					body: new FormData(e.target),
-				})
-					.then((data) => {
-						return data.json()
+
+			<!-- Vectormap -->
+
+			<script src="/js/custom.js"></script>
+			<script src="/js/deznav-init.js"></script>
+			<script src="/js/demo.js"></script>
+			<script src="/js/styleSwitcher.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+			<script src="/js/pages/patients.js"></script>
+			<script>
+				// create records
+				$(document).on('submit', "#create-record", function (e) {
+					e.preventDefault()
+					let file = this.myfile
+					// console.log(file.files[0]);
+
+					let data = new FormData()
+					data.append('myfile', file.files[0])
+
+
+					fetch('/patients/create', {
+						method: "POST",
+						body: new FormData(e.target),
 					})
-					.then((result) => {
-						// console.log(result);
-						if (result.created) {
-							window.location.reload()
+						.then((data) => {
+							return data.json()
+						})
+						.then((result) => {
+							// console.log(result);
+							if (result.created) {
+								window.location.reload()
+							}
+							else {
+								alert(result.message)
+							}
+						})
+						.catch((err) => {
+							console.log(err);
+						})
+				})
+
+
+				// edit btn
+				$(document).on('click', '.edit-btn', function (e) {
+					let url = $(this).attr('data-url')
+					let form = $('#tracking-update')
+					form.attr('data-url', url)
+					form = document.querySelector('#tracking-update')
+					form.trackingid.value = $(this).attr('data-tracking')
+					form.status.value = $(this).attr('data-status')
+				})
+
+				// update tracking records
+				$(document).on('submit', '#tracking-update', function (e) {
+					e.preventDefault()
+					let form = $(this)
+					let input = this.trackingid
+					let status = this.status.value
+					let url = form.attr('data-url')
+					let data = {
+						trackingId: input.value,
+						status
+					}
+
+					$.ajax({
+						url,
+						data,
+						method: "POST",
+						success: function (data) {
+							if (data.updated) {
+								let tr = `#tr-${url.split('/')[url.split('/').length - 1]}`
+								$(`${tr} .edit-btn`).attr('data-tracking', input.value)
+								$(`${tr} .edit-btn`).attr('data-status', status)
+								$('.btn-close').click()
+								input.value = ''
+								$(data.td).html(data.tdHtml)
+								$(data.statusSpan).html(data.status)
+								Swal.fire({
+									title: "Success!",
+									icon: "success",
+									text: "Updated Successfully",
+									timer: 1000
+								});
+							}
+						},
+						error: function (err) {
+							console.log(err);
+						}
+					})
+
+				})
+
+				// track btn
+				$(document).on('click', ".track-btn", function () {
+					let id = $(this).attr('data-id')
+					console.log(id);
+					navigator.clipboard.writeText(id)
+						.then(() => {
+							console.log("Copied to clipboard");
+							window.open('https://www.indiapost.gov.in/home', "_blank")
+						})
+						.catch((err) => {
+							console.log(err);
+						})
+				})
+
+				// delete
+
+				$(document).on('click', '.delete-btn', function () {
+
+					Swal.fire({
+						title: "Do you want to delete the record?",
+						showDenyButton: true,
+						// showCancelButton: true,
+						confirmButtonText: "Delete",
+						denyButtonText: `Cancel`
+					}).then((result) => {
+						/* Read more about isConfirmed, isDenied below */
+						if (result.isConfirmed) {
+							let id = $(this).attr('data-id')
+							// console.log(id);
+							$.ajax({
+								url: `/patients/delete/${id}`,
+								method: "DELETE",
+								success: function (data) {
+									// console.log(data);
+									if (data.deleted) {
+										Swal.fire({
+											title: "Success!",
+											icon: "success",
+											text: "Deleted Successfully",
+											timer: 1500
+										});
+										// console.log(data.tr);
+										$(data.tr).fadeOut(1000)
+									}
+									else {
+										Swal.fire({
+											icon: "error",
+											title: "Oops...",
+											text: "Something Went Wrong",
+											timer: 1500
+										});
+									}
+								},
+								error: function (err) {
+									console.log(err);
+								}
+							})
+						}
+					});
+
+				})
+
+				// status filter
+				$(document).on('click', '.status-filter', function (e) {
+					let status = e.target.innerText
+					console.log(status);
+					let trs = document.querySelectorAll('.main-table tr')
+					trs.forEach((tr) => {
+						let filter = tr.getAttribute('data-filter')
+						if (status == 'All Status') {
+							tr.style.display = 'table-row'
+						}
+						else if (filter == status) {
+							console.log(tr, filter);
+							tr.style.display = 'table-row'
 						}
 						else {
-							alert(result.message)
+							console.log(tr);
+							tr.style.display = 'none'
 						}
 					})
-					.catch((err) => {
-						console.log(err);
-					})
-			})
 
+					let mainTr = document.querySelector('thead tr')
+					mainTr.style.display = 'table-row'
 
-			// edit btn
-			$(document).on('click', '.edit-btn', function (e) {
-				let url = $(this).attr('data-url')
-				let form = $('#tracking-update')
-				form.attr('data-url', url)
-				form = document.querySelector('#tracking-update')
-				form.trackingid.value = $(this).attr('data-tracking')
-				form.status.value = $(this).attr('data-status')
-			})
+				})
 
-			// update tracking records
-			$(document).on('submit', '#tracking-update', function (e) {
-				e.preventDefault()
-				let form = $(this)
-				let input = this.trackingid
-				let status = this.status.value
-				let url = form.attr('data-url')
-				let data = {
-					trackingId: input.value,
-					status
+				$(document).on('click', '.logout-btn', function (e) {
+					Swal.fire({
+						title: "Do you want to Logout?",
+						showDenyButton: true,
+						// showCancelButton: true,
+						confirmButtonText: "Yes",
+						denyButtonText: `Cancel`
+					}).then((result) => {
+						/* Read more about isConfirmed, isDenied below */
+						if (result.isConfirmed) {
+
+							$.ajax({
+								url: `/auth/logout`,
+								method: "POST",
+								success: function (data) {
+									console.log(data);
+									if (data.logout) {
+										window.location.href = '/'
+									}
+									else {
+										Swal.fire({
+											icon: "error",
+											title: "Oops...",
+											text: "Something Went Wrong",
+											timer: 1500
+										});
+									}
+								},
+								error: function (err) {
+									console.log(err);
+								}
+							})
+						}
+					});
+				})
+
+				var handleNavigation = function () {
+					$(".nav-control").on('click', function () {
+
+						$('#main-wrapper').toggleClass("menu-toggle");
+
+						$(".hamburger").toggleClass("is-active");
+					});
 				}
 
-				$.ajax({
-					url,
-					data,
-					method: "POST",
-					success: function (data) {
-						if (data.updated) {
-							let tr = `#tr-${url.split('/')[url.split('/').length - 1]}`
-							$(`${tr} .edit-btn`).attr('data-tracking', input.value)
-							$(`${tr} .edit-btn`).attr('data-status', status)
-							$('.btn-close').click()
-							input.value = ''
-							$(data.td).html(data.tdHtml)
-							$(data.statusSpan).html(data.status)
-							Swal.fire({
-								title: "Success!",
-								icon: "success",
-								text: "Updated Successfully",
-								timer: 1000
+				handleNavigation()
+
+				// ===============================
+				// PAGINATION + SEARCH + LOAD DATA
+				// ===============================
+
+				let currentPage = 1;
+				let searchQuery = "";
+
+				// Function to load patients dynamically
+				function loadPatients(page = 1, search = "") {
+					fetch(`/patients/get?page=${page}&search=${encodeURIComponent(search)}`)
+						.then(res => res.json())
+						.then(data => {
+							const tbody = document.getElementById("patients-body");
+							tbody.innerHTML = "";
+
+							if (!data.patients || data.patients.length === 0) {
+								tbody.innerHTML = `<tr><td colspan="9">No records found</td></tr>`;
+								$(".pagination-container").html("");
+								return;
+							}
+
+							data.patients.forEach(p => {
+								const deliveryStatus = p.parcelDetails?.deliveryStatus || "Unknown";
+								let classed = "secondary";
+								if (deliveryStatus === "Delivered") classed = "success";
+								else if (deliveryStatus === "On Delivery") classed = "primary";
+								else if (deliveryStatus === "Canceled") classed = "danger";
+
+								const tr = `
+          <tr id="tr-${p._id}" data-filter="${deliveryStatus}">
+            <td>${p.serialNumber || ""}</td>
+            <td>${p.receiver?.name || ""}</td>
+            <td>${p.receiver?.pincode || ""}</td>
+            <td>${p.receiver?.city || ""}</td>
+            <td id="td-${p._id}">${p.parcelDetails?.trackingId || ""}</td>
+            <td id="status-${p._id}">
+              <span class="badge badge-rounded badge-outline-${classed} badge-lg">
+                ${deliveryStatus}
+              </span>
+            </td>
+            <td><a href="javascript:void(0)" data-id="${p.parcelDetails?.trackingId}" class="btn-link me-1 track-btn">Track</a></td>
+            <td>
+              <a class="edit-btn btn btn-success" href="javascript:void(0);" data-bs-toggle="modal"
+                data-bs-target=".update-modal"
+                data-url="/patients/update/${p._id}"
+                data-tracking="${p.parcelDetails?.trackingId}"
+                data-status="${deliveryStatus}">Edit</a>
+              <a class="btn btn-danger delete-btn" data-id="${p._id}" href="javascript:void(0);">Delete</a>
+            </td>
+          </tr>
+        `;
+								tbody.insertAdjacentHTML("beforeend", tr);
 							});
-						}
-					},
-					error: function (err) {
-						console.log(err);
-					}
-				})
 
-			})
-
-			// track btn
-			$(document).on('click', ".track-btn", function () {
-				let id = $(this).attr('data-id')
-				console.log(id);
-				navigator.clipboard.writeText(id)
-					.then(() => {
-						console.log("Copied to clipboard");
-						window.open('https://www.indiapost.gov.in/home', "_blank")
-					})
-					.catch((err) => {
-						console.log(err);
-					})
-			})
-
-			// delete
-
-			$(document).on('click', '.delete-btn', function () {
-
-				Swal.fire({
-					title: "Do you want to delete the record?",
-					showDenyButton: true,
-					// showCancelButton: true,
-					confirmButtonText: "Delete",
-					denyButtonText: `Cancel`
-				}).then((result) => {
-					/* Read more about isConfirmed, isDenied below */
-					if (result.isConfirmed) {
-						let id = $(this).attr('data-id')
-						// console.log(id);
-						$.ajax({
-							url: `/patients/delete/${id}`,
-							method: "DELETE",
-							success: function (data) {
-								// console.log(data);
-								if (data.deleted) {
-									Swal.fire({
-										title: "Success!",
-										icon: "success",
-										text: "Deleted Successfully",
-										timer: 1500
-									});
-									// console.log(data.tr);
-									$(data.tr).fadeOut(1000)
-								}
-								else {
-									Swal.fire({
-										icon: "error",
-										title: "Oops...",
-										text: "Something Went Wrong",
-										timer: 1500
-									});
-								}
-							},
-							error: function (err) {
-								console.log(err);
+							// Build pagination buttons
+							let paginationHTML = "";
+							for (let i = 1; i <= data.totalPages; i++) {
+								paginationHTML += `
+          <button class="btn btn-sm ${i === data.currentPage ? "btn-primary" : "btn-outline-primary"} mx-1 page-btn"
+            data-page="${i}">${i}</button>`;
 							}
+							$(".pagination-container").html(paginationHTML);
 						})
-					}
+						.catch(err => console.error(err));
+				}
+
+				// Initial load
+				loadPatients();
+
+				// Pagination click
+				$(document).on("click", ".page-btn", function () {
+					const page = parseInt($(this).attr("data-page"));
+					currentPage = page;
+					loadPatients(currentPage, searchQuery);
 				});
 
-			})
-
-			// status filter
-			$(document).on('click', '.status-filter', function (e) {
-				let status = e.target.innerText
-				console.log(status);
-				let trs = document.querySelectorAll('.main-table tr')
-				trs.forEach((tr) => {
-					let filter = tr.getAttribute('data-filter')
-					if (status == 'All Status') {
-						tr.style.display = 'table-row'
-					}
-					else if (filter == status) {
-						// console.log(tr, filter);
-						tr.style.display = 'table-row'
-					}
-					else {
-						console.log(tr);
-						tr.style.display = 'none'
-					}
-				})
-
-				let mainTr = document.querySelector('thead tr')
-				mainTr.style.display = 'table-row'
-				
-			})
-
-			$(document).on('click', '.logout-btn', function (e) {
-				Swal.fire({
-					title: "Do you want to Logout?",
-					showDenyButton: true,
-					// showCancelButton: true,
-					confirmButtonText: "Yes",
-					denyButtonText: `Cancel`
-				}).then((result) => {
-					/* Read more about isConfirmed, isDenied below */
-					if (result.isConfirmed) {
-
-						$.ajax({
-							url: `/auth/logout`,
-							method: "POST",
-							success: function (data) {
-								console.log(data);
-								if (data.logout) {
-									window.location.href = '/'
-								}
-								else {
-									Swal.fire({
-										icon: "error",
-										title: "Oops...",
-										text: "Something Went Wrong",
-										timer: 1500
-									});
-								}
-							},
-							error: function (err) {
-								console.log(err);
-							}
-						})
-					}
+				// Search input
+				$(document).on("keyup", ".search-input", function () {
+					searchQuery = $(this).val();
+					currentPage = 1;
+					loadPatients(currentPage, searchQuery);
 				});
-			})
-
-			var handleNavigation = function () {
-				$(".nav-control").on('click', function () {
-
-					$('#main-wrapper').toggleClass("menu-toggle");
-
-					$(".hamburger").toggleClass("is-active");
-				});
-			}
-
-			handleNavigation()
-
-			$(document).on('keyup', '.search-input', function (e) {
-				let value = $(this).val().toLowerCase()
-				console.log(value);
-
-				let elem = []
-
-				$('tr td:nth-child(2)').each(function (i, e) {
-					if (e.innerText.toLowerCase().includes(value)) {
-						let parent = e.parentElement
-						elem.push(parent)
-					}
-				})
-
-				$('tr td:nth-child(3)').each(function (i, e) {
-					if (e.innerText.toLowerCase().includes(value)) {
-						let parent = e.parentElement
-						elem.push(parent)
-					}
-				})
-				$('tr td:nth-child(4)').each(function (i, e) {
-					if (e.innerText.toLowerCase().includes(value)) {
-						let parent = e.parentElement
-						elem.push(parent)
-					}
-				})
-
-				$('tr td:nth-child(5)').each(function (i, e) {
-					if (e.innerText.toLowerCase().includes(value)) {
-						let parent = e.parentElement
-						elem.push(parent)
-					}
-				})
-
-				let mainTr = document.querySelector('thead tr')
-
-				elem.push(mainTr)
-
-				$('tr').css('display', 'none')
-
-				console.log(elem);
-
-				elem.forEach((el) => {
-					el.style.display = 'table-row'
-				})
-
-			})
 
 
-		</script>
+
+
+
+			</script>
 	</body>
 
 </html>
