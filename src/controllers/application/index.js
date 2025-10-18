@@ -53,8 +53,9 @@ router.post(
       } = req.body;
 
       let referredUser = (await Users.findOne({ referralCode: referredBy }))
-      let referredName = referredUser?referredUser.name:''
-      referredBy = `${referredName}(${referredBy})`
+      // let referredName = referredUser?referredUser.name:''
+      // referredBy = `${referredName}(${referredBy})`
+      // referredBy = referredUser.referralCode || ""
 
       // extract file paths safely
       const profilePicture = req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : null;
@@ -160,7 +161,9 @@ router.delete('/delete/:id', async (req, res) => {
 
 
 router.get('/', async (req, res) => {
-  res.render('applicationform')
+  let users = await Users.find().select('name referralCode -_id');
+  console.log(users);
+  res.render('applicationform',{users})
 })
 
 // Approve or Cancel Application

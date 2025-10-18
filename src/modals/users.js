@@ -184,7 +184,7 @@ const userSchema = new mongoose.Schema({
 
 // Auto-generate referral code for team leaders
 userSchema.pre("save", function (next) {
-    if (this.role === "Team Leader" && !this.referralCode) {
+    if (!this.referralCode) {
         this.referralCode = "TL-" + nanoid(6).toUpperCase();
     }
     next();

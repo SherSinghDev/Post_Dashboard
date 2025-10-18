@@ -236,8 +236,17 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Referred By</strong></label>
-                                                <input type="text" name="referredBy" class="form-control"
-                                                    placeholder="Enter Referred By Name or Code">
+                                                <!-- <input type="text" name="referredBy" class="form-control"
+                                                    placeholder="Enter Referred By Name or Code"> -->
+
+                                                <select name="referredBy" style="padding-block: 11px;"
+                                                    class="form-select">
+                                                    <option value="">Select User</option>
+                                                    <% users.forEach((u)=>{%>
+                                                        <option value="<%- u.referralCode %>"><%- u.name %>-<%- u.referralCode %></option>
+                                                        <%})%>
+                                                            
+                                                </select>
                                             </div>
                                         </div>
 
@@ -427,7 +436,7 @@
                 referredBy,
                 paymentMode
             }
-            
+
 
             let err = []
 
