@@ -37,7 +37,14 @@ router.post(
         mobileNumber,
         emergencyContact,
         diseaseName,
+        referredBy
       } = req.body;
+
+      let ref = "Filled By Patient"
+
+      if (referredBy) {
+        ref = referredBy
+      }
 
       // extract file paths safely
       let medicalReport = req.file ? `/uploads/documents/${req.file.filename}` : null;
@@ -57,7 +64,8 @@ router.post(
         mobileNumber,
         emergencyContact,
         diseaseName,
-        medicalReport
+        medicalReport,
+        referredBy: ref
       });
 
       await newApplication.save();
@@ -89,8 +97,55 @@ router.get('/patients', async (req, res) => {
   if (req.session.userId) {
     try {
       let user = await Users.findOne({ _id: req.session.userId })
-      const applications = await PatientForm.find().sort({ createdAt: -1 });
-      res.render('forms', { applications, page: "Patient Form Data", user });
+      // const applications = await PatientForm.find().sort({ createdAt: -1 });
+
+      const result = await PatientForm.aggregate([
+        {
+          $sort: { createdAt: -1 } // latest first
+        },
+        {
+          $lookup: {
+            from: "users",                // users collection
+            localField: "referredBy",     // referral code in PatientForm
+            foreignField: "referralCode", // referral code in User
+            as: "referrer"
+          }
+        },
+        {
+          $unwind: {
+            path: "$referrer",
+            preserveNullAndEmptyArrays: true // keep even if no referrer
+          }
+        },
+        {
+          $project: {
+            patientName: 1,
+            fatherOrHusbandName: 1,
+            gender: 1,
+            houseOrStreet: 1,
+            locality: 1,
+            cityOrDistrict: 1,
+            state: 1,
+            landmark: 1,
+            pinCode: 1,
+            mobileNumber: 1,
+            emergencyContact: 1,
+            referredBy: 1,
+            diseaseName: 1,
+            medicalReport: 1,
+            otherStatus: 1,
+            createdAt: 1,
+            // only select _id and name from the referred user
+            "referrer._id": 1,
+            "referrer.name": 1
+          }
+        }
+      ]);
+
+      // console.log(result);
+      
+
+      res.render('forms', { applications:result, page: "Patient Form Data", user });
     } catch (error) {
       console.log(error);
       res.redirect('/auth/login')
@@ -106,6 +161,7 @@ router.get('/details/:id', async (req, res) => {
   try {
     const app = await PatientForm.findById(req.params.id);
     if (!app) return res.status(404).json({ success: false });
+    
     res.json({ success: true, data: app });
   } catch (err) {
     console.log(err);
@@ -140,7 +196,9 @@ router.delete('/delete/:id', async (req, res) => {
 
 
 router.get('/', async (req, res) => {
-  res.render('patientform')
+  let users = await Users.find({ role: "Coordinator" }).select('name referralCode -_id');
+  console.log(users);
+  res.render('patientform', { users })
 })
 
 // Approve or Cancel Application

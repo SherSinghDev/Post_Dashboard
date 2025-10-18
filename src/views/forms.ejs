@@ -39,6 +39,7 @@
                                                                     <th>State</th>
                                                                     <th>Mobile</th>
                                                                     <th>Desease Name</th>
+                                                                    <th>ReferredBy</th>
                                                                     <th>Report</th>
                                                                     <th>Patient Status</th>
                                                                     <th>Doctor Status</th>
@@ -82,40 +83,43 @@
                                                                                 <%= app.diseaseName %>
                                                                             </td>
                                                                             <td>
+                                                                                <%= app.referrer? app.referrer?.name + ':' + app.referredBy : app.referredBy %>
+                                                                            </td>
+                                                                            <td>
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
                                                                                     class="view-btn">View Report</a>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus.patientStatus
+                                                                                <%= app.otherStatus?.patientStatus
                                                                                     || 'N/A' %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus.doctorStatus
+                                                                                <%= app.otherStatus?.doctorStatus
                                                                                     || 'N/A' %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus.supportStatus
+                                                                                <%= app.otherStatus?.supportStatus
                                                                                     || 'N/A' %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus.officeStatus
+                                                                                <%= app.otherStatus?.officeStatus
                                                                                     || 'N/A' %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus.adminStatus || 'N/A'
+                                                                                <%= app.otherStatus?.adminStatus || 'N/A'
                                                                                     %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus.postOfficeStatus
+                                                                                <%= app.otherStatus?.postOfficeStatus
                                                                                     || 'N/A' %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus.trackingIdStatus
+                                                                                <%= app.otherStatus?.trackingIdStatus
                                                                                     || 'N/A' %>
                                                                             </td>
                                                                             <td><a href="javascript:void(0)"
-                                                                                    data-id="<%= app.otherStatus.trackingIdStatus%>"
+                                                                                    data-id="<%= app.otherStatus?.trackingIdStatus%>"
                                                                                     class="btn-link me-1 track-btn">Track</a>
                                                                             </td>
 
@@ -278,13 +282,14 @@
                                     <div class="col-md-6 my-2"><strong>Mobile:</strong> <a href="tel:+91 ${app.emergencyContact}">${app.emergencyContact}</a> </div>
                                     <div class="col-md-6 my-2"><strong>Pincode:</strong> ${app.pinCode}</div>
                                     <div class="col-md-6 my-2"><strong>Desease Name:</strong> ${app.diseaseName}</div>
-                                    <div class="col-md-6 my-2"><strong>Patient Status:</strong> ${app.otherStatus.patientStatus || 'N/A'}</div>
-                                    <div class="col-md-6 my-2"><strong>Doctor Status:</strong> ${app.otherStatus.doctorStatus || 'N/A'}</div>
-                                    <div class="col-md-6 my-2"><strong>Support Status:</strong> ${app.otherStatus.supportStatus || 'N/A'}</div>
-                                    <div class="col-md-6 my-2"><strong>Office Status:</strong> ${app.otherStatus.officeStatus || 'N/A'}</div>
-                                    <div class="col-md-6 my-2"><strong>Admin Status:</strong> ${app.otherStatus.adminStatus || 'N/A'}</div>
-                                    <div class="col-md-6 my-2"><strong>Post Office Status:</strong> ${app.otherStatus.postOfficeStatus || 'N/A'}</div>
-                                    <div class="col-md-6 my-2"><strong>Tracking Id Status:</strong> ${app.otherStatus.trackingIdStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Referred By:</strong> ${app.referredBy}</div>
+                                    <div class="col-md-6 my-2"><strong>Patient Status:</strong> ${app.otherStatus?.patientStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Doctor Status:</strong> ${app.otherStatus?.doctorStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Support Status:</strong> ${app.otherStatus?.supportStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Office Status:</strong> ${app.otherStatus?.officeStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Admin Status:</strong> ${app.otherStatus?.adminStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Post Office Status:</strong> ${app.otherStatus?.postOfficeStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Tracking Id Status:</strong> ${app.otherStatus?.trackingIdStatus || 'N/A'}</div>
                                     <div class="col-md-6 my-2"><strong>Applied On:</strong> ${new Date(app.createdAt).toLocaleString()}</div>
                                     <div class="col-md-12 mt-3">
                                     <strong>Report:</strong>

@@ -46,17 +46,17 @@ let { nanoid } = require('nanoid');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
     },
     gender: {
         type: String,
         enum: ["Male", "Female", "Other"],
-        required: true,
+        // required: true,
     },
     dateOfBirth: {
         type: Date,
-        required: true,
+        // required: true,
     },
     relationType: {
         // S/O, D/O, W/O etc.
@@ -84,27 +84,27 @@ const userSchema = new mongoose.Schema({
     bloodGroup: {
         type: String,
         enum: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
-        required: true,
+        // required: true,
     },
     state: {
         type: String,
-        required: true,
+        // required: true,
     },
     district: {
         type: String,
-        required: true,
+        // required: true,
     },
     mobile: {
         type: String,
-        required: true,
+        // required: true,
     },
     role: {
         type: String,
-        required: true,
+        // required: true,
     },
     aadharNo: {
         type: String,
-        required: true,
+        // required: true,
     },
     block: {
         type: String,
@@ -114,11 +114,11 @@ const userSchema = new mongoose.Schema({
     },
     fullAddress: {
         type: String,
-        required: true,
+        // required: true,
     },
     pinCode: {
         type: String,
-        required: true,
+        // required: true,
     },
     email: {
         type: String,
@@ -139,8 +139,11 @@ const userSchema = new mongoose.Schema({
             "Class 10th Marksheet",
         ],
     },
-    
+
     idDocument: {
+        type: String,
+    },
+    position: {
         type: String,
     },
     otherDocument: {
@@ -153,7 +156,7 @@ const userSchema = new mongoose.Schema({
             "Life time membership Fee (₹500)",
             "One year membership Fee And Life time membership Fee (₹865)"
         ],
-        required: true,
+        // required: true,
     },
 
     payment: {
@@ -169,7 +172,7 @@ const userSchema = new mongoose.Schema({
                 "Cash",
                 "Other"
             ],
-            required: true,
+            // required: true,
         },
         receiptUrl: {
             type: String,

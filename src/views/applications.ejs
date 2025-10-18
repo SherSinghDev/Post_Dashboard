@@ -71,7 +71,7 @@
                                                                                 <%= app.membershipType %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.name %>(<%= app.referredBy || 'N/A' %>)
+                                                                                <%= app.referrer?.name %>-<%= app.referredBy || 'N/A' %>
                                                                             </td>
                                                                             <td>
                                                                                 <%= new
@@ -191,7 +191,7 @@
                                     <div class="col-md-6 my-2"><strong>Email:</strong> ${app.email || 'N/A'}</div>
                                     <div class="col-md-6 my-2"><strong>Blood Group:</strong> ${app.bloodGroup}</div>
                                     <div class="col-md-6 my-2"><strong>Membership Type:</strong> ${app.membershipType}</div>
-                                    <div class="col-md-6 my-2"><strong>Referred By:</strong> ${app.referredBy || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Referred By:</strong> ${app.referralUser?.name} - ${app.referredBy || 'N/A'}</div>
                                     <div class="col-md-6 my-2"><strong>Profession:</strong> ${app.profession || 'N/A'}</div>
                                     <div class="col-md-6 my-2"><strong>Full Address:</strong> ${app.fullAddress}</div>
                                     <div class="col-md-6 my-2"><strong>Applied On:</strong> ${new Date(app.createdAt).toLocaleString()}</div>
@@ -215,6 +215,11 @@
                                         <img src="${app.payment.receiptUrl}"
                                             class="mb-3" width="300" alt="">
                                     </div>
+                                </div>
+                                <div class="my-3 col-md-6">
+                                            <label class="mb-1"><strong>Give Position</strong></label>
+                                            <input type="text" id='position-input' name="position" class="form-control"
+                                                placeholder="Enter The Position">
                                 </div>
 
                                 <div class="col-12 mt-4">
@@ -259,12 +264,21 @@
                 $(document).on('click', '#approve-btn, #cancel-btn', function () {
                     const id = $(this).data('id');
                     console.log(id);
-                    
-                    const action = this.id === 'approve-btn' ? 'approve' : 'cancel';
-                    console.log(action);
-                    
+                    let pos = 'Any'
+                    let value = $('#position-input').val()
+                    if(value){
+                        pos = value
+                    }
 
-                    fetch(`/applications/approve/${id}/${action}`, {
+
+                    const action = this.id === 'approve-btn' ? 'approve' : 'cancel';
+                    // console.log(action);
+                    
+                    if(action=='approve' && !pos){
+                        alert("Enter Position Value")
+                    }
+                    else{
+                        fetch(`/applications/approve/${id}/${action}/${pos}`, {
                         method: 'POST',
                     })
                         .then((res) => res.json())
@@ -276,6 +290,7 @@
                                     timer: 1500,
                                 });
                                 $('#viewApplicationModal').modal('hide');
+                                $('#position-input').val("")
                                 setTimeout(() => window.location.reload(), 1500);
                             } else {
                                 Swal.fire({
@@ -286,6 +301,7 @@
                             }
                         })
                         .catch((err) => console.log(err));
+                    }
                 });
 
 

@@ -53,6 +53,9 @@ const patientFormSchema = new Schema({
   emergencyContact: {
     type: String,
   },
+  referredBy: {
+    type: String,
+  },
   diseaseName: {
     type: String,
     required: true,

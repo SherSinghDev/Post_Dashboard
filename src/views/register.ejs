@@ -80,10 +80,6 @@
                                             <button type="submit" class="btn btn-primary btn-block">Sign up</button>
                                         </div>
                                     </form>
-
-                                    
-
-
                                 </div>
                             </div>
                         </div>
@@ -148,8 +144,6 @@
                         data = { ...data, [key]: inputs[key].value }
                     }
                     console.log(data);
-
-
                     $.ajax({
                         url: '/auth/register',
                         method: "POST",
@@ -163,7 +157,7 @@
                                 Swal.fire({
                                     title: "Success!",
                                     icon: "success",
-                                    text: data.message,
+                                    text: 'User Created Successfully',
                                     timer: 1000
 
                                 });

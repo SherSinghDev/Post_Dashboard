@@ -109,6 +109,9 @@ const userApplySchema = new Schema({
   idDocument: {
     type: String,
   },
+  position: {
+    type: String,
+  },
   otherDocument: {
     type: String,
   },
@@ -121,8 +124,10 @@ const userApplySchema = new Schema({
     ],
     required: true,
   },
-  
+
   referredBy: { type: String, default: null, trim: true }, // Team Leader referral code
+  referralCode: { type: String, unique: true, trim: true },
+  teamLeaderId: { type: mongoose.Schema.Types.ObjectId, ref: "User", trim: true },
   payment: {
     mode: {
       type: String,
@@ -143,6 +148,7 @@ const userApplySchema = new Schema({
     },
 
   },
+
   createdAt: {
     type: Date,
     default: Date.now,
