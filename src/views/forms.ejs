@@ -40,6 +40,14 @@
                                                                     <th>Mobile</th>
                                                                     <th>Desease Name</th>
                                                                     <th>Report</th>
+                                                                    <th>Patient Status</th>
+                                                                    <th>Doctor Status</th>
+                                                                    <th>Support Status</th>
+                                                                    <th>Office Status</th>
+                                                                    <th>Admin Status</th>
+                                                                    <th>Post Office Status</th>
+                                                                    <th>Tracking Id</th>
+                                                                    <th>Track</th>
                                                                     <th>Applied On</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -64,8 +72,12 @@
                                                                                 <%= app.state %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.mobileNumber %>
+                                                                                <a
+                                                                                    href="tel:+91 <%= app.mobileNumber %>">
+                                                                                    <%= app.mobileNumber %>
+                                                                                </a>
                                                                             </td>
+
                                                                             <td>
                                                                                 <%= app.diseaseName %>
                                                                             </td>
@@ -73,6 +85,38 @@
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
                                                                                     class="view-btn">View Report</a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.otherStatus.patientStatus
+                                                                                    || 'N/A' %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.otherStatus.doctorStatus
+                                                                                    || 'N/A' %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.otherStatus.supportStatus
+                                                                                    || 'N/A' %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.otherStatus.officeStatus
+                                                                                    || 'N/A' %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.otherStatus.adminStatus || 'N/A'
+                                                                                    %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.otherStatus.postOfficeStatus
+                                                                                    || 'N/A' %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.otherStatus.trackingIdStatus
+                                                                                    || 'N/A' %>
+                                                                            </td>
+                                                                            <td><a href="javascript:void(0)"
+                                                                                    data-id="<%= app.otherStatus.trackingIdStatus%>"
+                                                                                    class="btn-link me-1 track-btn">Track</a>
                                                                             </td>
 
                                                                             <td>
@@ -84,7 +128,7 @@
                                                                             <td>
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-info approve-btn">Approve</a>
+                                                                                    class="btn btn-sm btn-info approve-btn">Edit</a>
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
                                                                                     class="btn btn-sm btn-danger delete-btn">Delete</a>
@@ -138,44 +182,10 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="basic-form">
-                                                <form id="approve-form">
-                                                    <div class="row">
-                                                        <div class="mb-3 col-md-6">
-                                                            <label class="form-label">Patient Status</label>
-                                                            <input type="text" name="patientStatus"
-                                                                class="form-control">
-                                                        </div>
-                                                        <div class="mb-3 col-md-6">
-                                                            <label>Doctor Status </label>
-                                                            <input type="text" name="doctorStatus" class="form-control">
-                                                        </div>
-                                                        <div class="mb-3 col-md-6">
-                                                            <label>Support Status </label>
-                                                            <input type="text" name="supportStatus"
-                                                                class="form-control">
-                                                        </div>
-                                                        <div class="mb-3 col-md-6">
-                                                            <label>Office Status </label>
-                                                            <input type="text" name="officeStatus" class="form-control">
-                                                        </div>
-                                                        <div class="mb-3 col-md-6">
-                                                            <label>Admin Status </label>
-                                                            <input type="text" name="adminStatus" class="form-control">
-                                                        </div>
-                                                        <div class="mb-3 col-md-6">
-                                                            <label>Post Office Status </label>
-                                                            <input type="text" name="postOfficeStatus"
-                                                                class="form-control">
-                                                        </div>
-                                                        <div class="mb-3 col-md-6">
-                                                            <label>Tracking Id Status </label>
-                                                            <input type="text" name="trackingIdStatus"
-                                                                class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                </form>
+                                            <div id="approve-details">
+                                                <div class="basic-form">
+                                                    
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -231,6 +241,8 @@
                         .then(data => {
                             if (data.success) {
                                 const report = data.report;
+                                console.log(report);
+
                                 $('#view-details').html(`
                                   <div class="row">
                                  <div class="col-12 text-center">
@@ -247,10 +259,100 @@
                 // 👁 View application details
                 $(document).on('click', '.approve-btn', function () {
                     $('.approve-modal').modal('show');
-                    console.log($(this).data('id'));
+                    const id = $(this).data('id');
+                    fetch(`/patientform/details/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const app = data.data;
 
-                    $('#approve-form').attr('data-id', $(this).data('id'))
+                                let newHtml = `
+                                <div class="row">
+                                 
+                                    <div class="col-md-6 my-2"><strong>Patient Name:</strong> ${app.patientName}</div>
+                                    <div class="col-md-6 my-2"><strong>Father/Husband Name:</strong> ${app.fatherOrHusbandName}</div>
+                                    <div class="col-md-6 my-2"><strong>Gender:</strong> ${app.gender}</div>
+                                    <div class="col-md-6 my-2"><strong>City/District:</strong> ${app.cityOrDistrict}</div>
+                                    <div class="col-md-6 my-2"><strong>State:</strong> ${app.state}</div>
+                                    <div class="col-md-6 my-2"><strong>Mobile:</strong> <a href="tel:+91 ${app.mobileNumber}">${app.mobileNumber}</a> </div>
+                                    <div class="col-md-6 my-2"><strong>Mobile:</strong> <a href="tel:+91 ${app.emergencyContact}">${app.emergencyContact}</a> </div>
+                                    <div class="col-md-6 my-2"><strong>Pincode:</strong> ${app.pinCode}</div>
+                                    <div class="col-md-6 my-2"><strong>Desease Name:</strong> ${app.diseaseName}</div>
+                                    <div class="col-md-6 my-2"><strong>Patient Status:</strong> ${app.otherStatus.patientStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Doctor Status:</strong> ${app.otherStatus.doctorStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Support Status:</strong> ${app.otherStatus.supportStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Office Status:</strong> ${app.otherStatus.officeStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Admin Status:</strong> ${app.otherStatus.adminStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Post Office Status:</strong> ${app.otherStatus.postOfficeStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Tracking Id Status:</strong> ${app.otherStatus.trackingIdStatus || 'N/A'}</div>
+                                    <div class="col-md-6 my-2"><strong>Applied On:</strong> ${new Date(app.createdAt).toLocaleString()}</div>
+                                    <div class="col-md-12 mt-3">
+                                    <strong>Report:</strong>
+                                        <div class="col-12 text-center">
+                                        <img src="${app.medicalReport}" class="mb-3"
+                                            width="300" alt="">
+                                        </div>
+                                </div>
+                               
+                                  </div>
+                                  <div class="basic-form">
+                                                    <form id="approve-form" data-id="${id}">
+                                                        <div class="row">
+                                                            <div class="mb-3 col-md-6">
+                                                                <label class="form-label">Patient Status</label>
+                                                                <input type="text" name="patientStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Doctor Status </label>
+                                                                <input type="text" name="doctorStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Support Status </label>
+                                                                <input type="text" name="supportStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Office Status </label>
+                                                                <input type="text" name="officeStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Admin Status </label>
+                                                                <input type="text" name="adminStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Post Office Status </label>
+                                                                <input type="text" name="postOfficeStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Tracking Id Status </label>
+                                                                <input type="text" name="trackingIdStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </form>
+                                                </div>
+                                `
+                                $('#approve-details').html(newHtml);
+                                $('.approve-modal').modal('show');
+                            }
+                        })
+                        .catch(err => console.error(err));
+
+
+
+
+                    // $('#approve-form').attr('data-id', $(this).data('id'))
                 });
+
+
+                // 
+
 
                 // 🗑 Delete
                 $(document).on('click', '.delete-btn', function () {
@@ -329,8 +431,8 @@
                             method: "POST",
                             body: JSON.stringify(data),
                             headers: {
-                            "Content-Type": "application/json"
-                        },
+                                "Content-Type": "application/json"
+                            },
                         })
                             .then((data) => {
                                 return data.json()
@@ -346,8 +448,8 @@
 
                                     });
                                     e.target.reset()
-                                    $('.approve-modal').modal('show');
-                                    $(`#tr-${id}`).fadeOut(800)
+                                    $('.approve-modal').modal('hide');
+                                    window.location.reload()
                                 }
                                 else {
                                     Swal.fire({
@@ -400,6 +502,20 @@
                             })
                         }
                     });
+                })
+
+                // track btn
+                $(document).on('click', ".track-btn", function () {
+                    let id = $(this).attr('data-id')
+                    console.log(id);
+                    navigator.clipboard.writeText(id)
+                        .then(() => {
+                            console.log("Copied to clipboard");
+                            window.open('https://www.indiapost.gov.in/home', "_blank")
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
                 })
 
                 var handleNavigation = function () {

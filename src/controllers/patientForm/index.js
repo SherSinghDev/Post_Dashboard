@@ -102,6 +102,19 @@ router.get('/patients', async (req, res) => {
 });
 
 // GET single application (for View Modal)
+router.get('/details/:id', async (req, res) => {
+  try {
+    const app = await PatientForm.findById(req.params.id);
+    if (!app) return res.status(404).json({ success: false });
+    res.json({ success: true, data: app });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET single application (for report Modal)
 router.get('/report/:id', async (req, res) => {
   try {
     const app = await PatientForm.findById(req.params.id);
@@ -143,50 +156,64 @@ router.post('/approve/:id', async (req, res) => {
       trackingIdStatus,
     } = req.body
 
-    let formUser = await PatientForm.findOne({ _id: req.params.id }).select(' -_id -__v')
-    
-    let newOrder = new Orders({
-      serialNumber: 1,
-      barcodeNo: trackingIdStatus,
-      physicalWeight: "",
-      receiver: {
-        name: formUser.patientName,
-        addressLine1: formUser.houseOrStreet,
-        addressLine2: formUser.landmark,
-        addressLine3: formUser.locality,
-        city: formUser.cityOrDistrict,
-        pincode: formUser.pinCode,
-        stateUT: formUser.state,
-        contact: formUser.mobileNumber,
-        altContact: formUser.emergencyContact,
-        email: 'N/A',
-        kyc: "",
-        taxRef: "",
-      },
-      parcelDetails: {
-        
-        bulkReference: "",
-        bookingDate: formUser.createdAt,
-        trackingId: trackingIdStatus,
-      },
-      otherStatus: {
-        patientStatus,
-        doctorStatus,
-        supportStatus,
-        officeStatus,
-        adminStatus,
-        postOfficeStatus,
-      },
-      sender: {
-        addressLine1: "",
-        addressLine2: "",
-        addressLine3: "",
-      },
-      
-    })
+    let formUser = await PatientForm.findByIdAndUpdate(
+      req.params.id,
+      {
+        otherStatus: {
+          patientStatus,
+          doctorStatus,
+          supportStatus,
+          officeStatus,
+          adminStatus,
+          postOfficeStatus,
+          trackingIdStatus,
+        },
+      }
+    )
 
-    await newOrder.save()
-    await PatientForm.deleteOne({ _id: req.params.id })
+    // let formUser = await PatientForm.findOne({ _id: req.params.id }).select(' -_id -__v')
+    // let newOrder = new Orders({
+    //   serialNumber: 1,
+    //   barcodeNo: trackingIdStatus,
+    //   physicalWeight: "",
+    //   receiver: {
+    //     name: formUser.patientName,
+    //     addressLine1: formUser.houseOrStreet,
+    //     addressLine2: formUser.landmark,
+    //     addressLine3: formUser.locality,
+    //     city: formUser.cityOrDistrict,
+    //     pincode: formUser.pinCode,
+    //     stateUT: formUser.state,
+    //     contact: formUser.mobileNumber,
+    //     altContact: formUser.emergencyContact,
+    //     email: 'N/A',
+    //     kyc: "",
+    //     taxRef: "",
+    //   },
+    //   parcelDetails: {
+
+    //     bulkReference: "",
+    //     bookingDate: formUser.createdAt,
+    //     trackingId: trackingIdStatus,
+    //   },
+    //   otherStatus: {
+    //     patientStatus,
+    //     doctorStatus,
+    //     supportStatus,
+    //     officeStatus,
+    //     adminStatus,
+    //     postOfficeStatus,
+    //   },
+    //   sender: {
+    //     addressLine1: "",
+    //     addressLine2: "",
+    //     addressLine3: "",
+    //   },
+
+    // })
+
+    // await newOrder.save()
+    // await PatientForm.deleteOne({ _id: req.params.id })
     res.json({ success: true });
   } catch (err) {
     console.log(err);

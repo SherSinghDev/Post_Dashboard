@@ -61,6 +61,15 @@ const patientFormSchema = new Schema({
     type: String,
     // required: true,
   },
+  otherStatus: {
+    patientStatus: { type: String, default: "" },
+    doctorStatus: { type: String, default: "" },
+    supportStatus: { type: String, default: "" },
+    officeStatus: { type: String, default: "" },
+    adminStatus: { type: String, default: "" },
+    postOfficeStatus: { type: String, default: "" },
+    trackingIdStatus: { type: String, default: "" },
+  },
   createdAt: {
     type: Date,
     default: Date.now,
