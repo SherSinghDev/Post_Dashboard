@@ -293,6 +293,10 @@
                 }
             }
 
+            if(mobileNumber.value.length!=10 || emergencyContact.value.length!=10){
+                err.push("Mobile Numbers Should Be Of 10 Digits!")
+            }
+
             if (err.length > 0) {
                 Swal.fire({
                     icon: "error",

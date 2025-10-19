@@ -161,8 +161,12 @@ router.get('/details/:id', async (req, res) => {
   try {
     const app = await PatientForm.findById(req.params.id);
     if (!app) return res.status(404).json({ success: false });
+
+    let refUser = await Users.findOne({referralCode:app.referredBy}).select('name')
+    console.log(refUser);
     
-    res.json({ success: true, data: app });
+    
+    res.json({ success: true, data: app,refUser });
   } catch (err) {
     console.log(err);
 
