@@ -8,6 +8,8 @@ let userRouter = require('./controllers/users/index')
 let applicationsRouter = require('./controllers/application/index')
 let patientFormRouter = require('./controllers/patientForm/index')
 let session = require("express-session")
+let cors = require('cors')
+
 
 // mongodb
 mongoConnect()
@@ -21,6 +23,10 @@ app.use(session({
     secret: "^*&*(",
     resave: false,
     saveUninitialized: false
+}))
+
+app.use(cors({
+    origin:'*'
 }))
 
 
@@ -37,7 +43,9 @@ app.use('/auth', authRouter)
 app.use('/users', userRouter)
 app.use('/applications', applicationsRouter)
 app.use('/patientform', patientFormRouter)
-
+app.get('/id',(req,res)=>{
+    res.render('idcard')
+})
 
 
 // listening

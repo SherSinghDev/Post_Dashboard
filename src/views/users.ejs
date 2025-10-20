@@ -59,7 +59,7 @@
 
 									</div>
 
-									<div class="row">
+									<div class="row d-none">
 										<h1 class="mb-3">Admins</h1>
 										<% users.forEach((p)=>{%>
 											<%if(p.role=='Admin'){%>
@@ -151,7 +151,7 @@
 
 									</div>
 
-									<div class="row mt-4">
+									<div class="row mt-4 d-none">
 										<h1 class="mb-3">Team Leaders</h1>
 										<% users.forEach((p)=>{%>
 											<%if(p.role=='Team Leader'){%>
@@ -184,7 +184,7 @@
 																		</svg>
 																	</div>
 																	<div class="dropdown-menu dropdown-menu-end">
-																		
+
 																		<a class="dropdown-item text-danger delete-btn"
 																			data-id="<%= p._id %>"
 																			href="javascript:void();;">Delete</a>
@@ -228,7 +228,8 @@
 															</ul>
 														</div>
 														<div class="card-footer text-center py-4">
-															<a href="/users/userprofile/<%= p._id %>" class="btn btn-primary">See Coordinators</a>
+															<a href="/users/userprofile/<%= p._id %>"
+																class="btn btn-primary">See Coordinators</a>
 														</div>
 													</div>
 												</div>
@@ -236,7 +237,99 @@
 													<% }) %>
 
 									</div>
-									
+
+
+
+									<div class="row">
+										<div class="col-xl-12">
+											<div class="card mt-2">
+												<div class="card-body">
+													<div class="table-responsive text-center">
+														<table class="table table-striped align-middle main-table">
+															<thead>
+																<tr>
+																	<th>#</th>
+																	<th>Name</th>
+																	<th>Gender</th>
+																	<th>City</th>
+																	<th>State</th>
+																	<th>Mobile</th>
+																	<!-- <th>Membership Type</th>
+                                                                    <th>Referral</th> -->
+																	<th>Applied On</th>
+																	<th>Approve Status</th>
+																	<th>Actions</th>
+																</tr>
+															</thead>
+															<tbody>
+																<% if (users.length> 0) { %>
+																	<% users.forEach((app, index)=> { %>
+																		<%if(app.role!='Admin'){%>
+																			<tr id="tr-<%= app._id %>">
+																				<td>
+																					<%= index + 1 %>
+																				</td>
+																				<td>
+																					<%= app.role %>
+																				</td>
+																				<td>
+																					<%= app.gender %>
+																				</td>
+																				<td>
+																					<%= app.district %>
+																				</td>
+																				<td>
+																					<%= app.state %>
+																				</td>
+																				<td>
+																					<%= app.mobile %>
+																				</td>
+
+																				<td>
+																					<%= new
+																						Date(app.createdAt).toLocaleDateString()
+																						%>
+																				</td>
+																				<td>
+																					<%= app.approveStatus || 'N/A' %>
+																				</td>
+																				<td>
+																					<a href="tel:+91 <%= app.mobile %>" class=" btn btn-sm btn-info">
+																						<i class="fa-solid fa-phone"
+																							style="color:white;"></i>
+																					</a>
+
+																					<a href="/users/idcard/<%= app._id %>" class=" btn btn-sm btn-success">
+																						<i
+																							class="fa-solid fa-print"></i>
+																					</a>
+
+																					<a href="javascript:void(0)"
+																						data-id="<%= app._id %>"
+																						class="btn btn-sm btn-danger delete-btn">
+																						<i
+																							class="fa-solid fa-trash"></i>
+																					</a>
+																				</td>
+																			</tr>
+																			<%}%>
+																				<% }) %>
+																					<% } else { %>
+																						<tr>
+																							<td colspan="10"
+																								class="text-center text-muted">
+																								No applications found
+																							</td>
+																						</tr>
+																						<% } %>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 								</div>
 							</div>
 			</div>
@@ -303,12 +396,7 @@
 			<!--**********************************
             Footer start
         ***********************************-->
-			<div class="footer out-footer">
-				<div class="copyright">
-					<p>Copyright © Developed by <a href="https://dexignzone.com/" target="_blank">DexignZone</a> 2023
-					</p>
-				</div>
-			</div>
+
 			<!--**********************************
             Footer end
         ***********************************-->
@@ -433,7 +521,7 @@
 											text: "Deleted Successfully",
 											timer: 1500
 										});
-										
+
 										$(data.card).fadeOut(1000)
 									}
 									else {

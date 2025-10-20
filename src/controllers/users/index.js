@@ -13,10 +13,25 @@ router.get('/', async (req, res) => {
                 res.redirect('/')
             }
             else {
-                let users = await Users.find()
+                let users = await Users.find().sort({ createdAt: -1 })
                 // console.log(users);
                 res.render('users', { users, user, page: "Users" })
             }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else {
+        res.redirect('/auth/login')
+    }
+})
+
+router.get('/idcard/:id', async (req, res) => {
+    if (req.session.userId) {
+        try {
+            let user = await Users.findOne({ _id: req.params.id })
+            res.render('idcard', { user})
 
         } catch (error) {
             console.log(error);

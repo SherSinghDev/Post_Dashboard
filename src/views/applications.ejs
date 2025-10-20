@@ -71,7 +71,7 @@
                                                                                 <%= app.membershipType %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.referrer?.name %>-<%= app.referredBy || 'N/A' %>
+                                                                                <%= app.referrer?.name %> : <%= `(${app.referredBy})` || 'N/A' %>
                                                                             </td>
                                                                             <td>
                                                                                 <%= new
@@ -131,12 +131,7 @@
                             <!--**********************************
           Footer start
     ***********************************-->
-                            <div class="footer out-footer">
-                                <div class="copyright">
-                                    <p>Copyright © Developed by <a href="https://logicwix.com/"
-                                            target="_blank">LogicWix</a> 2025</p>
-                                </div>
-                            </div>
+                            
                             <!--**********************************
           Footer end
     ***********************************-->

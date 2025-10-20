@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ID Card PDF Export</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+  <meta name="robots" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+  <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+  <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+  <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- PAGE TITLE HERE -->
+  <title>BSRF Parcel Mangament System</title>
+  <!-- FAVICONS ICON -->
+  <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+
+
+  <link href="/css/style.css" rel="stylesheet">
+
+
+  <style type="text/css">
+    .card {
+      position: relative;
+      height: 474px;
+      width: 310px;
+      overflow: hidden;
+      border-radius: 5px;
+      box-shadow: 5px 8px 10px 5px #888888;
+      top: 60px;
+    }
+
+    .card-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .card>*:not(.card-bg) {
+      position: relative;
+      z-index: 1;
+    }
+
+
+    #profile {
+      position: absolute;
+      top: 100px;
+      transform: translate(-50%);
+      left: 50%;
+      border: 2px solid #E80000;
+      border-radius: 10px;
+
+    }
+
+    #seal {
+      position: absolute;
+      top: 170px;
+      right: 30px;
+    }
+
+    .row1 {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .name {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      width: 100%;
+      top: 290px;
+    }
+
+    .name p {
+      text-align: center;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      top: -10px;
+    }
+
+    .name p:nth-child(1) {
+      color: #F10207 !important;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .detail_main {
+      position: absolute;
+      top: 250px;
+      font-weight: bold;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .detail {
+      display: flex;
+      justify-content: space-around;
+      margin: auto;
+    }
+
+    .detail p {
+      margin: 2px;
+      padding: 0;
+      font-size: 13px;
+    }
+
+    .detail p:nth-child(1) {
+      width: 100px;
+      color: #EC3237;
+    }
+
+    .detail p:nth-child(2) {
+      padding: 0 5px;
+    }
+
+    .detail p:nth-child(3) {
+      width: 120px;
+    }
+
+    span {
+      color: #EC3237;
+    }
+
+    .address_main {
+      position: absolute;
+      top: 100px;
+      font-weight: bold;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .address {
+      display: flex;
+      justify-content: space-around;
+      margin: auto;
+    }
+
+    .address p {
+      margin: 1px;
+      padding: 0;
+      font-size: 13px;
+    }
+
+    .address p:nth-child(1) {
+      width: 70px;
+      color: #EC3237;
+    }
+
+    .address p:nth-child(2) {
+      padding: 0 5px;
+    }
+
+    .address p:nth-child(3) {
+      width: 190px;
+    }
+
+    .qrcode {
+      position: absolute;
+      top: 100px;
+      transform: translate(-50%);
+      left: 50%;
+    }
+
+    .back-side {
+      position: relative;
+      height: 474px;
+      width: 310px;
+      border-radius: 5px;
+      margin-top: 60px;
+      margin-bottom: 50px;
+      overflow: hidden;
+      box-shadow: 5px 8px 10px 5px #888888;
+      padding-top: 1px;
+    }
+
+    .back-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .back-side>*:not(.back-bg) {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row1" id="row">
+      <div class="column">
+        <div class="card" id="main">
+          <img src="/images/idcard/front.webp" class="card-bg" alt="front background">
+          <img src="<%= user.profilePicture %>" style="height: 145px; width: 120px;" id="profile">
+          <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="seal">
+
+          <div class="name">
+            <p><%= user.name %></p>
+            <p>Centre Head </p>
+          </div>
+
+          <div class="detail_main">
+            <div class="detail">
+              <p>ID No.</p>
+              <p>: </p>
+              <p>0919</p>
+            </div>
+            <div class="detail">
+              <p>Blood Group</p>
+              <p>: </p>
+              <p><%= user.bloodGroup %></p>
+            </div>
+            <div class="detail">
+              <p>Mobile</p>
+              <p>: </p>
+              <p><%= user.mobile %></p>
+            </div>
+            <div class="detail">
+              <p>Valid From</p>
+              <p>: </p>
+              <p>17-Oct-2025</p>
+            </div>
+            <div class="detail">
+              <p>Valid To</p>
+              <p>: </p>
+              <p>17-Oct-2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="back-side" id="main">
+          <!-- ✅ High-resolution background image -->
+          <img src="/images/idcard/back.webp" class="back-bg" alt="Back Background">
+
+          <div class="qrcode text-center">
+            <img class="ml-n3 mt-1" src="/images/idcard/qr.webp" id="img" height="110px" width="110px" alt="">
+          </div>
+
+          <div class="address_main">
+            <div class="address">
+              <p><%= user.relationType %></p>
+              <p>:</p>
+              <p><%= user.relationWith %></p>
+            </div>
+            <div class="address">
+              <p>DOB</p>
+              <p>:</p>
+              <p>11-Apr-2006</p>
+            </div>
+            <div class="address">
+              <p>Address</p>
+              <p>:</p>
+              <p><%= user.fullAddress %></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <center>
+    <button type="button" class="btn btn-primary" id="print" name="button">Download</button>
+  </center>
+
+  <!-- ✅ Add html2canvas & jsPDF libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    document.getElementById("print").addEventListener("click", async () => {
+      const { jsPDF } = window.jspdf;
+      const element = document.getElementById("row");
+
+      // Wait until all images load
+      const images = element.querySelectorAll("img");
+      await Promise.all(
+        Array.from(images).map(
+          img =>
+            new Promise(resolve => {
+              if (img.complete) resolve();
+              else img.onload = img.onerror = resolve;
+            })
+        )
+      );
+
+      // Boost clarity
+      const originalRatio = window.devicePixelRatio;
+      Object.defineProperty(window, "devicePixelRatio", {
+        get: () => 2,
+      });
+
+      // Capture with high scale for HD quality
+      const canvas = await html2canvas(element, {
+        scale: 5, // 🔥 Increase for ultra clarity (3–5 recommended)
+        useCORS: true,
+        logging: false,
+      });
+
+      // Restore original ratio
+      Object.defineProperty(window, "devicePixelRatio", {
+        get: () => originalRatio,
+      });
+
+      const imgData = canvas.toDataURL("image/png", 1.0); // full quality
+      const pdfWidth = canvas.width;
+      const pdfHeight = canvas.height;
+
+      const pdf = new jsPDF({
+        orientation: pdfWidth > pdfHeight ? "l" : "p",
+        unit: "pt",
+        format: [pdfWidth, pdfHeight],
+      });
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight, "", "FAST");
+      pdf.save("ID_Card_HQ.pdf");
+    });
+  </script>
+
+</body>
+
+
+</html>
