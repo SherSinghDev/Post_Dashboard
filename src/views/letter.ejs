@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ID Card PDF Export</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>BSRF Parcel Mangament System</title>
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+
+
+    <link href="/css/style.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        body{
+            overflow-x: scroll;
+        }
+
+        body::-webkit-scrollbar{
+            display: none;
+        }
+        .certificate_img {
+            width: 800px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        #certificate_img {
+            height: 100%;
+            width: 100%;
+        }
+
+        #profile {
+            position: absolute;
+            top: 140px;
+            right: 50px;
+            border: 2px solid #0096EC;
+            border-radius: 10px;
+        }
+
+        .detail {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 400px;
+            left: 50%;
+            width: 90%;
+        }
+
+        .detail p {
+            text-align: justify;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .detail p span {
+            color: #EC3237;
+        }
+
+        #sign {
+            position: absolute;
+            right: 60px;
+            bottom: 60px;
+        }
+
+        .date p {
+            position: absolute;
+            top: 190px;
+            right: 50px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .id p {
+            position: absolute;
+            top: 190px;
+            left: 50px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="certificate_img" id="row">
+        <img src="/images/letter/back.webp" id="certificate_img">
+        <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="sign">
+        <!--<img src="userimg/IMG_20250702_150912_10172025184354.jpg" style="height: 120px; width: 100px;" id="profile">-->
+        <div class="date">
+
+            <p>Date - <%- new Date().toLocaleDateString() %></p>
+        </div>
+        <div class="id">
+            <p>ID No. - 0919</p>
+        </div>
+
+        <div class="detail">
+            <p>
+
+                <span><%= user.name.toUpperCase() %></span> Address.<span><%= user.fullAddress.toUpperCase() %></span> is appointment on the post of <span>Centre Head </span>. in the N.G.O for social service in
+                region.
+                <br><br>
+                (Dist./City/Block/VILL/Colony) <span>Centre Head </span> <span>Nauli Fatuabad </span>.
+                <br>
+                <span>Uttar Pradesh</span> State India.
+                <br><br>
+                With best wishes
+            </p>
+        </div>
+    </div>
+    <center><button type="button" class="btn btn-primary mt-5" id="print" onclick="screenshot()"
+            name="button">Download</button></center>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        const elementToSave = document.querySelector("#row");
+        // Download with right click
+        let filename = '<%= user.name.toUpperCase() %>_Appointment_letter.png'
+        function screenshot() {
+            html2canvas(elementToSave).then(canvas => {
+                const a = document.createElement("a");
+                a.href = canvas.toDataURL("Appointment_letter/png");
+                a.download = filename;
+                a.click();
+            });
+        }
+    </script>
+
+</body>
+
+
+</html>

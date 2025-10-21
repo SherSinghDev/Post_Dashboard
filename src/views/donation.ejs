@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ID Card PDF Export</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>BSRF Parcel Mangament System</title>
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"></script>
+    <style type="text/css">
+        .certificate_img {
+            width: 700px;
+            display: block;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        #certificate_img {
+            height: 100%;
+            width: 100%;
+        }
+
+        #sign {
+            position: absolute;
+            right: 50px;
+            bottom: 115px;
+        }
+
+        .detail {
+            position: absolute;
+            top: 200px;
+            left: 60px;
+            width: 400px;
+        }
+
+        .detail p {
+            font-size: 14px;
+            text-transform: capitalize;
+        }
+
+        .amount {
+            position: absolute;
+            top: 300px;
+            left: 60px;
+        }
+
+        .amount p {
+            font-size: 20px;
+        }
+
+        .note {
+            position: absolute;
+            bottom: 70px;
+            left: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            font-size: 9px;
+        }
+
+        .sno {
+            position: absolute;
+            top: 173px;
+            left: 60px;
+            font-weight: bold;
+        }
+    </style>
+    <link type="text/css" rel="stylesheet"
+        href="chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/css/mcafee_fonts.css">
+
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="certificate_img" id="row">
+                <img src="/images/donation.webp" id="certificate_img">
+
+                <p class="sno">S. No. - 0919</p>
+
+                <div class="detail">
+                    <p>Date : 17-10-2025</p>
+                    <p>PAN No. : Na </p>
+                    <p>Received Thanks From <b>VIKAS KUMAR</b> (three hundred and sixty five Rupees)</p>
+                </div>
+
+                <div class="amount">
+                    <p>Donation Amount : ₹365/-</p>
+                </div>
+
+                <img src="/images/idcard/seal.webp" style="height: auto; width: 80px;" id="sign">
+
+                <div class="note">
+                    <p>* All donation made to BINUPUR SEVA RESEARCH FOUNDATION qualify for Tax exemption under section
+                        12A, 80G of the IT ACT.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <center><button type="button" class="btn btn-primary" id="print" onclick="screenshot()"
+            name="button">Download</button></center>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        const elementToSave = document.querySelector("#row");
+        // Download with right click
+        function screenshot() {
+            html2canvas(elementToSave).then(canvas => {
+                const a = document.createElement("a");
+                a.href = canvas.toDataURL("Donation_receipt/png");
+                a.download = "_Donation_receipt.png";
+                a.click();
+            });
+        }
+    </script>
+
+    <span id="PING_CONTENT_DLS_POPUP" style="display: none;"></span>
+    <div
+        style="background-color: transparent; border: none; bottom: 15px; display: block; margin: 0px; opacity: 1; padding: 0px; position: fixed; right: 15px; z-index: 2147483647;">
+    </div>
+</body>
+
+
+</html>

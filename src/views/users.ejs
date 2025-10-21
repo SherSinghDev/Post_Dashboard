@@ -270,7 +270,7 @@
 																					<%= index + 1 %>
 																				</td>
 																				<td>
-																					<%= app.role %>
+																					<%= app.name %>
 																				</td>
 																				<td>
 																					<%= app.gender %>
@@ -294,12 +294,40 @@
 																					<%= app.approveStatus || 'N/A' %>
 																				</td>
 																				<td>
-																					<a href="tel:+91 <%= app.mobile %>" class=" btn btn-sm btn-info">
+																					<a href="tel:+91 <%= app.mobile %>"
+																						class=" btn btn-sm btn-info">
 																						<i class="fa-solid fa-phone"
 																							style="color:white;"></i>
 																					</a>
 
-																					<a href="/users/idcard/<%= app._id %>" class=" btn btn-sm btn-success">
+																					<a href="/users/idcard/<%= app._id %>"
+																						title="Print ID Card"
+																						target="_blank"
+																						class=" btn btn-sm btn-success">
+																						<i
+																							class="fa-solid fa-print"></i>
+																					</a>
+
+																					<a href="/users/letter/<%= app._id %>"
+																						title="Print Appointment Letter"
+																						target="_blank"
+																						class=" btn btn-sm btn-primary">
+																						<i
+																							class="fa-solid fa-print"></i>
+																					</a>
+
+																					<a href="/users/certificate/<%= app._id %>"
+																						title="Print Certificate"
+																						target="_blank"
+																						class=" btn btn-sm btn-secondary">
+																						<i
+																							class="fa-solid fa-print"></i>
+																					</a>
+
+																					<a href="/users/donation/<%= app._id %>"
+																						title="Print Donation Receipt"
+																						target="_blank"
+																						class=" btn btn-sm btn-dark">
 																						<i
 																							class="fa-solid fa-print"></i>
 																					</a>

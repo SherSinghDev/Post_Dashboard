@@ -83,7 +83,9 @@
                                                                                 <%= app.diseaseName %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.referrer? app.referrer?.name + ' : ' + app.referredBy : app.referredBy %>
+                                                                                <%= app.referrer? app.referrer?.name
+                                                                                    + ' : ' + app.referredBy :
+                                                                                    app.referredBy %>
                                                                             </td>
                                                                             <td>
                                                                                 <a href="javascript:void(0)"
@@ -107,8 +109,8 @@
                                                                                     || 'N/A' %>
                                                                             </td>
                                                                             <td>
-                                                                                <%= app.otherStatus?.adminStatus || 'N/A'
-                                                                                    %>
+                                                                                <%= app.otherStatus?.adminStatus
+                                                                                    || 'N/A' %>
                                                                             </td>
                                                                             <td>
                                                                                 <%= app.otherStatus?.postOfficeStatus
@@ -130,12 +132,19 @@
                                                                             </td>
 
                                                                             <td>
+                                                                                <a href="tel:+91 <%= app.mobileNumber %>"
+                                                                                    class=" btn btn-sm btn-info">
+                                                                                    <i class="fa-solid fa-phone"
+                                                                                        style="color:white;"></i>
+                                                                                </a>
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-info approve-btn">Edit</a>
+                                                                                    class="btn btn-sm btn-success approve-btn"><i class="fa-solid fa-pen"></i></a>
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-danger delete-btn">Delete</a>
+                                                                                    class="btn btn-sm btn-danger delete-btn">
+                                                                                    <i class="fa-solid fa-trash"></i>
+                                                                                </a>
                                                                             </td>
                                                                         </tr>
                                                                         <% }) %>
@@ -188,7 +197,7 @@
                                         <div class="modal-body">
                                             <div id="approve-details">
                                                 <div class="basic-form">
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -199,7 +208,7 @@
                             <!--**********************************
           Footer start
     ***********************************-->
-                            
+
                             <!--**********************************
           Footer end
     ***********************************-->
@@ -277,7 +286,7 @@
                                     <div class="col-md-6 my-2"><strong>Mobile:</strong> <a href="tel:+91 ${app.emergencyContact}">${app.emergencyContact}</a> </div>
                                     <div class="col-md-6 my-2"><strong>Pincode:</strong> ${app.pinCode}</div>
                                     <div class="col-md-6 my-2"><strong>Desease Name:</strong> ${app.diseaseName}</div>
-                                    <div class="col-md-6 my-2"><strong>Referred By:</strong> ${data.refUser? data.refUser.name +" : ":''} ${app.referredBy}</div>
+                                    <div class="col-md-6 my-2"><strong>Referred By:</strong> ${data.refUser ? data.refUser.name + " : " : ''} ${app.referredBy}</div>
                                     <div class="col-md-6 my-2"><strong>Patient Status:</strong> ${app.otherStatus?.patientStatus || 'N/A'}</div>
                                     <div class="col-md-6 my-2"><strong>Doctor Status:</strong> ${app.otherStatus?.doctorStatus || 'N/A'}</div>
                                     <div class="col-md-6 my-2"><strong>Support Status:</strong> ${app.otherStatus?.supportStatus || 'N/A'}</div>

@@ -82,12 +82,17 @@
                                                                                 <%= app.approveStatus || 'N/A' %>
                                                                             </td>
                                                                             <td>
+                                                                                <a href="tel:+91 <%= app.mobile %>"
+                                                                                    class=" btn btn-sm btn-info">
+                                                                                    <i class="fa-solid fa-phone"
+                                                                                        style="color:white;"></i>
+                                                                                </a>
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-info view-btn">View</a>
+                                                                                    class="btn btn-sm btn-success view-btn"><i class="fa-solid fa-check"></i></a>
                                                                                 <a href="javascript:void(0)"
                                                                                     data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-danger delete-btn">Delete</a>
+                                                                                    class="btn btn-sm btn-danger delete-btn"><i class="fa-solid fa-trash"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                         <% }) %>

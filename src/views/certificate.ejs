@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ID Card PDF Export</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>BSRF Parcel Mangament System</title>
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link href="/css/style.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        .certificate_img {
+            width: 700px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        #certificate_img {
+            height: 100%;
+            width: 100%;
+        }
+
+        .detail {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 250px;
+        }
+
+        .detail p {
+            font-size: 26px;
+            color: #D30808;
+            font-weight: bold;
+        }
+
+        .matter {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 345px;
+            width: 500px;
+            height: 150px;
+        }
+
+        .matter p {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #sign {
+            position: absolute;
+            bottom: 70px;
+            right: 50px;
+        }
+
+        .box {
+            width: 200px;
+            border: 2px solid red;
+            display: absolute;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="modal fade show" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        style="display: none;" aria-modal="true" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form>
+
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Enter Detail:</label>
+                            <textarea class="form-control" id="message-text" spellcheck="false"
+                                data-ms-editor="true"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" id="msg-btn" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="certificate_img" id="row">
+        <img src="/images/certificate.webp" id="certificate_img">
+        <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="sign">
+        <div class="detail">
+            <p>
+                <%= user.name.toUpperCase() %>
+            </p>
+        </div>
+        <div class="matter">
+            <p id="msg-p">
+            </p>
+            <!--<p>We Wish him/her for a healthy, wealthy and successful life.</p>-->
+        </div>
+    </div>
+    <center><button type="button" class="btn btn-primary mt-3" id="print" onclick="screenshot()"
+            name="button">Download</button></center>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        const elementToSave = document.querySelector("#row");
+        // Download with right click
+        let filename = '<%= user.name.toUpperCase() %>_Certificate.png'
+        function screenshot() {
+            html2canvas(elementToSave).then(canvas => {
+                const a = document.createElement("a");
+                a.href = canvas.toDataURL("Certificate/png");
+                a.download = filename;
+                a.click();
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+            myModal.show();
+            $(document).on('click', '#msg-btn', function (e) {
+                var msg = $('#message-text').val();
+                $('#msg-p').text(msg);
+                // $('#exampleModal').css("display", "none");
+                myModal.hide();
+            })
+        });
+    </script>
+</body>
+
+
+</html>

@@ -180,17 +180,17 @@
                                         <!-- Documents Upload -->
 
                                         <div class="row mb-3">
-                                            <div class="col-md-6">
+                                            <div class="col-12">
                                                 <label class="mb-1"><strong>Profile Picture</strong></label>
                                                 <input type="file" name="profilePicture" class="form-control">
                                             </div>
-                                            <div class="col-md-6">
+                                            <!-- <div class="col-md-6">
                                                 <label class="mb-1"><strong>Role</strong></label>
                                                 <select name="role" style="padding-block: 11px;" class="form-select">
                                                     <option value="Team Leader">Team Leader</option>
                                                     <option value="Coordinator">Coordinator</option>
                                                 </select>
-                                            </div>
+                                            </div> -->
                                         </div>
 
                                         <div class="row mb-3">
@@ -379,8 +379,6 @@
             if (val == 'w/o') {
                 placeVal = 'Wife of'
             }
-
-
 
             $('#relationOption').attr('placeholder', placeVal)
         })

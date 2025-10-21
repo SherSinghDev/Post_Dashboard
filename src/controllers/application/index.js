@@ -45,7 +45,7 @@ router.post(
         village,
         fullAddress,
         pinCode,
-        role,
+        // role,
         email,
         idType,
         membershipType,
@@ -92,7 +92,7 @@ router.post(
         otherDocument,
         membershipType,
         referredBy,
-        role,
+        role:"Coordinator",
         payment: {
           mode: paymentMode,
           receiptUrl
@@ -286,7 +286,7 @@ router.delete('/delete/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   let users = await Users.find({ role: "Team Leader" }).select('name referralCode -_id');
-  console.log(users);
+  // console.log(users);
   res.render('applicationform', { users })
 })
 

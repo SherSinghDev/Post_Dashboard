@@ -42,6 +42,51 @@ router.get('/idcard/:id', async (req, res) => {
     }
 })
 
+router.get('/letter/:id', async (req, res) => {
+    if (req.session.userId) {
+        try {
+            let user = await Users.findOne({ _id: req.params.id })
+            res.render('letter', { user})
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else {
+        res.redirect('/auth/login')
+    }
+})
+
+router.get('/certificate/:id', async (req, res) => {
+    if (req.session.userId) {
+        try {
+            let user = await Users.findOne({ _id: req.params.id })
+            res.render('certificate', { user})
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else {
+        res.redirect('/auth/login')
+    }
+})
+
+router.get('/donation/:id', async (req, res) => {
+    if (req.session.userId) {
+        try {
+            let user = await Users.findOne({ _id: req.params.id })
+            res.render('donation', { user})
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    else {
+        res.redirect('/auth/login')
+    }
+})
+
 // delete
 router.delete('/delete/:id', async (req, res) => {
     let { id } = req.params
