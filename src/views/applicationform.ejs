@@ -243,9 +243,10 @@
                                                     class="form-select">
                                                     <option value="">Select User</option>
                                                     <% users.forEach((u)=>{%>
-                                                        <option value="<%- u.referralCode %>"><%- u.name %>-<%- u.referralCode %></option>
+                                                        <option value="<%- u.referralCode %>"><%- u.name %>-<%-
+                                                                    u.referralCode %></option>
                                                         <%})%>
-                                                            
+
                                                 </select>
                                             </div>
                                         </div>
@@ -384,77 +385,16 @@
             $('#relationOption').attr('placeholder', placeVal)
         })
 
-        $(document).on('submit', '#register-form', function (e) {
-            e.preventDefault()
-            let form = this
+        $(document).on('submit', '#register-form', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
 
-
-            let {
-                name,
-                gender,
-                dateOfBirth,
-                relationType,
-                relationWith,
-                profession,
-                bloodGroup,
-                state,
-                district,
-                mobile,
-                aadharNo,
-                block,
-                village,
-                fullAddress,
-                pinCode,
-                role,
-                email,
-                idType,
-                membershipType,
-                referredBy,
-                paymentMode
-            } = form
-
-            let inputs = {
-                name,
-                gender,
-                dateOfBirth,
-                relationType,
-                relationWith,
-                profession,
-                bloodGroup,
-                state,
-                district,
-                mobile,
-                aadharNo,
-                block,
-                village,
-                fullAddress,
-                pinCode,
-                role,
-                email,
-                idType,
-                membershipType,
-                referredBy,
-                paymentMode
-            }
-
-
-            let err = []
-
-            for (let key in inputs) {
-                if (!inputs[key].value) {
-                    // console.log(inputs[key]);
-
-                    let text = inputs[key].previousElementSibling?.innerText
-                    if (key == "relationType") {
-                        text = inputs[key][0].previousElementSibling?.innerText
-                    }
-                    text = (text == "Register As") ? 'Choose Role' : "Enter " + text
-                    err.push(text)
-                }
-            }
-
-            if(mobile.value.length!=10 ){
-                err.push("Mobile Number Should Be Of 10 Digits!")
+            // Your validation logic...
+            let err = [];
+            const mobile = form.mobile.value.trim();
+            if (mobile.length !== 10) {
+                err.push("Mobile Number Should Be Of 10 Digits!");
             }
 
             if (err.length > 0) {
@@ -463,48 +403,44 @@
                     title: "Oops...",
                     html: err.join('<br>'),
                 });
+                return;
             }
-            else {
-                let data = {}
-                for (let key in inputs) {
-                    data = { ...data, [key]: inputs[key].value }
-                }
-                // console.log(data);
 
-                fetch('/applications/apply', {
+            try {
+                const res = await fetch(window.location.origin + '/applications/apply', {
                     method: "POST",
-                    body: new FormData(e.target),
-                })
-                    .then((data) => {
-                        return data.json()
-                    })
-                    .then((result) => {
-                        // console.log(result);
-                        if (result.created) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: result.message,
-                                timer: 1000
+                    body: formData,
+                });
+                const result = await res.json();
 
-                            });
-                            window.location.href = '/'
-                            e.target.reset()
-                        }
-                        else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: result.message,
-                                timer: 1000
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
+                if (result.created) {
+                    Swal.fire({
+                        title: "Success!",
+                        icon: "success",
+                        text: result.message,
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: result.message,
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Network Error",
+                    text: "Please check your internet connection.",
+                });
             }
-        })
+        });
+
 
         $(document).on('change', '#select-role', function (e) {
 
