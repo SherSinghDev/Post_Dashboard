@@ -248,7 +248,7 @@
 														<table class="table table-striped align-middle main-table">
 															<thead>
 																<tr>
-																	<th>#</th>
+																	<th>User Id</th>
 																	<th>Name</th>
 																	<th>Gender</th>
 																	<th>City</th>
@@ -256,8 +256,8 @@
 																	<th>Mobile</th>
 																	<!-- <th>Membership Type</th>
                                                                     <th>Referral</th> -->
-																	<th>Applied On</th>
-																	<th>Approve Status</th>
+																	<th>Created At</th>
+																	<!-- <th>Approve Status</th> -->
 																	<th>Actions</th>
 																</tr>
 															</thead>
@@ -267,7 +267,7 @@
 																		<%if(app.role!='Admin'){%>
 																			<tr id="tr-<%= app._id %>">
 																				<td>
-																					<%= index + 1 %>
+																					<%= app.userId %>
 																				</td>
 																				<td>
 																					<%= app.name %>
@@ -290,9 +290,9 @@
 																						Date(app.createdAt).toLocaleDateString()
 																						%>
 																				</td>
-																				<td>
+																				<!-- <td>
 																					<%= app.approveStatus || 'N/A' %>
-																				</td>
+																				</td> -->
 																				<td>
 																					<a href="tel:+91 <%= app.mobile %>"
 																						class=" btn btn-sm btn-info">
@@ -549,8 +549,8 @@
 											text: "Deleted Successfully",
 											timer: 1500
 										});
-
-										$(data.card).fadeOut(1000)
+										$(`#tr-${id}`).fadeOut(800);
+										// $(data.card).fadeOut(1000)
 									}
 									else {
 										Swal.fire({

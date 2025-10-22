@@ -92,7 +92,7 @@ router.post(
         otherDocument,
         membershipType,
         referredBy,
-        role:"Coordinator",
+        role: "Coordinator",
         payment: {
           mode: paymentMode,
           receiptUrl
@@ -302,12 +302,15 @@ router.post('/approve/:id/:action/:pos', async (req, res) => {
 
     if (status === "Approved") {
       let appUser = await UserApplication.findOne({ _id: req.params.id }).select('-approveStatus -_id -__v -createdAt')
+      const users = await Users.findOne().sort({ createdAt: -1 });
+      let userId = users.userId
       let newUser = new Users({
         payment: {
           mode: appUser.payment.mode,
           receiptUrl: appUser.payment.receiptUrl
         },
         name: appUser.name,
+        userId:userId + 1,
         gender: appUser.gender,
         dateOfBirth: appUser.dateOfBirth,
         relationType: appUser.relationType,

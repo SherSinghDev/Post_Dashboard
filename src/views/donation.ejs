@@ -28,6 +28,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="http://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"></script>
     <style type="text/css">
+        body{
+            overflow-x: hidden;
+        }
+
+        body::-webkit-scrollbar{
+            display: none;
+        }
         .certificate_img {
             width: 700px;
             display: block;
@@ -99,12 +106,12 @@
             <div class="certificate_img" id="row">
                 <img src="/images/donation.webp" id="certificate_img">
 
-                <p class="sno">S. No. - 0919</p>
+                <p class="sno">S. No. - 0<%= user.userId %></p></p>
 
                 <div class="detail">
-                    <p>Date : 17-10-2025</p>
+                    <p>Date : <%= user.createdAt.toLocaleDateString() %></p>
                     <p>PAN No. : Na </p>
-                    <p>Received Thanks From <b>VIKAS KUMAR</b> (three hundred and sixty five Rupees)</p>
+                    <p>Received Thanks From <b><%= user.name.toUpperCase() %></b> (three hundred and sixty five Rupees)</p>
                 </div>
 
                 <div class="amount">
@@ -128,6 +135,7 @@
     <script>
         const elementToSave = document.querySelector("#row");
         // Download with right click
+        
         function screenshot() {
             html2canvas(elementToSave).then(canvas => {
                 const a = document.createElement("a");
