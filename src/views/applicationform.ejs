@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>BSRF Parcel Mangament System</title>
+
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="vh-100" style=" background-position:center; overflow: scroll;">
+    <div class="authincation py-5">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-10">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <!-- <div class="text-center mb-3">
+										<a href="index.html"><img src="images/logo/logo-full.png" alt=""></a>
+									</div> -->
+
+
+
+                                    <form action="/register" id="register-form" method="POST"
+                                        enctype="multipart/form-data">
+                                        <h3 class="mb-3 text-center">Membership Registration Form <%-
+                                                (type=='singleorder' )?'(single order)':'(stock order)' %></h3>
+
+                                        <!-- Row 1: Name & Gender -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Full Name*</strong></label>
+                                                <input type="text" name="name" class="form-control"
+                                                    placeholder="Enter your full name">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Gender*</strong></label>
+                                                <select name="gender" style="padding-block: 11px;" class="form-select">
+                                                    <option value="">Select Gender</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Row 2: DOB & Relation Type -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Date of Birth*</strong></label>
+                                                <input type="date" name="dateOfBirth" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Relation Type*</strong></label>
+                                                <div class="d-flex gap-2">
+                                                    <label class="mb-1 d-none"><strong>Relation Type</strong></label>
+                                                    <select name="relationType" id="relationType"
+                                                        style="padding-block: 11px; width: 100px;" class="form-select">
+                                                        <option value="s/o">S/O</option>
+                                                        <option value="d/o">D/O</option>
+                                                        <option value="w/o">W/O</option>
+                                                    </select>
+                                                    <label class="mb-1 d-none"><strong>Relation With</strong></label>
+                                                    <input type="text" id="relationOption" name="relationWith"
+                                                        class="form-control" placeholder="Son of">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Row 3: Profession & Blood Group -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Profession*</strong></label>
+                                                <select name="profession" style="padding-block: 11px;"
+                                                    class="form-select">
+                                                    <option value="">Select Profession</option>
+                                                    <option value="Government Job">Government Job</option>
+                                                    <option value="Private Job">Private Job</option>
+                                                    <option value="Police">Police</option>
+                                                    <option value="Army">Army</option>
+                                                    <option value="Farmer">Farmer</option>
+                                                    <option value="Self Business">Self Business</option>
+                                                    <option value="Student">Student</option>
+                                                    <option value="Social Worker">Social Worker</option>
+                                                    <option value="House Wife">House Wife</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Blood Group*</strong></label>
+                                                <select name="bloodGroup" style="padding-block: 11px;"
+                                                    class="form-select">
+                                                    <option value="">Select Blood Group</option>
+                                                    <option value="A+">A+</option>
+                                                    <option value="A-">A-</option>
+                                                    <option value="B+">B+</option>
+                                                    <option value="B-">B-</option>
+                                                    <option value="O+">O+</option>
+                                                    <option value="O-">O-</option>
+                                                    <option value="AB+">AB+</option>
+                                                    <option value="AB-">AB-</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Row 4: State & District -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>State*</strong></label>
+                                                <input type="text" name="state" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>District*</strong></label>
+                                                <input type="text" name="district" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <!-- Row 5: Block & Village -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Block*</strong></label>
+                                                <input type="text" name="block" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Village*</strong></label>
+                                                <input type="text" name="village" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <!-- Full Address -->
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Full Address*</strong></label>
+                                            <textarea name="fullAddress" class="form-control"
+                                                placeholder="Enter full address"></textarea>
+                                        </div>
+
+                                        <!-- Row 6: Pin Code & Mobile -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Pin Code*</strong></label>
+                                                <input type="text" name="pinCode" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Mobile Number*</strong></label>
+                                                <input type="text" name="mobile" class="form-control"
+                                                    placeholder="Enter mobile number">
+                                            </div>
+                                        </div>
+
+                                        <!-- Row 7: Email & Aadhar -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Email*</strong></label>
+                                                <input type="email" name="email" class="form-control"
+                                                    placeholder="hello@example.com">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Aadhar Number*</strong></label>
+                                                <input type="text" name="aadharNo" class="form-control"
+                                                    placeholder="Enter Aadhar Number">
+                                            </div>
+                                        </div>
+
+                                        <!-- Documents Upload -->
+
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="mb-1"><strong>Profile Picture*</strong></label>
+                                                <input type="file" name="profilePicture" class="form-control">
+                                            </div>
+                                            <!-- <div class="col-md-6">
+                                                <label class="mb-1"><strong>Role</strong></label>
+                                                <select name="role" style="padding-block: 11px;" class="form-select">
+                                                    <option value="Team Leader">Team Leader</option>
+                                                    <option value="Coordinator">Coordinator</option>
+                                                </select>
+                                            </div>  -->
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>ID Type*</strong></label>
+                                                <select name="idType" style="padding-block: 11px;" class="form-select">
+                                                    <option value="">Select ID Type</option>
+                                                    <option value="Aadhar Card">Aadhar Card</option>
+                                                    <option value="PAN Card">PAN Card</option>
+                                                    <option value="Voter Card">Voter Card</option>
+                                                    <option value="Driving Licence">Driving Licence</option>
+                                                    <option value="Rashan Card">Rashan Card</option>
+                                                    <option value="Class 10th Marksheet">Class 10th Marksheet</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Upload ID Document*</strong></label>
+                                                <input type="file" name="idDocument" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Upload Other Document*</strong></label>
+                                                <input type="file" name="otherDocument" class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Membership Type*</strong></label>
+                                                <select name="membershipType" id="membershipType" class="form-select"
+                                                    style="padding-block: 11px;">
+                                                    <option value="">Select Membership</option>
+                                                    <option value="One year Membership Fee (₹365)">One year Membership
+                                                        Fee (₹365)</option>
+                                                    <option value="Life time membership Fee (₹500)">Life time membership
+                                                        Fee (₹500)</option>
+                                                    <option
+                                                        value="One year membership Fee And Life time membership Fee (₹865)">
+                                                        One year membership Fee And Life time membership Fee (₹865)
+                                                    </option>
+                                                </select>
+                                                <input type="text" id="amount" class="form-control mt-2" readonly
+                                                    placeholder="Amount">
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Row 8: Membership & Referred By -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="mb-1"><strong>Member Position*</strong></label>
+                                                <select name="position" style="padding-block: 11px;"
+                                                    class="form-select">
+                                                    <option value="">Select Position</option>
+                                                    <% if(type=='singleorder' ){ %>
+                                                        <option value="Team Captain">Team Captain</option>
+                                                        <option value="District Advisor">District Advisor</option>
+                                                        <option value="Assistant District Advisor">Assistant District
+                                                            Advisor</option>
+                                                        <option value="Block Advisor/City Advisor">Block Advisor/City
+                                                            Advisor</option>
+                                                        <option value="Centre Advisor">Centre Advisor</option>
+                                                        </option>
+                                                        <% } else { %>
+                                                            <option value="Program Manager">Program Manager</option>
+                                                            <option value="District Head">District Head</option>
+                                                            <option value="Assistant District Head">Assistant District
+                                                                Head</option>
+                                                            <option value="Block Head/City Head">Block Head/City Head
+                                                            </option>
+                                                            <option value="Centre Head">Centre Head</option>
+                                                            <% } %>
+
+                                                </select>
+                                            </div>
+
+                                            <input type="text" name="type" class="d-none" value="<%=type%>">
+                                        </div>
+                                        <button type="button" id="payNow" class="btn btn-success mt-3">
+                                            Pay & Register
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+	Scripts
+***********************************-->
+    <!-- Required vendors -->
+    <!-- <script src="/vendor/global/global.min.js"></script> -->
+    <!-- <script src="/js/custom.js"></script> -->
+    <!-- <script src="/js/deznav-init.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+    <script>
+        // $('.pay-option').css('display', 'none')
+        $('.pay-option').hide()
+
+        $('.pay-btn').click(function () {
+            // $('.pay-option').css('display', 'block')
+            $('.pay-option').show()
+        })
+
+        $(document).on('change', '#relationType', function () {
+            let val = $(this).val()
+            // console.log(val);
+            let placeVal = ''
+
+            if (val == 's/o') {
+                placeVal = 'Son of'
+            }
+            if (val == 'd/o') {
+                placeVal = 'Daughter of'
+            }
+            if (val == 'w/o') {
+                placeVal = 'Wife of'
+            }
+
+            $('#relationOption').attr('placeholder', placeVal)
+        })
+
+        $(document).on('submit', '#register-form', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            // Your validation logic...
+            let err = [];
+            const mobile = form.mobile.value.trim();
+            if (mobile.length !== 10) {
+                err.push("Mobile Number Should Be Of 10 Digits!");
+            }
+
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+                return;
+            }
+
+            try {
+                const res = await fetch('/applications/apply', {
+                    method: "POST",
+                    body: new FormData(e.target),
+                });
+                const result = await res.json();
+
+                if (result.created) {
+                    Swal.fire({
+                        title: "Success!",
+                        icon: "success",
+                        text: result.message,
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: result.message,
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Network Error",
+                    text: err.message,
+                });
+            }
+        });
+
+
+        $(document).on('change', '#select-role', function (e) {
+
+            if (e.target.value == 'Coordinator') {
+                $('.referred').removeClass('d-none')
+            }
+            else {
+                $('.referred').addClass('d-none')
+            }
+        })
+
+        const plans = {
+            "One year Membership Fee (₹365)": 365,
+            "Life time membership Fee (₹500)": 500,
+            "One year membership Fee And Life time membership Fee (₹865)": 865,
+        };
+
+        let selectedAmount = 0;
+
+        $('#membershipType').change(function () {
+            selectedAmount = plans[this.value] || 0;
+            $('#amount').val("₹ " + selectedAmount);
+        });
+
+        // $('#payNow').click(async function () {
+
+        //     if (!selectedAmount) {
+        //         Swal.fire("Select membership first");
+        //         return;
+        //     }
+
+        //     const res = await fetch('/users/payment/create-order', {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({
+        //             amount: selectedAmount,
+        //             membershipType: $('#membershipType').val(),
+        //             name: $('input[name="name"]').val(),
+        //             email: $('input[name="email"]').val(),
+        //             mobile: $('input[name="mobile"]').val()
+        //         })
+        //     });
+
+        //     const data = await res.json();
+
+        //     const options = {
+        //         key: data.key,
+        //         amount: selectedAmount * 100,
+        //         currency: "INR",
+        //         name: "BSRF",
+        //         description: "Membership Fee",
+        //         order_id: data.order.id,
+
+        //         handler: async function (response) {
+        //             const verify = await fetch('/users/payment/verify', {
+        //                 method: "POST",
+        //                 headers: { "Content-Type": "application/json" },
+        //                 body: JSON.stringify(response)
+        //             });
+
+        //             const result = await verify.json();
+
+        //             if (result.success) {
+        //                 $('#register-form').submit(); // ✅ submit only after payment
+        //             } else {
+        //                 Swal.fire("Payment verification failed");
+        //             }
+        //         }
+        //     };
+
+        //     const rzp = new Razorpay(options);
+        //     rzp.open();
+        // });
+
+        // $('#payNow').click(async function () {
+
+        //     const name = $('input[name="name"]').val().trim();
+        //     const email = $('input[name="email"]').val().trim();
+        //     const mobile = $('input[name="mobile"]').val().trim();
+        //     const membershipType = $('#membershipType').val();
+
+        //     // 1️⃣ Validate membership
+        //     if (!selectedAmount || !membershipType) {
+        //         Swal.fire("Please select a membership");
+        //         return;
+        //     }
+
+        //     // 2️⃣ Validate required fields
+        //     if (!name || !email || !mobile) {
+        //         Swal.fire("Please fill all required fields");
+        //         return;
+        //     }
+
+        //     // 3️⃣ Email validation
+        //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        //     if (!emailRegex.test(email)) {
+        //         Swal.fire("Please enter a valid email");
+        //         return;
+        //     }
+
+        //     // 4️⃣ Mobile validation (India)
+        //     if (!/^[6-9]\d{9}$/.test(mobile)) {
+        //         Swal.fire("Please enter a valid 10-digit mobile number");
+        //         return;
+        //     }
+
+        //     // 5️⃣ Create order ONLY after validation passes
+        //     const res = await fetch('/users/payment/create-order', {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({
+        //             amount: selectedAmount,
+        //             membershipType,
+        //             name,
+        //             email,
+        //             mobile
+        //         })
+        //     });
+
+        //     const data = await res.json();
+
+        //     const options = {
+        //         key: data.key,
+        //         amount: selectedAmount * 100,
+        //         currency: "INR",
+        //         name: "BSRF",
+        //         description: "Membership Fee",
+        //         order_id: data.order.id,
+
+        //         handler: async function (response) {
+        //             const verify = await fetch('/users/payment/verify', {
+        //                 method: "POST",
+        //                 headers: { "Content-Type": "application/json" },
+        //                 body: JSON.stringify(response)
+        //             });
+
+        //             const result = await verify.json();
+
+        //             if (result.success) {
+        //                 $('#register-form').submit(); // ✅ submit only after payment success
+        //             } else {
+        //                 Swal.fire("Payment verification failed");
+        //             }
+        //         }
+        //     };
+
+        //     const rzp = new Razorpay(options);
+        //     rzp.open();
+        // });
+
+        $('#payNow').click(async function () {
+
+            let isValid = true;
+            let firstEmptyField = null;
+
+            // 🔹 Validate ALL inputs, selects & textareas inside the form
+            $('#register-form')
+                .find('input, select, textarea')
+                .each(function () {
+                    const value = $(this).val()?.trim();
+                    const type = $(this).attr('type');
+
+                    // Ignore buttons & hidden fields
+                    if (type === 'button' || type === 'submit' || type === 'hidden' || type === 'hidden') return;
+                    console.log(this.previousElementSibling.innerText);
+                    // if (this.previousElementSibling.innerText == 'Referrer Name' || this.previousElementSibling.innerText == 'Referrer Id') return;
+
+
+                    if (!value) {
+                        isValid = false;
+                        firstEmptyField = $(this);
+                        return false; // break loop
+                    }
+                });
+
+            if (!isValid) {
+                Swal.fire("Please fill all required fields");
+                firstEmptyField.focus();
+                return;
+            }
+
+            // 🔹 Extra validations
+            const email = $('input[name="email"]').val().trim();
+            const mobile = $('input[name="mobile"]').val().trim();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                Swal.fire("Please enter a valid email");
+                $('input[name="email"]').focus();
+                return;
+            }
+
+            if (!/^[6-9]\d{9}$/.test(mobile)) {
+                Swal.fire("Please enter a valid 10-digit mobile number");
+                $('input[name="mobile"]').focus();
+                return;
+            }
+
+            // 🔹 Membership validation
+            if (!selectedAmount || !$('#membershipType').val()) {
+                Swal.fire("Please select a membership");
+                return;
+            }
+
+            $('#register-form').submit()
+
+            // // 🔹 Create order
+            // const res = await fetch('/users/payment/create-order', {
+            //     method: "POST",
+            //     headers: { "Content-Type": "application/json" },
+            //     body: JSON.stringify({
+            //         amount: selectedAmount,
+            //         membershipType: $('#membershipType').val(),
+            //         name: $('input[name="name"]').val().trim(),
+            //         email,
+            //         mobile
+            //     })
+            // });
+
+            // const data = await res.json();
+            // console.log(data);
+
+            // if (!data.success) {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Oops...",
+            //         text: data.message,
+            //     });
+            //     return;
+            // }
+
+            // const options = {
+            //     key: data.key,
+            //     amount: selectedAmount * 100,
+            //     currency: "INR",
+            //     name: "BSRF",
+            //     description: "Membership Fee",
+            //     order_id: data.order.id,
+
+            //     handler: async function (response) {
+            //         const verify = await fetch('/users/payment/verify', {
+            //             method: "POST",
+            //             headers: { "Content-Type": "application/json" },
+            //             body: JSON.stringify(response)
+            //         });
+
+            //         const result = await verify.json();
+
+            //         if (result.success) {
+            //             $('#register-form').submit(); // ✅ submit only after payment success
+            //         } else {
+            //             Swal.fire("Payment verification failed");
+            //         }
+            //     }
+            // };
+            // const rzp = new Razorpay(options);
+            // rzp.open();
+        });
+
+
+    </script>
+
+</body>
+
+</html>

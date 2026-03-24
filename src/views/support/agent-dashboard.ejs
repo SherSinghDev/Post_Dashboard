@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Agent Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffe3ef, #fff6fa);
+      padding: 24px;
+      color: #333;
+    }
+
+    .support-wrapper {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 18px 45px rgba(216, 27, 96, 0.15);
+    }
+
+    .support-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .support-header h1 {
+      font-size: 24px;
+      color: #d81b60;
+    }
+
+    .support-header p {
+      font-size: 14px;
+      color: #777;
+    }
+
+    button {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #d81b60, #ec407a);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(216, 27, 96, 0.35);
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #fff0f6;
+      color: #d81b60;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid #ffd1e3;
+    }
+
+    .ticket-list {
+      margin-top: 28px;
+    }
+
+    .ticket-card {
+      border: 1px solid #ffd1e3;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+      background: #fff7fb;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ticket-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ticket-id {
+      font-weight: 600;
+      color: #d81b60;
+    }
+
+    .ticket-meta {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .ticket-actions {
+      margin-top: 8px;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-OPEN {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .status-CALLING {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+
+    .status-IN_PROGRESS {
+      background: #ede7f6;
+      color: #5e35b1;
+    }
+
+    .status-RESOLVED {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .status-CLOSED {
+      background: #eeeeee;
+      color: #424242;
+    }
+
+    .priority-HIGH {
+      color: #d32f2f;
+      font-weight: 600;
+    }
+
+    .priority-MEDIUM {
+      color: #f57c00;
+    }
+
+    .priority-LOW {
+      color: #388e3c;
+    }
+
+    @media (max-width: 600px) {
+      .support-wrapper {
+        padding: 18px;
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+
+</head>
+
+<body>
+
+  <div class="support-wrapper">
+    <div class="support-header">
+      <h1>🎧 Support Dashboard</h1>
+      <p>Welcome, <%= agent.name %>
+      </p>
+    </div>
+
+    <div style="display: flex; justify-content: space-between;">
+      <% if (!activeTicket) { %>
+        <form action="/support/support/assign-next/<%= agent._id %>" method="POST">
+          <button type="submit">Start Next Ticket</button>
+        </form>
+        <% } else { %>
+          <a href="/support/ticket/<%= activeTicket._id %>" class="back-btn">
+            Continue Active Ticket
+          </a>
+          <% } %>
+
+            <button class="logout-btn">Logout </button>
+    </div>
+
+    <div class="ticket-list">
+      <h3 style="margin-bottom:12px;color:#d81b60;">Assigned Tickets</h3>
+
+      <% if (tickets.length===0) { %>
+        <p style="color:#777;font-size:14px;">No tickets assigned yet.</p>
+        <% } %>
+
+          <% tickets.forEach(ticket=> { %>
+            <div class="ticket-card">
+              <div class="ticket-top">
+                <span class="ticket-id">#<%= ticket.ticketId || ticket._id %></span>
+                <span class="badge status-<%= ticket.status %>">
+                  <%= ticket.status %>
+                </span>
+              </div>
+
+              <div class="ticket-meta">
+                <b>Category:</b>
+                <%= ticket.category %> |
+                  <b>Priority:</b>
+                  <span class="priority-<%= ticket.priority %>">
+                    <%= ticket.priority %>
+                  </span>
+              </div>
+
+              <div class="ticket-meta">
+                <b>User:</b>
+                <%= ticket.username %> |
+                  <b>Mobile:</b>
+                  <span class="priority-<%= ticket.priority %>">
+                    <%= ticket.mobile %>
+                  </span>
+              </div>
+
+              <div class="ticket-meta">
+                <b>Created:</b>
+                <%= new Date(ticket.createdAt).toLocaleString() %>
+              </div>
+
+              <div class="ticket-meta">
+                <b>Issue:</b>
+                <%= ticket.issueSummary %>
+              </div>
+
+
+
+              <% if(ticket.status=='RESOLVED' ){ %>
+                <div class="ticket-meta">
+                  <b>Total Calls:</b>
+                  <%= ticket.callLogs.length %>
+                </div>
+                <div class="ticket-meta">
+                  <b>resolutionNote:</b>
+                  <%= ticket.resolutionNote %>
+                </div>
+                <div class="ticket-meta">
+                  <b>resolvedAt:</b>
+                  <%= new Date(ticket.resolvedAt).toLocaleString() %>
+                </div>
+
+                <% } %>
+
+                  <% if(ticket.status!='RESOLVED' ){ %>
+                    <div class="ticket-actions">
+                      <a href="/support/ticket/<%= ticket._id %>" class="back-btn">
+                        Open Ticket
+                      </a>
+                    </div>
+                    <% } %>
+
+
+            </div>
+            <% }) %>
+    </div>
+
+  </div>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+  <script>
+    $(document).on('click', '.logout-btn', function (e) {
+      Swal.fire({
+        title: "Do you want to Logout?",
+        showDenyButton: true,
+        // showCancelButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: `Cancel`
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+          $.ajax({
+            url: `/auth/logout/agent`,
+            method: "POST",
+            success: function (data) {
+              console.log(data);
+              if (data.logout) {
+                window.location.href = '/'
+              }
+              else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something Went Wrong",
+                  timer: 1500
+                });
+              }
+            },
+            error: function (err) {
+              console.log(err);
+            }
+          })
+        }
+      });
+    })
+  </script>
+</body>
+
+</html>

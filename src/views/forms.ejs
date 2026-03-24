@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>BSRF Parcel Mangament System</title>
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+
+    <link href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="/vendor/swiper/css/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/vendor/swiper/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/vendor/dotted-map/css/contrib/jquery.smallipop-0.3.0.min.css" type="text/css"
+        media="all">
+    <link href="/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+    <!-- tagify-css -->
+
+    <!-- Style css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <!-- <div id="preloader">
+		<div class="loader-wrapper">
+			<div class="loader-box">
+				<div class="icon">
+				  <i class="fas fa-utensils"></i>
+				</div>
+			</div>
+		</div>
+	</div>	 -->
+
+
+
+
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+
+
+        <div class="nav-header">
+            <a href="/" class="brand-logo">
+                <img style="width: 50px;" src="/images/logo/logo.png" alt="">
+            </a>
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            <div class="dashboard_bar">
+                                Patients Data (<%=user?.assignedForm%>)
+                            </div>
+                        </div>
+                        <div class="header-right d-flex align-items-center">
+                            <!-- <div class="input-group search-area">
+                                    <input type="text" class="form-control" placeholder="Search here...">
+                                    <span class="input-group-text"><a href="javascript:void(0)">
+                                            <svg width="24" height="24" viewbox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_1_450)">
+                                                    <path opacity="0.3"
+                                                        d="M14.2929 16.7071C13.9024 16.3166 13.9024 15.6834 14.2929 15.2929C14.6834 14.9024 15.3166 14.9024 15.7071 15.2929L19.7071 19.2929C20.0976 19.6834 20.0976 20.3166 19.7071 20.7071C19.3166 21.0976 18.6834 21.0976 18.2929 20.7071L14.2929 16.7071Z"
+                                                        fill="#452B90"></path>
+                                                    <path
+                                                        d="M11 16C13.7614 16 16 13.7614 16 11C16 8.23859 13.7614 6.00002 11 6.00002C8.23858 6.00002 6 8.23859 6 11C6 13.7614 8.23858 16 11 16ZM11 18C7.13401 18 4 14.866 4 11C4 7.13402 7.13401 4.00002 11 4.00002C14.866 4.00002 18 7.13402 18 11C18 14.866 14.866 18 11 18Z"
+                                                        fill="#452B90"></path>
+                                                </g>
+                                                <defs>
+                                                    <clippath id="clip0_1_450">
+                                                        <rect width="24" height="24" fill="white"></rect>
+                                                    </clippath>
+                                                </defs>
+                                            </svg>
+                                        </a></span>
+                                </div> -->
+                            <!-- <ul class="navbar-nav">
+
+                                <li class="nav-item ps-3">
+                                    <div class="dropdown header-profile2">
+                                        <a class="nav-link" href="javascript:void(0);" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="header-info2 d-flex align-items-center">
+                                                <div class="header-media">
+                                                    <img src="https://icons.veryicon.com/png/o/miscellaneous/user-avatar/user-avatar-male-5.png"
+                                                        alt="">
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <div class="card border-0 mb-0">
+                                                <div class="card-header py-2">
+                                                    <div class="products">
+                                                        <img src="https://icons.veryicon.com/png/o/miscellaneous/user-avatar/user-avatar-male-5.png"
+                                                            class="avatar avatar-md" alt="">
+                                                        <div>
+                                                            <h6>Sher Singh</h6>
+                                                            <span>Web Designer</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body px-0 py-2">
+                                                    <a href="javascript:void(0);" class="dropdown-item ai-icon ">
+                                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M11.9848 15.3462C8.11714 15.3462 4.81429 15.931 4.81429 18.2729C4.81429 20.6148 8.09619 21.2205 11.9848 21.2205C15.8524 21.2205 19.1543 20.6348 19.1543 18.2938C19.1543 15.9529 15.8733 15.3462 11.9848 15.3462Z"
+                                                                stroke="var(--primary)" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                            </path>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M11.9848 12.0059C14.5229 12.0059 16.58 9.94779 16.58 7.40969C16.58 4.8716 14.5229 2.81445 11.9848 2.81445C9.44667 2.81445 7.38857 4.8716 7.38857 7.40969C7.38 9.93922 9.42381 11.9973 11.9524 12.0059H11.9848Z"
+                                                                stroke="var(--primary)" stroke-width="1.42857"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                            </path>
+                                                        </svg>
+
+                                                        <span class="ms-2">Profile </span>
+                                                    </a>
+
+                                                </div>
+                                                <div class="card-footer px-0 py-2">
+                                                    <a href="javascript:void(0);" class="dropdown-item ai-icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                            viewbox="0 0 24 24" fill="none" stroke="var(--primary)"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4">
+                                                            </path>
+                                                            <polyline points="16 17 21 12 16 7"></polyline>
+                                                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                                                        </svg>
+                                                        <span class="ms-2 logout-btn">Logout </span>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul> -->
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" ){%>
+            <%- include('./globals/sidebar') %>
+                <%} else{ %>
+                    <div class="deznav">
+                        <div class="deznav-scroll">
+                            <ul class="metismenu" id="menu">
+                                <li class="menu-title">YOUR COMPANY</li>
+                                <li>
+                                    <a href="/doctors/dashboard" aria-expanded="false">
+                                        <div class="menu-icon">
+                                            <svg width="24" height="24" viewbox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M9.13478 20.7733V17.7156C9.13478 16.9351 9.77217 16.3023 10.5584 16.3023H13.4326C13.8102 16.3023 14.1723 16.4512 14.4393 16.7163C14.7063 16.9813 14.8563 17.3408 14.8563 17.7156V20.7733C14.8539 21.0978 14.9821 21.4099 15.2124 21.6402C15.4427 21.8705 15.756 22 16.0829 22H18.0438C18.9596 22.0024 19.8388 21.6428 20.4872 21.0008C21.1356 20.3588 21.5 19.487 21.5 18.5778V9.86686C21.5 9.13246 21.1721 8.43584 20.6046 7.96467L13.934 2.67587C12.7737 1.74856 11.1111 1.7785 9.98539 2.74698L3.46701 7.96467C2.87274 8.42195 2.51755 9.12064 2.5 9.86686V18.5689C2.5 20.4639 4.04738 22 5.95617 22H7.87229C8.55123 22 9.103 21.4562 9.10792 20.7822L9.13478 20.7733Z"
+                                                    fill="#90959F"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="nav-text">Dashboard</span>
+                                    </a>
+
+                                </li>
+
+                                <li>
+                                    <a href="/doctors/patients" aria-expanded="false">
+                                        <div class="menu-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.5"
+                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
+                                                    fill="#90959F" />
+                                                <path
+                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
+                                                    fill="#90959F" />
+                                                <path opacity="0.4"
+                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
+                                                    fill="#90959F" />
+                                            </svg>
+                                        </div>
+                                        <span class="nav-text">Patients</span>
+                                    </a>
+
+                                </li>
+
+                                <li>
+                                    <a href="/patientform/<%=user.assignedForm%>" target="_blank" aria-expanded="false">
+                                        <div class="menu-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.5"
+                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
+                                                    fill="#90959F" />
+                                                <path
+                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
+                                                    fill="#90959F" />
+                                                <path opacity="0.4"
+                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
+                                                    fill="#90959F" />
+                                            </svg>
+                                        </div>
+                                        <span class="nav-text">Patient Form</span>
+                                    </a>
+
+                                </li>
+
+                                <hr>
+
+                                <li>
+                                    <a href="javascript:void(0);" class="logout-btn" aria-expanded="false">
+                                        <div class="menu-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path class="no-color" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4">
+                                                </path>
+                                                <polyline points="16 17 21 12 16 7"></polyline>
+                                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                                            </svg>
+                                        </div>
+                                        <span class="nav-text">Log Out</span>
+                                    </a>
+
+                                </li>
+
+
+                            </ul>
+
+                        </div>
+                    </div>
+                    <%}%>
+
+                        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                        <!--**********************************
+          Content body start
+    ***********************************-->
+                        <div class="content-body">
+                            <div class="container">
+                                <div class="d-flex justify-content-between mb-4 flex-wrap">
+                                    <div class="input-group w-auto mb-2 mb-xxl-0">
+                                        <input type="text" placeholder="Search by Reg No., name, city, or mobile"
+                                            class="form-control search-input" style="width: 300px;">
+                                    </div>
+                                    <div class="text-end">
+                                        <a href="/patientform/<%= user.userId %>" target="_blank"
+                                            class="btn btn-primary me-1 add-btn">+ New
+                                            Patient</a>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="card mt-2">
+                                            <div class="card-body">
+                                                <div class="table-responsive text-center">
+                                                    <table class="table table-striped align-middle main-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Reg No.</th>
+                                                                <th>Name</th>
+                                                                <th>Gender</th>
+                                                                <th>City</th>
+                                                                <th>State</th>
+                                                                <th>Mobile</th>
+                                                                <th>Duration</th>
+                                                                <th>Type</th>
+                                                                <th>Patient Of</th>
+                                                                <th>Desease Name</th>
+                                                                <th>Report</th>
+                                                                <th>Patient Status</th>
+                                                                <th>Doctor Status</th>
+                                                                <th>Support Status</th>
+                                                                <th>Office Status</th>
+                                                                <th>Admin Status</th>
+                                                                <th>Post Office Status</th>
+                                                                <th>delivery Status</th>
+                                                                <th>Tracking Id</th>
+                                                                <th>Track</th>
+                                                                <th>Applied On</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% if (applications.length> 0) { %>
+                                                                <% applications.forEach((app, index)=> { %>
+                                                                    <tr id="tr-<%= app._id %>">
+                                                                        <td>
+                                                                            <%= app.registerNo %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.patientName %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.gender %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.cityOrDistrict %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.state %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href="tel:+91 <%= app.mobileNumber %>">
+                                                                                <%= app.mobileNumber %>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.duration || 'not selected' %>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <%= app.type || 'NA' %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.referrer? app.referrer?.name + ' ( '
+                                                                                + 'id : ' + + app.referrer.userId + ' )'
+                                                                                : 'NA' %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.diseaseName %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href="javascript:void(0)"
+                                                                                data-id="<%= app._id %>"
+                                                                                class="view-btn">View Report</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.patientStatus || 'N/A'
+                                                                                %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.doctorStatus || 'N/A'
+                                                                                %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.supportStatus || 'N/A'
+                                                                                %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.officeStatus || 'N/A'
+                                                                                %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.adminStatus || 'N/A' %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.postOfficeStatus
+                                                                                || 'N/A' %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.deliveryStatus || 'N/A'
+                                                                                %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= app.otherStatus?.trackingIdStatus
+                                                                                || 'N/A' %>
+                                                                        </td>
+                                                                        <td><a href="javascript:void(0)"
+                                                                                data-id="<%= app.otherStatus?.trackingIdStatus%>"
+                                                                                class="btn-link me-1 track-btn">Track</a>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <%= new
+                                                                                Date(app.createdAt).toLocaleDateString()
+                                                                                %>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <a href="https://wa.me/+91<%= app.mobileNumber %>"
+                                                                                class=" btn btn-sm btn-success">
+                                                                                <i class="fa-brands fa-whatsapp"
+                                                                                    style="color:white;font-size: 16px;"></i>
+                                                                                <!-- <i class="fa-solid fa-whatsapp"
+                                                                                    style="color:white;"></i> -->
+                                                                            </a>
+                                                                            <a href="tel:+91 <%= app.mobileNumber %>"
+                                                                                class=" btn btn-sm btn-info">
+                                                                                <i class="fa-solid fa-phone"
+                                                                                    style="color:white;"></i>
+                                                                            </a>
+
+                                                                            <a href="javascript:void(0)"
+                                                                                data-id="<%= app._id %>"
+                                                                                class="btn btn-sm btn-success approve-btn"><i
+                                                                                    class="fa-solid fa-pen"></i></a>
+
+                                                                            <a href="javascript:void(0)"
+                                                                                data-id="<%= app._id %>"
+                                                                                class="btn btn-sm btn-danger delete-btn">
+                                                                                <i class="fa-solid fa-trash"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% }) %>
+                                                                        <% } else { %>
+                                                                            <tr>
+                                                                                <td colspan="10"
+                                                                                    class="text-center text-muted">
+                                                                                    No Data found</td>
+                                                                            </tr>
+                                                                            <% } %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--**********************************
+          Content body end
+    ***********************************-->
+
+                        <!-- View Modal -->
+                        <div class="modal fade view-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Medical Report</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="view-details" class="p-2">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Approve Modal -->
+                        <!-- <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Form Approval</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="approve-details">
+                                            <div class="basic-form">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+                        <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="approve-details">
+                                            <div class="basic-form">
+                                                <form action="/submit-patient-form" method="POST" id="approve-form"
+                                                    enctype="multipart/form-data">
+
+                                                    <!-- Basic Info -->
+                                                    <div class="form-section-title">Personal Information</div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">मरीज का नाम / Patient's Name
+                                                                *</label>
+                                                            <input type="text" name="patientName" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">पिता/पति का नाम / Father's or
+                                                                Husband's Name *</label>
+                                                            <input type="text" name="fatherOrHusbandName"
+                                                                class="form-control" required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">लिंग / Gender *</label>
+                                                        <div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="gender" value="Male" required />
+                                                                <label class="form-check-label">Male</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="gender" value="Female" />
+                                                                <label class="form-check-label">Female</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="gender" value="Other" />
+                                                                <label class="form-check-label">Other</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Address Section -->
+                                                    <div class="form-section-title mt-4">Address Details</div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">मकान / सड़क / House / Flat /
+                                                                Street *</label>
+                                                            <input type="text" name="houseOrStreet" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">इलाका / गाँव / मोहल्ला / Locality
+                                                                *</label>
+                                                            <input type="text" name="locality" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">शहर / तहसील / जिला / City /
+                                                                District *</label>
+                                                            <input type="text" name="cityOrDistrict"
+                                                                class="form-control" required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">राज्य / State *</label>
+                                                            <input type="text" name="state" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">LANDMARK / नज़दीकी प्रसिद्ध स्थान
+                                                                *</label>
+                                                            <input type="text" name="landmark" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">पिन कोड / Pin Code *</label>
+                                                            <input type="text" name="pinCode" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Contact Section -->
+                                                    <div class="form-section-title mt-4">Contact Details</div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">मोबाइल नंबर / Mobile Number
+                                                                *</label>
+                                                            <input type="text" name="mobileNumber" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Emergency Contact Number</label>
+                                                            <input type="text" name="emergencyContact"
+                                                                class="form-control" />
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+                                                    <!-- Medical Info -->
+                                                    <div class="form-section-title mt-4">Medical Details</div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">बीमारी का लक्षण / Name of Disease
+                                                            *</label>
+                                                        <input type="text" name="diseaseName" class="form-control"
+                                                            required />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">औषधि अवधि / Treatment Duration
+                                                            *</label>
+                                                        <select name="duration" style="padding-block: 11px;"
+                                                            class="form-select" required>
+                                                            <option value="">Select Treatment Duration</option>
+                                                            <option value="3 Months 299">3 Months 299</option>
+                                                            <option value="6 Months 499">6 Months 499</option>
+                                                            <option value="12 Months 799">12 Months 799</option>
+                                                            <option value="3 Months">3 Months</option>
+                                                            <option value="6 Months">6 Months</option>
+                                                            <option value="9 Months">9 Months</option>
+                                                            <option value="12 Months">12 Months</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- <div class="mb-3">
+                                                        <label class="form-label">Reports / यदि हो तो</label>
+                                                        <input type="file" name="medicalReport" class="form-control" />
+                                                    </div> -->
+                                                    <% if(user.role=="Admin" || user.type=='stockorder' ){%>
+                                                        <div class="row">
+                                                            <div class="mb-3 col-md-6">
+                                                                <label class="form-label">Patient Status</label>
+                                                                <input type="text" name="patientStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Doctor Status </label>
+                                                                <input type="text" name="doctorStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Support Status </label>
+                                                                <input type="text" name="supportStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Office Status </label>
+                                                                <input type="text" name="officeStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Admin Status </label>
+                                                                <input type="text" name="adminStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div
+                                                                class="mb-3 col-md-6 <%- user.type=='stockorder'?'d-none':'' %>">
+                                                                <label>Post Office Status </label>
+                                                                <input type="text" name="postOfficeStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div
+                                                                class="mb-3 col-md-6 <%- user.type=='stockorder'?'d-none':'' %>">
+                                                                <label>Tracking Id Status </label>
+                                                                <input type="text" name="trackingIdStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label>Delivery Status </label>
+                                                                <input type="text" name="deliveryStatus"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <%}%>
+
+                                                            <div class="text-center mt-4">
+                                                                <button type="submit"
+                                                                    class="btn btn-success px-5 py-2">Submit</button>
+                                                                <% if(createOrder && user.type!='stockorder' ){ %>
+                                                                    <button type="button"
+                                                                        class="btn btn-info px-5 py-2 create-order">Create
+                                                                        Order With Proship</button>
+                                                                    <button type="button" data-type="smart-ship"
+                                                                        class="btn btn-primary px-5 py-2 create-order">Create
+                                                                        Order With Smart Ship</button>
+                                                                    <% } %>
+                                                            </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade create-order-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="approve-details">
+                                            <div class="basic-form">
+                                                <form action="/submit-patient-form" method="POST" id="create-order-form"
+                                                    enctype="multipart/form-data">
+
+                                                    <!-- Basic Info -->
+                                                    <div class="form-section-title fw-bold">Patient Information
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Recipient Name *</label>
+                                                            <input type="text" name="patientName" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Recipient Mobile *</label>
+                                                            <input type="text" name="mobileNumber" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Complete Address *</label>
+                                                            <input type="text" name="houseOrStreet" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">City *</label>
+                                                            <input type="text" name="cityOrDistrict"
+                                                                class="form-control" required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">State *</label>
+                                                            <input type="text" name="state" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Pin Code </label>
+                                                            <input type="text" name="pinCode" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-section-title fw-bold">Pickup Details</div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-12">
+                                                            <label class="form-label">Pickup Location *</label>
+                                                            <select name="pickupLocation" style="padding-block: 11px;"
+                                                                class="form-select" required>
+                                                                <option value="">Select Pickup Location</option>
+                                                                <option
+                                                                    value="BSRF NGO, SARSWATI VIHAR GANGA FORM HOUSE KE SAMNE BHATI LAB WALI NEW BUILDING MELROSE BYE PASS ALIGARH UTTAR PRADESH, Aligarh, Uttar Pradesh, India, 202001">
+                                                                    BSRF NGO, SARSWATI VIHAR GANGA FORM HOUSE KE SAMNE
+                                                                    BHATI LAB WALI NEW BUILDING MELROSE BYE PASS ALIGARH
+                                                                    UTTAR PRADESH, Aligarh, Uttar Pradesh, India, 202001
+                                                                </option>
+                                                                <option
+                                                                    value="BSRF INDIA, 228 Durga Nagar Ram Nagar Melrose bye pass Aligarh UPB B Grirls inter college, ALIGARH, Uttar Pradesh, India, 202001">
+                                                                    BSRF INDIA, 228 Durga Nagar Ram Nagar Melrose bye
+                                                                    pass Aligarh UPB B Grirls inter college, ALIGARH,
+                                                                    Uttar Pradesh, India, 202001</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section-title fw-bold">Order Details</div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Payment Mode *</label>
+                                                            <div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="paymentMode" value="Prepaid" required />
+                                                                    <label class="form-check-label">Prepaid</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="paymentMode" value="COD" />
+                                                                    <label class="form-check-label">COD</label>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Client Order Id </label>
+                                                            <input type="text" name="orderId"
+                                                                placeholder="Enter Client Order Id"
+                                                                class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Shipping Label Id </label>
+                                                            <input type="text" name="labelId"
+                                                                placeholder="Enter Shipping Label Id"
+                                                                class="form-control" />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Channel Name</label>
+                                                            <input type="text" name="channel"
+                                                                placeholder="Enter Channel Name" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Invoice Value *</label>
+                                                            <input type="text" name="invoiceValue"
+                                                                placeholder="Total Invoice Amount" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Sku Id *</label>
+                                                            <input type="text" name="skuId" placeholder="Enter Sku Id"
+                                                                class="form-control" required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Name *</label>
+                                                            <input type="text" name="productName"
+                                                                placeholder="Product Name" class="form-control"
+                                                                required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Quantity *</label>
+                                                            <input type="text" name="productQuantity"
+                                                                placeholder="Product Quantity" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Unit Price *</label>
+                                                            <input type="text" name="unitPrice"
+                                                                placeholder="Enter Unit Price" class="form-control"
+                                                                required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-section-title fw-bold">Package Details</div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Weight(gms) *</label>
+                                                            <input type="text" name="weight" placeholder="Weight(gms)"
+                                                                class="form-control" required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Length(cm) *</label>
+                                                            <input type="text" name="length" placeholder="Length(cm)"
+                                                                class="form-control" required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Breadth(cm) *</label>
+                                                            <input type="text" name="breadth" placeholder="Breadth(cm)"
+                                                                class="form-control" required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Height(cm) *</label>
+                                                            <input type="text" name="height" placeholder="Height(cm)"
+                                                                class="form-control" required />
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="text-center mt-4">
+                                                        <button type="submit"
+                                                            class="btn btn-success px-5 py-2">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--**********************************
+          Footer start
+    ***********************************-->
+
+                        <!--**********************************
+          Footer end
+    ***********************************-->
+
+    </div>
+
+    <!--**********************************
+        Scripts
+  ***********************************-->
+    <script src="/vendor/global/global.min.js"></script>
+    <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+    <!-- Dashboard 1 -->
+    <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/js/plugins-init/datatables.init.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/deznav-init.js"></script>
+    <script src="/js/demo.js"></script>
+    <script src="/js/styleSwitcher.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+    <script src="/js/pages/patients.js"></script>
+
+    <script>
+        // 🔍 Search filter
+        $(document).on('keyup', '.search-input', function () {
+            const value = $(this).val().toLowerCase();
+            $('tbody tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        // 👁 View application details
+        $(document).on('click', '.view-btn', function () {
+            const id = $(this).data('id');
+            fetch(`/patientform/report/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const report = data.report;
+                        console.log(report);
+
+                        $('#view-details').html(`
+                                  <div class="row">
+                                 <div class="col-12 text-center">
+                                                    <img src="${report}" class="mb-3 w-75" alt="">
+                                                </div>
+                                    
+                                `);
+                        $('.view-modal').modal('show');
+                    }
+                })
+                .catch(err => console.error(err));
+        });
+
+
+
+        $(document).on('click', '.create-order', function () {
+            $('.create-order-modal').modal('show');
+            const id = $(this).data('id');
+            const type = $(this).data('type');
+
+            let url;
+            if (type != 'smart-ship') {
+                url = '/patientorder/create-order'
+            }
+            else {
+                url = '/patientorder/create-order-with-smartship'
+            }
+
+
+            $('#create-order-form').attr('data-id', id)
+            $('#create-order-form').attr('data-url', url)
+            $('.approve-modal').modal('hide');
+            fetch(`/patientform/details/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        let app = data.data;
+                        console.log(app);
+                        const form = document.getElementById('create-order-form');
+
+                        // 🧩 Function to fill form and show previews
+                        const fillForm = (dataObj, prefix = '') => {
+                            Object.keys(dataObj).forEach(key => {
+                                let fieldName = key;
+
+                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                const field = form.querySelector(`[name="${fieldName}"]`);
+                                let value = dataObj[key];
+                                if (!field) return;
+                                field.value = value || '';
+                            });
+                        };
+
+                        // 🧩 Fill top-level and nested data
+                        fillForm(app);
+                    }
+                })
+                .catch(err => console.error(err));
+        })
+
+
+
+        $(document).on('click', '.approve-btn', function () {
+            $('.approve-modal').modal('show');
+            const id = $(this).data('id');
+            $('#approve-form').attr('data-id', id)
+            $('.create-order').attr('data-id', id)
+            $('#create-order-form').attr('data-id', id)
+
+            fetch(`/patientform/details/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        let app = data.data;
+                        console.log(app);
+
+                        let statuss = app.otherStatus
+                        app = { ...app, ...statuss }
+                        const form = document.getElementById('approve-form');
+
+                        // 🧩 Function to fill form and show previews
+                        const fillForm = (dataObj, prefix = '') => {
+                            Object.keys(dataObj).forEach(key => {
+                                let fieldName = prefix
+                                    ? `${prefix}${key.charAt(0).toUpperCase() + key.slice(1)}`
+                                    : key;
+
+                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                const field = form.querySelector(`[name="${fieldName}"]`);
+                                let value = dataObj[key];
+                                if (!field) return;
+                                if (key === 'referredBy') value = `${app.referralUser.name}(${app.referredBy})`
+
+                                // 🖼 Handle all file/document/image fields
+                                if (
+                                    field.type === 'file' ||
+                                    key.toLowerCase().includes('file') ||
+                                    key.toLowerCase().includes('document') ||
+                                    key.toLowerCase().includes('image') ||
+                                    key.toLowerCase().includes('url')
+                                ) {
+                                    const previewContainerId = `${fieldName}-preview-container`;
+                                    let container = document.getElementById(previewContainerId);
+
+                                    if (!container) {
+                                        container = document.createElement('div');
+                                        container.id = previewContainerId;
+                                        container.style.marginTop = '10px';
+                                        field.insertAdjacentElement('afterend', container);
+                                    }
+
+                                    container.innerHTML = '';
+
+                                    if (value && typeof value === 'string' && (value.startsWith('http') || value.startsWith('/'))) {
+                                        const base = window.location.origin;
+                                        const url = value.startsWith('http') ? value : `${base}${value}`;
+
+                                        // 🧩 Create thumbnail image
+                                        const thumb = document.createElement('img');
+                                        thumb.src = url;
+                                        thumb.style.width = '120px';
+                                        thumb.style.height = '120px';
+                                        thumb.style.objectFit = 'cover';
+                                        thumb.style.border = '1px solid #ddd';
+                                        thumb.style.borderRadius = '6px';
+                                        thumb.style.cursor = 'pointer';
+                                        thumb.style.transition = 'transform 0.2s ease';
+                                        thumb.addEventListener('mouseenter', () => thumb.style.transform = 'scale(1.05)');
+                                        thumb.addEventListener('mouseleave', () => thumb.style.transform = 'scale(1)');
+
+                                        // Click → open full preview
+                                        thumb.addEventListener('click', () => openFullPreview(url));
+
+                                        container.appendChild(thumb);
+                                    }
+
+                                    return;
+                                }
+
+                                // 🗓 Date fields
+                                if (field.type === 'date' && value) {
+                                    field.value = new Date(value).toISOString().split('T')[0];
+                                    return;
+                                }
+
+                                // 🔘 Others
+                                if (field.tagName === 'SELECT') {
+                                    field.value = value || '';
+                                } else if (field.type === 'radio' || field.type === 'checkbox') {
+                                    form.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
+                                        el.checked = el.value === value;
+                                    });
+                                } else {
+                                    field.value = value || '';
+                                }
+                            });
+                        };
+
+                        // 🧩 Fill top-level and nested data
+                        fillForm(app);
+                        if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
+                        if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
+
+                        // $('.view-modal').modal('show');
+                    }
+                })
+                .catch(err => console.error(err));
+        });
+
+
+        // 🧩 Function to open fullscreen preview popup
+        function openFullPreview(url) {
+            let overlay = document.getElementById('fullscreen-preview');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'fullscreen-preview';
+                overlay.style.position = 'fixed';
+                overlay.style.top = 0;
+                overlay.style.left = 0;
+                overlay.style.width = '100vw';
+                overlay.style.height = '100vh';
+                overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = 2000;
+
+                // close button
+                const closeBtn = document.createElement('span');
+                closeBtn.innerHTML = '&times;';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '20px';
+                closeBtn.style.right = '30px';
+                closeBtn.style.fontSize = '40px';
+                closeBtn.style.color = '#fff';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.addEventListener('click', () => overlay.remove());
+                overlay.appendChild(closeBtn);
+
+                // content
+                const content = document.createElement('div');
+                content.id = 'preview-content';
+                content.style.maxWidth = '90vw';
+                content.style.maxHeight = '85vh';
+                content.style.overflow = 'auto';
+                overlay.appendChild(content);
+
+                document.body.appendChild(overlay);
+            }
+
+            const content = document.getElementById('preview-content');
+            content.innerHTML = '';
+
+            // 🖼 If image
+            if (url.match(/\.(jpeg|jpg|png|gif|webp)$/i)) {
+                const img = document.createElement('img');
+                img.src = url;
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '85vh';
+                img.style.borderRadius = '10px';
+                img.style.boxShadow = '0 0 15px rgba(255,255,255,0.2)';
+                content.appendChild(img);
+            }
+            // 📄 If PDF
+            else if (url.endsWith('.pdf')) {
+                const iframe = document.createElement('iframe');
+                iframe.src = url;
+                iframe.style.width = '90vw';
+                iframe.style.height = '85vh';
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '10px';
+                content.appendChild(iframe);
+            }
+            // 🔗 Else just show link
+            else {
+                const link = document.createElement('a');
+                link.href = url;
+                link.textContent = 'View Document';
+                link.target = '_blank';
+                link.style.color = '#fff';
+                link.style.fontSize = '20px';
+                content.appendChild(link);
+            }
+        }
+
+
+        // 
+
+
+        // 🗑 Delete
+        $(document).on('click', '.delete-btn', function () {
+            const id = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This will permanently delete the record.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+            }).then(result => {
+                if (result.isConfirmed) {
+                    fetch(`/patientform/delete/${id}`, { method: "DELETE" })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                $(`#tr-${id}`).fadeOut(800);
+                                Swal.fire("Deleted!", "Patient Form deleted successfully.", "success");
+                            }
+                        })
+                        .catch(err => console.error(err));
+                }
+            });
+        });
+
+        // approve
+        $(document).on('submit', '#approve-form', function (e) {
+            e.preventDefault()
+            const id = $(this).data('id');
+            console.log(id);
+            let form = this
+            let {
+                patientStatus,
+                doctorStatus,
+                supportStatus,
+                officeStatus,
+                adminStatus,
+                postOfficeStatus,
+                trackingIdStatus,
+                deliveryStatus,
+                duration
+            } = form
+
+            let inputs = {
+                patientStatus,
+                doctorStatus,
+                supportStatus,
+                officeStatus,
+                adminStatus,
+                postOfficeStatus,
+                trackingIdStatus,
+                duration
+            }
+
+
+            let err = []
+
+            // for (let key in inputs) {
+            //     if (!inputs[key].value) {
+            //         let text = inputs[key].previousElementSibling?.innerText
+            //         err.push(text)
+            //     }
+            // }
+
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+            }
+            else {
+                let data = {}
+                for (let key in inputs) {
+                    data = { ...data, [key]: inputs[key].value }
+                }
+                console.log(data);
+                fetch(`/patientform/approve/${id}`, {
+                    method: "POST",
+                    // body: JSON.stringify(data),
+                    body: new FormData(e.target),
+                    // headers: {
+                    //     "Content-Type": "application/json"
+                    // },
+                })
+                    .then((data) => {
+                        return data.json()
+                    })
+                    .then((result) => {
+                        // console.log(result);
+                        if (result.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: "Patient Form is Approved!",
+                                timer: 2000
+
+                            });
+                            e.target.reset()
+                            $('.approve-modal').modal('hide');
+                            window.location.reload()
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Error in Server",
+                                timer: 1000
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
+        });
+
+
+        $(document).on('submit', '#create-order-form', function (e) {
+            e.preventDefault()
+            const id = $(this).data('id');
+            const url = $(this).data('url');
+            console.log(id);
+            let form = this
+            let {
+                patientName,
+                mobileNumber,
+                houseOrStreet,
+                cityOrDistrict,
+                state,
+                pinCode,
+                pickupLocation,
+                paymentMode,
+                skuId,
+                invoiceValue,
+                productName,
+                productQuantity,
+                unitPrice,
+                weight,
+                length,
+                breadth,
+                height,
+                channel
+            } = form
+
+            let inputs = {
+                patientName,
+                mobileNumber,
+                houseOrStreet,
+                cityOrDistrict,
+                state,
+                pinCode,
+                pickupLocation,
+                paymentMode,
+                skuId,
+                invoiceValue,
+                productName,
+                productQuantity,
+                unitPrice,
+                weight,
+                length,
+                breadth,
+                height,
+                channel
+            }
+
+
+            let err = []
+
+            for (let key in inputs) {
+                if (!inputs[key].value) {
+                    let text = inputs[key].previousElementSibling?.innerText
+                    err.push(text)
+                }
+            }
+
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+            }
+            else {
+                let data = {}
+                for (let key in inputs) {
+                    data = { ...data, [key]: inputs[key].value }
+                }
+
+                data = { ...data, id }
+                // console.log(data);
+                fetch(`${url}`, {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    // body: new FormData(e.target),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                })
+                    .then((data) => {
+                        return data.json()
+                    })
+                    .then((result) => {
+                        console.log(result);
+                        if (result.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: "New Order Created!",
+                                timer: 2000
+
+                            });
+                            e.target.reset()
+                            $('.create-order-modal').modal('hide');
+                            window.location.reload()
+                        }
+                        else {
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.error,
+                                // timer: 1000
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
+        });
+
+
+
+
+
+
+
+
+        $(document).on('click', '.logout-btn', function (e) {
+            Swal.fire({
+                title: "Do you want to Logout?",
+                showDenyButton: true,
+                // showCancelButton: true,
+                confirmButtonText: "Yes",
+                denyButtonText: `Cancel`
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: `/auth/logout`,
+                        method: "POST",
+                        success: function (data) {
+                            console.log(data);
+                            if (data.logout) {
+                                window.location.href = '/'
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: "Something Went Wrong",
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    })
+                }
+            });
+        })
+
+        // track btn
+        $(document).on('click', ".track-btn", function () {
+            let id = $(this).attr('data-id')
+            console.log(id);
+            navigator.clipboard.writeText(id)
+                .then(() => {
+                    console.log("Copied to clipboard");
+                    window.open('https://www.indiapost.gov.in/home', "_blank")
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        })
+
+        var handleNavigation = function () {
+            $(".nav-control").on('click', function () {
+
+                $('#main-wrapper').toggleClass("menu-toggle");
+
+                $(".hamburger").toggleClass("is-active");
+            });
+        }
+
+        handleNavigation()
+    </script>
+</body>
+
+</html>

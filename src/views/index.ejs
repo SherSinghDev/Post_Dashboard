@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./globals/head') %>
+
+    <body>
+
+        <!--*******************
+        Preloader start
+    ********************-->
+        <!-- <div id="preloader">
+		<div class="loader-wrapper">
+			<div class="loader-box">
+				<div class="icon">
+				  <i class="fas fa-utensils"></i>
+				</div>
+			</div>
+		</div>
+	</div>	 -->
+
+
+        <%- include('./globals/preloader') %>
+
+            <!--*******************
+        Preloader end
+    ********************-->
+
+            <!--**********************************
+        Main wrapper start
+    ***********************************-->
+            <div id="main-wrapper">
+                <!--**********************************
+            Nav header start
+        ***********************************-->
+
+
+                <%- include('globals/navHeader') %>
+                    <!--**********************************
+            Nav header end
+        ***********************************-->
+
+
+
+                    <!--**********************************
+            Header start
+        ***********************************-->
+                    <%- include('globals/header') %>
+                        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                        <!--**********************************
+            Sidebar start
+        ***********************************-->
+                        <%- include('globals/sidebar') %>
+
+                            <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                            <!--**********************************
+            Content body start
+        ***********************************-->
+                            <div class="content-body">
+                                <div class="container">
+                                  <%  if(user.role=="Coordinator"){ %>
+                                    <div class="d-flex mb-4 ">
+                                        <!-- <div class="text-end">
+                                            <a href="/applications/<%= user.userId %>" target="_blank"
+                                                class="btn btn-success me-1 add-btn">Create User</a>
+                                        </div> -->
+                                        <div class="text-end">
+                                            <a href="/patientform/<%= user.userId %>" target="_blank"
+                                                class="btn btn-secondary me-1 add-btn ms-2 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">Patient Form</a>
+                                        </div>
+                                        <div class="text-end">
+                                            <a href="/users/idcard/<%= user._id %>" target="_blank"
+                                                class="btn btn-info me-1 add-btn ms-2">Download Id Card</a>
+                                        </div>
+                                        <div class="text-end">
+                                            <a href="/users/letter/<%= user._id %>" target="_blank"
+                                                class="btn btn-warning me-1 add-btn ms-2">Download Appointment Letter</a>
+                                        </div>
+                                        <div class="text-end">
+                                            <a href="/users/donation/<%= user._id %>" target="_blank"
+                                                class="btn btn-primary me-1 add-btn ms-2">Download Donation Receipt</a>
+                                        </div>
+                                    </div>
+                                   <% } %>
+                                    <div class="row">
+                                        
+                                        <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
+                                            <div class="widget-stat card bg-primary">
+                                                <div class="card-body  p-4">
+                                                    <div class="media">
+                                                        <span class="me-3">
+                                                            <i class="la la-user"></i>
+                                                        </span>
+                                                        <div class="media-body text-white">
+                                                            <p class="mb-1">
+                                                                <%= (user.role=='Admin' )?'Varified Users':'Your Users'
+                                                                    %>
+                                                            </p>
+                                                            <h3 class="text-white">
+                                                                <%= verified || 0 %>
+                                                            </h3>
+                                                            <a href="/users" class="text-white">View
+                                                                All</a>
+                                                            <!-- <a href="/applications/<%= user.userId %>" class="text-white ms-4">Create User</a> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        
+
+                                            <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
+                                                <div class="widget-stat card bg-warning">
+                                                    <div class="card-body p-4">
+                                                        <div class="media">
+                                                            <span class="me-3">
+                                                                <i class="la la-users"></i>
+                                                            </span>
+                                                            <div class="media-body text-white">
+                                                                <p class="mb-1">Unverified Users</p>
+                                                                <h3 class="text-white">
+                                                                    <%= unverified %>
+                                                                </h3>
+                                                                <a href="/applications/applied" class="text-white">View
+                                                                    All</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-info">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Unvarified Patients</p>
+                                                                    <h3 class="text-white">
+                                                                        <%= patients %>
+                                                                    </h3>
+                                                                    <a href="/patientform/patients"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                 <div class="col-xl-4 col-lg-6 col-sm-6 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-danger">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Pending Patients</p>
+                                                                    <h3 class="text-white">
+                                                                        <%= pendingpatients %>
+                                                                    </h3>
+                                                                    <a href="/patientform/pendingpatients"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-dark">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Varified Patients</p>
+                                                                    <h3 class="text-white">
+                                                                        <%= varifiedPatients %>
+                                                                    </h3>
+                                                                    <a href="/patientform/varifiedpatients"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-primary">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Track Orders</p>
+                                                                    
+                                                                    <a href="/patientorder/allorders"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-success">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Patient Orders</p>
+                                                                    <h3 class="text-white">
+                                                                        <%= patientsOrders %>
+                                                                    </h3>
+                                                                    <a href="/patientform/orders"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder') ?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-warning">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Total Delivered Orders</p>
+                                                                    <h3 class="text-white">
+                                                                        <%= deliveredOrders %>
+                                                                    </h3>
+                                                                    <a href="/patientform/delivered"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- user.type!='stockorder' ?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-success">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Money Transactions</p>
+                                                                    <a href="/stock/moneytransactions"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-warning">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Stock Transactions</p>
+                                                                    <a href="/stock/stocktransactions"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>">
+                                                    <div class="widget-stat card bg-info">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">My Stock</p>
+                                                                    <a href="/stock/mystock"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-4  col-lg-6 col-sm-6">
+                                                    <div class="widget-stat card bg-secondary">
+                                                        <div class="card-body p-4">
+                                                            <div class="media">
+                                                                <span class="me-3">
+                                                                    <i class="la la-hospital"></i>
+                                                                </span>
+                                                                <div class="media-body text-white">
+                                                                    <p class="mb-1">Profile</p>
+                                                                    <a href="/users/profile"
+                                                                        class="text-white">View All</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
+                                                <div class="col-xl-4 col-lg-6 col-sm-6">
+                                                    <div class="widget-stat card bg-info">
+                                                        <div class="card-body p-4 d-flex justify-content-center">
+                                                            <div class="media">
+                                                                <div class="media-body text-white text-center">
+                                                                    <!-- <p class="mb-1">Need Help</p> -->
+                                                                    <a href="/support/help" class="text-white" style="font-size: 20px;">Need
+                                                                        Help?</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
+                                                
+
+                                                <!-- <div class="col-xl-3  col-lg-6 col-sm-6">
+                                            <div class="widget-stat card bg-danger ">
+                                                <div class="card-body p-4">
+                                                    <div class="media">
+                                                        <span class="me-3">
+                                                            <i class="la la-dollar"></i>
+                                                        </span>
+                                                        <div class="media-body text-white">
+                                                            <p class="mb-1">Fees Collect</p>
+                                                            <h3 class="text-white">250$</h3>
+                                                            <div class="progress mb-2 bg-secondary">
+                                                                <div class="progress-bar progress-animated bg-white"
+                                                                    style="width: 30%"></div>
+                                                            </div>
+                                                            <small>30% Increase in 30 Days</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        
+                                        
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!--**********************************
+            Content body end
+        ***********************************-->
+
+                            <!--**********************************
+            Footer start
+        ***********************************-->
+                            <!-- <div class="footer">
+                                <div class="copyright">
+                                    <p>Copyright © Developed by <a href="https://logicwix.com/"
+                                            target="_blank">LogicWix</a>
+                                        2025
+                                    </p>
+                                </div>
+                            </div> -->
+                            <!--**********************************
+            Footer end
+        ***********************************-->
+
+                            <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+                            <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+            </div>
+            <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+            <!--**********************************
+        Scripts
+    ***********************************-->
+            <!-- Required vendors -->
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/chart.js/Chart.bundle.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+            <script src="/vendor/apexchart/apexchart.js"></script>
+
+            <!-- Dashboard 1 -->
+            <script src="/js/dashboard/dashboard-1.js"></script>
+            <script src="/vendor/swiper/js/swiper-bundle.min.js"></script>
+
+
+            <!-- JS for dotted map -->
+            <script src="/vendor/dotted-map/js/contrib/jquery.smallipop-0.3.0.min.js"></script>
+            <script src="/vendor/dotted-map/js/contrib/suntimes.js"></script>
+            <script src="/vendor/dotted-map/js/contrib/color-0.4.1.js"></script>
+
+            <script src="/vendor/dotted-map/js/world.js"></script>
+            <script src="/vendor/dotted-map/js/smallimap.js"></script>
+            <script src="/js/dashboard/dotted-map-init.js"></script>
+
+            <!-- Apex Chart -->
+
+
+
+            <!-- Vectormap -->
+            <script src="/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+            <script src="/vendor/jqvmap/js/jquery.vmap.world.js"></script>
+            <script src="/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+
+            <script>
+                var swiper = new Swiper(".mySwiper", {
+                    slidesPerView: 5,
+                    //spaceBetween: 30,
+                    pagination: {
+                        el: ".swiper-pagination",
+                        clickable: true,
+                    },
+                    breakpoints: {
+
+                        300: {
+                            slidesPerView: 1,
+                            spaceBetween: 20,
+                        },
+                        416: {
+                            slidesPerView: 2,
+                            spaceBetween: 20,
+                        },
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 20,
+                        },
+                        1280: {
+                            slidesPerView: 4,
+                            spaceBetween: 10,
+                        },
+                        1788: {
+                            slidesPerView: 5,
+                            spaceBetween: 20,
+                        },
+                    },
+                });
+
+
+                $(document).on('click', '.logout-btn', function (e) {
+                    Swal.fire({
+                        title: "Do you want to Logout?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: `/auth/logout`,
+                                method: "POST",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.logout) {
+                                        window.location.href = '/'
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
+                })
+
+                var handleNavigation = function () {
+                    $(".nav-control").on('click', function () {
+
+                        $('#main-wrapper').toggleClass("menu-toggle");
+
+                        $(".hamburger").toggleClass("is-active");
+                    });
+                }
+
+                handleNavigation()
+            </script>
+
+
+
+    </body>
+
+</html>

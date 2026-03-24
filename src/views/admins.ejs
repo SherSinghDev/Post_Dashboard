@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./globals/head') %>
+
+    <body>
+
+        <!--*******************
+        Preloader start
+    ********************-->
+        <%- include('./globals/preloader') %>
+            <!--*******************
+        Preloader end
+    ********************-->
+
+            <!--**********************************
+        Main wrapper start
+    ***********************************-->
+            <div id="main-wrapper">
+                <!--**********************************
+            Nav header start
+        ***********************************-->
+                <%- include('globals/navHeader') %>
+                    <!--**********************************
+            Nav header end
+        ***********************************-->
+
+                    <!--**********************************
+            Chat box start
+        ***********************************-->
+
+                    <!--**********************************
+            Chat box End
+        ***********************************-->
+
+                    <!--**********************************
+            Header start
+        ***********************************-->
+                    <%- include('globals/header') %>
+                        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                        <!--**********************************
+            Sidebar start
+        ***********************************-->
+                        <%- include('globals/sidebar') %>
+
+                            <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                            <!--**********************************
+            Content body start
+        ***********************************-->
+                            <div class="content-body">
+                                <div class="container">
+                                    <div class="text-end">
+                                        <a href="javascript:void(0);" class="btn btn-primary me-1 add-btn">+ New
+                                            Admin</a>
+
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-xl-12">
+                                            <div class="card mt-2">
+                                                <div class="card-body">
+                                                    <div class="table-responsive text-center">
+                                                        <table class="table table-striped align-middle main-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>User Id</th>
+                                                                    <th>Name</th>
+                                                                    <th>Email</th>
+                                                                    <th>Mobile</th>
+                                                                    <th>Created At</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% if (users.length> 0) { %>
+                                                                    <% users.forEach((app, index)=> { %>
+
+                                                                        <tr id="tr-<%= app._id %>">
+                                                                            <td>
+                                                                                <%= app.userId %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.name %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.email %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.mobile %>
+                                                                            </td>
+
+
+                                                                            <td>
+                                                                                <%= new
+                                                                                    Date(app.createdAt).toLocaleDateString()
+                                                                                    %>
+                                                                            </td>
+                                                                            <!-- <td>
+																					<%= app.approveStatus || 'N/A' %>
+																				</td> -->
+                                                                            <td>
+                                                                                <a href="tel:+91 <%= app.mobile %>"
+                                                                                    class=" btn btn-sm btn-info">
+                                                                                    <i class="fa-solid fa-phone"
+                                                                                        style="color:white;"></i>
+                                                                                </a>
+
+
+
+                                                                                <a href="javascript:void(0)"
+                                                                                    data-id="<%= app._id %>"
+                                                                                    class="btn btn-sm btn-success edit-btn"><i
+                                                                                        class="fa-solid fa-pen"></i></a>
+
+                                                                                <a href="javascript:void(0)"
+                                                                                    data-id="<%= app._id %>"
+                                                                                    class="btn btn-sm btn-danger delete-btn">
+                                                                                    <i class="fa-solid fa-trash"></i>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <% }) %>
+                                                                            <% } else { %>
+                                                                                <tr>
+                                                                                    <td colspan="10"
+                                                                                        class="text-center text-muted">
+                                                                                        No applications found
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <% } %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+            </div>
+
+            <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+            <!-- Edit Modal -->
+            <div class="modal fade edit-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- <div id="view-details" class="p-2">
+
+                                            </div> -->
+
+                            <form action="index.html" id="edit-form">
+                                <div class="mb-3">
+                                    <label class="mb-1"><strong>Username</strong></label>
+                                    <input type="text" name="name" class="form-control" placeholder="username">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-1"><strong>Email</strong></label>
+                                    <input type="email" name="email" class="form-control"
+                                        placeholder="hello@example.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-1"><strong>Mobile</strong></label>
+                                    <input type="text" name="mobile" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-1"><strong>Password</strong></label>
+                                    <input type="password" name="password" class="form-control"
+                                        placeholder="Create Password">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-1"><strong>Register As</strong></label>
+                                    <select name="role" id="select-role" class="form-select py-3">
+                                        <option value="Admin" selected>Admin</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 referred <%- (user.role == 'Team Leader')? '' : 'd-none'%>">
+                                    <label class="mb-1"><strong>Referred By</strong></label>
+                                    <input type="text" value="<%= user.referralCode %>" name="referredBy"
+                                        class="form-control" placeholder="Enter Referred Id">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="mb-1"><strong>City</strong></label>
+                                    <input type="text" name="city" class="form-control" placeholder="Enter Your City">
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--**********************************
+            Footer start
+        ***********************************-->
+
+            <!--**********************************
+            Footer end
+        ***********************************-->
+
+            <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+            <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+            </div>
+            <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+            <!--**********************************
+        Scripts
+    ***********************************-->
+            <!-- Required vendors -->
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+            <!-- Dashboard 1 -->
+            <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="/js/plugins-init/datatables.init.js"></script>
+
+
+            <!-- JS for dotted map -->
+
+
+
+
+            <!-- Apex Chart -->
+
+
+
+            <!-- Vectormap -->
+
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+            <script src="/js/pages/patients.js"></script>
+            <script>
+                // delete
+                $(document).on('click', '.delete-btn', function () {
+                    Swal.fire({
+                        title: "Do you want to delete the record?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Delete",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            let id = $(this).attr('data-id')
+                            console.log(id);
+                            $.ajax({
+                                url: `/users/delete/${id}`,
+                                method: "DELETE",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.deleted) {
+                                        Swal.fire({
+                                            title: "Success!",
+                                            icon: "success",
+                                            text: "Deleted Successfully",
+                                            timer: 1500
+                                        });
+                                        $(`#tr-${id}`).fadeOut(800);
+                                        // $(data.card).fadeOut(1000)
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
+
+                })
+
+
+                // ---------new--------
+
+                // 👁 View application details
+                $(document).on('click', '.edit-btn', function () {
+                    const id = $(this).data('id');
+                    $('#edit-form').attr('data-url', `/auth/adminupdate/${id}`)
+
+                    fetch(`/users/one/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const app = data.data;
+                                console.log(app);
+
+                                const form = document.getElementById('edit-form');
+
+                                // 🧩 Function to fill form and show previews
+                                const fillForm = (dataObj, prefix = '') => {
+                                    Object.keys(dataObj).forEach(key => {
+                                        let fieldName = prefix
+                                            ? `${prefix}${key.charAt(0).toUpperCase() + key.slice(1)}`
+                                            : key;
+
+                                        // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        if (key === 'district') fieldName = 'city';
+                                        const field = form.querySelector(`[name="${fieldName}"]`);
+                                        let value = dataObj[key];
+                                        if (!field) return;
+                                        // if (key === 'referredBy') value = `${app.referralUser?.name}(${app.referredBy})`
+
+                                        // 🔘 Others
+                                        if (field.tagName === 'SELECT') {
+                                            field.value = value || '';
+                                        } else if (field.type === 'radio' || field.type === 'checkbox') {
+                                            form.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
+                                                el.checked = el.value === value;
+                                            });
+                                        } else {
+                                            field.value = value || '';
+                                        }
+                                    });
+                                };
+
+                                // 🧩 Fill top-level and nested data
+                                fillForm(app);
+                                $('.edit-modal').modal('show');
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+
+
+
+
+
+                $(document).on('click', '.add-btn', function () {
+
+                    $('#edit-form').attr('data-url', '/auth/register')
+                    $('.modal-title').text("Create Admin")
+                    $('.edit-modal').modal('show');
+
+
+                });
+
+
+                // edit form submit
+                $(document).on('submit', '#edit-form', async function (e) {
+                    e.preventDefault();
+
+                    const form = e.target;
+                    let url = $(this).attr('data-url')
+                    let id = $(this).attr('data-id')
+
+                    let err = [];
+
+                    // console.log(form);
+
+
+                    // === Basic Validations ===
+                    const name = form.name.value.trim();
+                    const email = form.email.value.trim();
+                    const password = form.password.value.trim();
+                    const mobile = form.mobile.value.trim();
+                    const city = form.city.value.trim();
+                    const role = form.role.value.trim();
+
+                    let action = $('.modal-title').text()
+
+                    // validations
+                    if (!name) err.push("Full Name is required!");
+                    if (!email) err.push("Email is required!");
+                    if (!action == "Create Admin") {
+                        if (!password) err.push("Password is required!");
+                    }
+                    if (!mobile) err.push("Mobile is required!");
+                    if (!city) err.push("City is required!");
+
+
+                    // If errors, show alert and stop
+                    if (err.length > 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Form Validation Error",
+                            html: err.join("<br>"),
+                        });
+                        return;
+                    }
+
+
+                    if (!action == "Create Admin") {
+                        // === Confirm before submitting ===
+                        const confirmation = await Swal.fire({
+                            title: "Are you sure?",
+                            text: "Once approved, this application will be submitted!",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonText: "Yes, Submit",
+                            cancelButtonText: "Cancel",
+                        });
+
+                        if (!confirmation.isConfirmed) return;
+                    }
+
+                    let data = {
+                        name,
+                        email,
+                        password,
+                        mobile,
+                        district: city,
+                        role,
+                    }
+
+
+                    try {
+                        // const res = await fetch(`/users/update/${id}`, {
+                        //     method: "POST",
+                        //     body: new FormData(e.target),
+                        // });
+
+                        const res = await fetch(url, {
+                            method: "POST",
+                            body: JSON.stringify(data),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        });
+
+                        const result = await res.json();
+
+                        if (result.created) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: result.message || "Application approved successfully!",
+                                timer: 1500,
+                                showConfirmButton: false,
+                            });
+
+                            setTimeout(() => {
+                                $('.view-modal').modal('hide');
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.message || "Something went wrong while approving.",
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Network Error",
+                            text: err.message,
+                        });
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+                $(document).on('click', '.logout-btn', function (e) {
+                    Swal.fire({
+                        title: "Do you want to Logout?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: `/auth/logout`,
+                                method: "POST",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.logout) {
+                                        window.location.href = '/'
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
+                })
+
+                var handleNavigation = function () {
+                    $(".nav-control").on('click', function () {
+
+                        $('#main-wrapper').toggleClass("menu-toggle");
+
+                        $(".hamburger").toggleClass("is-active");
+                    });
+                }
+
+                handleNavigation()
+            </script>
+    </body>
+
+</html>

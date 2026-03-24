@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./globals/head') %>
+
+    <body>
+
+        <!--*******************
+        Preloader start
+    ********************-->
+        <%- include('./globals/preloader') %>
+            <!--*******************
+        Preloader end
+    ********************-->
+
+            <!--**********************************
+        Main wrapper start
+    ***********************************-->
+            <div id="main-wrapper">
+                <!--**********************************
+            Nav header start
+        ***********************************-->
+                <%- include('globals/navHeader') %>
+                    <!--**********************************
+            Nav header end
+        ***********************************-->
+
+                    <!--**********************************
+            Chat box start
+        ***********************************-->
+
+                    <!--**********************************
+            Chat box End
+        ***********************************-->
+
+                    <!--**********************************
+            Header start
+        ***********************************-->
+                    <%- include('globals/header') %>
+                        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                        <!--**********************************
+            Sidebar start
+        ***********************************-->
+                        <%- include('globals/sidebar') %>
+
+                            <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+
+                            <div class="content-body">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="card overflow-hidden">
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <!-- <div class="profile-photo">
+                                                            <img src="images/profile/profile.png" width="100"
+                                                                class="img-fluid rounded-circle" alt="">
+                                                        </div> -->
+                                                        <h3 class="mt-4 mb-1">
+                                                            <%= user.name %>
+                                                        </h3>
+                                                        <p class="m-0">
+                                                            <%= user.role %>
+                                                        </p>
+                                                        <p class="m-0">
+                                                            <%= user.city %>
+                                                        </p>
+                                                        <!-- <a class="btn btn-outline-primary btn-rounded mt-3 px-5"
+                                                            href="javascript:void();">Folllow</a> -->
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-footer pt-0 pb-0 text-center">
+                                                    <div class="row">
+                                                        <div class="col-6 pt-3 pb-3 border-end">
+                                                            <h3 class="mb-1">
+                                                                <%= coord.length %>
+                                                            </h3><span>Coordinators</span>
+                                                        </div>
+                                                        <div class="col-6 pt-3 pb-3">
+                                                            <h3 class="mb-1">
+                                                                <%= user.referralCode %>
+                                                            </h3><span>Referral Code</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card pt-3">
+
+                                            <div class="table-responsive">
+                                                <table class="table table-responsive-md">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width:80px;"><strong>#</strong></th>
+                                                            <th><strong>NAME</strong></th>
+                                                            <th><strong>EMAIL</strong></th>
+                                                            <th><strong>CITY</strong></th>
+                                                            <th><strong>ROLE</strong></th>
+                                                            <th><strong>REFERRED BY</strong></th>
+                                                            <!-- <th></th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <% coord.forEach((co,i)=>{ %>
+                                                            <tr>
+                                                                <td><strong><%- i + 1 %></strong></td>
+                                                                <td><%- co.name %></td>
+                                                                <td><%- co.email %></td>
+                                                                <td><%- co.city %></td>
+                                                                <td><%- co.role %></td>
+                                                                <td><%= user.name %></td>
+                                                                
+                                                                <!-- <td>
+                                                                    <div class="dropdown">
+                                                                        <button type="button"
+                                                                            class="btn btn-success light sharp"
+                                                                            data-bs-toggle="dropdown">
+                                                                            <svg width="20px" height="20px"
+                                                                                viewBox="0 0 24 24" version="1.1">
+                                                                                <g stroke="none" stroke-width="1"
+                                                                                    fill="none" fill-rule="evenodd">
+                                                                                    <rect x="0" y="0" width="24"
+                                                                                        height="24" />
+                                                                                    <circle fill="#000000" cx="5"
+                                                                                        cy="12" r="2" />
+                                                                                    <circle fill="#000000" cx="12"
+                                                                                        cy="12" r="2" />
+                                                                                    <circle fill="#000000" cx="19"
+                                                                                        cy="12" r="2" />
+                                                                                </g>
+                                                                            </svg>
+                                                                        </button>
+                                                                        <div class="dropdown-menu">
+                                                                            <a class="dropdown-item" href="#">Edit</a>
+                                                                            <a class="dropdown-item" href="#">Delete</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td> -->
+                                                            </tr>
+                                                            <% }) %>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            </div>
+
+            <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+            <!-- Modal -->
+
+
+            <!--**********************************
+            Footer start
+        ***********************************-->
+
+            <!--**********************************
+            Footer end
+        ***********************************-->
+
+            <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+            <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+            </div>
+            <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+            <!--**********************************
+        Scripts
+    ***********************************-->
+            <!-- Required vendors -->
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+            <!-- Dashboard 1 -->
+            <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="/js/plugins-init/datatables.init.js"></script>
+
+
+            <!-- JS for dotted map -->
+
+
+
+
+            <!-- Apex Chart -->
+
+
+
+            <!-- Vectormap -->
+
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+            <script src="/js/pages/patients.js"></script>
+            <script>
+                $(document).on('click', '.edit-btn', function (e) {
+                    let url = $(this).attr('data-url')
+                    let form = $('#tracking-update')
+                    form.attr('data-url', url)
+                })
+
+                $(document).on('submit', '#tracking-update', function (e) {
+                    e.preventDefault()
+                    let form = $(this)
+                    let input = this.trackingid
+                    let url = form.attr('data-url')
+                    let data = {
+                        trackingId: input.value
+                    }
+
+                    $.ajax({
+                        url,
+                        data,
+                        method: "POST",
+                        success: function (data) {
+                            if (data.updated) {
+                                $('.btn-close').click()
+                                input.value = ''
+                                $(data.td).html(data.tdHtml)
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    })
+
+                })
+
+                // track btn
+                $(document).on('click', ".track-btn", function () {
+                    let id = $(this).attr('data-id')
+                    console.log(id);
+                    navigator.clipboard.writeText(id)
+                        .then(() => {
+                            console.log("Copied to clipboard");
+                            window.open('https://www.indiapost.gov.in/home', "_blank")
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                })
+
+
+
+                // delete
+                $(document).on('click', '.delete-btn', function () {
+                    Swal.fire({
+                        title: "Do you want to delete the record?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Delete",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            let id = $(this).attr('data-id')
+                            console.log(id);
+                            $.ajax({
+                                url: `/users/delete/${id}`,
+                                method: "DELETE",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.deleted) {
+                                        Swal.fire({
+                                            title: "Success!",
+                                            icon: "success",
+                                            text: "Deleted Successfully",
+                                            timer: 1500
+                                        });
+                                        console.log(data.tr);
+                                        $(data.tr).fadeOut(1000)
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
+
+                })
+
+                $(document).on('click', '.logout-btn', function (e) {
+                    Swal.fire({
+                        title: "Do you want to Logout?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: `/auth/logout`,
+                                method: "POST",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.logout) {
+                                        window.location.href = '/'
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
+                })
+
+                var handleNavigation = function () {
+                    $(".nav-control").on('click', function () {
+
+                        $('#main-wrapper').toggleClass("menu-toggle");
+
+                        $(".hamburger").toggleClass("is-active");
+                    });
+                }
+
+                handleNavigation()
+            </script>
+    </body>
+
+</html>

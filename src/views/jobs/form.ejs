@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>BSRF Parcel Mangament System</title>
+
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="vh-100" style=" background-position:center; overflow: scroll;">
+    <div class="authincation py-5">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-10">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <!-- <div class="text-center mb-3">
+										<a href="index.html"><img src="images/logo/logo-full.png" alt=""></a>
+									</div> -->
+
+
+
+                                    <form action="/register" id="register-form" method="POST"
+                                        enctype="multipart/form-data">
+                                        <h3 class="mb-3 text-center">Job Registration Form</h3>
+
+                                        <!-- Row 1: Name & Gender -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Full Name</strong></label>
+                                                <input type="text" id="name" name="name" class="form-control"
+                                                    placeholder="Enter your full name">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Email</strong></label>
+                                                <input type="email" id="email" name="email" class="form-control"
+                                                    placeholder="Enter your email">
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="mb-1"><strong>Full Address</strong></label>
+                                                <input type="text" id="address" name="address" class="form-control"
+                                                    placeholder="Enter your full address">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Mobile</strong></label>
+                                                <input type="number" id="mobile" name="mobile" class="form-control"
+                                                    placeholder="Enter your mobile number">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Pincode</strong></label>
+                                                <input type="number" id="pinCode" name="pinCode" class="form-control"
+                                                    placeholder="Enter your pincode">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mb-3 d-none">
+                                            <div class="col-lg-6">
+                                                <label class="form-label">Select Job Type</label>
+                                                <select name="jobType" id="jobType" style="padding-block: 11px;" class="form-select">
+                                                    <option value="">Select Form</option>
+                                                    <option value="finance" <%- jobType=='finance' ?'selected':'' %> >F1
+                                                    </option>
+                                                    <option value="healthsingalorder" <%- jobType=='healthsingalorder'
+                                                        ?'selected':'' %>>F2
+                                                    </option>
+                                                    <option value="healthsalary" <%- jobType=='healthsalary'
+                                                        ?'selected':'' %>>F3
+                                                    </option>
+                                                    <option value="healthstock" <%- jobType=='healthstock'
+                                                        ?'selected':'' %>>F4
+                                                    </option>
+                                                    <option value="holidays" <%- jobType=='holidays' ?'selected':'' %>
+                                                        >F5
+                                                    </option>
+                                                    <option value="ecommerce" <%- jobType=='ecommerce' ?'selected':'' %>
+                                                        >F6
+                                                    </option>
+                                                    <option value="bsrfhospitalalloptahy" <%-
+                                                        jobType=='bsrfhospitalalloptahy' ?'selected':'' %>>F6
+                                                    </option>
+                                                    <option value="bsrfsolarproject" <%- jobType=='bsrfsolarproject'
+                                                        ?'selected':'' %>>F6
+                                                    </option>
+                                                    <option value="bsrfeducationproject" <%-
+                                                        jobType=='bsrfeducationproject' ?'selected':'' %>>F6
+                                                    </option>
+                                                    <option value="jjhayurveda" <%- jobType=='jjhayurveda'
+                                                        ?'selected':'' %>>F6
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-primary btn-block">Submit
+                                                Registration</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+	Scripts
+***********************************-->
+    <!-- Required vendors -->
+    <!-- <script src="/vendor/global/global.min.js"></script> -->
+    <!-- <script src="/js/custom.js"></script> -->
+    <!-- <script src="/js/deznav-init.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+
+    <script>
+
+        $(document).on('submit', '#register-form', async function (e) {
+            e.preventDefault();
+
+            // Collect form values
+            const name = $('#name').val().trim();
+            console.log($('#name'));
+            const address = $('#address').val().trim();
+            console.log($('#address'));
+            const pinCode = $('#pinCode').val().trim();
+            console.log($('#pinCode'));
+            const email = $('#email').val().trim();
+            console.log($('#email'));
+            const mobile = $('#mobile').val().trim();
+            console.log($('#mobile'));
+            const jobType = $('#jobType').val().trim();
+            console.log($('#jobType'));
+
+            // Validation
+            let err = [];
+
+            if (mobile.length !== 10) {
+                err.push("Mobile Number Should Be Of 10 Digits!");
+            }
+
+            if (!name || !address || !pinCode || !email || !mobile) {
+                err.push("All fields are required!");
+            }
+
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+                return;
+            }
+
+            try {
+                const res = await fetch('/jobs/apply-job', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name,
+                        address,
+                        pinCode,
+                        email,
+                        mobile,
+                        jobType
+                    })
+                });
+
+                const result = await res.json();
+
+                if (result.created) {
+                    Swal.fire({
+                        title: "Success!",
+                        icon: "success",
+                        text: result.message,
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+
+                    e.target.reset()
+                    // setTimeout(() => {
+                    //     window.location.href = '/';
+                    // }, 1500);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: result.message,
+                    });
+                }
+
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Network Error",
+                    text: err.message,
+                });
+            }
+        });
+
+
+
+       
+    </script>
+
+</body>
+
+</html>

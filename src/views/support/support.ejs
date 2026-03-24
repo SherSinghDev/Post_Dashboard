@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Support | Parcel App</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #fff3f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .support-wrapper {
+            max-width: 450px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .support-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .support-header h1 {
+            color: #d81b60;
+            margin-bottom: 6px;
+        }
+
+        .support-header p {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .support-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            padding: 14px;
+            text-align: center;
+            border-radius: 12px;
+            background: #f5f5f5;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            background: #ffd1e8;
+        }
+
+        .card.active {
+            background: #d81b60;
+            color: white;
+        }
+
+        .support-form label {
+            font-size: 13px;
+            margin-top: 12px;
+            display: block;
+        }
+
+        .support-form input,
+        .support-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .support-form textarea {
+            resize: none;
+            height: 90px;
+        }
+
+        .support-form button {
+            margin-top: 16px;
+            width: 100%;
+            background: #d81b60;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .support-form button:hover {
+            background: #c2185b;
+        }
+
+        .support-note {
+            margin-top: 14px;
+            font-size: 13px;
+            color: #555;
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+</head>
+
+<body>
+
+    <div class="support-wrapper">
+
+        <!-- Header -->
+        <div class="support-header">
+            <h1>Need Help? 🤝</h1>
+            <p>Our support team will call you and resolve your issue</p>
+        </div>
+
+        <!-- Support Cards -->
+        <div class="support-cards">
+            <div class="card active" data-category="Parcel Delay">📦 Parcel Delay</div>
+            <div class="card" data-category="Lost Parcel">❌ Lost Parcel</div>
+            <div class="card" data-category="Payment Issue">💳 Payment Issue</div>
+            <div class="card" data-category="Pickup Issue">🚚 Pickup Issue</div>
+            <div class="card" data-category="Other">❓ Other</div>
+        </div>
+
+        <!-- Support Form -->
+        <form class="support-form">
+            <input type="hidden" name="category" id="categoryInput">
+
+            <label>Parcel ID (optional)</label>
+            <input type="text" name="parcelId" placeholder="Enter Parcel ID">
+
+            <label>Describe your issue</label>
+            <textarea name="issueSummary" placeholder="Tell us what went wrong..." required></textarea>
+
+            <button type="submit">Request Support Call</button>
+        </form>
+
+        <div class="support-note">
+            📞 Our executive will call you within <b>24 hours</b>
+        </div>
+
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+    <script>
+
+        let valid = '<%=already%>'
+        if (+valid) {
+            alert("Your Previouse Request is Pending")
+            window.location.href = '/'
+        }
+        const cards = document.querySelectorAll('.card');
+        const categoryInput = document.getElementById('categoryInput');
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                cards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                categoryInput.value = card.dataset.category;
+            });
+        });
+
+        categoryInput.value = 'Parcel Delay';
+
+
+        $(document).on('submit', '.support-form', function (e) {
+            e.preventDefault()
+            // const id = $(this).data('id');
+            // console.log(id);
+            let form = this
+            let {
+                issueSummary,
+            } = form
+
+            let inputs = {
+                issueSummary,
+            }
+
+
+            let err = []
+
+            for (let key in inputs) {
+                if (!inputs[key].value) {
+                    let text = inputs[key].previousElementSibling?.innerText
+                    err.push(text)
+                }
+            }
+
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+            }
+            else {
+                let data = {
+                    category: form.category.value,
+                    parcelId: form.parcelId.value,
+                    issueSummary: form.issueSummary.value
+                }
+                // for (let key in inputs) {
+                //     data = { ...data, [key]: inputs[key].value }
+                // }
+
+                // data = { ...data, id }
+                // console.log(data);
+                fetch(`/support/support/create`, {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    // body: new FormData(e.target),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                })
+                    .then((data) => {
+                        return data.json()
+                    })
+                    .then((result) => {
+                        console.log(result);
+                        if (result.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: "Your Request is Send!",
+                                timer: 2000
+
+                            });
+                            e.target.reset()
+                            window.location.href = '/'
+                        }
+                        else {
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.error,
+                                // timer: 1000
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

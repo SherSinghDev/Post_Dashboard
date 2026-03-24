@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Registration Form</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Google Font -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            font-family: "Poppins", sans-serif;
+            min-height: 100vh;
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px 50px;
+            max-width: 900px;
+            margin: auto;
+            transition: transform 0.3s ease;
+        }
+
+        /* .form-card:hover {
+            transform: translateY(-5px);
+        } */
+
+        h2 {
+            font-weight: 600;
+            color: #1976d2;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        label.form-label {
+            font-weight: 500;
+            color: #0d47a1;
+            font-size: 0.95rem;
+        }
+
+        input.form-control,
+        select.form-select {
+            border-radius: 10px;
+            border: 1px solid #90caf9;
+            transition: all 0.2s ease-in-out;
+        }
+
+        input.form-control:focus,
+        select.form-select:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.2);
+        }
+
+        .form-check-label {
+            color: #1565c0;
+        }
+
+        .btn-success {
+            background-color: #2e7d32;
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-success:hover {
+            background-color: #1b5e20;
+            transform: scale(1.05);
+        }
+
+        .form-section-title {
+            font-weight: 600;
+            color: #0d47a1;
+            border-left: 5px solid #1976d2;
+            padding-left: 10px;
+            margin-bottom: 20px;
+        }
+
+        .health-project-banner {
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '746547781589070');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=746547781589070&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
+
+</head>
+
+<body>
+
+
+
+    <div class="container py-5">
+        <div class="form-card">
+            <div class="text-center mb-4">
+                <img src="/images/card/seva.png" alt="" class="w-100">
+            </div>
+            <div
+                class="health-project-banner p-6 mb-6 rounded-2xl shadow-md bg-gradient-to-r from-green-100 via-emerald-50 to-green-100 border border-green-300">
+                <h2 class="text-2xl font-bold text-green-800 text-center mb-3">🌿 BSRF FREE HEALTH PROJECT 🌿</h2>
+                <ul class="list-disc pl-6 text-gray-800 text-lg leading-relaxed">
+                    <li>🔎 <strong>नि:शुल्क पंजीकरण</strong></li>
+                    <li>🔎 <strong>नि:शुल्क परामर्श</strong></li>
+                    <li>🔎 <strong>नि:शुल्क आयुर्वेदिक औषधिया</strong></li>
+                    <li>🔎 <strong>रोग ठीक होने तक नि:शुल्क इलाज</strong></li>
+                    <li>🔎 <strong>एक बार में 1 साल तक फ्री आयुर्वेदिक औषधियां</strong></li>
+                    <li>🔎 <strong>घर पहुंचने पर केवल हैंडलिंग और कोरियर चार्जेस</strong></li>
+
+                </ul>
+            </div>
+            <h2 class="mt-5">🩺 Patient Registration Form</h2>
+            <form action="/submit-patient-form" method="POST" id="patient-form" enctype="multipart/form-data">
+
+                <!-- Basic Info -->
+                <div class="form-section-title">Personal Information</div>
+                <div class="row mb-3">
+                    <div class="col-lg-6">
+                        <label class="form-label">मरीज का नाम / Patient's Name *</label>
+                        <input type="text" name="patientName" class="form-control" required />
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">पिता/पति का नाम / Father's or Husband's Name *</label>
+                        <input type="text" name="fatherOrHusbandName" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">लिंग / Gender *</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="Male" required />
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="Female" />
+                            <label class="form-check-label">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" value="Other" />
+                            <label class="form-check-label">Other</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Section -->
+                <div class="form-section-title mt-4">Address Details</div>
+                <div class="row mb-3">
+                    <div class="col-lg-6">
+                        <label class="form-label">मकान / सड़क / House / Flat / Street *</label>
+                        <input type="text" name="houseOrStreet" class="form-control" required />
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">इलाका / गाँव / मोहल्ला / Locality *</label>
+                        <input type="text" name="locality" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-lg-6">
+                        <label class="form-label">शहर / तहसील / जिला / City / District *</label>
+                        <input type="text" name="cityOrDistrict" class="form-control" required />
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">राज्य / State *</label>
+                        <input type="text" name="state" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-lg-6">
+                        <label class="form-label">LANDMARK / नज़दीकी प्रसिद्ध स्थान *</label>
+                        <input type="text" name="landmark" class="form-control" required />
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">पिन कोड / Pin Code *</label>
+                        <input type="text" name="pinCode" class="form-control" required />
+                    </div>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="form-section-title mt-4">Contact Details</div>
+                <div class="row mb-3">
+                    <div class="col-lg-6">
+                        <label class="form-label">मोबाइल नंबर / Mobile Number *</label>
+                        <input type="text" name="mobileNumber" class="form-control" required />
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">Emergency Contact Number</label>
+                        <input type="text" name="emergencyContact" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="form-section-title mt-4 d-none">Filled By A Coordinator?</div>
+                <div class="row mb-3 d-none">
+                    <div class="col-lg-6">
+                        <label class="form-label">Select Name</label>
+                        <select name="referredBy" style="padding-block: 11px;" class="form-select">
+                            <option value="" selected>Select User</option>
+                            <% users.forEach((u)=>{%>
+                                <option value="<%- u.userId %>" <%=u.userId==id?'selected':'' %> ><%- u.userId %>
+                                </option>
+                                <%})%>
+
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label class="form-label">Select Type</label>
+                        <select name="type" style="padding-block: 11px;" class="form-select">
+                            <option value="">Select Type</option>
+
+                            <option value="<%- type %>" selected><%- type %></option>
+
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row mb-3 d-none">
+                    <div class="col-lg-6">
+                        <label class="form-label">Select Form Type</label>
+                        <select name="formType" style="padding-block: 11px;" class="form-select">
+                            <option value="">Select Form</option>
+                            <option value="form1" <%- formType=='form1' ?'selected':'' %> >F1</option>
+                            <option value="form2" <%- formType=='form2' ?'selected':'' %>>F2</option>
+                            <option value="form3" <%- formType=='form3' ?'selected':'' %>>F3</option>
+                            <option value="form4" <%- formType=='form4' ?'selected':'' %>>F4</option>
+                            <option value="form5" <%- formType=='form5' ?'selected':'' %>>F5</option>
+                            <option value="form6" <%- formType=='form6' ?'selected':'' %>>F6</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Medical Info -->
+                <div class="form-section-title mt-4">Medical Details</div>
+                <div class="mb-3">
+                    <label class="form-label">बीमारी का लक्षण / Name of Disease *</label>
+                    <input type="text" name="diseaseName" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">औषधि अवधि / Treatment Duration *</label>
+                    <select name="duration" style="padding-block: 11px;" class="form-select" required>
+                        <option value="">Select Treatment Duration</option>
+                        <option value="3 Months">3 Months</option>
+                        <option value="6 Months">6 Months</option>
+                        <option value="9 Months">9 Months</option>
+                        <option value="12 Months">12 Months</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Reports / यदि हो तो</label>
+                    <input type="file" name="medicalReport" class="form-control" />
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-5 py-2">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+    <script>
+        $(document).on('submit', '#patient-form', function (e) {
+            e.preventDefault()
+            let form = this
+            let {
+                patientName,
+                fatherOrHusbandName,
+                gender,
+                houseOrStreet,
+                locality,
+                cityOrDistrict,
+                state,
+                landmark,
+                pinCode,
+                mobileNumber,
+                emergencyContact,
+                diseaseName,
+                duration,
+                type
+                // medicalReport,
+            } = form
+
+            let inputs = {
+                patientName,
+                fatherOrHusbandName,
+                gender,
+                houseOrStreet,
+                locality,
+                cityOrDistrict,
+                state,
+                landmark,
+                pinCode,
+                mobileNumber,
+                emergencyContact,
+                diseaseName,
+                duration,
+                type
+                // medicalReport,
+            }
+
+
+            let err = []
+
+            for (let key in inputs) {
+                if (!inputs[key].value) {
+                    let text = inputs[key].previousElementSibling?.innerText
+                    err.push(text)
+                }
+            }
+
+            if (mobileNumber.value.length != 10 || emergencyContact.value.length != 10) {
+                err.push("Mobile Numbers Should Be Of 10 Digits!")
+            }
+
+            if (err.length > 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: err.join('<br>'),
+                });
+            }
+            else {
+                fetch('/patientform/form', {
+                    method: "POST",
+                    body: new FormData(e.target),
+                })
+                    .then((data) => {
+                        return data.json()
+                    })
+                    .then((result) => {
+                        // console.log(result);
+                        if (result.created) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                html: result.message,
+                                // timer: 2000
+
+                            });
+                            e.target.reset()
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.message,
+                                timer: 1000
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
+        })
+    </script>
+</body>
+
+</html>
