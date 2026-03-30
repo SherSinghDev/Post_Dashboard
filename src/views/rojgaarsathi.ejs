@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./globals/head') %>
+
+    <body>
+        <%- include('./globals/preloader') %>
+
+            <div id="main-wrapper">
+                <%- include('globals/navHeader') %>
+                    <%- include('globals/header') %>
+                        <%- include('globals/sidebar') %>
+
+                            <!--**********************************
+          Content body start
+    ***********************************-->
+                            <div class="content-body">
+                                <div class="container">
+                                    <div class="d-flex justify-content-between mb-4 flex-wrap">
+                                        <div class="input-group w-auto mb-2 mb-xxl-0">
+                                            <input type="text" placeholder="Search by name, city, or mobile"
+                                                class="form-control search-input" style="width: 300px;">
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="card mt-2">
+                                                <div class="card-body">
+                                                    <div class="table-responsive text-center">
+                                                        <table class="table table-striped align-middle main-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Name</th>
+                                                                    <th>Email</th>
+                                                                    <th>City</th>
+                                                                    <th>State</th>
+                                                                    <th>Mobile</th>
+                                                                    <th>Membership Type</th>
+                                                                    <th>Position</th>
+                                                                    <!-- <th>Referrer Name & ID</th> -->
+                                                                    <th>Applied On</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% if (applications.length> 0) { %>
+                                                                    <% applications.forEach((app, index)=> { %>
+                                                                        <tr id="tr-<%= app._id %>">
+                                                                            <td>
+                                                                                <%= index + 1 %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.name %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.email %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.district %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.state %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.mobile %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= app.membershipType %>
+                                                                            </td>
+                                                                           
+                                                                            <td>
+                                                                                <%= app.position || 'NA' %>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <%= new
+                                                                                    Date(app.createdAt).toLocaleString()
+                                                                                    %>
+                                                                            </td>
+                                                                            
+                                                                            <td>
+                                                                                <a href="tel:+91 <%= app.mobile %>"
+                                                                                    class=" btn btn-sm btn-info">
+                                                                                    <i class="fa-solid fa-phone"
+                                                                                        style="color:white;"></i>
+                                                                                </a>
+                                                                                <!-- <a href="javascript:void(0)"
+                                                                                    
+                                                                                    class="btn btn-sm btn-success view-btn"><i
+                                                                                        class="fa-solid fa-check"></i></a> -->
+                                                                                <a href="javascript:void(0)"
+                                                                                    data-id="<%= app._id %>"
+                                                                                    class="btn btn-sm btn-danger delete-btn"><i
+                                                                                        class="fa-solid fa-trash"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% }) %>
+                                                                            <% } else { %>
+                                                                                <tr>
+                                                                                    <td colspan="10"
+                                                                                        class="text-center text-muted">
+                                                                                        No applications found</td>
+                                                                                </tr>
+                                                                                <% } %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--**********************************
+          Content body end
+    ***********************************-->
+
+                            <!-- View Modal -->
+                            <div class="modal fade view-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Transfer To Verify</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- <div id="view-details" class="p-2">
+
+                                            </div> -->
+
+                                            <form action="/register" id="approve-form" method="POST"
+                                                enctype="multipart/form-data">
+
+                                                <!-- Row 1: Name & Gender -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Full Name</strong></label>
+                                                        <input type="text" name="name" class="form-control"
+                                                            placeholder="Enter your full name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Gender</strong></label>
+                                                        <select name="gender" style="padding-block: 11px;"
+                                                            class="form-select">
+                                                            <option value="">Select Gender</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 2: DOB & Relation Type -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Date of Birth</strong></label>
+                                                        <input type="date" name="dateOfBirth" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Relation Type</strong></label>
+                                                        <div class="d-flex gap-2">
+                                                            <label class="mb-1 d-none"><strong>Relation
+                                                                    Type</strong></label>
+                                                            <select name="relationType" id="relationType"
+                                                                style="padding-block: 11px; width: 100px;"
+                                                                class="form-select">
+                                                                <option value="s/o">S/O</option>
+                                                                <option value="d/o">D/O</option>
+                                                                <option value="w/o">W/O</option>
+                                                            </select>
+                                                            <label class="mb-1 d-none"><strong>Relation
+                                                                    With</strong></label>
+                                                            <input type="text" id="relationOption" name="relationWith"
+                                                                class="form-control" placeholder="Son of">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 3: Profession & Blood Group -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Profession</strong></label>
+                                                        <select name="profession" style="padding-block: 11px;"
+                                                            class="form-select">
+                                                            <option value="">Select Profession</option>
+                                                            <option value="Government Job">Government Job</option>
+                                                            <option value="Private Job">Private Job</option>
+                                                            <option value="Police">Police</option>
+                                                            <option value="Army">Army</option>
+                                                            <option value="Farmer">Farmer</option>
+                                                            <option value="Self Business">Self Business</option>
+                                                            <option value="Student">Student</option>
+                                                            <option value="Social Worker">Social Worker</option>
+                                                            <option value="House Wife">House Wife</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Blood Group</strong></label>
+                                                        <select name="bloodGroup" style="padding-block: 11px;"
+                                                            class="form-select">
+                                                            <option value="">Select Blood Group</option>
+                                                            <option value="A+">A+</option>
+                                                            <option value="A-">A-</option>
+                                                            <option value="B+">B+</option>
+                                                            <option value="B-">B-</option>
+                                                            <option value="O+">O+</option>
+                                                            <option value="O-">O-</option>
+                                                            <option value="AB+">AB+</option>
+                                                            <option value="AB-">AB-</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 4: State & District -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>State</strong></label>
+                                                        <input type="text" name="state" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>District</strong></label>
+                                                        <input type="text" name="district" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 5: Block & Village -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Block</strong></label>
+                                                        <input type="text" name="block" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Village</strong></label>
+                                                        <input type="text" name="village" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Full Address -->
+                                                <div class="mb-3">
+                                                    <label class="mb-1"><strong>Full Address</strong></label>
+                                                    <textarea name="fullAddress" class="form-control"
+                                                        placeholder="Enter full address"></textarea>
+                                                </div>
+
+                                                <!-- Row 4: State & District -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Authority <span
+                                                                    class="text-danger">*</span></strong></label>
+                                                        <input type="text" placeholder="Authority" name="authority"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Head <span
+                                                                    class="text-danger">*</span></strong></label>
+                                                        <input type="text" placeholder="Head" name="head"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 5: Block & Village -->
+
+
+                                                <!-- Row 6: Pin Code & Mobile -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Pin Code</strong></label>
+                                                        <input type="text" name="pinCode" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Mobile Number</strong></label>
+                                                        <input type="text" name="mobile" class="form-control"
+                                                            placeholder="Enter mobile number">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 7: Email & Aadhar -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Email</strong></label>
+                                                        <input type="email" name="email" class="form-control"
+                                                            placeholder="hello@example.com">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Aadhar Number</strong></label>
+                                                        <input type="text" name="aadharNo" class="form-control"
+                                                            placeholder="Enter Aadhar Number">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Documents Upload -->
+
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label class="mb-1"><strong>Profile Picture</strong></label>
+                                                        <input type="file" name="profilePicture"
+                                                            class="form-control d-none">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>ID Type</strong></label>
+                                                        <select name="idType" style="padding-block: 11px;"
+                                                            class="form-select">
+                                                            <option value="">Select ID Type</option>
+                                                            <option value="Aadhar Card">Aadhar Card</option>
+                                                            <option value="PAN Card">PAN Card</option>
+                                                            <option value="Voter Card">Voter Card</option>
+                                                            <option value="Driving Licence">Driving Licence</option>
+                                                            <option value="Rashan Card">Rashan Card</option>
+                                                            <option value="Class 10th Marksheet">Class 10th Marksheet
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Upload ID Document</strong></label>
+                                                        <input type="file" name="idDocument"
+                                                            class="form-control d-none">
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="mb-1"><strong>Upload Other Document</strong></label>
+                                                    <input type="file" name="otherDocument" class="form-control d-none">
+                                                </div>
+
+                                                <!-- Row 8: Membership & Referred By -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Membership Type</strong></label>
+                                                        <select name="membershipType" class="form-select"
+                                                            style="padding-block: 11px;">
+                                                            <option value="">Select Membership</option>
+                                                            <option value="One year Membership Fee (₹365)">One year
+                                                                Membership
+                                                                Fee (₹365)</option>
+                                                            <option value="Life time membership Fee (₹500)">Life time
+                                                                membership
+                                                                Fee (₹500)</option>
+                                                            <option
+                                                                value="One year membership Fee And Life time membership Fee (₹865)">
+                                                                One year membership Fee And Life time membership Fee
+                                                                (₹865)
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="mb-1"><strong>Member Position*</strong></label>
+                                                    <select name="position" id="position-select"
+                                                        style="padding-block: 11px;" class="form-select">
+                                                        <option value="">Select Position</option>
+                                                        <option value="Team Captain">Team Captain</option>
+                                                        <option value="District Advisor">District Advisor</option>
+                                                        <option value="Assistant District Advisor">Assistant
+                                                            District
+                                                            Advisor</option>
+                                                        <option value="Block Advisor/City Advisor">Block
+                                                            Advisor/City
+                                                            Advisor</option>
+                                                        <option value="Centre Advisor">Centre Advisor</option>
+                                                        </option>
+                                                        <option value="Program Manager">Program Manager</option>
+                                                        <option value="District Head">District Head</option>
+                                                        <option value="Assistant District Head">Assistant
+                                                            District
+                                                            Head</option>
+                                                        <option value="Block Head/City Head">Block Head/City
+                                                            Head
+                                                        </option>
+                                                        <option value="Centre Head">Centre Head</option>
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="mb-1"><strong>Form Type</strong></label>
+                                                    <input type="text" name="type" class="form-control">
+                                                </div>
+
+                                                <!-- <input type="text" name="type"  value=""> -->
+
+
+
+
+                                                <!-- Payment Details -->
+                                                <h5 class="mt-4 pay-option">User Verification Field</h5>
+                                                <div class="row mb-3 pay-option">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Parent User</strong></label>
+                                                        <select name="parentuser" id="parentuser" style="padding-block: 11px;"
+                                                            class="form-select">
+                                                            <option value="">Select Parent User</option>
+                                                            <option value="Bank Transfer Slip">Bank Transfer Slip
+                                                            </option>
+                                                            <option value="Paytm">Paytm</option>
+                                                            <option value="Google Pay">Google Pay</option>
+                                                            <option value="Phonepe">Phonepe</option>
+                                                            <option value="Amazon Pay">Amazon Pay</option>
+                                                            <option value="Cheque">Cheque</option>
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Validity Start <span
+                                                                    class="text-danger">*</span></strong></label>
+                                                        <input type="date" name="validstart" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Validity End <span
+                                                                    class="text-danger">*</span></strong></label>
+                                                        <input type="date" name="validend" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Pan Card</strong></label>
+                                                        <input type="text" name="panNumber" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Amount</strong></label>
+                                                        <input type="text" name="amount" class="form-control"
+                                                            placeholder="0">
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="text-center mt-4 pay-option">
+                                                    <button type="submit"
+                                                        class="btn btn-primary btn-block">Verify</button>
+                                                </div>
+
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--**********************************
+          Footer start
+    ***********************************-->
+
+                            <!--**********************************
+          Footer end
+    ***********************************-->
+
+            </div>
+
+            <!--**********************************
+        Scripts
+  ***********************************-->
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+            <!-- Dashboard 1 -->
+            <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="/js/plugins-init/datatables.init.js"></script>
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+            <script src="/js/pages/patients.js"></script>
+
+            <script>
+                // 🔍 Search filter
+                $(document).on('keyup', '.search-input', function () {
+                    const value = $(this).val().toLowerCase();
+                    $('tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                    });
+                });
+
+                $(document).on('change', '#relationType', function () {
+                    let val = $(this).val()
+                    // console.log(val);
+                    let placeVal = ''
+
+                    if (val == 's/o') {
+                        placeVal = 'Son of'
+                    }
+                    if (val == 'd/o') {
+                        placeVal = 'Daughter of'
+                    }
+                    if (val == 'w/o') {
+                        placeVal = 'Wife of'
+                    }
+
+                    $('#relationOption').attr('placeholder', placeVal)
+                })
+
+                // 👁 View application details
+                $(document).on('click', '.view-btn', function () {
+                    const id = $(this).data('id');
+                    $('#approve-form').attr('data-id', id)
+
+                    fetch(`/applications/one/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const app = data.data;
+                                // console.log(data.options);
+                                
+                                $('#parentuser').html(data.options)
+                                const form = document.getElementById('approve-form');
+
+                                // 🧩 Function to fill form and show previews
+                                const fillForm = (dataObj, prefix = '') => {
+                                    Object.keys(dataObj).forEach(key => {
+                                        // console.log(key);
+
+
+                                        let fieldName = prefix
+                                            ? `${prefix}${key.charAt(0).toUpperCase() + key.slice(1)}`
+                                            : key;
+
+                                        if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        const field = form.querySelector(`[name="${fieldName}"]`);
+                                        let value = dataObj[key];
+                                        // console.log(value);
+
+                                        if (key == 'position') {
+                                            // console.log(value);
+
+                                            let options = `<option value="">Select Position</option>
+                                                        <option value="Team Captain">Team Captain</option>
+                                                        <option value="District Advisor">District Advisor</option>
+                                                        <option value="Assistant District Advisor">Assistant District
+                                                            Advisor</option>
+                                                        <option value="Block Advisor/City Advisor">Block Advisor/City
+                                                            Advisor</option>
+                                                        <option value="Centre Advisor">Centre Advisor</option>
+                                                        </option>`
+
+
+
+                                            let options2 = `<option value="">Select Position</option>
+                                                <option value="Program Manager">Program Manager</option>
+                                                            <option value="District Head">District Head</option>
+                                                            <option value="Assistant District Head">Assistant District
+                                                                Head</option>
+                                                            <option value="Block Head/City Head">Block Head/City Head
+                                                            </option>
+                                                            <option value="Centre Head">Centre Head</option>`
+                                            // console.log(dataObj.type);
+
+                                            if (dataObj.type == 'singleorder') {
+                                                $('#position-select').html(options)
+                                            }
+                                            else {
+                                                $('#position-select').html(options2)
+                                            }
+                                        }
+
+                                        if (!field) return;
+                                        if (key === 'referredBy') value = app.referralUser ? `${app.referredBy}` : `${app.referredBy}`
+
+                                        // console.log(key);
+                                        // console.log(app[key]);
+
+                                        // 🖼 Handle all file/document/image fields
+                                        if (
+                                            field.type === 'file' ||
+                                            key.toLowerCase().includes('file') ||
+                                            key.toLowerCase().includes('document') ||
+                                            key.toLowerCase().includes('image') ||
+                                            key.toLowerCase().includes('url')
+                                        ) {
+                                            const previewContainerId = `${fieldName}-preview-container`;
+                                            let container = document.getElementById(previewContainerId);
+
+                                            if (!container) {
+                                                container = document.createElement('div');
+                                                container.id = previewContainerId;
+                                                container.style.marginTop = '10px';
+                                                field.insertAdjacentElement('afterend', container);
+                                            }
+
+                                            container.innerHTML = '';
+
+                                            if (value && typeof value === 'string' && (value.startsWith('http') || value.startsWith('/'))) {
+                                                const base = window.location.origin;
+                                                const url = value.startsWith('http') ? value : `${base}${value}`;
+
+                                                // 🧩 Create thumbnail image
+                                                const thumb = document.createElement('img');
+                                                thumb.src = url;
+                                                thumb.style.width = '120px';
+                                                thumb.style.height = '120px';
+                                                thumb.style.objectFit = 'cover';
+                                                thumb.style.border = '1px solid #ddd';
+                                                thumb.style.borderRadius = '6px';
+                                                thumb.style.cursor = 'pointer';
+                                                thumb.style.transition = 'transform 0.2s ease';
+                                                thumb.addEventListener('mouseenter', () => thumb.style.transform = 'scale(1.05)');
+                                                thumb.addEventListener('mouseleave', () => thumb.style.transform = 'scale(1)');
+
+                                                // Click → open full preview
+                                                thumb.addEventListener('click', () => openFullPreview(url));
+
+                                                container.appendChild(thumb);
+                                            }
+
+                                            return;
+                                        }
+
+                                        // 🗓 Date fields
+                                        if (field.type === 'date' && value) {
+                                            field.value = new Date(value).toISOString().split('T')[0];
+                                            return;
+                                        }
+
+                                        // 🔘 Others
+                                        if (field.tagName === 'SELECT') {
+                                            field.value = value || '';
+                                        } else if (field.type === 'radio' || field.type === 'checkbox') {
+                                            form.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
+                                                el.checked = el.value === value;
+                                            });
+                                        } else {
+                                            field.value = value || '';
+                                        }
+                                    });
+                                };
+
+                                // 🧩 Fill top-level and nested data
+                                fillForm(app);
+                                if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
+                                if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
+
+                                $('.view-modal').modal('show');
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+
+
+                // 🧩 Function to open fullscreen preview popup
+                function openFullPreview(url) {
+                    let overlay = document.getElementById('fullscreen-preview');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.id = 'fullscreen-preview';
+                        overlay.style.position = 'fixed';
+                        overlay.style.top = 0;
+                        overlay.style.left = 0;
+                        overlay.style.width = '100vw';
+                        overlay.style.height = '100vh';
+                        overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+                        overlay.style.display = 'flex';
+                        overlay.style.alignItems = 'center';
+                        overlay.style.justifyContent = 'center';
+                        overlay.style.zIndex = 2000;
+
+                        // close button
+                        const closeBtn = document.createElement('span');
+                        closeBtn.innerHTML = '&times;';
+                        closeBtn.style.position = 'absolute';
+                        closeBtn.style.top = '20px';
+                        closeBtn.style.right = '30px';
+                        closeBtn.style.fontSize = '40px';
+                        closeBtn.style.color = '#fff';
+                        closeBtn.style.cursor = 'pointer';
+                        closeBtn.addEventListener('click', () => overlay.remove());
+                        overlay.appendChild(closeBtn);
+
+                        // content
+                        const content = document.createElement('div');
+                        content.id = 'preview-content';
+                        content.style.maxWidth = '90vw';
+                        content.style.maxHeight = '85vh';
+                        content.style.overflow = 'auto';
+                        overlay.appendChild(content);
+
+                        document.body.appendChild(overlay);
+                    }
+
+                    const content = document.getElementById('preview-content');
+                    content.innerHTML = '';
+
+                    // 🖼 If image
+                    if (url.match(/\.(jpeg|jpg|png|gif|webp)$/i)) {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.style.maxWidth = '100%';
+                        img.style.maxHeight = '85vh';
+                        img.style.borderRadius = '10px';
+                        img.style.boxShadow = '0 0 15px rgba(255,255,255,0.2)';
+                        content.appendChild(img);
+                    }
+                    // 📄 If PDF
+                    else if (url.endsWith('.pdf')) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = url;
+                        iframe.style.width = '90vw';
+                        iframe.style.height = '85vh';
+                        iframe.style.border = 'none';
+                        iframe.style.borderRadius = '10px';
+                        content.appendChild(iframe);
+                    }
+                    // 🔗 Else just show link
+                    else {
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.textContent = 'View Document';
+                        link.target = '_blank';
+                        link.style.color = '#fff';
+                        link.style.fontSize = '20px';
+                        content.appendChild(link);
+                    }
+                }
+
+
+
+
+
+
+
+                // $(document).on('click', '.view-btn', function () {
+                //     const id = $(this).data('id');
+                //     fetch(`/applications/one/${id}`)
+                //         .then(res => res.json())
+                //         .then(data => {
+                //             if (data.success) {
+                //                 const app = data.data;
+
+
+                //                 $('.view-modal').modal('show');
+                //             }
+                //         })
+                //         .catch(err => console.error(err));
+                // });
+
+                // $('#view-details').html(`
+                //   <div class="row">
+                //  <div class="col-12 text-center">
+                //                     <img src="${app.profilePicture}" class="mb-3"
+                //                         width="150" height="150" style="border-radius: 50%;" alt="">
+                //                 </div>
+                //     <div class="col-md-6 my-2"><strong>Name:</strong> ${app.name}</div>
+                //     <div class="col-md-6 my-2"><strong>Gender:</strong> ${app.gender}</div>
+                //     <div class="col-md-6 my-2"><strong>City:</strong> ${app.district}</div>
+                //     <div class="col-md-6 my-2"><strong>State:</strong> ${app.state}</div>
+                //     <div class="col-md-6 my-2"><strong>Mobile:</strong> ${app.mobile}</div>
+                //     <div class="col-md-6 my-2"><strong>Email:</strong> ${app.email || 'N/A'}</div>
+                //     <div class="col-md-6 my-2"><strong>Blood Group:</strong> ${app.bloodGroup}</div>
+                //     <div class="col-md-6 my-2"><strong>Membership Type:</strong> ${app.membershipType}</div>
+                //     <div class="col-md-6 my-2"><strong>Referred By:</strong> ${app.referralUser? app.referralUser?.name+': ('+app.referredBy+')':app.referredBy }</div>
+                //     <div class="col-md-6 my-2"><strong>Profession:</strong> ${app.profession || 'N/A'}</div>
+                //     <div class="col-md-6 my-2"><strong>Full Address:</strong> ${app.fullAddress}</div>
+                //     <div class="col-md-6 my-2"><strong>Applied On:</strong> ${new Date(app.createdAt).toLocaleString()}</div>
+                //     <div class="col-md-12 mt-3">
+                //     <strong>ID Document:</strong>
+                //     <div class="col-12 text-center">
+                //         <img src="${app.idDocument}" class="mb-3"
+                //             width="300" alt="">
+                //     </div>
+                // </div>
+                // <div class="col-md-12 mt-3">
+                //     <strong>Other Document:</strong>
+                //     <div class="col-12 text-center">
+                //         <img src="${app.otherDocument}" class="mb-3"
+                //             width="300" alt="">
+                //     </div>
+                // </div>
+                // <div class="col-md-12 mt-2">
+                //     <strong>Payment Receipt:</strong>
+                //     <div class="col-12 text-center">
+                //         <img src="${app.payment.receiptUrl}"
+                //             class="mb-3" width="300" alt="">
+                //     </div>
+                // </div>
+                // <div class="my-3 col-md-6">
+                //             <label class="mb-1"><strong>Give Position</strong></label>
+                //             <input type="text" id='position-input' name="position" class="form-control"
+                //                 placeholder="Enter The Position">
+                // </div>
+
+                // <div class="col-12 mt-4">
+                //     <a href="javascript:void(0)" data-id="${app._id}"
+                //         class="btn btn-sm btn-info approve-btn" id="approve-btn">Approve</a>
+                //     <a href="javascript:void(0)" data-id="${app._id}"
+                //         class="btn btn-sm btn-danger cancel-btn" id="cancel-btn">Cancel Approval</a>
+                // </div>
+                //   </div>
+                // `);
+
+
+
+
+
+                // 🗑 Delete
+                $(document).on('click', '.delete-btn', function () {
+                    const id = $(this).data('id');
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This will permanently delete the record.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, delete it!",
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            fetch(`/applications/rojgaar/delete/${id}`, { method: "DELETE" })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        $(`#tr-${id}`).fadeOut(800);
+                                        Swal.fire("Deleted!", "Application deleted successfully.", "success");
+                                    }
+                                })
+                                .catch(err => console.error(err));
+                        }
+                    });
+                });
+
+                // approve
+                // $(document).on('click', '#approve-btn, #cancel-btn', function () {
+                //     const id = $(this).data('id');
+                //     console.log(id);
+                //     let pos = 'Any'
+                //     let value = $('#position-input').val()
+                //     if (value) {
+                //         pos = value
+                //     }
+
+
+                //     const action = this.id === 'approve-btn' ? 'approve' : 'cancel';
+                //     // console.log(action);
+
+                //     if (action == 'approve' && !pos) {
+                //         alert("Enter Position Value")
+                //     }
+                //     else {
+                //         fetch(`/applications/approve/${id}/${action}/${pos}`, {
+                //             method: 'POST',
+                //         })
+                //             .then((res) => res.json())
+                //             .then((data) => {
+                //                 if (data.success) {
+                //                     Swal.fire({
+                //                         icon: 'success',
+                //                         title: `Application ${action === 'approve' ? 'Approved' : 'Cancelled'}!`,
+                //                         timer: 1500,
+                //                     });
+                //                     $('#viewApplicationModal').modal('hide');
+                //                     $('#position-input').val("")
+                //                     setTimeout(() => window.location.reload(), 1500);
+                //                 } else {
+                //                     Swal.fire({
+                //                         icon: 'error',
+                //                         title: 'Action failed',
+                //                         text: data.message,
+                //                     });
+                //                 }
+                //             })
+                //             .catch((err) => console.log(err));
+                //     }
+                // });
+
+
+                $(document).on('submit', '#approve-form', async function (e) {
+                    e.preventDefault();
+
+                    const form = e.target;
+                    const formData = new FormData(form);
+                    let id = $(this).attr('data-id')
+
+                    let err = [];
+
+                    // === Basic Validations ===
+                    const name = form.name.value.trim();
+                    console.log("hii");
+                    
+                    const mobile = form.mobile.value.trim();
+                    console.log("hii");
+                    const gender = form.gender.value;
+                    console.log("hii");
+                    const dob = form.dateOfBirth.value;
+                    console.log("hii");
+                    const membershipType = form.membershipType.value;
+                    console.log("hii");
+                    // const paymentMode = form.paymentMode.value;
+                    // const referredBy = form.referredBy.value.trim();
+                    const authority = form.authority.value.trim();
+                    console.log("hii");
+                    const head = form.head.value.trim();
+                    console.log("hii");
+                    const validstart = form.validstart.value.trim();
+                    console.log("hii");
+                    const validend = form.validend.value.trim();
+                    console.log("hii");
+                    const parentUser = form.parentuser.value.trim();
+                    console.log("hii");
+                    const position = form.position.value.trim();
+                    console.log("hii");
+                    const type = form.type.value.trim();
+                    console.log("hii");
+
+                    // Name validation
+                    if (!name) err.push("Full Name is required!");
+
+                    // Gender validation
+                    if (!gender) err.push("Please select your Gender!");
+
+                    // DOB validation
+                    if (!dob) err.push("Date of Birth is required!");
+
+                    // Mobile validation
+                    if (!/^\d{10}$/.test(mobile)) err.push("Mobile Number should be exactly 10 digits!");
+
+                    // Membership validation
+                    if (!membershipType) err.push("Please select Membership Type!");
+
+                    // Payment mode validation
+                    // if (!paymentMode) err.push("Please select a Payment Mode!");
+
+                    // Optional but recommended field
+                    // if (!referredBy) err.push("Please enter Referred By!");
+
+                    if (!authority) err.push("Please enter Authority!");
+                    if (!head) err.push("Please enter Head!");
+                    if (!validstart) err.push("Please enter Valid Start!");
+                    if (!validend) err.push("Please enter Valid End!");
+                    if (!type) err.push("Please enter Form Type!");
+                    if (!position) err.push("Please enter Valid Position!");
+                    if (!parentUser) err.push("Please enter Valid Parent User!");
+
+                    // File validations (if required)
+                    // const receiptFile = form.receiptUrl.files[0];
+                    // if (!receiptFile && !$('#receiptUrl-preview').length) {
+                    //     err.push("Payment Receipt is required!");
+                    // }
+
+                    // const profilePic = form.profilePicture.files[0];
+                    // if (!profilePic && !$('#profilePicture-preview').length) {
+                    //     err.push("Profile Picture is required!");
+                    // }
+
+                    // const idDocument = form.idDocument.files[0];
+                    // if (!idDocument && !$('#idDocument-preview').length) {
+                    //     err.push("ID Document is required!");
+                    // }
+
+                    // If errors, show alert and stop
+                    if (err.length > 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Form Validation Error",
+                            html: err.join("<br>"),
+                        });
+                        return;
+                    }
+
+                    // === Confirm before submitting ===
+                    const confirmation = await Swal.fire({
+                        title: "Are you sure?",
+                        text: "Once approved, this application will be submitted!",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, Submit",
+                        cancelButtonText: "Cancel",
+                    });
+
+                    if (!confirmation.isConfirmed) return;
+
+                    try {
+                        const res = await fetch(`/applications/approve/${id}`, {
+                            method: "POST",
+                            body: new FormData(e.target),
+                        });
+
+                        const result = await res.json();
+
+                        if (result.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: result.message || "Application approved successfully!",
+                                timer: 1500,
+                                showConfirmButton: false,
+                            });
+
+                            setTimeout(() => {
+                                $('.view-modal').modal('hide');
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.message || "Something went wrong while approving.",
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Network Error",
+                            text: err.message,
+                        });
+                    }
+                });
+
+
+
+
+
+
+
+                $(document).on('click', '.logout-btn', function (e) {
+                    Swal.fire({
+                        title: "Do you want to Logout?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: `/auth/logout`,
+                                method: "POST",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.logout) {
+                                        window.location.href = '/'
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
+                })
+
+                var handleNavigation = function () {
+                    $(".nav-control").on('click', function () {
+
+                        $('#main-wrapper').toggleClass("menu-toggle");
+
+                        $(".hamburger").toggleClass("is-active");
+                    });
+                }
+
+                handleNavigation()
+            </script>
+    </body>
+
+</html>
