@@ -105,8 +105,6 @@ app.post('/api/webhooks/proship', async (req, res) => {
   try {
     console.log(req.body.waybill);
 
-
-
     // await patientOrder.findOneAndUpdate(
     //   { awb_number: or.awb_number },
     //   { orderStatus: or.orderStatus, statusDate: or.statusDate }
@@ -194,6 +192,98 @@ app.post('/api/webhooks/proship', async (req, res) => {
 
 app.get('/api/webhooks/proship', (req, res) => {
   res.json({ success: true })
+})
+
+
+app.post('/api/webhooks/smartship', async (req, res) => {
+  try {
+    console.log(req.body);
+    // res.json({ success: true })
+
+    let order = await patientOrder.findOneAndUpdate({ awb_number: req.body.awbno }, {
+      orderStatus: req.body.status_description,
+      statusDate: req.body.statusUpdateDate,
+      // 'courier_id.name': req.body.courierPartnerName,
+      // 'courier_id.parent': req.body.courierPartnerName,
+    })
+
+    let status = req.body.status_description
+    // let deliveryPartner = req.body.courierPartnerName
+
+    let patient;
+    if (order) {
+      // let patient = await patientForm.findOne({ _id: order.patientId }).select('patientName mobileNumber')
+      patient = await patientForm.findOneAndUpdate(
+        { _id: order.patientId },
+        { 'otherStatus.deliveryStatus': req.body.status_description }
+      ).select('patientName mobileNumber');
+    }
+
+
+    console.log(status);
+    console.log(order);
+    console.log(patient);
+    // console.log(status, deliveryPartner, patient);
+
+    if (order && patient) {
+      let mainStatus = status.toLowerCase()
+      let tmpId;
+      let vars = [patient.patientName, order._id, order.awb_number, 'https://www.google.com']
+      if (mainStatus.includes('transit')) {
+        tmpId = '907900041733412'
+      }
+      else if (mainStatus.includes('out for delivery')) {
+        tmpId = '1444085863745042'
+      }
+      else if (mainStatus.includes('delivered')) {
+        tmpId = '2717556531914471'
+        vars = [patient.patientName, order._id]
+      }
+      else if (mainStatus.includes('dispatch')) {
+        tmpId = '2226838111392141'
+      }
+
+
+      const payload = {
+        sender: "917417271707",
+        to: `+91${patient.mobileNumber}`,
+        templateId: tmpId,
+
+        // If template has header
+        //   headerVariables: ["https://bol7.com/logo.png"],
+
+        bodyVariables: vars,
+
+        // If template has button
+        //   buttonVariables: ["Verify Now"],
+      };
+
+      const response = await fetch(
+        "https://chat.bol7.com/api/whatsapp/SendTemplate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      const data = await response.json();
+      console.log("Bol7 Response:", data);
+
+    }
+    res.json({
+      "data": {
+        "message": {
+          "success": true,
+          "description": "response message"
+        }
+      }
+    })
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false })
+  }
 })
 
 
