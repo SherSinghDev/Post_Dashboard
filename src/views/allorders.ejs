@@ -424,7 +424,7 @@
                                                                                             <%= app?.track?.courierPartner
                                                                                                 ?
                                                                                                 app?.track?.courierPartner
-                                                                                                :app?.track[0].billing_name
+                                                                                                :app?.track?.[0].billing_name
                                                                                                 %>
                                                                                         </b></p>
                                                                                 </td>
@@ -482,10 +482,10 @@
                                                                                 <td>
                                                                                     <p><a href="#"
                                                                                             class="btn btn-dark p-2 py-1 rounded-4 order-status">
-                                                                                            <%= app?.track.currentStatus
+                                                                                            <%= app?.track?.currentStatus
                                                                                                 ?
-                                                                                                app?.track.currentStatus
-                                                                                                : app?.track[0].action
+                                                                                                app?.track?.currentStatus || 'Not Serviceable'
+                                                                                                : app?.track?.[0]?.action || 'Not Serviceable'
                                                                                                 %>
                                                                                         </a></p>
                                                                                 </td>
@@ -501,14 +501,14 @@
                                                                                             </a>
                                                                                             <% } %>
                                                                                                 <a href="javascript:void(0);"
-                                                                                                    data-way="<%= app?.track.waybill ? app?.track.waybill : app?.track[0].tracking_number %>"
+                                                                                                    data-way="<%= app?.track?.waybill ? app?.track?.waybill : app?.track?.[0]?.tracking_number %>"
                                                                                                     class=" btn btn-sm btn-info details-btn">
                                                                                                     TRACK
                                                                                                 </a>
 
 
                                                                                                 <a href="javascript:void(0);"
-                                                                                                    data-way="<%= app?.track.waybill ? app?.track.waybill : app?.track[0].tracking_number %>"
+                                                                                                    data-way="<%= app?.track?.waybill ? app?.track?.waybill : app?.track?.[0]?.tracking_number %>"
                                                                                                     onclick="handleCancelOrder()"
                                                                                                     class=" btn btn-sm btn-danger cancel-order">
                                                                                                     CANCEL
