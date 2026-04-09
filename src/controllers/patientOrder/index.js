@@ -5,6 +5,8 @@ const patientOrder = require('../../modals/patientOrder')
 const PatientForm = require('../../modals/patientForm');
 let Users = require('../../modals/users');
 const patientForm = require('../../modals/patientForm');
+const SalaryTransaction = require('../../modals/salary');
+const upload = require('../../multer');
 
 
 // auth function
@@ -1065,24 +1067,18 @@ router.get('/allorders', async (req, res) => {
 // });
 
 
-function getDateRange(range, from, to) {
+function getDateRange(range) {
     const now = new Date();
     let startDate, endDate;
 
-    if (range === "thisMonth") {
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        endDate = now;
-    }
-
-    else if (range === "lastMonth") {
+    if (range === "lastMonth") {
         startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
         endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
     }
-
-    else if (range === "custom" && from && to) {
-        startDate = new Date(from);
-        endDate = new Date(to);
-        endDate.setHours(23, 59, 59);
+    else {
+        // Fallback to thisMonth
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = now;
     }
 
     return { startDate, endDate };
@@ -1241,42 +1237,59 @@ router.get('/work', async (req, res) => {
         const { range = "thisMonth", from, to } = req.query;
         const { startDate, endDate } = getDateRange(range, from, to);
 
+        // Fetch target users: position 'centre head', type 'singleorder'
+        let targetUsers = await Users.find({
+            position: { $regex: new RegExp("^centre head$", "i") },
+            type: { $regex: new RegExp("^singleorder$", "i") }
+        });
 
-
-        let users = await Users.find();
-        // const data = async (user) => {
-        const referredUserIds = users.map(u => u.userId);
+        const targetUserIds = targetUsers.map(u => u.userId);
 
         const orders = await patientOrder.find({
-            userId: { $in: referredUserIds },
+            userId: { $in: targetUserIds },
             orderStatus: "DELIVERED",
             statusDate: { $gte: startDate, $lte: endDate }
         });
 
-        if (!orders.length) return null;
-
-        let groupedById = orders.reduce((acc, order) => {
-            acc[order.userId] = (acc[order.userId] || 0) + 1;
+        // Initialize groupedById with all target users, so even zero counts show up
+        let groupedById = targetUsers.reduce((acc, user) => {
+            acc[user.userId] = {
+                user: user,
+                count: 0,
+                amount: 0,
+                status: 'Unpaid'
+            };
             return acc;
         }, {});
 
-        // console.log(groupedById);
-
-
-        const allUsers = await Users.find();
-        // let user = loggedInUser
-
-        allUsers.forEach(u => {
-            if (groupedById[u.userId]) {
-                const named = `${u.name} ${u.userId} ${u.mobile}`;
-                groupedById[named] = groupedById[u.userId];
-                delete groupedById[u.userId];
+        // Increment count for matched orders
+        orders.forEach(order => {
+            if (groupedById[order.userId]) {
+                groupedById[order.userId].count += 1;
             }
         });
 
-        // console.log(groupedById);
+        // Fetch salary records specific to this date range
+        const salaries = await SalaryTransaction.find({
+            userId: { $in: targetUserIds },
+            startDate: startDate
+        });
 
-        let allresult = groupedById
+        // Mark paid statuses
+        salaries.forEach(salary => {
+            if (groupedById[salary.userId]) {
+                groupedById[salary.userId].status = 'Paid';
+            }
+        });
+
+        // Form final object for view
+        let allresult = targetUsers.reduce((acc, user) => {
+            const data = groupedById[user.userId];
+            data.amount = data.count * 1000;
+            // The view expects key as "Name | User Id | Mobile" and value as the obj or string
+            acc[`${user.name} | ${user.userId} | ${user.mobile}`] = data;
+            return acc;
+        }, {});
 
         res.render('work/work', {
             page: "Work",
@@ -1284,7 +1297,9 @@ router.get('/work', async (req, res) => {
             allresult,
             range,
             from,
-            to
+            to,
+            startDateStr: startDate.toISOString(),
+            endDateStr: endDate.toISOString()
         });
 
     } catch (err) {
@@ -1679,15 +1694,30 @@ router.delete('/cancel-order/:awb', async (req, res) => {
 });
 
 
+router.post('/pay-salary', upload.single('receipt'), async (req, res) => {
+    try {
+        const { userId, startDate, endDate, amount, deliveriesCount } = req.body;
+        const receiptUrl = req.file ? `/uploads/excelfiles/${req.file.filename}` : null;
 
+        if (!receiptUrl) {
+            return res.status(400).json({ success: false, message: "Receipt file is required" });
+        }
 
+        const newSalary = await SalaryTransaction.create({
+            userId,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            amount,
+            deliveriesCount,
+            receiptUrl,
+            status: "Paid"
+        });
 
-
-
-
-
-
-
-
+        res.json({ success: true, message: "Salary paid successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Failed to process salary payment" });
+    }
+});
 
 module.exports = router

@@ -304,18 +304,7 @@
                                             <option value="lastMonth" <%=range==='lastMonth' ? 'selected' : '' %>>
                                                 Last Month
                                             </option>
-                                            <option value="custom" <%=range==='custom' ? 'selected' : '' %>>
-                                                Custom Range
-                                            </option>
                                         </select>
-
-                                        <% if (range==='custom' ) { %>
-                                            <input type="date" name="from" value="<%= from || '' %>"
-                                                class="form-control" required>
-                                            <input type="date" name="to" value="<%= to || '' %>" class="form-control"
-                                                required>
-                                            <button class="btn btn-primary">Apply</button>
-                                            <% } %>
                                     </form>
 
                                     <div>
@@ -336,36 +325,44 @@
                                                             <tr>
                                                                 <th>Name | User Id | Mobile</th>
                                                                 <th>Total Deliveries</th>
-                                                                <th>Total Salary</th>
-                                                                <!-- <th>Actions</th> -->
+                                                                <th>Salary Status</th>
+                                                                <th>Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <% if(Object.keys(allresult).length>0){ %>
                                                                 <% for(let u in allresult){ %>
-                                                                    <tr id="">
+                                                                    <% let data = allresult[u]; %>
+                                                                    <tr>
                                                                         <td><%- u %></td>
-                                                                        <td><%- allresult[u] %></td>
-                                                                        <td>10000</td>
-                                                                        <!-- <td>
-                                                                            <a href="javascript:void(0);" data-way=""
-                                                                                class=" btn btn-sm btn-info details-btn">
-                                                                                Pay Salary
-                                                                            </a>
-                                                                        </td> -->
+                                                                        <td><%- data.count %></td>
+                                                                        <td>
+                                                                            <% if (data.status === 'Paid') { %>
+                                                                                <span class="badge badge-success" style="background-color: #28a745; color: white;">Paid</span>
+                                                                            <% } else { %>
+                                                                                <span class="badge badge-danger" style="background-color: #dc3545; color: white;">Unpaid</span>
+                                                                            <% } %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <% if (data.status === 'Unpaid') { %>
+                                                                                <button
+                                                                                    class="btn btn-sm btn-info pay-salary-btn"
+                                                                                    data-userid="<%- data.user.userId %>"
+                                                                                    data-count="<%- data.count %>"
+                                                                                >
+                                                                                    Pay Salary
+                                                                                </button>
+                                                                            <% } %>
+                                                                        </td>
                                                                     </tr>
                                                                     <% } %>
-                                                                        <% }else{%>
-                                                                            <tr>
-                                                                                <td colspan="4">
-                                                                                    <h4>No Work Available</h4>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <% } %>
-
-
-
-
+                                                            <% } else { %>
+                                                                <tr>
+                                                                    <td colspan="4">
+                                                                        <h4>No Work Available</h4>
+                                                                    </td>
+                                                                </tr>
+                                                            <% } %>
                                                         </tbody>
                                                     </table>
 
@@ -399,6 +396,39 @@
                                         style="background-color: rgb(244, 244, 244);">
 
 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pay Salary Modal -->
+                        <div class="modal fade" id="pay-salary-modal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Pay Salary</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="paySalaryForm">
+                                            <input type="hidden" name="userId" id="salaryUserId">
+                                            <input type="hidden" name="startDate" id="salaryStartDate" value="<%- startDateStr %>">
+                                            <input type="hidden" name="endDate" id="salaryEndDate" value="<%- endDateStr %>">
+                                            
+                                            <div class="mb-3">
+                                                <label>Total Deliveries</label>
+                                                <input type="text" class="form-control" name="deliveriesCount" id="salaryCount" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label>Total Amount (₹)</label>
+                                                <input type="number" class="form-control" name="amount" id="salaryAmount" placeholder="Enter calculated salary amount" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label>Upload Receipt</label>
+                                                <input type="file" class="form-control" name="receipt" required accept="image/*,.pdf">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100">Submit Payment</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -485,6 +515,51 @@
                 }
             });
         })
+
+        $(document).on('click', '.pay-salary-btn', function() {
+            $('#salaryUserId').val($(this).data('userid'));
+            $('#salaryCount').val($(this).data('count'));
+            $('#salaryAmount').val(''); // Clear old value so admin must input it manually
+            $('#pay-salary-modal').modal('show');
+        });
+
+        $('#paySalaryForm').on('submit', function(e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            
+            $.ajax({
+                url: '/patientorder/pay-salary',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if(response.success) {
+                        $('#pay-salary-modal').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function(err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to process payment'
+                    });
+                }
+            });
+        });
 
 
 

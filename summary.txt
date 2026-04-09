@@ -1,0 +1,243 @@
+# 🏥 BSRF India — Post Dashboard: Full Project Analysis
+
+## Overview
+
+This is a **full-stack admin dashboard** for an Indian NGO called **BSRF (Bhartiya Samaj Raksha Foundation)**. It's a server-rendered web application built to manage the organization's healthcare operations, membership management, order/parcel logistics, and staff coordination.
+
+**Domain**: `bsrfindia.com`  
+**Server Port**: `3200`  
+**Database**: MongoDB (`parceldb`) hosted on `72.60.101.162:27017`
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Runtime** | Node.js |
+| **Framework** | Express.js v5.1 |
+| **Templating** | EJS (server-side rendering) |
+| **Database** | MongoDB via Mongoose v8.18 |
+| **Auth** | Express-session (cookie-based) |
+| **File Upload** | Multer v2 (Excel files → `./src/assets/uploads/excelfiles`) |
+| **Payments** | Razorpay (live keys) |
+| **WhatsApp API** | Bol7 (`chat.bol7.com`) for automated notifications |
+| **Excel Parsing** | `xlsx`, `xls-to-json`, `xls-to-json-lc` |
+| **Dev Tool** | Nodemon |
+
+---
+
+## Architecture
+
+```mermaid
+graph TD
+    A["Browser Client"] --> B["Express Server :3200"]
+    B --> C["EJS Views (SSR)"]
+    B --> D["MongoDB (parceldb)"]
+    B --> E["Razorpay API"]
+    B --> F["Bol7 WhatsApp API"]
+    B --> G["Proship Webhook"]
+    B --> H["Smartship Webhook"]
+    
+    subgraph Controllers
+        I["Auth"] --> B
+        J["Dashboard"] --> B
+        K["Patients"] --> B
+        L["PatientForm"] --> B
+        M["PatientOrder"] --> B
+        N["Users"] --> B
+        O["Applications"] --> B
+        P["Doctors"] --> B
+        Q["Jobs"] --> B
+        R["Support"] --> B
+        S["Stock"] --> B
+    end
+```
+
+---
+
+## Directory Structure
+
+```
+Server/
+├── .env                          # Razorpay API keys
+├── package.json
+└── src/
+    ├── index.js                  # Entry point — routes, webhooks, middleware
+    ├── multer.js                 # File upload config (Excel files)
+    ├── modals/                   # Mongoose models (18 files)
+    │   ├── db.js                 # MongoDB connection
+    │   ├── users.js              # Staff/Volunteer users with referral system
+    │   ├── patients.js           # Patient registry with tracking IDs
+    │   ├── patientForm.js        # Teleconsultation intake forms (6 form types)
+    │   ├── patientOrder.js       # Medicine shipping orders (Proship/Smartship)
+    │   ├── orders.js             # Parcel/postal orders
+    │   ├── applications.js       # Membership applications
+    │   ├── rojgaar.js            # Employment/Rojgaar applications
+    │   ├── doctors.js            # Doctor accounts (assigned to form types)
+    │   ├── jobs.js               # Job applications
+    │   ├── stock.js              # Medicine inventory (23 product categories)
+    │   ├── stockTransactions.js  # Stock transfer records
+    │   ├── moneyTransaction.js   # Financial transactions
+    │   ├── transactions.js       # Generic transactions
+    │   ├── payment.js            # Razorpay payment records
+    │   ├── recruiters.js         # Recruiter accounts
+    │   ├── support.js            # Support tickets
+    │   └── supportAgent.js       # Support agent accounts
+    ├── controllers/              # Route handlers (11 modules)
+    │   ├── auth/                 # Login/Register/Session management
+    │   ├── dashboard/            # Admin dashboard home
+    │   ├── patients/             # Patient CRUD
+    │   ├── patientForm/          # Patient intake forms
+    │   ├── patientOrder/         # Medicine order management (53KB — largest controller)
+    │   ├── users/                # Staff/volunteer management
+    │   ├── application/          # Membership application processing
+    │   ├── doctors/              # Doctor management
+    │   ├── jobs/                 # Job application processing
+    │   ├── support/              # Support ticket system
+    │   └── stock/                # Inventory management
+    ├── views/                    # 28 EJS templates + 5 subdirectories
+    │   ├── globals/              # Shared partials (head, header, sidebar, etc.)
+    │   ├── login.ejs / register.ejs
+    │   ├── home.ejs / index.ejs
+    │   ├── patients.ejs / patientform.ejs
+    │   ├── forms.ejs (93KB)      # Patient form management
+    │   ├── allorders.ejs (111KB) # Order management — largest view
+    │   ├── applications.ejs / applicationform.ejs
+    │   ├── rojgaar.ejs / rojgaarsathi.ejs
+    │   ├── users.ejs / admins.ejs
+    │   ├── doctorhome.ejs        # Doctor-facing dashboard
+    │   ├── mystock.ejs / stockTransactions.ejs / moneyTransactions.ejs
+    │   ├── profile.ejs / profileDetails.ejs
+    │   ├── certificate.ejs / idcard.ejs / letter.ejs
+    │   ├── donation.ejs
+    │   ├── coordinator.ejs
+    │   ├── jobs/ / support/ / stockOrder/ / work/
+    │   └── demo.ejs
+    └── assets/
+        ├── css/ + css-*.css      # Stylesheets
+        ├── js/                   # Client-side JavaScript
+        ├── icons/ / images/      # Static assets
+        ├── vendor/               # Third-party libraries
+        └── uploads/              # User-uploaded files
+```
+
+---
+
+## Core Business Modules
+
+### 1. 👥 User & Membership Management
+- **Users** have roles, positions, referral codes (`TL-XXXXXX`), and a hierarchical team system (`parentUser`, `teamLeaderId`)
+- **Membership tiers**: ₹365/year, ₹500 lifetime, ₹865 combo
+- **Applications** flow: Submit → Pending → Approved/Cancelled
+- Support for multiple payment modes (UPI, bank transfer, cheque, cash)
+- **Rojgaar (Employment)** applications — separate model but identical schema to membership applications
+
+### 2. 🏥 Patient & Teleconsultation
+- **Patient registration** with tracking IDs (`TRK-YYYYMMDD-RANDOM`)
+- **Patient intake forms** — 6 form types (`form1`–`form6`), each assigned to a specific doctor
+- Multi-stage status tracking: `patientStatus`, `doctorStatus`, `supportStatus`, `officeStatus`, `adminStatus`, `postOfficeStatus`, `trackingIdStatus`, `deliveryStatus`
+- Medical report uploads
+
+### 3. 📦 Order & Shipping Management
+- **Patient Orders** — the most complex module (53KB controller, 111KB view)
+- Integrated with **Proship** and **Smartship** shipping providers via webhooks
+- Full order lifecycle: pickup → in transit → out for delivery → delivered
+- AWB (Airway Bill) tracking
+- Detailed schemas for pickup, delivery, return addresses, courier info, and shipment dimensions
+
+### 4. 💊 Stock/Inventory Management
+- **23 Ayurvedic/wellness product categories**: OrthoCare, DetoxCare, DiabetesCare, HeartCare, EyeCare, HairCare, SkinCare, NeuroCare, etc.
+- Per-user stock allocation (linked to `userId`)
+- Stock transfer transactions between users
+- Money transactions tied to stock movements
+
+### 5. 🎫 Support Ticket System
+- Categories: Parcel Delay, Lost Parcel, Payment Issue, Pickup Issue, Return Issue, Other
+- Priority levels: LOW, MEDIUM, HIGH
+- Status workflow: OPEN → CALLING → IN_PROGRESS → RESOLVED/ESCALATED → CLOSED
+- Call logging with outcome tracking (CONNECTED, NO_ANSWER, BUSY, INVALID)
+- Support agent management with availability status
+
+### 6. 💰 Payments
+- **Razorpay integration** (live environment) for membership payments
+- Payment statuses: CREATED → SUCCESS/FAILED
+- Transaction records between sender and receiver
+
+### 7. 📋 Jobs Portal
+- Job applications with approval workflow (Unverified → Approved)
+- Indian mobile number and PIN code validation
+
+### 8. 📱 WhatsApp Notifications
+- Automated messages via **Bol7 API** (`chat.bol7.com`)
+- Sender number: `917417271707`
+- Template-based notifications for:
+  - In Transit (`907900041733412`)
+  - Out for Delivery (`1444085863745042`)
+  - Delivered (`2717556531914471`)
+  - Dispatched (`2226838111392141`)
+
+---
+
+## Route Map
+
+| Route | Controller | Purpose |
+|-------|-----------|---------|
+| `/` | Dashboard | Admin home page |
+| `/auth` | Auth | Login, register, session |
+| `/patients` | Patients | Patient CRUD |
+| `/patientform` | PatientForm | Intake form management |
+| `/patientorder` | PatientOrder | Medicine orders & shipping |
+| `/users` | Users | Staff/volunteer management |
+| `/applications` | Applications | Membership processing |
+| `/doctors` | Doctors | Doctor accounts |
+| `/jobs` | Jobs | Job applications |
+| `/support` | Support | Ticket system |
+| `/stock` | Stock | Inventory management |
+| `/id` | (inline) | ID card generation |
+| `/send` | (inline) | Test WhatsApp message |
+| `/api/webhooks/proship` | (inline) | Proship shipping updates |
+| `/api/webhooks/smartship` | (inline) | Smartship shipping updates |
+
+---
+
+## Key Integrations
+
+```mermaid
+flowchart LR
+    subgraph External
+        A["Proship"] -->|Webhook POST| B["Server"]
+        C["Smartship"] -->|Webhook POST| B
+        B -->|Send Template| D["Bol7 WhatsApp"]
+        B -->|Payment| E["Razorpay"]
+    end
+    
+    subgraph Internal
+        B --> F["MongoDB"]
+        B --> G["Multer File Upload"]
+    end
+```
+
+---
+
+## Observations & Notes
+
+> [!IMPORTANT]
+> **Security Concerns**
+> - MongoDB credentials are hardcoded in `db.js` (not using `.env`)
+> - Express-session secret is a weak, hardcoded string (`^*&*(`)
+> - CORS is set to `origin: '*'` (fully open)
+> - Default user password is `1234`
+> - Razorpay **live keys** are stored in `.env` (good), but the DB credentials are not
+
+> [!NOTE]
+> **Code Patterns**
+> - The `modals/` directory is a typo — should be `models/`
+> - `rojgaar.js` and `applications.js` models are nearly identical schemas
+> - The `patientOrder` controller is by far the largest (53KB) — indicates heavy business logic for order management
+> - Views are large monolithic EJS files (some exceeding 100KB), containing embedded CSS/JS
+> - No API authentication/middleware for webhook endpoints
+
+> [!TIP]
+> **What this project does in plain language**
+> BSRF India is an NGO that provides teleconsultation with doctors and ships Ayurvedic medicines to patients across India. This dashboard helps admins manage the full lifecycle: patient registration → doctor assignment → prescription → medicine packing → shipping (via Proship/Smartship) → delivery tracking → WhatsApp notifications. It also manages the organization's membership/volunteer network with a referral-based hierarchy and handles medicine stock inventory across team members.
