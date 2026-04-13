@@ -105,15 +105,23 @@ app.get('/id', (req, res) => {
 
 app.post('/api/webhooks/proship', async (req, res) => {
   try {
-    console.log(req.body.waybill);
+    console.log('--- ProShip Webhook Received ---');
+    console.log('Headers:', JSON.stringify(req.headers['content-type']));
+    console.log('Full Body:', JSON.stringify(req.body, null, 2));
+    console.log('AWB field (waybill):', req.body.waybill);
+    console.log('AWB field (awb_number):', req.body.awb_number);
+    console.log('AWB field (awb):', req.body.awb);
 
-    // await patientOrder.findOneAndUpdate(
-    //   { awb_number: or.awb_number },
-    //   { orderStatus: or.orderStatus, statusDate: or.statusDate }
-    // );
+    // Determine the correct AWB field - adjust based on actual payload
+    let awbValue = req.body.waybill || req.body.awb_number || req.body.awb || req.body.tracking_number;
+    console.log('Resolved AWB value:', awbValue);
 
+    if (!awbValue) {
+      console.log('ERROR: No AWB number found in webhook payload. Available keys:', Object.keys(req.body));
+      return res.json({ success: false, error: 'No AWB number in payload' });
+    }
 
-    let order = await patientOrder.findOneAndUpdate({ awb_number: req.body.waybill }, {
+    let order = await patientOrder.findOneAndUpdate({ awb_number: awbValue }, {
       orderStatus: req.body.orderStatusEnum,
       statusDate: req.body.timestamp,
       'courier_id.name': req.body.courierPartnerName,
@@ -125,11 +133,14 @@ app.post('/api/webhooks/proship', async (req, res) => {
 
     let patient;
     if (order) {
+      console.log('Order found! Order ID:', order._id, 'PatientId:', order.patientId);
       // let patient = await patientForm.findOne({ _id: order.patientId }).select('patientName mobileNumber')
       patient = await patientForm.findOneAndUpdate(
         { _id: order.patientId },
         { 'otherStatus.deliveryStatus': req.body.orderStatusEnum }
       ).select('patientName mobileNumber');
+    } else {
+      console.log('ERROR: No order found with awb_number:', awbValue);
     }
 
 
@@ -199,10 +210,23 @@ app.get('/api/webhooks/proship', (req, res) => {
 
 app.post('/api/webhooks/smartship', async (req, res) => {
   try {
-    console.log(req.body);
-    // res.json({ success: true })
+    console.log('--- SmartShip Webhook Received ---');
+    console.log('Headers:', JSON.stringify(req.headers['content-type']));
+    console.log('Full Body:', JSON.stringify(req.body, null, 2));
+    console.log('AWB field (awbno):', req.body.awbno);
+    console.log('AWB field (awb_number):', req.body.awb_number);
+    console.log('AWB field (awb):', req.body.awb);
 
-    let order = await patientOrder.findOneAndUpdate({ awb_number: req.body.awbno }, {
+    // Determine the correct AWB field - adjust based on actual payload
+    let awbValue = req.body.awbno || req.body.awb_number || req.body.awb || req.body.tracking_number;
+    console.log('Resolved AWB value:', awbValue);
+
+    if (!awbValue) {
+      console.log('ERROR: No AWB number found in webhook payload. Available keys:', Object.keys(req.body));
+      return res.json({ success: false, error: 'No AWB number in payload' });
+    }
+
+    let order = await patientOrder.findOneAndUpdate({ awb_number: awbValue }, {
       orderStatus: req.body.status_description,
       statusDate: req.body.statusUpdateDate,
       // 'courier_id.name': req.body.courierPartnerName,
@@ -214,11 +238,14 @@ app.post('/api/webhooks/smartship', async (req, res) => {
 
     let patient;
     if (order) {
+      console.log('Order found! Order ID:', order._id, 'PatientId:', order.patientId);
       // let patient = await patientForm.findOne({ _id: order.patientId }).select('patientName mobileNumber')
       patient = await patientForm.findOneAndUpdate(
         { _id: order.patientId },
         { 'otherStatus.deliveryStatus': req.body.status_description }
       ).select('patientName mobileNumber');
+    } else {
+      console.log('ERROR: No order found with awb_number:', awbValue);
     }
 
 
