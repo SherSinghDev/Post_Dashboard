@@ -264,9 +264,9 @@ router.post("/create-order-with-smartship", async (req, res) => {
         const orderPayload = {
             client_order_reference_id: id,
             shipment_type: 1,
-            order_collectable_amount: paymentMode === "cod" ? invoiceValue : 0,
+            order_collectable_amount: paymentMode === "COD" ? invoiceValue : 0,
             total_order_value: invoiceValue,
-            payment_type: paymentMode === "cod" ? "cod" : "prepaid",
+            payment_type: paymentMode === "COD" ? "cod" : "prepaid",
 
             package_order_weight: weight,
             package_order_length: length,
@@ -1650,7 +1650,7 @@ router.delete('/cancel-order/:awb', async (req, res) => {
             result = await response.json();
             console.log("📦 SmartShip Cancel:", result);
 
-            
+
         }
 
         else {
