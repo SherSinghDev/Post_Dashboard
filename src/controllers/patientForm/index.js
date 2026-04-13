@@ -571,7 +571,7 @@ router.get('/orders', async (req, res) => {
               referredBy: user.userId,
               // "otherStatus.doctorStatus": { $nin: [null, ""] },
               "otherStatus.trackingIdStatus": { $nin: [null, ""] },
-              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+              // "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
             }
           }
           ,
@@ -626,9 +626,9 @@ router.get('/orders', async (req, res) => {
         result = await PatientForm.aggregate([
           {
             $match: {
-              "otherStatus.doctorStatus": { $nin: [null, ""] },
+              // "otherStatus.doctorStatus": { $nin: [null, ""] },
               "otherStatus.trackingIdStatus": { $nin: [null, ""] },
-              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+              // "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
             }
           }
           ,
@@ -880,14 +880,14 @@ router.get('/:userid', async (req, res) => {
 
   // let formType = req.params.formType
   let formType = forms[random]
-  if(user.type){
+  if (user.type) {
     type = user.type
   }
   // console.log(user.type);
   // console.log(random);
 
   console.log(type);
-  
+
   res.render('patientform', { users, formType, id, type })
 })
 
