@@ -114,7 +114,7 @@ app.post('/api/webhooks/proship', async (req, res) => {
 
     // Determine the correct AWB field - adjust based on actual payload
     let awbValue = req.body.waybill || req.body.awb_number || req.body.awb || req.body.tracking_number;
-    
+
     // Convert to string and trim to avoid type mismatch
     if (awbValue) awbValue = String(awbValue).trim();
     console.log('Resolved AWB value:', awbValue, '| Type:', typeof awbValue);
@@ -242,40 +242,58 @@ app.post('/api/webhooks/smartship', async (req, res) => {
 
     // Determine the correct AWB field - adjust based on actual payload
     let awbValue = req.body.awbno || req.body.awb_number || req.body.awb || req.body.tracking_number;
-    
+    let requestOrderId = req.body.request_order_id || req.body.client_order_reference_id;
+
     // Convert to string and trim to avoid type mismatch
     if (awbValue) awbValue = String(awbValue).trim();
-    console.log('Resolved AWB value:', awbValue, '| Type:', typeof awbValue);
+    if (requestOrderId) requestOrderId = String(requestOrderId).trim();
 
-    if (!awbValue) {
-      console.log('ERROR: No AWB number found in webhook payload. Available keys:', Object.keys(req.body));
-      return res.json({ success: false, error: 'No AWB number in payload' });
+    console.log('Resolved AWB value:', awbValue, '| Type:', typeof awbValue);
+    console.log('Resolved Request Order ID:', requestOrderId);
+
+    if (!awbValue && !requestOrderId) {
+      console.log('ERROR: No AWB number or request_order_id found in webhook payload. Available keys:', Object.keys(req.body));
+      return res.json({ success: false, error: 'No AWB number or request_order_id in payload' });
     }
 
-    // Try exact match first
-    let order = await patientOrder.findOneAndUpdate({ awb_number: awbValue }, {
-      orderStatus: req.body.status_description,
-      statusDate: req.body.statusUpdateDate,
-      // 'courier_id.name': req.body.courierPartnerName,
-      // 'courier_id.parent': req.body.courierPartnerName,
-    });
+    let order = null;
 
-    // If exact match fails, try regex match (handles whitespace/format issues)
-    if (!order) {
-      console.log('Exact match failed, trying regex search...');
-      order = await patientOrder.findOneAndUpdate(
-        { awb_number: { $regex: new RegExp('^\\s*' + awbValue + '\\s*$', 'i') } },
-        {
-          orderStatus: req.body.status_description,
-          statusDate: req.body.statusUpdateDate,
-        }
-      );
+    if (awbValue) {
+      // Try exact match first
+      order = await patientOrder.findOneAndUpdate({ awb_number: awbValue }, {
+        orderStatus: req.body.status_description,
+        statusDate: req.body.statusUpdateDate,
+        // 'courier_id.name': req.body.courierPartnerName,
+        // 'courier_id.parent': req.body.courierPartnerName,
+      });
+
+      // If exact match fails, try regex match (handles whitespace/format issues)
+      if (!order) {
+        console.log('Exact match failed, trying regex search...');
+        order = await patientOrder.findOneAndUpdate(
+          { awb_number: { $regex: new RegExp('^\\s*' + awbValue + '\\s*$', 'i') } },
+          {
+            orderStatus: req.body.status_description,
+            statusDate: req.body.statusUpdateDate,
+          }
+        );
+      }
+    }
+
+    // Fallback: search by request_order_id (orderId)
+    if (!order && requestOrderId) {
+      console.log(`Falling back to orderId lookup with request_order_id: ${requestOrderId}`);
+      order = await patientOrder.findOneAndUpdate({ orderId: requestOrderId }, {
+        orderStatus: req.body.status_description,
+        statusDate: req.body.statusUpdateDate,
+        ...(awbValue && { awb_number: awbValue }) // Automatically fill missing awb_number if we get it from webhook
+      });
     }
 
     // Debug: show what AWBs exist in DB if order not found
     if (!order) {
-      const recentOrders = await patientOrder.find({}, { awb_number: 1, provider: 1 }).sort({ createdAt: -1 }).limit(10);
-      console.log('DEBUG: Recent AWBs in DB:', recentOrders.map(o => ({ awb: o.awb_number, provider: o.provider })));
+      const recentOrders = await patientOrder.find({}, { awb_number: 1, orderId: 1, provider: 1 }).sort({ createdAt: -1 }).limit(10);
+      console.log('DEBUG: Recent AWBs/OrderIDs in DB:', recentOrders.map(o => ({ awb: o.awb_number, orderId: o.orderId, provider: o.provider })));
     }
 
     let status = req.body.status_description
