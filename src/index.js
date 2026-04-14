@@ -335,6 +335,8 @@ app.post('/api/webhooks/smartship', async (req, res) => {
       }
 
 
+
+
       const payload = {
         sender: "917417271707",
         to: `+91${patient.mobileNumber}`,
@@ -349,6 +351,7 @@ app.post('/api/webhooks/smartship', async (req, res) => {
         //   buttonVariables: ["Verify Now"],
       };
 
+      console.log(payload);
       const response = await fetch(
         "https://chat.bol7.com/api/whatsapp/SendTemplate",
         {
