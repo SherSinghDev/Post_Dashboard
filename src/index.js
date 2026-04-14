@@ -328,9 +328,12 @@ app.post('/api/webhooks/smartship', async (req, res) => {
       }
       else if (mainStatus.includes('delivered')) {
         tmpId = '2717556531914471'
-        vars = [patient.patientName, order._id]
+        // vars = [patient.patientName, order._id]
       }
       else if (mainStatus.includes('dispatch')) {
+        tmpId = '2226838111392141'
+      }
+      else {
         tmpId = '2226838111392141'
       }
 
