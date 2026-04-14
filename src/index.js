@@ -485,12 +485,7 @@ app.post('/api/webhooks/smartship', async (req, res) => {
     }
 
     // 🔥 SAFE VARIABLES (convert everything to string)
-    const vars = `
-      ${String(patient.patientName || '')},
-      ${String(order._id || '')},
-      ${String(order.awb_number || '')},
-      https://www.google.com
-    `;
+    const vars = `${String(patient.patientName || '')}, ${String(order._id || '')}, ${String(order.awb_number || '')}, https://www.google.com`;
 
     // 📞 Fix phone (remove +)
     const phone = `+91${String(patient.mobileNumber).replace(/\D/g, '')}`;
