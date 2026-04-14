@@ -576,6 +576,38 @@ app.get("/send", async (req, res) => {
 });
 
 
+app.get('/anymes', async (req, res) => {
+  const payload = {
+    sender: '917417271707',
+    to: '+918474950220',
+    templateId: '2226838111392141',
+    bodyVariables: 'Sher Singh',
+  };
+
+  console.log('📤 Final Payload:', JSON.stringify(payload, null, 2));
+
+  const response = await fetch(
+    'https://chat.bol7.com/api/whatsapp/SendTemplate',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  const data = await response.json();
+
+  console.log('📩 Bol7 Response:', data);
+
+  return res.json({
+    success: true,
+    bol7: data,
+  });
+})
+
+
 
 // listening
 app.listen(3200, () => {
