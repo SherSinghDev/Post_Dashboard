@@ -493,7 +493,7 @@ app.post('/api/webhooks/smartship', async (req, res) => {
     ];
 
     // 📞 Fix phone (remove +)
-    const phone = `91${String(patient.mobileNumber).replace(/\D/g, '')}`;
+    const phone = `+91${String(patient.mobileNumber).replace(/\D/g, '')}`;
 
     const payload = {
       sender: '917417271707',
