@@ -485,12 +485,12 @@ app.post('/api/webhooks/smartship', async (req, res) => {
     }
 
     // 🔥 SAFE VARIABLES (convert everything to string)
-    const vars = [
-      String(patient.patientName || ''),
-      String(order._id || ''),
-      String(order.awb_number || ''),
-      'https://www.google.com',
-    ];
+    const vars = `
+      ${String(patient.patientName || '')},
+      ${String(order._id || '')},
+      ${String(order.awb_number || '')},
+      https://www.google.com
+    `;
 
     // 📞 Fix phone (remove +)
     const phone = `+91${String(patient.mobileNumber).replace(/\D/g, '')}`;
@@ -581,7 +581,8 @@ app.get('/anymes', async (req, res) => {
     sender: '917417271707',
     to: '+918474950220',
     templateId: '2226838111392141',
-    bodyVariables: 'Sher Singh',
+    // bodyVariables: ['Sher Singh', '1234567890', '1234567890', 'https://www.google.com'],
+    bodyVariables: `Sher Singh, 1234567890, 1234567890, https://www.google.com`,
   };
 
   console.log('📤 Final Payload:', JSON.stringify(payload, null, 2));
