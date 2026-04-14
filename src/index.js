@@ -231,47 +231,204 @@ app.get('/api/webhooks/proship', (req, res) => {
 })
 
 
+// app.post('/api/webhooks/smartship', async (req, res) => {
+//   try {
+//     console.log('--- SmartShip Webhook Received ---');
+//     console.log('Headers:', JSON.stringify(req.headers['content-type']));
+//     console.log('Full Body:', JSON.stringify(req.body, null, 2));
+//     console.log('AWB field (awbno):', req.body.awbno);
+//     console.log('AWB field (awb_number):', req.body.awb_number);
+//     console.log('AWB field (awb):', req.body.awb);
+
+//     // Determine the correct AWB field - adjust based on actual payload
+//     let awbValue = req.body.awbno || req.body.awb_number || req.body.awb || req.body.tracking_number;
+//     let requestOrderId = req.body.request_order_id || req.body.client_order_reference_id;
+
+//     // Convert to string and trim to avoid type mismatch
+//     if (awbValue) awbValue = String(awbValue).trim();
+//     if (requestOrderId) requestOrderId = String(requestOrderId).trim();
+
+//     console.log('Resolved AWB value:', awbValue, '| Type:', typeof awbValue);
+//     console.log('Resolved Request Order ID:', requestOrderId);
+
+//     if (!awbValue && !requestOrderId) {
+//       console.log('ERROR: No AWB number or request_order_id found in webhook payload. Available keys:', Object.keys(req.body));
+//       return res.json({ success: false, error: 'No AWB number or request_order_id in payload' });
+//     }
+
+//     let order = null;
+
+//     if (awbValue) {
+//       // Try exact match first
+//       order = await patientOrder.findOneAndUpdate({ awb_number: awbValue }, {
+//         orderStatus: req.body.status_description,
+//         statusDate: req.body.statusUpdateDate,
+//         // 'courier_id.name': req.body.courierPartnerName,
+//         // 'courier_id.parent': req.body.courierPartnerName,
+//       });
+
+//       // If exact match fails, try regex match (handles whitespace/format issues)
+//       if (!order) {
+//         console.log('Exact match failed, trying regex search...');
+//         order = await patientOrder.findOneAndUpdate(
+//           { awb_number: { $regex: new RegExp('^\\s*' + awbValue + '\\s*$', 'i') } },
+//           {
+//             orderStatus: req.body.status_description,
+//             statusDate: req.body.statusUpdateDate,
+//           }
+//         );
+//       }
+//     }
+
+//     // Fallback: search by request_order_id (orderId)
+//     if (!order && requestOrderId) {
+//       console.log(`Falling back to orderId lookup with request_order_id: ${requestOrderId}`);
+//       order = await patientOrder.findOneAndUpdate({ orderId: requestOrderId }, {
+//         orderStatus: req.body.status_description,
+//         statusDate: req.body.statusUpdateDate,
+//         ...(awbValue && { awb_number: awbValue }) // Automatically fill missing awb_number if we get it from webhook
+//       });
+//     }
+
+//     // Debug: show what AWBs exist in DB if order not found
+//     if (!order) {
+//       const recentOrders = await patientOrder.find({}, { awb_number: 1, orderId: 1, provider: 1 }).sort({ createdAt: -1 }).limit(10);
+//       console.log('DEBUG: Recent AWBs/OrderIDs in DB:', recentOrders.map(o => ({ awb: o.awb_number, orderId: o.orderId, provider: o.provider })));
+//     }
+
+//     let status = req.body.status_description
+//     // let deliveryPartner = req.body.courierPartnerName
+
+//     let patient;
+//     if (order) {
+//       console.log('Order found! Order ID:', order._id, 'PatientId:', order.patientId);
+//       patient = await patientForm.findOneAndUpdate(
+//         { _id: order.patientId },
+//         { 'otherStatus.deliveryStatus': req.body.status_description }
+//       ).select('patientName mobileNumber');
+//     } else {
+//       console.log('ERROR: No order found with awb_number:', awbValue);
+//     }
+
+
+//     console.log('CALL LOGS');
+//     console.log(status);
+//     console.log(order);
+//     console.log(patient);
+
+//     if (order && patient) {
+//       let mainStatus = status.toLowerCase()
+//       let tmpId;
+//       let vars = [patient.patientName, order._id, order.awb_number, 'https://www.google.com']
+//       if (mainStatus.includes('transit')) {
+//         tmpId = '907900041733412'
+//       }
+//       else if (mainStatus.includes('out for delivery')) {
+//         tmpId = '1444085863745042'
+//       }
+//       else if (mainStatus.includes('delivered')) {
+//         tmpId = '2717556531914471'
+//         // vars = [patient.patientName, order._id]
+//       }
+//       else if (mainStatus.includes('dispatch')) {
+//         tmpId = '2226838111392141'
+//       }
+//       else {
+//         tmpId = '2226838111392141'
+//       }
+
+
+
+
+//       const payload = {
+//         sender: "917417271707",
+//         to: `+91${patient.mobileNumber}`,
+//         templateId: tmpId,
+
+//         // If template has header
+//         //   headerVariables: ["https://bol7.com/logo.png"],
+
+//         bodyVariables: vars,
+
+//         // If template has button
+//         //   buttonVariables: ["Verify Now"],
+//       };
+
+//       console.log(payload);
+//       const response = await fetch(
+//         "https://chat.bol7.com/api/whatsapp/SendTemplate",
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify(payload),
+//         }
+//       );
+//       const data = await response.json();
+//       console.log("Bol7 Response:", data);
+
+//     }
+//     res.json({
+//       "data": {
+//         "message": {
+//           "success": true,
+//           "description": "response message"
+//         }
+//       }
+//     })
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ success: false })
+//   }
+// })
+
+
 app.post('/api/webhooks/smartship', async (req, res) => {
   try {
     console.log('--- SmartShip Webhook Received ---');
-    console.log('Headers:', JSON.stringify(req.headers['content-type']));
-    console.log('Full Body:', JSON.stringify(req.body, null, 2));
-    console.log('AWB field (awbno):', req.body.awbno);
-    console.log('AWB field (awb_number):', req.body.awb_number);
-    console.log('AWB field (awb):', req.body.awb);
+    console.log('Body:', JSON.stringify(req.body, null, 2));
 
-    // Determine the correct AWB field - adjust based on actual payload
-    let awbValue = req.body.awbno || req.body.awb_number || req.body.awb || req.body.tracking_number;
-    let requestOrderId = req.body.request_order_id || req.body.client_order_reference_id;
+    let awbValue =
+      req.body.awbno ||
+      req.body.awb_number ||
+      req.body.awb ||
+      req.body.tracking_number;
 
-    // Convert to string and trim to avoid type mismatch
+    let requestOrderId =
+      req.body.request_order_id ||
+      req.body.client_order_reference_id;
+
     if (awbValue) awbValue = String(awbValue).trim();
     if (requestOrderId) requestOrderId = String(requestOrderId).trim();
 
-    console.log('Resolved AWB value:', awbValue, '| Type:', typeof awbValue);
-    console.log('Resolved Request Order ID:', requestOrderId);
-
     if (!awbValue && !requestOrderId) {
-      console.log('ERROR: No AWB number or request_order_id found in webhook payload. Available keys:', Object.keys(req.body));
-      return res.json({ success: false, error: 'No AWB number or request_order_id in payload' });
+      return res.json({
+        success: false,
+        error: 'No AWB or request_order_id',
+      });
     }
 
     let order = null;
 
+    // 🔍 Find order by AWB
     if (awbValue) {
-      // Try exact match first
-      order = await patientOrder.findOneAndUpdate({ awb_number: awbValue }, {
-        orderStatus: req.body.status_description,
-        statusDate: req.body.statusUpdateDate,
-        // 'courier_id.name': req.body.courierPartnerName,
-        // 'courier_id.parent': req.body.courierPartnerName,
-      });
+      order = await patientOrder.findOneAndUpdate(
+        { awb_number: awbValue },
+        {
+          orderStatus: req.body.status_description,
+          statusDate: req.body.statusUpdateDate,
+        }
+      );
 
-      // If exact match fails, try regex match (handles whitespace/format issues)
+      // fallback regex
       if (!order) {
-        console.log('Exact match failed, trying regex search...');
         order = await patientOrder.findOneAndUpdate(
-          { awb_number: { $regex: new RegExp('^\\s*' + awbValue + '\\s*$', 'i') } },
+          {
+            awb_number: {
+              $regex: new RegExp(`^\\s*${awbValue}\\s*$`, 'i'),
+            },
+          },
           {
             orderStatus: req.body.status_description,
             statusDate: req.body.statusUpdateDate,
@@ -280,108 +437,99 @@ app.post('/api/webhooks/smartship', async (req, res) => {
       }
     }
 
-    // Fallback: search by request_order_id (orderId)
+    // 🔁 fallback using orderId
     if (!order && requestOrderId) {
-      console.log(`Falling back to orderId lookup with request_order_id: ${requestOrderId}`);
-      order = await patientOrder.findOneAndUpdate({ orderId: requestOrderId }, {
-        orderStatus: req.body.status_description,
-        statusDate: req.body.statusUpdateDate,
-        ...(awbValue && { awb_number: awbValue }) // Automatically fill missing awb_number if we get it from webhook
-      });
-    }
-
-    // Debug: show what AWBs exist in DB if order not found
-    if (!order) {
-      const recentOrders = await patientOrder.find({}, { awb_number: 1, orderId: 1, provider: 1 }).sort({ createdAt: -1 }).limit(10);
-      console.log('DEBUG: Recent AWBs/OrderIDs in DB:', recentOrders.map(o => ({ awb: o.awb_number, orderId: o.orderId, provider: o.provider })));
-    }
-
-    let status = req.body.status_description
-    // let deliveryPartner = req.body.courierPartnerName
-
-    let patient;
-    if (order) {
-      console.log('Order found! Order ID:', order._id, 'PatientId:', order.patientId);
-      patient = await patientForm.findOneAndUpdate(
-        { _id: order.patientId },
-        { 'otherStatus.deliveryStatus': req.body.status_description }
-      ).select('patientName mobileNumber');
-    } else {
-      console.log('ERROR: No order found with awb_number:', awbValue);
-    }
-
-
-    console.log('CALL LOGS');
-    console.log(status);
-    console.log(order);
-    console.log(patient);
-
-    if (order && patient) {
-      let mainStatus = status.toLowerCase()
-      let tmpId;
-      let vars = [patient.patientName, order._id, order.awb_number, 'https://www.google.com']
-      if (mainStatus.includes('transit')) {
-        tmpId = '907900041733412'
-      }
-      else if (mainStatus.includes('out for delivery')) {
-        tmpId = '1444085863745042'
-      }
-      else if (mainStatus.includes('delivered')) {
-        tmpId = '2717556531914471'
-        // vars = [patient.patientName, order._id]
-      }
-      else if (mainStatus.includes('dispatch')) {
-        tmpId = '2226838111392141'
-      }
-      else {
-        tmpId = '2226838111392141'
-      }
-
-
-
-
-      const payload = {
-        sender: "917417271707",
-        to: `+91${patient.mobileNumber}`,
-        templateId: tmpId,
-
-        // If template has header
-        //   headerVariables: ["https://bol7.com/logo.png"],
-
-        bodyVariables: vars,
-
-        // If template has button
-        //   buttonVariables: ["Verify Now"],
-      };
-
-      console.log(payload);
-      const response = await fetch(
-        "https://chat.bol7.com/api/whatsapp/SendTemplate",
+      order = await patientOrder.findOneAndUpdate(
+        { orderId: requestOrderId },
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
+          orderStatus: req.body.status_description,
+          statusDate: req.body.statusUpdateDate,
+          ...(awbValue && { awb_number: awbValue }),
         }
       );
-      const data = await response.json();
-      console.log("Bol7 Response:", data);
-
     }
-    res.json({
-      "data": {
-        "message": {
-          "success": true,
-          "description": "response message"
+
+    if (!order) {
+      console.log('❌ Order not found');
+      return res.json({ success: false });
+    }
+
+    // 👤 Fetch patient
+    const patient = await patientForm
+      .findOneAndUpdate(
+        { _id: order.patientId },
+        {
+          'otherStatus.deliveryStatus': req.body.status_description,
         }
+      )
+      .select('patientName mobileNumber');
+
+    if (!patient) {
+      console.log('❌ Patient not found');
+      return res.json({ success: false });
+    }
+
+    const status = (req.body.status_description || '').toLowerCase();
+
+    // 🎯 Template selection
+    let templateId = '2226838111392141';
+
+    if (status.includes('transit')) {
+      templateId = '907900041733412';
+    } else if (status.includes('out for delivery')) {
+      templateId = '1444085863745042';
+    } else if (status.includes('delivered')) {
+      templateId = '2717556531914471';
+    } else if (status.includes('dispatch')) {
+      templateId = '2226838111392141';
+    }
+
+    // 🔥 SAFE VARIABLES (convert everything to string)
+    const vars = [
+      String(patient.patientName || ''),
+      String(order._id || ''),
+      String(order.awb_number || ''),
+      'https://www.google.com',
+    ];
+
+    // 📞 Fix phone (remove +)
+    const phone = `91${String(patient.mobileNumber).replace(/\D/g, '')}`;
+
+    const payload = {
+      sender: '917417271707',
+      to: phone,
+      templateId: templateId,
+      bodyVariables: vars,
+    };
+
+    console.log('📤 Final Payload:', JSON.stringify(payload, null, 2));
+
+    const response = await fetch(
+      'https://chat.bol7.com/api/whatsapp/SendTemplate',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       }
-    })
+    );
+
+    const data = await response.json();
+
+    console.log('📩 Bol7 Response:', data);
+
+    return res.json({
+      success: true,
+      bol7: data,
+    });
+
   } catch (error) {
-    console.log(error);
-    res.json({ success: false })
+    console.error('❌ Webhook Error:', error);
+    return res.json({ success: false });
   }
-})
+});
+
 
 
 app.get("/send", async (req, res) => {
