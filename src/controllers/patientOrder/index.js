@@ -664,9 +664,43 @@ router.get('/allorders', async (req, res) => {
     try {
         let user = await Users.findOne({ _id: req.session.userId });
 
+        // Pagination parameters
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        // Status filter parameter
+        const statusFilter = req.query.status || 'all';
+
+        // Map status filter to orderStatus codes (matching client-side logic)
+        let statusCodes = [];
+        if (statusFilter === 'Delivery Failed') {
+            statusCodes = ['PICKUP_FAILED', 'FAILED_DELIVERY', 'CANCELLED_ORDER'];
+        } else if (statusFilter === 'Pickups') {
+            statusCodes = ['PICKUP_PENDING', 'PICKED_UP'];
+        } else if (statusFilter === 'In Transit') {
+            statusCodes = ['INTRANSIT'];
+        } else if (statusFilter === 'Out For Delivery') {
+            statusCodes = ['OUT_FOR_DELIVERY'];
+        } else if (statusFilter === 'Delivered') {
+            statusCodes = ['DELIVERED'];
+        } else if (statusFilter === 'RTO') {
+            statusCodes = ['RTO_REQUESTED', 'RTO', 'RTO_OUT_FOR_DELIVERY', 'RTO_DELIVERED', 'RTO_FAILED'];
+        }
+        // 'all' status means no filter
+
         let orders;
         let referredUsers;
         let createOrder = true;
+        let totalOrders = 0;
+
+        // Build base query for role-based filtering
+        let baseQuery = { awb_number: { $exists: true, $ne: null } };
+
+        // Add status filter if not 'all'
+        if (statusFilter !== 'all' && statusCodes.length > 0) {
+            baseQuery.orderStatus = { $in: statusCodes };
+        }
 
         // 👇 Role-based filtering
         if (user.role == 'Coordinator') {
@@ -677,19 +711,34 @@ router.get('/allorders', async (req, res) => {
 
             const referredUserIds = referredUsers.map(u => u.userId);
 
-            orders = await patientOrder.find({
-                userId: {
-                    $in: [user.userId, ...referredUserIds]
-                }
-            }).sort({ createdAt: -1 });
+            // Add userId filter for coordinator
+            let coordinatorQuery = {
+                ...baseQuery,
+                userId: { $in: [user.userId, ...referredUserIds] }
+            };
+
+            // Get total count for pagination
+            totalOrders = await patientOrder.countDocuments(coordinatorQuery);
+
+            orders = await patientOrder.find(coordinatorQuery)
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit);
 
         } else {
             referredUsers = await Users.find().select('userId name');
-            orders = await patientOrder.find().sort({ createdAt: -1 });
+
+            // Get total count for pagination
+            totalOrders = await patientOrder.countDocuments(baseQuery);
+
+            orders = await patientOrder.find(baseQuery)
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit);
         }
 
-        // ✅ Only orders with AWB
-        orders = orders.filter(o => o.awb_number);
+        // Calculate total pages
+        const totalPages = Math.ceil(totalOrders / limit);
 
         // ✅ Attach mobile + update delivery status
         orders = await Promise.all(
@@ -770,7 +819,7 @@ router.get('/allorders', async (req, res) => {
             );
 
             const data = await response.json();
-            // console.log(data.data);
+            console.log(data);
             let obj = data?.data?.scans || {}
             let mainData = []
             for (let key in obj) {
@@ -799,7 +848,7 @@ router.get('/allorders', async (req, res) => {
                     console.log(t[0].tracking_number, o.awb_number);
                     return t[0].tracking_number == o.awb_number
                 });
-                // console.log("smartshipt", track);
+                console.log("smartshipt", track);
             }
             else {
                 track = proshipTracking.find(t => t.waybill == o.awb_number);
@@ -874,7 +923,16 @@ router.get('/allorders', async (req, res) => {
             applications: groupedById,
             page: "All Orders",
             user,
-            createOrder
+            createOrder,
+            statusFilter: statusFilter,
+            pagination: {
+                currentPage: page,
+                totalPages: totalPages,
+                totalOrders: totalOrders,
+                limit: limit,
+                hasNextPage: page < totalPages,
+                hasPrevPage: page > 1
+            }
         });
 
     } catch (error) {

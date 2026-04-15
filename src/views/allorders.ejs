@@ -300,49 +300,56 @@
 
                                     <ul class="revnue-tab nav nav-tabs" id="myTab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="status-tab" onclick="getFilter('all')"
-                                                data-bs-toggle="tab" data-bs-target="#status-tab-pane" type="button"
-                                                role="tab" aria-controls="status-tab-pane" aria-selected="false"
-                                                tabindex="-1">All
+                                            <button class="nav-link <%= statusFilter === 'all' ? 'active' : '' %>"
+                                                id="status-tab" onclick="getFilter('all')" data-bs-toggle="tab"
+                                                data-bs-target="#status-tab-pane" type="button" role="tab"
+                                                aria-controls="status-tab-pane" aria-selected="false" tabindex="-1">All
                                                 Status (<span></span>)</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="Delivery-Failed"
-                                                onclick="getFilter('Delivery Failed')" data-bs-toggle="tab"
-                                                data-bs-target="#Delivery-Failed" type="button" role="tab"
-                                                aria-controls="Delivery-Failed" aria-selected="false"
+                                            <button
+                                                class="nav-link <%= statusFilter === 'Delivery Failed' ? 'active' : '' %>"
+                                                id="Delivery-Failed" onclick="getFilter('Delivery Failed')"
+                                                data-bs-toggle="tab" data-bs-target="#Delivery-Failed" type="button"
+                                                role="tab" aria-controls="Delivery-Failed" aria-selected="false"
                                                 tabindex="-1">Delivery Failed (<span></span>)</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="Pickups-tab" onclick="getFilter('Pickups')"
-                                                data-bs-toggle="tab" data-bs-target="#Pickups-tab-pane" type="button"
-                                                role="tab" aria-controls="Pickups-tab-pane" aria-selected="false"
+                                            <button class="nav-link <%= statusFilter === 'Pickups' ? 'active' : '' %>"
+                                                id="Pickups-tab" onclick="getFilter('Pickups')" data-bs-toggle="tab"
+                                                data-bs-target="#Pickups-tab-pane" type="button" role="tab"
+                                                aria-controls="Pickups-tab-pane" aria-selected="false"
                                                 tabindex="-1">Pickups (<span></span>)</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="In-Transit-tab"
-                                                onclick="getFilter('In Transit')" data-bs-toggle="tab"
-                                                data-bs-target="#In-Transit-tab-pane" type="button" role="tab"
-                                                aria-controls="In-Transit-tab-pane" aria-selected="false"
+                                            <button
+                                                class="nav-link <%= statusFilter === 'In Transit' ? 'active' : '' %>"
+                                                id="In-Transit-tab" onclick="getFilter('In Transit')"
+                                                data-bs-toggle="tab" data-bs-target="#In-Transit-tab-pane" type="button"
+                                                role="tab" aria-controls="In-Transit-tab-pane" aria-selected="false"
                                                 tabindex="-1">In Transit (<span></span>)</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="Out-For-Devlivery-tab"
-                                                onclick="getFilter('Out For Delivery')" data-bs-toggle="tab"
-                                                data-bs-target="#Out-For-Devlivery-tab-pane" type="button" role="tab"
-                                                aria-controls="Out-For-Devlivery-tab-pane" aria-selected="false"
-                                                tabindex="-1">Out For Delivery (<span></span>)</button>
+                                            <button
+                                                class="nav-link <%= statusFilter === 'Out For Delivery' ? 'active' : '' %>"
+                                                id="Out-For-Devlivery-tab" onclick="getFilter('Out For Delivery')"
+                                                data-bs-toggle="tab" data-bs-target="#Out-For-Devlivery-tab-pane"
+                                                type="button" role="tab" aria-controls="Out-For-Devlivery-tab-pane"
+                                                aria-selected="false" tabindex="-1">Out For Delivery
+                                                (<span></span>)</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="Delivered-tab" onclick="getFilter('Delivered')"
-                                                data-bs-toggle="tab" data-bs-target="#Delivered-tab-pane" type="button"
-                                                role="tab" aria-controls="Delivered-tab-pane"
-                                                aria-selected="true">Delivered (<span></span>)</button>
+                                            <button class="nav-link <%= statusFilter === 'Delivered' ? 'active' : '' %>"
+                                                id="Delivered-tab" onclick="getFilter('Delivered')" data-bs-toggle="tab"
+                                                data-bs-target="#Delivered-tab-pane" type="button" role="tab"
+                                                aria-controls="Delivered-tab-pane" aria-selected="true">Delivered
+                                                (<span></span>)</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="RTO-tab" onclick="getFilter('RTO')"
-                                                data-bs-toggle="tab" data-bs-target="#RTO-tab-pane" type="button"
-                                                role="tab" aria-controls="RTO-tab-pane" aria-selected="true">RTO
+                                            <button class="nav-link <%= statusFilter === 'RTO' ? 'active' : '' %>"
+                                                id="RTO-tab" onclick="getFilter('RTO')" data-bs-toggle="tab"
+                                                data-bs-target="#RTO-tab-pane" type="button" role="tab"
+                                                aria-controls="RTO-tab-pane" aria-selected="true">RTO
                                                 (<span></span>)</button>
                                         </li>
                                     </ul>
@@ -484,8 +491,9 @@
                                                                                             class="btn btn-dark p-2 py-1 rounded-4 order-status">
                                                                                             <%= app?.track?.currentStatus
                                                                                                 ?
-                                                                                                app?.track?.currentStatus || 'Not Serviceable'
-                                                                                                : app?.track?.[0]?.action || 'Not Serviceable'
+                                                                                                app?.track?.currentStatus
+                                                                                                :
+                                                                                                app?.track?.[0]?.action
                                                                                                 %>
                                                                                         </a></p>
                                                                                 </td>
@@ -530,6 +538,62 @@
                                                             </tbody>
                                                         </table>
                                                         <% } %>
+
+                                                            <!-- Pagination Controls -->
+                                                            <% if (pagination && pagination.totalPages> 1) { %>
+                                                                <div class="d-flex justify-content-center mt-4">
+                                                                    <div style="overflow-x: auto; max-width: 100%;">
+                                                                        <nav aria-label="Page navigation">
+                                                                            <ul class="pagination flex-nowrap">
+                                                                                <% if (pagination.hasPrevPage) { %>
+                                                                                    <li class="page-item">
+                                                                                        <a class="page-link"
+                                                                                            href="/patientorder/allorders?status=<%= statusFilter %>&page=<%= pagination.currentPage - 1 %>"
+                                                                                            aria-label="Previous">
+                                                                                            <span
+                                                                                                aria-hidden="true">&laquo;</span>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <% } %>
+
+                                                                                        <% for (let i=1; i
+                                                                                            <=pagination.totalPages;
+                                                                                            i++) { %>
+                                                                                            <li
+                                                                                                class="page-item <%= pagination.currentPage === i ? 'active' : '' %>">
+                                                                                                <a class="page-link"
+                                                                                                    href="/patientorder/allorders?status=<%= statusFilter %>&page=<%= i %>">
+                                                                                                    <%= i %>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <% } %>
+
+                                                                                                <% if
+                                                                                                    (pagination.hasNextPage)
+                                                                                                    { %>
+                                                                                                    <li
+                                                                                                        class="page-item">
+                                                                                                        <a class="page-link"
+                                                                                                            href="/patientorder/allorders?status=<%= statusFilter %>&page=<%= pagination.currentPage + 1 %>"
+                                                                                                            aria-label="Next">
+                                                                                                            <span
+                                                                                                                aria-hidden="true">&raquo;</span>
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                    <% } %>
+                                                                            </ul>
+                                                                        </nav>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="text-center text-muted mt-2">
+                                                                    Showing <%= (pagination.currentPage - 1) *
+                                                                        pagination.limit + 1 %> to
+                                                                        <%= Math.min(pagination.currentPage *
+                                                                            pagination.limit, pagination.totalOrders) %>
+                                                                            of <%= pagination.totalOrders %> orders
+                                                                </div>
+                                                                <% } %>
                                                 </div>
                                             </div>
                                         </div>
@@ -1456,60 +1520,8 @@
 
 
         function getFilter(status) {
-            // console.log(status);
-            let codes = []
-
-            if (status == 'all') {
-                document.querySelectorAll('.main-table tbody tr').forEach((tr) => {
-                    tr.style.display = 'table-row'
-                })
-                return
-            }
-            else if (status == 'Delivery Failed') {
-                // codes = ['PICKUP_FAILED', 'FAILED_DELIVERY', 'CANCELLED_ORDER','CANCELLED_PENDING']
-                codes = ['PICKUP_FAILED', 'FAILED_DELIVERY', 'CANCELLED_ORDER']
-            }
-            else if (status == 'Pickups') {
-                codes = ['PICKUP_PENDING', 'PICKED_UP']
-            }
-            else if (status == 'In Transit') {
-                codes = ['INTRANSIT']
-            }
-            else if (status == 'Out For Delivery') {
-                codes = ['OUT_FOR_DELIVERY']
-            }
-            else if (status == 'Delivered') { //OUT_FOR_DELIVERY
-                codes = ['DELIVERED']
-            }
-            else if (status == 'RTO') {
-                codes = ['RTO_REQUESTED', 'RTO', 'RTO_OUT_FOR_DELIVERY', 'RTO_DELIVERED', 'RTO_FAILED']
-            }
-
-            let btn = document.querySelectorAll('.main-table tbody tr .order-status')
-            // console.log(btn);
-
-            // console.log(codes);
-
-            let show = []
-            btn.forEach((b) => {
-                let bStatus = b.innerText.trim()
-                // console.log(bStatus);
-                if (codes.includes(bStatus)) {
-                    let tr = b.parentElement.parentElement.parentElement
-                    show.push(tr)
-                }
-            })
-
-            document.querySelectorAll('.main-table tbody tr').forEach((tr) => {
-                tr.style.display = 'none'
-            })
-
-            // console.log(show);
-
-
-            show.forEach((tr) => {
-                tr.style.display = 'table-row'
-            })
+            // Redirect to server with status filter and page=1
+            window.location.href = `/patientorder/allorders?status=${encodeURIComponent(status)}&page=1`;
         }
 
         $(document).on('click', '.logout-btn', function (e) {
