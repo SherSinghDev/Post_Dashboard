@@ -218,7 +218,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="/doctors/patients" aria-expanded="false">
+                                    <a href="/doctors/patients/unverified" aria-expanded="false">
                                         <div class="menu-icon">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -233,13 +233,12 @@
                                                     fill="#90959F" />
                                             </svg>
                                         </div>
-                                        <span class="nav-text">Patients</span>
+                                        <span class="nav-text">Unverified Patients</span>
                                     </a>
-
                                 </li>
 
                                 <li>
-                                    <a href="/patientform/<%=user.assignedForm%>" target="_blank" aria-expanded="false">
+                                    <a href="/doctors/patients/verified" aria-expanded="false">
                                         <div class="menu-icon">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -254,10 +253,51 @@
                                                     fill="#90959F" />
                                             </svg>
                                         </div>
-                                        <span class="nav-text">Patient Form</span>
+                                        <span class="nav-text">Verified Patients</span>
                                     </a>
-
                                 </li>
+
+                                <li>
+                                    <a href="/doctors/patients/pending" aria-expanded="false">
+                                        <div class="menu-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.5"
+                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
+                                                    fill="#90959F" />
+                                                <path
+                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
+                                                    fill="#90959F" />
+                                                <path opacity="0.4"
+                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
+                                                    fill="#90959F" />
+                                            </svg>
+                                        </div>
+                                        <span class="nav-text">Pending Patients</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/doctors/patients/orders" aria-expanded="false">
+                                        <div class="menu-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.5"
+                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
+                                                    fill="#90959F" />
+                                                <path
+                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
+                                                    fill="#90959F" />
+                                                <path opacity="0.4"
+                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
+                                                    fill="#90959F" />
+                                            </svg>
+                                        </div>
+                                        <span class="nav-text">Patients orders</span>
+                                    </a>
+                                </li>
+
+
 
                                 <hr>
 
@@ -704,7 +744,7 @@
                                                             <div class="text-center mt-4">
                                                                 <button type="submit"
                                                                     class="btn btn-success px-5 py-2">Submit</button>
-                                                                <% if(createOrder && user.type!='stockorder' ){ %>
+                                                                <% if(createOrder && user?.type!='stockorder' ){ %>
                                                                     <button type="button"
                                                                         class="btn btn-info px-5 py-2 create-order">Create
                                                                         Order With Proship</button>
@@ -1213,10 +1253,10 @@
             const id = $(this).data('id');
             Swal.fire({
                 title: "Are you sure?",
-                text: "This will permanently delete the record.",
+                text: "This will Send the patient data in not interested Page.",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
+                confirmButtonText: "Yes, Send it!",
             }).then(result => {
                 if (result.isConfirmed) {
                     fetch(`/patientform/delete/${id}`, { method: "DELETE" })
@@ -1224,7 +1264,7 @@
                         .then(data => {
                             if (data.success) {
                                 $(`#tr-${id}`).fadeOut(800);
-                                Swal.fire("Deleted!", "Patient Form deleted successfully.", "success");
+                                Swal.fire("Deleted!", "Patient Form sent to not interested successfully.", "success");
                             }
                         })
                         .catch(err => console.error(err));

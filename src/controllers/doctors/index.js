@@ -10,9 +10,34 @@ const patientForm = require('../../modals/patientForm')
 router.get('/dashboard', async (req, res) => {
   if (req.session.userId) {
     let user = await Doctor.findOne({ _id: req.session.userId })
+    console.log(user);
+
     if (user.email.startsWith('doctor')) {
-      let patients = (await patientForm.find({formType:user.assignedForm})).length
-      res.render('doctorhome', { user ,patients })
+      // let patients = (await patientForm.find({ formType: user.assignedForm })).length
+
+      let unverifiedPatients = (await PatientForm.find({ formType: user.assignedForm, "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } })).length
+      let varifiedPatients = (await PatientForm.find({
+        formType: user.assignedForm,
+        "otherStatus.doctorStatus": { $nin: [null, ""] },
+        "otherStatus.trackingIdStatus": { $in: [null, ""] },
+        "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+      })).length
+      let pendingpatients = (await PatientForm.find({
+        formType: user.assignedForm,
+        "otherStatus.doctorStatus": { $in: [null, ""] },
+        "otherStatus.supportStatus": { $nin: [null, ""] },
+        "otherStatus.trackingIdStatus": { $in: [null, ""] },
+        "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+      })).length
+      let patientsOrders = (await PatientForm.find({
+        formType: user.assignedForm,
+        // "otherStatus.doctorStatus": { $nin: [null, ""] },
+        "otherStatus.trackingIdStatus": { $nin: [null, ""] },
+        "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+      })).length
+
+      // console.log(patients);
+      res.render('doctorhome', { user, unverifiedPatients, varifiedPatients, pendingpatients, patientsOrders })
     }
     else {
       res.redirect('/')
@@ -26,20 +51,48 @@ router.get('/dashboard', async (req, res) => {
 
 
 // GET all applications
-router.get('/patients', async (req, res) => {
-
-
+router.get('/patients/:type', async (req, res) => {
   if (req.session.userId) {
     try {
       let user = await Doctor.findOne({ _id: req.session.userId })
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
+      let type = req.params.type
+
+      let match = { formType: user.assignedForm, "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } }
+
+      if (type == 'unverified') {
+        match = { formType: user.assignedForm, "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } }
+      }
+      else if (type == 'verified') {
+        match = {
+          formType: user.assignedForm,
+          "otherStatus.doctorStatus": { $nin: [null, ""] },
+          "otherStatus.trackingIdStatus": { $in: [null, ""] },
+          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+        }
+      }
+      else if (type == 'pending') {
+        match = {
+          formType: user.assignedForm,
+          "otherStatus.doctorStatus": { $in: [null, ""] },
+          "otherStatus.supportStatus": { $nin: [null, ""] },
+          "otherStatus.trackingIdStatus": { $in: [null, ""] },
+          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+        }
+      }
+      else if (type == 'orders') {
+        match = {
+          formType: user.assignedForm,
+          "otherStatus.trackingIdStatus": { $nin: [null, ""] }
+        }
+      }
 
       const result = await PatientForm.aggregate([
         {
           $sort: { createdAt: -1 } // latest first
         },
         {
-          $match: { formType: user.assignedForm } // <-- filter by formType
+          $match: match // <-- filter by formType
         },
         {
           $lookup: {
@@ -84,7 +137,7 @@ router.get('/patients', async (req, res) => {
       // console.log(result);
 
 
-      res.render('forms', { applications: result,user });
+      res.render('forms', { applications: result, user, createOrder: false });
     } catch (error) {
       console.log(error);
       res.redirect('/auth/login')

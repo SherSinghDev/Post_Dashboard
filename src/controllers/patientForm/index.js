@@ -418,6 +418,90 @@ router.get('/varifiedpatients', async (req, res) => {
 });
 
 
+
+// get all doctor verified
+router.get('/notinterestedpatients', async (req, res) => {
+  if (req.session.userId) {
+    try {
+      let user = await Users.findOne({ _id: req.session.userId })
+      // const applications = await PatientForm.find().sort({ createdAt: -1 });
+      let result
+      let createOrder = false
+
+      result = await PatientForm.aggregate([
+        {
+          $match: {
+            "otherStatus.patientStatus": "not interested",
+            "otherStatus.supportStatus": "not interested",
+            "otherStatus.officeStatus": "not interested",
+            "otherStatus.adminStatus": "not interested",
+            "otherStatus.postOfficeStatus": "not interested",
+            "otherStatus.trackingIdStatus": "not interested",
+            "otherStatus.deliveryStatus": "not interested"
+          }
+        }
+        ,
+        {
+          $sort: { createdAt: -1 } // latest first
+        },
+        {
+          $lookup: {
+            from: "users",                // users collection
+            localField: "referredBy",     // referral code in PatientForm
+            foreignField: "userId", // referral code in User
+            as: "referrer"
+          }
+        },
+        {
+          $unwind: {
+            path: "$referrer",
+            preserveNullAndEmptyArrays: true // keep even if no referrer
+          }
+        },
+        {
+          $project: {
+            patientName: 1,
+            fatherOrHusbandName: 1,
+            gender: 1,
+            houseOrStreet: 1,
+            locality: 1,
+            cityOrDistrict: 1,
+            state: 1,
+            landmark: 1,
+            pinCode: 1,
+            mobileNumber: 1,
+            emergencyContact: 1,
+            referredBy: 1,
+            diseaseName: 1,
+            medicalReport: 1,
+            otherStatus: 1,
+            registerNo: 1,
+            createdAt: 1,
+            duration: 1,
+            type: 1,
+            // only select _id and name from the referred user
+            "referrer._id": 1,
+            "referrer.name": 1,
+            "referrer.userId": 1
+          }
+        }
+      ]);
+
+
+
+      // console.log(result);
+      res.render('forms', { applications: result, page: "Not Interested Patient Data", user, createOrder, notInterested: true });
+    } catch (error) {
+      console.log(error);
+      res.redirect('/auth/login')
+    }
+  }
+  else {
+    res.redirect('/auth/login')
+  }
+});
+
+
 // pending patient
 router.get('/pendingpatients', async (req, res) => {
   if (req.session.userId) {
@@ -862,7 +946,17 @@ router.get('/report/:id', async (req, res) => {
 // DELETE application
 router.delete('/delete/:id', async (req, res) => {
   try {
-    await PatientForm.findByIdAndDelete(req.params.id);
+    await PatientForm.findByIdAndUpdate(req.params.id, {
+      $set: {
+        "otherStatus.patientStatus": "not interested",
+        "otherStatus.supportStatus": "not interested",
+        "otherStatus.officeStatus": "not interested",
+        "otherStatus.adminStatus": "not interested",
+        "otherStatus.postOfficeStatus": "not interested",
+        "otherStatus.trackingIdStatus": "not interested",
+        "otherStatus.deliveryStatus": "not interested"
+      }
+    });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
