@@ -946,18 +946,24 @@ router.get('/report/:id', async (req, res) => {
 // DELETE application
 router.delete('/delete/:id', async (req, res) => {
   try {
-    await PatientForm.findByIdAndUpdate(req.params.id, {
-      $set: {
-        "otherStatus.patientStatus": "not interested",
-        "otherStatus.supportStatus": "not interested",
-        "otherStatus.officeStatus": "not interested",
-        "otherStatus.adminStatus": "not interested",
-        "otherStatus.postOfficeStatus": "not interested",
-        "otherStatus.trackingIdStatus": "not interested",
-        "otherStatus.deliveryStatus": "not interested"
-      }
-    });
-    res.json({ success: true });
+    let user = await Users.findOne({ _id: req.session.userId })
+    if (user.role == "Admin") {
+      await PatientForm.findByIdAndUpdate(req.params.id, {
+        $set: {
+          "otherStatus.patientStatus": "not interested",
+          "otherStatus.supportStatus": "not interested",
+          "otherStatus.officeStatus": "not interested",
+          "otherStatus.adminStatus": "not interested",
+          "otherStatus.postOfficeStatus": "not interested",
+          "otherStatus.trackingIdStatus": "not interested",
+          "otherStatus.deliveryStatus": "not interested"
+        }
+      });
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, message: "You are not authorized to delete this form" });
+
+    }
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
