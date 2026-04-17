@@ -969,6 +969,32 @@ router.delete('/delete/:id', async (req, res) => {
   }
 });
 
+// RESTORE application
+router.put('/restore/:id', async (req, res) => {
+  try {
+    let user = await Users.findOne({ _id: req.session.userId })
+    if (user.role == "Admin") {
+      await PatientForm.findByIdAndUpdate(req.params.id, {
+        $set: {
+          "otherStatus.patientStatus": "",
+          "otherStatus.supportStatus": "",
+          "otherStatus.officeStatus": "",
+          "otherStatus.adminStatus": "",
+          "otherStatus.postOfficeStatus": "",
+          "otherStatus.trackingIdStatus": "",
+          "otherStatus.deliveryStatus": "",
+          "otherStatus.doctorStatus": ""
+        }
+      });
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, message: "You are not authorized to restore this form" });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // new forms
 router.get('/:userid', async (req, res) => {
   let id = req.params.userid

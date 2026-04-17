@@ -490,6 +490,13 @@
                                                                                 class="btn btn-sm btn-danger delete-btn">
                                                                                 <i class="fa-solid fa-trash"></i>
                                                                             </a>
+                                                                            <% if (typeof notInterested !== 'undefined' && notInterested) { %>
+                                                                                <a href="javascript:void(0)"
+                                                                                    data-id="<%= app._id %>"
+                                                                                    class="btn btn-sm btn-warning restore-btn" title="Restore back to unverified">
+                                                                                    <i class="fa-solid fa-rotate-left" style="color:white;"></i>
+                                                                                </a>
+                                                                            <% } %>
                                                                         </td>
                                                                     </tr>
                                                                     <% }) %>
@@ -1265,6 +1272,32 @@
                             if (data.success) {
                                 $(`#tr-${id}`).fadeOut(800);
                                 Swal.fire("Deleted!", "Patient Form sent to not interested successfully.", "success");
+                            }
+                        })
+                        .catch(err => console.error(err));
+                }
+            });
+        });
+
+        // ♻ Restore
+        $(document).on('click', '.restore-btn', function () {
+            const id = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This will restore the patient back to the unverified page.",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Restore it!",
+            }).then(result => {
+                if (result.isConfirmed) {
+                    fetch(`/patientform/restore/${id}`, { method: "PUT" })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                $(`#tr-${id}`).fadeOut(800);
+                                Swal.fire("Restored!", "Patient has been restored successfully.", "success");
+                            } else {
+                                Swal.fire("Error!", data.message || "Failed to restore.", "error");
                             }
                         })
                         .catch(err => console.error(err));
