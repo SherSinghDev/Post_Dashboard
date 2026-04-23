@@ -262,7 +262,7 @@ router.post("/create-order-with-smartship", async (req, res) => {
 
         // 📦 SmartShip Payload
         const orderPayload = {
-            client_order_reference_id: id + '245346',
+            client_order_reference_id: id,
             shipment_type: 1,
             order_collectable_amount: paymentMode === "COD" ? invoiceValue : 0,
             total_order_value: invoiceValue,
