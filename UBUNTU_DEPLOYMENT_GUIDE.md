@@ -246,8 +246,22 @@ pm2 reload post-dashboard
 
 ---
 
-## 13. Final Live URLs:
-- **Website:** https://bsrfindia.com
-- **Auth:** https://bsrfindia.com/auth
-- **ProShip Webhook:** https://bsrfindia.com/api/webhooks/proship
-- **SmartShip Webhook:** https://bsrfindia.com/api/webhooks/smartship
+---
+
+## 14. Connect MongoDB Compass via SSH Tunnel (Secure & Recommended)
+You don't need to expose port 27017 to the public internet. Connect securely using an SSH tunnel:
+
+1. Open **MongoDB Compass** on your local machine.
+2. Click **Add new connection** / **Edit connection string**.
+3. Set the URI to:
+   ```text
+   mongodb://127.0.0.1:27017/parceldb
+   ```
+4. Click on **Advanced Connection Options** tab.
+5. Go to the **Proxy/SSH** tab:
+   - **SSH Tunnel Method:** Select `SSH with Password` (or `SSH with Identity File/Key`)
+   - **SSH Hostname:** `203.57.85.105`
+   - **SSH Port:** `22`
+   - **SSH Username:** `root`
+   - **SSH Password:** *(Your server root password)*
+6. Click **Save & Connect**.
