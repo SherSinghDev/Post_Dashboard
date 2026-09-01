@@ -1,13 +1,13 @@
 let mongoose = require('mongoose')
 
 function mongoConnect() {
-    mongoose.connect('mongodb://admin:BSRFvps1234@72.60.101.162:27017/parceldb?authSource=admin')
+    const mongoUri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/parceldb";
+    mongoose.connect(mongoUri)
         .then(() => {
-            console.log("MongoDB Connected");
+            console.log("MongoDB Connected Successfully to " + mongoUri);
         })
         .catch((err) => {
-            console.log(err);
-
+            console.log("MongoDB Connection Error:", err);
         })
 }
 
