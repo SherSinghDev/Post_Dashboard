@@ -1006,10 +1006,10 @@ router.get('/:userid', async (req, res) => {
 
   // let formType = req.params.formType
   let formType = forms[random]
-  if (user.type) {
+  if (user && user.type) {
     type = user.type
   }
-  // console.log(user.type);
+  // console.log(user ? user.type : null);
   // console.log(random);
 
   console.log(type);
