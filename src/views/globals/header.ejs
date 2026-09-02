@@ -280,6 +280,9 @@
                     applyTheme(nextTheme);
                 });
             }
+            applyTheme(getStoredTheme());
+        });
+
         // Global Logout Handler - Works reliably on all pages
         document.addEventListener('click', function(e) {
             var btn = e.target.closest('.logout-btn');
