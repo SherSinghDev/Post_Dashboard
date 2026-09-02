@@ -205,10 +205,10 @@ const userSchema = new mongoose.Schema({
             type: String,
         },
     },
-    
-    type:String,
+
+    type: String,
     password: { type: String, required: true, default: '1234', trim: true },
-    referralCode: { type: String, unique: true, trim: true },
+    referralCode: { type: String, trim: true },
     referredBy: { type: String, default: null, trim: true }, // Team Leader referral code
     teamLeaderId: { type: mongoose.Schema.Types.ObjectId, ref: "User", trim: true },
     parentUser: {
