@@ -9,6 +9,7 @@
     <title>BSRF Parcel Mangament System</title>
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="https://bsrfindia.com/images/logo/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
     <link href="/css/style.css" rel="stylesheet">
 
@@ -23,11 +24,11 @@
                         <div class="row no-gutters">
                             <div class="col-xl-12">
                                 <div class="auth-form">
-                                    <!-- <div class="text-center mb-3">
-										<a href="index.html"><img src="images/logo/logo-full.png" alt=""></a>
-									</div> -->
-
-
+                                    <div class="mb-4">
+                                        <button type="button" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '/'; }" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 50%; padding: 0;" title="Back to Previous Page">
+                                            <i class="fas fa-arrow-left fa-lg"></i>
+                                        </button>
+                                    </div>
 
                                     <form action="/register" id="register-form" method="POST"
                                         enctype="multipart/form-data">

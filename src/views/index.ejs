@@ -87,280 +87,544 @@
                                         </div>
                                     </div>
                                    <% } %>
-                                    <div class="row">
+                                    <style>
+                                        /* Dashboard White Theme & Cards Styling */
+                                        .dash-filter-container {
+                                            background: #ffffff;
+                                            border-radius: 14px;
+                                            padding: 16px 20px;
+                                            border: 1px solid #e2e8f0;
+                                            box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.04);
+                                            margin-bottom: 24px;
+                                        }
+
+                                        .filter-pills {
+                                            display: flex;
+                                            flex-wrap: wrap;
+                                            gap: 8px;
+                                        }
+
+                                        .filter-btn {
+                                            background: #f8fafc;
+                                            border: 1px solid #e2e8f0;
+                                            color: #64748b;
+                                            padding: 8px 16px;
+                                            border-radius: 20px;
+                                            font-size: 13.5px;
+                                            font-weight: 600;
+                                            cursor: pointer;
+                                            transition: all 0.2s ease;
+                                        }
+
+                                        .filter-btn:hover {
+                                            background: #f1f5f9;
+                                            color: #0f172a;
+                                        }
+
+                                        .filter-btn.active {
+                                            background: #0284c7;
+                                            color: #ffffff;
+                                            border-color: #0284c7;
+                                            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+                                        }
+
+                                        .dash-search-input {
+                                            border-radius: 20px;
+                                            border: 1px solid #e2e8f0;
+                                            padding: 8px 16px 8px 38px;
+                                            font-size: 13.5px;
+                                            background-color: #f8fafc;
+                                            transition: all 0.2s ease;
+                                            width: 100%;
+                                            max-width: 280px;
+                                        }
+
+                                        .dash-search-input:focus {
+                                            background: #ffffff;
+                                            border-color: #38bdf8;
+                                            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+                                            outline: none;
+                                        }
+
+                                        .search-icon-wrapper {
+                                            position: absolute;
+                                            left: 14px;
+                                            top: 50%;
+                                            transform: translateY(-50%);
+                                            color: #94a3b8;
+                                            pointer-events: none;
+                                        }
+
+                                        /* White Card Component */
+                                        .dash-card {
+                                            background: #ffffff;
+                                            border-radius: 14px;
+                                            border: 1px solid #e2e8f0;
+                                            padding: 22px;
+                                            margin-bottom: 24px;
+                                            box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+                                            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                                            position: relative;
+                                            overflow: hidden;
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: space-between;
+                                            height: calc(100% - 24px);
+                                        }
+
+                                        .dash-card:hover {
+                                            transform: translateY(-4px);
+                                            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.1);
+                                            border-color: #cbd5e1;
+                                        }
+
+                                        .dash-card-icon {
+                                            width: 48px;
+                                            height: 48px;
+                                            border-radius: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 20px;
+                                            flex-shrink: 0;
+                                        }
+
+                                        .icon-blue { background: #e0f2fe; color: #0284c7; }
+                                        .icon-amber { background: #fef3c7; color: #d97706; }
+                                        .icon-emerald { background: #d1fae5; color: #059669; }
+                                        .icon-rose { background: #ffe4e6; color: #e11d48; }
+                                        .icon-purple { background: #ede9fe; color: #7c3aed; }
+                                        .icon-indigo { background: #e0e7ff; color: #4338ca; }
+                                        .icon-cyan { background: #cffafe; color: #0891b2; }
+
+                                        .dash-card-title {
+                                            font-size: 13.5px;
+                                            font-weight: 600;
+                                            color: #64748b;
+                                            text-transform: uppercase;
+                                            letter-spacing: 0.5px;
+                                            margin-bottom: 4px;
+                                        }
+
+                                        .dash-card-value {
+                                            font-size: 26px;
+                                            font-weight: 700;
+                                            color: #0f172a;
+                                            margin-bottom: 0;
+                                            line-height: 1.2;
+                                        }
+
+                                        .dash-card-action {
+                                            display: inline-flex;
+                                            align-items: center;
+                                            gap: 6px;
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                            color: #0284c7;
+                                            text-decoration: none;
+                                            transition: all 0.15s ease;
+                                            margin-top: 14px;
+                                            padding-top: 12px;
+                                            border-top: 1px solid #f1f5f9;
+                                        }
+
+                                        .dash-card-action:hover {
+                                            color: #0369a1;
+                                            transform: translateX(3px);
+                                        }
+
+                                        .coordinator-actions {
+                                            background: #ffffff;
+                                            border-radius: 12px;
+                                            padding: 14px 18px;
+                                            border: 1px solid #e2e8f0;
+                                            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+                                            margin-bottom: 24px;
+                                            display: flex;
+                                            flex-wrap: wrap;
+                                            gap: 10px;
+                                            align-items: center;
+                                        }
+
+                                        /* Dark Mode Overrides for Dashboard */
+                                        [data-theme-version="dark"] .dash-filter-container {
+                                            background: #0f172a !important;
+                                            border-color: #1e293b !important;
+                                            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+                                        }
+
+                                        [data-theme-version="dark"] .filter-btn {
+                                            background: #1e293b !important;
+                                            border-color: #334155 !important;
+                                            color: #94a3b8 !important;
+                                        }
+
+                                        [data-theme-version="dark"] .filter-btn:hover {
+                                            background: #334155 !important;
+                                            color: #f8fafc !important;
+                                        }
+
+                                        [data-theme-version="dark"] .filter-btn.active {
+                                            background: #0284c7 !important;
+                                            color: #ffffff !important;
+                                            border-color: #0284c7 !important;
+                                        }
+
+                                        [data-theme-version="dark"] .dash-search-input {
+                                            background-color: #1e293b !important;
+                                            border-color: #334155 !important;
+                                            color: #f8fafc !important;
+                                        }
+
+                                        [data-theme-version="dark"] .dash-search-input:focus {
+                                            background-color: #1e293b !important;
+                                            border-color: #38bdf8 !important;
+                                            color: #ffffff !important;
+                                        }
+
+                                        [data-theme-version="dark"] .dash-card {
+                                            background: #0f172a !important;
+                                            border-color: #1e293b !important;
+                                            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+                                        }
+
+                                        [data-theme-version="dark"] .dash-card:hover {
+                                            border-color: #38bdf8 !important;
+                                            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+                                        }
+
+                                        [data-theme-version="dark"] .dash-card-title {
+                                            color: #94a3b8 !important;
+                                        }
+
+                                        [data-theme-version="dark"] .dash-card-value {
+                                            color: #f8fafc !important;
+                                        }
+
+                                        [data-theme-version="dark"] .dash-card-action {
+                                            border-top-color: #1e293b !important;
+                                            color: #38bdf8 !important;
+                                        }
+
+                                        [data-theme-version="dark"] .coordinator-actions {
+                                            background: #0f172a !important;
+                                            border-color: #1e293b !important;
+                                        }
+
+                                        [data-theme-version="dark"] .icon-blue { background: rgba(2, 132, 199, 0.2) !important; color: #38bdf8 !important; }
+                                        [data-theme-version="dark"] .icon-amber { background: rgba(217, 119, 6, 0.2) !important; color: #fbbf24 !important; }
+                                        [data-theme-version="dark"] .icon-emerald { background: rgba(5, 150, 105, 0.2) !important; color: #34d399 !important; }
+                                        [data-theme-version="dark"] .icon-rose { background: rgba(225, 29, 72, 0.2) !important; color: #fb7185 !important; }
+                                        [data-theme-version="dark"] .icon-purple { background: rgba(124, 58, 237, 0.2) !important; color: #a78bfa !important; }
+                                        [data-theme-version="dark"] .icon-indigo { background: rgba(67, 56, 202, 0.2) !important; color: #818cf8 !important; }
+                                        [data-theme-version="dark"] .icon-cyan { background: rgba(8, 145, 178, 0.2) !important; color: #22d3ee !important; }
+                                    </style>
+
+                                    <!-- Quick Actions for Coordinator -->
+                                    <% if(user.role=="Coordinator"){ %>
+                                    <div class="coordinator-actions">
+                                        <span class="fw-bold text-dark me-2" style="font-size: 13.5px;">
+                                            <i class="fas fa-bolt text-warning me-1"></i> Quick Actions:
+                                        </span>
+                                        <a href="/patientform/<%= user.userId %>" target="_blank"
+                                            class="btn btn-sm btn-outline-primary <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
+                                            <i class="fas fa-file-medical me-1"></i> Patient Form
+                                        </a>
+                                        <a href="/users/idcard/<%= user._id %>" target="_blank"
+                                            class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-id-card me-1"></i> ID Card
+                                        </a>
+                                        <a href="/users/letter/<%= user._id %>" target="_blank"
+                                            class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-file-alt me-1"></i> Appointment Letter
+                                        </a>
+                                        <a href="/users/donation/<%= user._id %>" target="_blank"
+                                            class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-receipt me-1"></i> Donation Receipt
+                                        </a>
+                                    </div>
+                                    <% } %>
+
+                                    <!-- Filter Bar with Search & Tabs -->
+                                    <div class="dash-filter-container">
+                                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                                            <!-- Filter Category Pills -->
+                                            <div class="filter-pills" id="dashboardFilterPills">
+                                                <button type="button" class="filter-btn active" data-filter="all">All Modules</button>
+                                                <button type="button" class="filter-btn" data-filter="users">Users</button>
+                                                <button type="button" class="filter-btn" data-filter="patients">Patients</button>
+                                                <button type="button" class="filter-btn" data-filter="orders">Orders & Courier</button>
+                                                <button type="button" class="filter-btn" data-filter="stock">Stock & Finance</button>
+                                                <button type="button" class="filter-btn" data-filter="support">Support</button>
+                                            </div>
+
+                                            <!-- Live Search Bar -->
+                                            <div class="position-relative">
+                                                <i class="fas fa-search search-icon-wrapper"></i>
+                                                <input type="text" id="dashboardSearch" class="form-control dash-search-input" placeholder="Search cards...">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cards Grid -->
+                                    <div class="row" id="dashboardCardsContainer">
                                         
-                                        <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
-                                            <div class="widget-stat card bg-primary">
-                                                <div class="card-body  p-4">
-                                                    <div class="media">
-                                                        <span class="me-3">
-                                                            <i class="la la-user"></i>
-                                                        </span>
-                                                        <div class="media-body text-white">
-                                                            <p class="mb-1">
-                                                                <%= (user.role=='Admin' )?'Varified Users':'Your Users'
-                                                                    %>
-                                                            </p>
-                                                            <h3 class="text-white">
-                                                                <%= verified || 0 %>
-                                                            </h3>
-                                                            <a href="/users" class="text-white">View
-                                                                All</a>
-                                                            <!-- <a href="/applications/<%= user.userId %>" class="text-white ms-4">Create User</a> -->
-                                                        </div>
+                                        <!-- Card: Verified Users -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>" data-category="users" data-title="verified users your users">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title"><%= (user.role=='Admin' )?'Verified Users':'Your Users' %></div>
+                                                        <h3 class="dash-card-value"><%= verified || 0 %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-blue">
+                                                        <i class="fas fa-user-check"></i>
                                                     </div>
                                                 </div>
+                                                <a href="/users" class="dash-card-action">
+                                                    <span>View All Users</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
                                             </div>
                                         </div>
 
-
-                                        
-
-                                            <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
-                                                <div class="widget-stat card bg-warning">
-                                                    <div class="card-body p-4">
-                                                        <div class="media">
-                                                            <span class="me-3">
-                                                                <i class="la la-users"></i>
-                                                            </span>
-                                                            <div class="media-body text-white">
-                                                                <p class="mb-1">Unverified Users</p>
-                                                                <h3 class="text-white">
-                                                                    <%= unverified %>
-                                                                </h3>
-                                                                <a href="/applications/applied" class="text-white">View
-                                                                    All</a>
-                                                            </div>
-                                                        </div>
+                                        <!-- Card: Unverified Users -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>" data-category="users" data-title="unverified users applications applied">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Unverified Users</div>
+                                                        <h3 class="dash-card-value"><%= unverified %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-amber">
+                                                        <i class="fas fa-user-clock"></i>
                                                     </div>
                                                 </div>
+                                                <a href="/applications/applied" class="dash-card-action">
+                                                    <span>Review Applications</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
                                             </div>
-                                            
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-info">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Unvarified Patients</p>
-                                                                    <h3 class="text-white">
-                                                                        <%= patients %>
-                                                                    </h3>
-                                                                    <a href="/patientform/patients"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                        </div>
+                                        
+                                        <!-- Card: Unverified Patients -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>" data-category="patients" data-title="unverified patients">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Unverified Patients</div>
+                                                        <h3 class="dash-card-value"><%= patients %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-cyan">
+                                                        <i class="fas fa-hospital-user"></i>
                                                     </div>
                                                 </div>
-
-                                                 <div class="col-xl-4 col-lg-6 col-sm-6 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-danger">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Pending Patients</p>
-                                                                    <h3 class="text-white">
-                                                                        <%= pendingpatients %>
-                                                                    </h3>
-                                                                    <a href="/patientform/pendingpatients"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-dark">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Varified Patients</p>
-                                                                    <h3 class="text-white">
-                                                                        <%= varifiedPatients %>
-                                                                    </h3>
-                                                                    <a href="/patientform/varifiedpatients"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-primary">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Track Orders</p>
-                                                                    
-                                                                    <a href="/patientorder/allorders"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-success">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Patient Orders</p>
-                                                                    <h3 class="text-white">
-                                                                        <%= patientsOrders %>
-                                                                    </h3>
-                                                                    <a href="/patientform/orders"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.role=='doc' || user.type=='stockorder') ?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-warning">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Total Delivered Orders</p>
-                                                                    <h3 class="text-white">
-                                                                        <%= deliveredOrders %>
-                                                                    </h3>
-                                                                    <a href="/patientform/delivered"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- user.type!='stockorder' ?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-success">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Money Transactions</p>
-                                                                    <a href="/stock/moneytransactions"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-warning">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Stock Transactions</p>
-                                                                    <a href="/stock/stocktransactions"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-xl-4  col-lg-6 col-sm-6 <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>">
-                                                    <div class="widget-stat card bg-info">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">My Stock</p>
-                                                                    <a href="/stock/mystock"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-xl-4  col-lg-6 col-sm-6">
-                                                    <div class="widget-stat card bg-secondary">
-                                                        <div class="card-body p-4">
-                                                            <div class="media">
-                                                                <span class="me-3">
-                                                                    <i class="la la-hospital"></i>
-                                                                </span>
-                                                                <div class="media-body text-white">
-                                                                    <p class="mb-1">Profile</p>
-                                                                    <a href="/users/profile"
-                                                                        class="text-white">View All</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                
-                                                <div class="col-xl-4 col-lg-6 col-sm-6">
-                                                    <div class="widget-stat card bg-info">
-                                                        <div class="card-body p-4 d-flex justify-content-center">
-                                                            <div class="media">
-                                                                <div class="media-body text-white text-center">
-                                                                    <!-- <p class="mb-1">Need Help</p> -->
-                                                                    <a href="/support/help" class="text-white" style="font-size: 20px;">Need
-                                                                        Help?</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                
-                                                
-
-                                                <!-- <div class="col-xl-3  col-lg-6 col-sm-6">
-                                            <div class="widget-stat card bg-danger ">
-                                                <div class="card-body p-4">
-                                                    <div class="media">
-                                                        <span class="me-3">
-                                                            <i class="la la-dollar"></i>
-                                                        </span>
-                                                        <div class="media-body text-white">
-                                                            <p class="mb-1">Fees Collect</p>
-                                                            <h3 class="text-white">250$</h3>
-                                                            <div class="progress mb-2 bg-secondary">
-                                                                <div class="progress-bar progress-animated bg-white"
-                                                                    style="width: 30%"></div>
-                                                            </div>
-                                                            <small>30% Increase in 30 Days</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <a href="/patientform/patients" class="dash-card-action">
+                                                    <span>View Patients</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
                                             </div>
-                                        </div> -->
+                                        </div>
 
-                                        
-                                        
+                                        <!-- Card: Pending Patients -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>" data-category="patients" data-title="pending patients">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Pending Patients</div>
+                                                        <h3 class="dash-card-value"><%= pendingpatients %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-rose">
+                                                        <i class="fas fa-clock"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/patientform/pendingpatients" class="dash-card-action">
+                                                    <span>Manage Pending</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
 
+                                        <!-- Card: Verified Patients -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>" data-category="patients" data-title="verified patients">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Verified Patients</div>
+                                                        <h3 class="dash-card-value"><%= varifiedPatients %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-emerald">
+                                                        <i class="fas fa-check-double"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/patientform/varifiedpatients" class="dash-card-action">
+                                                    <span>View Verified</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
 
+                                        <!-- Card: Track Orders -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>" data-category="orders" data-title="track orders courier all orders">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Track Orders</div>
+                                                        <h3 class="dash-card-value" style="font-size: 19px; color: #0284c7; padding-top: 4px;">Courier Portal</h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-indigo">
+                                                        <i class="fas fa-shipping-fast"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/patientorder/allorders" class="dash-card-action">
+                                                    <span>Track Courier Orders</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card: Patient Orders -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>" data-category="orders" data-title="patient orders">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Patient Orders</div>
+                                                        <h3 class="dash-card-value"><%= patientsOrders %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-emerald">
+                                                        <i class="fas fa-box"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/patientform/orders" class="dash-card-action">
+                                                    <span>View Orders</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card: Delivered Orders -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder') ?'d-none':'' %>" data-category="orders" data-title="total delivered orders">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Delivered Orders</div>
+                                                        <h3 class="dash-card-value"><%= deliveredOrders %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-amber">
+                                                        <i class="fas fa-truck-ramp-box"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/patientform/delivered" class="dash-card-action">
+                                                    <span>View Delivered</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card: Money Transactions -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- user.type!='stockorder' ?'d-none':'' %>" data-category="stock" data-title="money transactions payments finance">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Money Transactions</div>
+                                                        <h3 class="dash-card-value" style="font-size: 19px; color: #059669; padding-top: 4px;">Ledger & Flow</h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-emerald">
+                                                        <i class="fas fa-money-bill-wave"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/stock/moneytransactions" class="dash-card-action">
+                                                    <span>View Transactions</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card: Stock Transactions -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>" data-category="stock" data-title="stock transactions inventory logs">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Stock Transactions</div>
+                                                        <h3 class="dash-card-value" style="font-size: 19px; color: #d97706; padding-top: 4px;">Inventory Activity</h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-amber">
+                                                        <i class="fas fa-boxes-stacked"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/stock/stocktransactions" class="dash-card-action">
+                                                    <span>View Logs</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card: My Stock -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>" data-category="stock" data-title="my stock inventory available balance">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Stock Balance</div>
+                                                        <h3 class="dash-card-value" style="font-size: 19px; color: #0284c7; padding-top: 4px;">Available Items</h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-blue">
+                                                        <i class="fas fa-warehouse"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/stock/mystock" class="dash-card-action">
+                                                    <span>Inspect Stock</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card: Profile -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item" data-category="support" data-title="profile account my account">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">My Account</div>
+                                                        <h3 class="dash-card-value" style="font-size: 19px; color: #475569; padding-top: 4px;"><%= user.name || 'User Profile' %></h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-purple">
+                                                        <i class="fas fa-user-gear"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/users/profile" class="dash-card-action">
+                                                    <span>Manage Profile</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card: Need Help -->
+                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item" data-category="support" data-title="need help support ticket assistance">
+                                            <div class="dash-card">
+                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                    <div>
+                                                        <div class="dash-card-title">Helpdesk</div>
+                                                        <h3 class="dash-card-value" style="font-size: 19px; color: #0284c7; padding-top: 4px;">24/7 Assistance</h3>
+                                                    </div>
+                                                    <div class="dash-card-icon icon-cyan">
+                                                        <i class="fas fa-headset"></i>
+                                                    </div>
+                                                </div>
+                                                <a href="/support/help" class="dash-card-action">
+                                                    <span>Get Help</span>
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    
+                                    <!-- Empty state when search/filter returns nothing -->
+                                    <div id="noCardsFound" class="text-center py-5 d-none">
+                                        <div class="p-4 bg-white rounded-3 border d-inline-block shadow-sm">
+                                            <i class="fas fa-search fa-2x text-muted mb-2"></i>
+                                            <h6 class="text-dark fw-bold mb-1">No matching modules found</h6>
+                                            <p class="text-muted small mb-0">Try adjusting your search or category filter.</p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -517,6 +781,56 @@
                 }
 
                 handleNavigation()
+
+                // Dashboard Cards Filtering & Search Logic
+                $(document).ready(function() {
+                    var currentFilter = 'all';
+
+                    function filterCards() {
+                        var searchTerm = $('#dashboardSearch').val().toLowerCase().trim();
+                        var visibleCount = 0;
+
+                        $('.dash-card-item').each(function() {
+                            // Check if hidden by server-side EJS condition
+                            if ($(this).hasClass('d-none')) {
+                                return;
+                            }
+
+                            var category = $(this).data('category') || '';
+                            var title = ($(this).data('title') || '').toLowerCase();
+                            var cardText = $(this).text().toLowerCase();
+
+                            var matchesCategory = (currentFilter === 'all') || (category === currentFilter);
+                            var matchesSearch = !searchTerm || title.includes(searchTerm) || cardText.includes(searchTerm);
+
+                            if (matchesCategory && matchesSearch) {
+                                $(this).fadeIn(150);
+                                visibleCount++;
+                            } else {
+                                $(this).fadeOut(100);
+                            }
+                        });
+
+                        if (visibleCount === 0) {
+                            $('#noCardsFound').removeClass('d-none').fadeIn(150);
+                        } else {
+                            $('#noCardsFound').addClass('d-none');
+                        }
+                    }
+
+                    // Category Pill Click
+                    $('#dashboardFilterPills .filter-btn').on('click', function() {
+                        $('#dashboardFilterPills .filter-btn').removeClass('active');
+                        $(this).addClass('active');
+                        currentFilter = $(this).data('filter');
+                        filterCards();
+                    });
+
+                    // Search input event
+                    $('#dashboardSearch').on('input', function() {
+                        filterCards();
+                    });
+                });
             </script>
 
 

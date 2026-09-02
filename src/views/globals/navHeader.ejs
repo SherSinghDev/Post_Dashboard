@@ -1,10 +1,113 @@
+<style>
+    /* White Theme Top Navigation Header */
+    .nav-header {
+        background: #ffffff !important;
+        border-right: 1px solid #e2e8f0 !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .brand-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        overflow: hidden;
+    }
+
+    .brand-logo img {
+        width: 36px;
+        height: auto;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .brand-logo:hover img {
+        transform: scale(1.05);
+    }
+
+    .brand-logo .brand-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
+
+    .nav-control {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Modern, compact hamburger icon */
+    .nav-control .hamburger {
+        padding: 4px;
+        display: inline-block;
+        cursor: pointer;
+        width: 18px !important;
+    }
+
+    .nav-control .hamburger .line {
+        background-color: #334155 !important;
+        height: 2px !important;
+        margin: 3px 0 !important;
+        border-radius: 2px !important;
+        width: 18px !important;
+    }
+
+    .nav-control .hamburger .line:nth-child(2) {
+        width: 14px !important;
+    }
+
+    /* Collapsed (menu-toggle) state styling */
+    .menu-toggle .nav-header {
+        width: 5rem !important;
+        padding: 0 !important;
+        justify-content: center !important;
+    }
+
+    .menu-toggle .nav-header .brand-logo {
+        justify-content: center !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    .menu-toggle .nav-header .brand-logo .brand-title {
+        display: none !important;
+    }
+
+    .menu-toggle .nav-header .brand-logo img {
+        width: 32px !important;
+        margin: 0 auto;
+    }
+
+    .menu-toggle .nav-header .nav-control {
+        position: absolute;
+        right: -1.75rem !important;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1001;
+    }
+</style>
+
 <div class="nav-header">
-                <a href="/" class="brand-logo">
-                    <img style="width: 50px;" src="/images/logo/logo.png" alt="">
-                </a>
-                <div class="nav-control">
-                    <div class="hamburger">
-                        <span class="line"></span><span class="line"></span><span class="line"></span>
-                    </div>
-                </div>
-            </div>
+    <a href="/" class="brand-logo">
+        <img src="/images/logo/logo.png" alt="BSRF Logo">
+        <span class="brand-title">BSRF</span>
+    </a>
+    <div class="nav-control">
+        <div class="hamburger">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+    </div>
+</div>
