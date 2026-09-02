@@ -23,6 +23,7 @@ router.get('/login', async (req, res) => {
 router.post('/login', async (req, res) => {
     console.log(req.body);
     let { email, password } = req.body
+    email = (email || '').trim().toLowerCase()
     let message;
     let loginType = 'user'
     let login = false
