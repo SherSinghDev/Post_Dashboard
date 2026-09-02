@@ -53,22 +53,45 @@
         border-radius: 4px;
     }
 
+    .header-right .navbar-nav {
+        display: flex !important;
+        align-items: center !important;
+        flex-direction: row !important;
+        gap: 10px;
+    }
+
+    .header-right .nav-item {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: auto !important;
+    }
+
     /* Theme Mode Toggle Button */
     .theme-mode-btn {
         width: 40px;
         height: 40px;
+        min-width: 40px;
         border-radius: 50%;
         background: #f8fafc;
         border: 1px solid #e2e8f0;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #64748b;
+        font-size: 16px;
+        line-height: 1 !important;
+        padding: 0 !important;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        position: relative;
+    }
+
+    .theme-mode-btn i {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #64748b;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-        margin-right: 12px;
-        position: relative;
+        line-height: 1;
     }
 
     .theme-mode-btn:hover {

@@ -98,41 +98,99 @@
         background-color: #fff1f2 !important;
     }
 
-    /* Collapsed Sidebar Alignment */
-    .menu-toggle .deznav {
-        width: 5rem !important;
+    /* Collapsed Sidebar Alignment on Desktop (min-width: 769px) */
+    @media (min-width: 769px) {
+        .menu-toggle .deznav {
+            width: 5rem !important;
+        }
+
+        .menu-toggle .deznav .metismenu {
+            padding: 0 8px !important;
+        }
+
+        .menu-toggle .deznav .metismenu li.menu-title {
+            display: none !important;
+        }
+
+        .menu-toggle .deznav .metismenu > li > a {
+            padding: 10px 0 !important;
+            justify-content: center !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .menu-toggle .deznav .metismenu > li > a .nav-icon-box {
+            margin-right: 0 !important;
+            width: 38px !important;
+            height: 38px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .menu-toggle .deznav .metismenu > li > a .nav-text {
+            display: none !important;
+        }
+
+        .menu-toggle .deznav .deznav-divider {
+            margin: 10px 4px !important;
+        }
     }
 
-    .menu-toggle .deznav .metismenu {
-        padding: 0 8px !important;
-    }
+    /* Small Screen / Mobile Devices: Full screen sidebar on toggle open */
+    @media (max-width: 768px) {
+        .deznav {
+            position: fixed !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100vw !important;
+            max-width: 100% !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            z-index: 1050 !important;
+            transition: left 0.3s ease-in-out !important;
+            overflow-y: auto !important;
+            padding-top: 60px !important;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15) !important;
+        }
 
-    .menu-toggle .deznav .metismenu li.menu-title {
-        display: none !important;
-    }
+        .menu-toggle .deznav {
+            left: 0 !important;
+            width: 100vw !important;
+            max-width: 100% !important;
+            display: block !important;
+        }
 
-    .menu-toggle .deznav .metismenu > li > a {
-        padding: 10px 0 !important;
-        justify-content: center !important;
-        display: flex !important;
-        align-items: center !important;
-    }
+        .menu-toggle .deznav .metismenu {
+            padding: 0 16px !important;
+        }
 
-    .menu-toggle .deznav .metismenu > li > a .nav-icon-box {
-        margin-right: 0 !important;
-        width: 38px !important;
-        height: 38px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
+        .menu-toggle .deznav .metismenu li.menu-title {
+            display: block !important;
+        }
 
-    .menu-toggle .deznav .metismenu > li > a .nav-text {
-        display: none !important;
-    }
+        .menu-toggle .deznav .metismenu > li > a {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding: 12px 16px !important;
+        }
 
-    .menu-toggle .deznav .deznav-divider {
-        margin: 10px 4px !important;
+        .menu-toggle .deznav .metismenu > li > a .nav-icon-box {
+            margin-right: 12px !important;
+            width: 36px !important;
+            height: 36px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .menu-toggle .deznav .metismenu > li > a .nav-text {
+            display: inline-block !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            color: inherit !important;
+        }
     }
 </style>
 
