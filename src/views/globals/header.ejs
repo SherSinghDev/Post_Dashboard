@@ -5,6 +5,7 @@
         border-bottom: 1px solid #e2e8f0 !important;
         box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
         height: 72px;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
     /* Header Padding & Spacing */
@@ -101,18 +102,12 @@
         transform: scale(1.05);
     }
 
-    [data-theme-version="dark"] .theme-mode-btn {
-        background: #1e293b;
-        border-color: #334155;
-        color: #f59e0b;
-    }
-
     /* Profile Dropdown Trigger */
     .header-user-btn {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 6px 12px;
+        gap: 10px;
+        padding: 6px 14px;
         border-radius: 30px;
         background: #f8fafc;
         border: 1px solid #e2e8f0;
@@ -193,11 +188,98 @@
         color: #e11d48;
     }
 
+    /* =========================================
+       DARK MODE OVERRIDES (Inlined for reliability)
+       ========================================= */
+    [data-theme-version="dark"] .header {
+        background: #0f172a !important;
+        border-bottom-color: #1e293b !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    [data-theme-version="dark"] .dashboard_bar {
+        color: #f8fafc !important;
+    }
+
+    [data-theme-version="dark"] .theme-mode-btn {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        color: #f59e0b !important;
+    }
+
+    [data-theme-version="dark"] .theme-mode-btn:hover {
+        background: #334155 !important;
+        border-color: #475569 !important;
+        color: #fbbf24 !important;
+    }
+
+    [data-theme-version="dark"] .header-user-btn {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+    }
+
+    [data-theme-version="dark"] .header-user-btn:hover {
+        background: #334155 !important;
+        border-color: #475569 !important;
+    }
+
+    [data-theme-version="dark"] .header-user-avatar {
+        border-color: #334155 !important;
+    }
+
+    [data-theme-version="dark"] .header-user-name {
+        color: #f8fafc !important;
+    }
+
+    [data-theme-version="dark"] .header-user-role {
+        color: #94a3b8 !important;
+    }
+
+    [data-theme-version="dark"] .header-profile-dropdown {
+        background: #0f172a !important;
+        border-color: #334155 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    [data-theme-version="dark"] .profile-card-header {
+        background: #1e293b !important;
+    }
+
+    [data-theme-version="dark"] .profile-card-header .profile-name {
+        color: #f8fafc !important;
+    }
+
+    [data-theme-version="dark"] .profile-card-header .profile-role {
+        color: #94a3b8 !important;
+    }
+
+    [data-theme-version="dark"] .header-profile-dropdown .dropdown-item {
+        color: #e2e8f0 !important;
+    }
+
+    [data-theme-version="dark"] .header-profile-dropdown .dropdown-item:hover {
+        background: #1e293b !important;
+        color: #38bdf8 !important;
+    }
+
+    [data-theme-version="dark"] .header-profile-dropdown .dropdown-divider {
+        border-color: #334155 !important;
+    }
+
     /* Sidebar right theme switcher hide backup */
     .sidebar-right, .dz-demo-panel {
         display: none !important;
     }
 </style>
+
+<%
+    var currentUser = (typeof user !== 'undefined' && user) ? user : {};
+    var userName = currentUser.name || 'User Profile';
+    var userRole = currentUser.position ? currentUser.position : (currentUser.role || 'Member');
+    var userSubRole = currentUser.position ? (currentUser.type ? currentUser.position + ' (' + currentUser.type + ')' : currentUser.position) : (currentUser.role || 'Member');
+    var userAvatar = currentUser.profilePicture || 'https://icons.veryicon.com/png/o/miscellaneous/user-avatar/user-avatar-male-5.png';
+    var pageTitle = (typeof page !== 'undefined' && page) ? page : 'Dashboard';
+%>
 
 <div class="header">
     <div class="header-content">
@@ -207,7 +289,7 @@
                 <!-- Left: Title / Breadcrumb -->
                 <div class="header-left">
                     <div class="dashboard_bar">
-                        <%= page %>
+                        <%= pageTitle %>
                     </div>
                 </div>
 
@@ -226,18 +308,18 @@
                         <li class="nav-item">
                             <div class="dropdown">
                                 <a class="header-user-btn" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="<%= user.profilePicture || 'https://icons.veryicon.com/png/o/miscellaneous/user-avatar/user-avatar-male-5.png' %>" class="header-user-avatar" alt="User Avatar">
-                                    <div class="header-user-meta d-none d-md-block">
-                                        <div class="header-user-name"><%= user.name %></div>
-                                        <div class="header-user-role"><%= user.position ? `${user.position}` : user.role %></div>
+                                    <img src="<%= userAvatar %>" class="header-user-avatar" alt="User Avatar">
+                                    <div class="header-user-meta d-none d-sm-block">
+                                        <div class="header-user-name"><%= userName %></div>
+                                        <div class="header-user-role"><%= userRole %></div>
                                     </div>
                                     <i class="fas fa-chevron-down text-muted ms-1" style="font-size: 11px;"></i>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end header-profile-dropdown">
                                     <div class="profile-card-header">
-                                        <div class="fw-bold text-dark" style="font-size: 14px;"><%= user.name %></div>
-                                        <div class="text-muted small" style="font-size: 12px;"><%= user.position ? `${user.position} (${user.type})` : user.role %></div>
+                                        <div class="fw-bold profile-name" style="font-size: 14px;"><%= userName %></div>
+                                        <div class="small profile-role" style="font-size: 12px;"><%= userSubRole %></div>
                                     </div>
 
                                     <a href="/users/profile" class="dropdown-item">
@@ -245,7 +327,7 @@
                                         <span>My Profile</span>
                                     </a>
 
-                                    <div class="dropdown-divider my-1 border-light"></div>
+                                    <div class="dropdown-divider my-1"></div>
 
                                     <a href="javascript:void(0);" class="dropdown-item text-danger logout-btn">
                                         <i class="fas fa-power-off text-danger" style="width: 16px;"></i>
