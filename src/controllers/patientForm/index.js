@@ -1,10 +1,10 @@
 let express = require('express')
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
-let Users = require('../../modals/users')
-let Orders = require('../../modals/orders')
-const PatientForm = require('../../modals/patientForm'); // adjust path as needed
+let Users = require('../../modals/users');
+let Orders = require('../../modals/orders');
+const PatientForm = require('../../modals/patientForm');
+const { sendToSuperfone } = require('../../services/superfoneWebhook');
 
 // ===== MULTER CONFIGURATION =====
 const storage = multer.diskStorage({
@@ -105,6 +105,30 @@ router.post(
       });
 
       await newApplication.save();
+
+      // Forward to Superfone webhook integration
+      const nameParts = (patientName || '').trim().split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      const fullAddressText = [houseOrStreet, locality, landmark, cityOrDistrict, state, pinCode].filter(Boolean).join(', ');
+
+      const superfonePayload = {
+        first_name: firstName,
+        last_name: lastName,
+        email: [],
+        additional_info: `Disease: ${diseaseName || 'N/A'}, Duration: ${duration || 'N/A'}, Type: ${type || 'N/A'}, Form Type: ${formType || 'N/A'}, Register No: ${registerNo || 'N/A'}, Referred By: ${ref || 'N/A'}, Emergency Contact: ${emergencyContact || 'N/A'}`,
+        customer_phone: mobileNumber ? String(mobileNumber).trim() : '',
+        source: "Patient Form",
+        leadgroupid: 123,
+        source_type: formType || "patient_form",
+        address: {
+          text: fullAddressText || `${cityOrDistrict || ''}, ${state || ''}`.trim()
+        }
+      };
+
+      sendToSuperfone(superfonePayload).catch(err => {
+        console.error("Superfone patient form webhook call error:", err);
+      });
 
       const payload = {
         sender: "917417271707",

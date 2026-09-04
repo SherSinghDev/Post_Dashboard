@@ -9,6 +9,7 @@ const multer = require('multer');
 let bcrypt = require("bcrypt");
 const users = require('../../modals/users');
 const rojgaar = require('../../modals/rojgaar');
+const { sendToSuperfone } = require('../../services/superfoneWebhook');
 
 // ===== MULTER CONFIGURATION =====
 const storage = multer.diskStorage({
@@ -226,6 +227,30 @@ router.post(
       });
 
       await newApplication.save();
+
+      // Forward to Superfone webhook integration
+      const nameParts = (name || '').trim().split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      const addressText = [fullAddress, village, block, district, state, pinCode].filter(Boolean).join(', ');
+
+      const superfonePayload = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email ? [email.trim()] : [],
+        additional_info: `Gender: ${gender || 'N/A'}, Profession: ${profession || 'N/A'}, Blood Group: ${bloodGroup || 'N/A'}, Membership: ${membershipType || 'N/A'}, Referral Code: ${referralCode || 'N/A'}, Referred By: ${referredBy || 'N/A'}, Aadhar: ${aadharNo || 'N/A'}`,
+        customer_phone: mobile ? String(mobile).trim() : '',
+        source: "Rojgaar Form",
+        leadgroupid: 123,
+        source_type: "rojgaar_form",
+        address: {
+          text: addressText || `${district || ''}, ${state || ''}`.trim()
+        }
+      };
+
+      sendToSuperfone(superfonePayload).catch(err => {
+        console.error("Superfone rojgaar form webhook call error:", err);
+      });
 
       res.status(201).json({
         created: true,
