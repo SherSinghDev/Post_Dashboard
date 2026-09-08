@@ -25,7 +25,11 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <div class="mb-4">
-                                        <button type="button" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '/'; }" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 50%; padding: 0;" title="Back to Previous Page">
+                                        <button type="button"
+                                            onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '/'; }"
+                                            class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+                                            style="width: 40px; height: 40px; border-radius: 50%; padding: 0;"
+                                            title="Back to Previous Page">
                                             <i class="fas fa-arrow-left fa-lg"></i>
                                         </button>
                                     </div>
@@ -260,9 +264,127 @@
 
                                             <input type="text" name="type" class="d-none" value="<%=type%>">
                                         </div>
-                                        <button type="button" id="payNow" class="btn btn-success mt-3">
-                                            Pay & Register
-                                        </button>
+                                        <!-- Proceed To Payment Trigger Button -->
+                                        <div class="text-center mt-4" id="proceedToPayContainer">
+                                            <button type="button" id="proceedToPayBtn"
+                                                class="btn btn-primary px-5 py-3 fw-bold text-white shadow"
+                                                style="font-size: 16px; border-radius: 50px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: none; letter-spacing: 0.5px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; min-width: 260px;">
+                                                <i class="fas fa-credit-card me-2 fs-5"></i>Proceed to Payment
+                                                <i class="fas fa-arrow-down ms-2"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Hidden Payment Section (Bank Details, UPI QR Scan, Payment Mode & Receipt Upload + Register) -->
+                                        <div id="paymentSection" style="display: none;">
+                                            <hr class="my-4" style="border-top: 2px solid #ea5455; opacity: 1;">
+
+                                            <div class="row g-4 mb-4 align-items-stretch">
+                                                <!-- Bank Details Box (Left) -->
+                                                <div class="col-lg-7 col-md-12">
+                                                    <div class="p-4 h-100 rounded-3 shadow-sm text-white"
+                                                        style="background: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #0288d1 100%); min-height: 240px; display: flex; flex-direction: column; justify-content: center;">
+                                                        <h5 class="fw-bold mb-3 text-white border-bottom border-light pb-2"
+                                                            style="letter-spacing: 0.5px;">
+                                                            <i class="fas fa-university me-2"></i>Bank Detail -
+                                                        </h5>
+                                                        <p class="mb-2 fs-15 fw-bold" style="letter-spacing: 0.3px;">
+                                                            CUSTOMER NAME - BINUPUR SEVA RESEARCH FOUNDATION (BSRF)</p>
+                                                        <p class="mb-2 fs-15 fw-bold" style="letter-spacing: 0.3px;">
+                                                            Account number - 120028365298</p>
+                                                        <p class="mb-2 fs-15 fw-bold" style="letter-spacing: 0.3px;">
+                                                            IFSC - CNRB0019448</p>
+                                                        <p class="mb-0 fs-15 fw-bold" style="letter-spacing: 0.3px;">
+                                                            Bank Name - CANARA BANK</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- UPI QR Scan Card (Right) -->
+                                                <div class="col-lg-5 col-md-12">
+                                                    <div
+                                                        class="d-flex flex-column align-items-center h-100 justify-content-between">
+                                                        <div class="w-100 text-start mb-2">
+                                                            <span class="fw-bold text-dark fs-16">UPI SCAN:</span>
+                                                        </div>
+                                                        <div class="p-2 bg-white rounded-3 shadow-sm border text-center"
+                                                            style="max-width: 250px; width: 100%;">
+                                                            <img src="https://bsrfjjss.in/webimg/qr_04232024122809.jpg"
+                                                                id="upiQrImg" alt="UPI QR Code"
+                                                                class="img-fluid rounded"
+                                                                style="max-height: 220px; object-fit: contain; width: 100%;">
+                                                        </div>
+                                                        <a href="https://bsrfjjss.in/webimg/qr_04232024122809.jpg"
+                                                            download="bsrf_upi_qr.jpg" target="_blank"
+                                                            class="btn btn-primary w-100 mt-2 py-2 fw-bold text-white shadow-sm"
+                                                            style="max-width: 250px; font-size: 14.5px; border-radius: 8px; background-color: #007bff; border-color: #007bff; display: inline-flex; align-items: center; justify-content: center;">
+                                                            <i class="fas fa-download me-2"></i> Download QR
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr class="my-4" style="border-top: 2px solid #ea5455; opacity: 1;">
+
+                                            <!-- Payment Mode & Payment Receipt Upload Row -->
+                                            <div class="row g-3 mb-4 align-items-center">
+                                                <div class="col-md-6">
+                                                    <div class="d-flex flex-column flex-sm-row align-items-sm-center">
+                                                        <label class="mb-2 mb-sm-0 me-sm-3 fw-bold text-nowrap"
+                                                            style="min-width: 140px;">
+                                                            Payment Mode <span class="text-danger">*</span>:
+                                                        </label>
+                                                        <select name="paymentMode" id="paymentMode" class="form-select"
+                                                            style="padding-block: 10px;">
+                                                            <option value="">Payment Mode</option>
+                                                            <option value="Bank Transfer Slip">Bank Transfer Slip
+                                                            </option>
+                                                            <option value="Paytm">Paytm</option>
+                                                            <option value="Google Pay">Google Pay</option>
+                                                            <option value="Phonepe">Phonepe</option>
+                                                            <option value="Amazon Pay">Amazon Pay</option>
+                                                            <option value="Cheque">Cheque</option>
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="d-flex flex-column flex-sm-row align-items-sm-center">
+                                                        <label class="mb-2 mb-sm-0 me-sm-3 fw-bold text-nowrap"
+                                                            style="min-width: 170px;">
+                                                            Payment Receipt Upload <span class="text-danger">*</span>:
+                                                        </label>
+                                                        <div class="position-relative">
+                                                            <input type="file" name="receiptUrl" id="receiptUrlInput"
+                                                                accept="image/*,.pdf" class="d-none">
+                                                            <label for="receiptUrlInput" id="receiptUploadBox"
+                                                                class="btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3 mb-0 rounded-3 text-center"
+                                                                style="width: 110px; height: 100px; border: 2px dashed #b0bec5; cursor: pointer; background: #fafafa; transition: all 0.2s ease;">
+                                                                <i class="fas fa-plus fa-lg mb-1 text-secondary"
+                                                                    id="receiptUploadIcon"></i>
+                                                                <span class="fw-bold text-dark" style="font-size: 13px;"
+                                                                    id="receiptUploadText">Upload</span>
+                                                            </label>
+                                                        </div>
+                                                        <div id="receiptFileDetails" class="ms-3 d-none">
+                                                            <span class="badge bg-success mb-1"
+                                                                id="receiptFileName">Receipt Attached</span>
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-link text-danger p-0 d-block"
+                                                                id="removeReceiptBtn">Remove</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center mt-4">
+                                                <button type="button" id="payNow"
+                                                    class="btn btn-success px-5 py-3 fw-bold text-white shadow"
+                                                    style="font-size: 16px; border-radius: 50px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border: none; letter-spacing: 0.5px; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; min-width: 260px;">
+                                                    <i class="fas fa-check-circle me-2 fs-5"></i>Register Application
+                                                </button>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -282,7 +404,6 @@
     <!-- <script src="/js/deznav-init.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
     <script>
@@ -387,136 +508,48 @@
 
         let selectedAmount = 0;
 
+        // 📁 Receipt file upload handling and UI preview
+        $('#receiptUrlInput').on('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const fileName = file.name.length > 18 ? file.name.substring(0, 15) + '...' : file.name;
+                $('#receiptFileName').text(fileName);
+                $('#receiptFileDetails').removeClass('d-none');
+                $('#receiptUploadBox').css({
+                    'border-color': '#28a745',
+                    'background-color': '#e8f5e9'
+                });
+                $('#receiptUploadIcon').removeClass('fa-plus text-secondary').addClass('fa-check text-success');
+                $('#receiptUploadText').text('Selected').removeClass('text-dark').addClass('text-success');
+            }
+        });
+
+        $('#removeReceiptBtn').on('click', function () {
+            $('#receiptUrlInput').val('');
+            $('#receiptFileDetails').addClass('d-none');
+            $('#receiptUploadBox').css({
+                'border-color': '#b0bec5',
+                'background-color': '#fafafa'
+            });
+            $('#receiptUploadIcon').removeClass('fa-check text-success').addClass('fa-plus text-secondary');
+            $('#receiptUploadText').text('Upload').removeClass('text-success').addClass('text-dark');
+        });
+
+        // 💳 Reveal Payment Section directly when Proceed to Payment button is clicked (No blocking validation)
+        $('#proceedToPayBtn').click(function () {
+            // Smoothly display payment section and scroll down
+            $('#paymentSection').slideDown(400, function () {
+                $('html, body').animate({
+                    scrollTop: $('#paymentSection').offset().top - 20
+                }, 500);
+            });
+            $('#proceedToPayContainer').slideUp(300);
+        });
+
         $('#membershipType').change(function () {
             selectedAmount = plans[this.value] || 0;
             $('#amount').val("₹ " + selectedAmount);
         });
-
-        // $('#payNow').click(async function () {
-
-        //     if (!selectedAmount) {
-        //         Swal.fire("Select membership first");
-        //         return;
-        //     }
-
-        //     const res = await fetch('/users/payment/create-order', {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({
-        //             amount: selectedAmount,
-        //             membershipType: $('#membershipType').val(),
-        //             name: $('input[name="name"]').val(),
-        //             email: $('input[name="email"]').val(),
-        //             mobile: $('input[name="mobile"]').val()
-        //         })
-        //     });
-
-        //     const data = await res.json();
-
-        //     const options = {
-        //         key: data.key,
-        //         amount: selectedAmount * 100,
-        //         currency: "INR",
-        //         name: "BSRF",
-        //         description: "Membership Fee",
-        //         order_id: data.order.id,
-
-        //         handler: async function (response) {
-        //             const verify = await fetch('/users/payment/verify', {
-        //                 method: "POST",
-        //                 headers: { "Content-Type": "application/json" },
-        //                 body: JSON.stringify(response)
-        //             });
-
-        //             const result = await verify.json();
-
-        //             if (result.success) {
-        //                 $('#register-form').submit(); // ✅ submit only after payment
-        //             } else {
-        //                 Swal.fire("Payment verification failed");
-        //             }
-        //         }
-        //     };
-
-        //     const rzp = new Razorpay(options);
-        //     rzp.open();
-        // });
-
-        // $('#payNow').click(async function () {
-
-        //     const name = $('input[name="name"]').val().trim();
-        //     const email = $('input[name="email"]').val().trim();
-        //     const mobile = $('input[name="mobile"]').val().trim();
-        //     const membershipType = $('#membershipType').val();
-
-        //     // 1️⃣ Validate membership
-        //     if (!selectedAmount || !membershipType) {
-        //         Swal.fire("Please select a membership");
-        //         return;
-        //     }
-
-        //     // 2️⃣ Validate required fields
-        //     if (!name || !email || !mobile) {
-        //         Swal.fire("Please fill all required fields");
-        //         return;
-        //     }
-
-        //     // 3️⃣ Email validation
-        //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        //     if (!emailRegex.test(email)) {
-        //         Swal.fire("Please enter a valid email");
-        //         return;
-        //     }
-
-        //     // 4️⃣ Mobile validation (India)
-        //     if (!/^[6-9]\d{9}$/.test(mobile)) {
-        //         Swal.fire("Please enter a valid 10-digit mobile number");
-        //         return;
-        //     }
-
-        //     // 5️⃣ Create order ONLY after validation passes
-        //     const res = await fetch('/users/payment/create-order', {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({
-        //             amount: selectedAmount,
-        //             membershipType,
-        //             name,
-        //             email,
-        //             mobile
-        //         })
-        //     });
-
-        //     const data = await res.json();
-
-        //     const options = {
-        //         key: data.key,
-        //         amount: selectedAmount * 100,
-        //         currency: "INR",
-        //         name: "BSRF",
-        //         description: "Membership Fee",
-        //         order_id: data.order.id,
-
-        //         handler: async function (response) {
-        //             const verify = await fetch('/users/payment/verify', {
-        //                 method: "POST",
-        //                 headers: { "Content-Type": "application/json" },
-        //                 body: JSON.stringify(response)
-        //             });
-
-        //             const result = await verify.json();
-
-        //             if (result.success) {
-        //                 $('#register-form').submit(); // ✅ submit only after payment success
-        //             } else {
-        //                 Swal.fire("Payment verification failed");
-        //             }
-        //         }
-        //     };
-
-        //     const rzp = new Razorpay(options);
-        //     rzp.open();
-        // });
 
         $('#payNow').click(async function () {
 
@@ -531,10 +564,8 @@
                     const type = $(this).attr('type');
 
                     // Ignore buttons & hidden fields
-                    if (type === 'button' || type === 'submit' || type === 'hidden' || type === 'hidden') return;
-                    console.log(this.previousElementSibling.innerText);
-                    // if (this.previousElementSibling.innerText == 'Referrer Name' || this.previousElementSibling.innerText == 'Referrer Id') return;
-
+                    if (type === 'button' || type === 'submit' || type === 'hidden') return;
+                    if ($(this).attr('name') === 'type') return;
 
                     if (!value) {
                         isValid = false;
@@ -544,8 +575,14 @@
                 });
 
             if (!isValid) {
-                Swal.fire("Please fill all required fields");
-                firstEmptyField.focus();
+                Swal.fire({
+                    icon: "warning",
+                    title: "Missing Information",
+                    text: "Please fill all required fields and upload all required documents"
+                });
+                if (firstEmptyField) {
+                    firstEmptyField.focus();
+                }
                 return;
             }
 
@@ -572,59 +609,21 @@
                 return;
             }
 
-            // $('#register-form').submit()
-
-             const res = await fetch('/users/payment/create-order', {
-             // 🔹 Create order
-                 method: "POST",
-                 headers: { "Content-Type": "application/json" },
-                 body: JSON.stringify({
-                     amount: selectedAmount,
-                     membershipType: $('#membershipType').val(),
-                     name: $('input[name="name"]').val().trim(),
-                     email,
-                     mobile
-                 })
-             });
-             const data = await res.json();
-             console.log(data);
-
-            if (!data.success) {
-                Swal.fire({
-
-                    icon: "error",
-                    title: "Oops...",
-                    text: data.message,
-                });
+            // 🔹 Payment Mode & Receipt validation
+            const paymentMode = $('#paymentMode').val();
+            if (!paymentMode) {
+                Swal.fire("Please select a Payment Mode");
+                $('#paymentMode').focus();
                 return;
             }
-            const options = {
-                key: data.key,
 
-                amount: selectedAmount * 100,
-                currency: "INR",
-                name: "BSRF",
-                description: "Membership Fee",
-                order_id: data.order.id,
+            const receiptInput = document.getElementById('receiptUrlInput');
+            if (!receiptInput.files || receiptInput.files.length === 0) {
+                Swal.fire("Please upload your Payment Receipt");
+                return;
+            }
 
-                handler: async function (response) {
-                    const verify = await fetch('/users/payment/verify', {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(response)
-                    });
-
-                    const result = await verify.json();
-
-                    if (result.success) {
-                        $('#register-form').submit(); // ✅ submit only after payment success
-                    } else {
-                        Swal.fire("Payment verification failed");
-                    }
-                }
-            };
-            const rzp = new Razorpay(options);
-            rzp.open();
+            $('#register-form').submit();
         });
 
 

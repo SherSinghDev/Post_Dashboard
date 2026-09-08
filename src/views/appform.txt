@@ -313,7 +313,6 @@
     <!-- <script src="/js/deznav-init.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
     <script>
@@ -423,132 +422,6 @@
             $('#amount').val("₹ " + selectedAmount);
         });
 
-        // $('#payNow').click(async function () {
-
-        //     if (!selectedAmount) {
-        //         Swal.fire("Select membership first");
-        //         return;
-        //     }
-
-        //     const res = await fetch('/users/payment/create-order', {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({
-        //             amount: selectedAmount,
-        //             membershipType: $('#membershipType').val(),
-        //             name: $('input[name="name"]').val(),
-        //             email: $('input[name="email"]').val(),
-        //             mobile: $('input[name="mobile"]').val()
-        //         })
-        //     });
-
-        //     const data = await res.json();
-
-        //     const options = {
-        //         key: data.key,
-        //         amount: selectedAmount * 100,
-        //         currency: "INR",
-        //         name: "BSRF",
-        //         description: "Membership Fee",
-        //         order_id: data.order.id,
-
-        //         handler: async function (response) {
-        //             const verify = await fetch('/users/payment/verify', {
-        //                 method: "POST",
-        //                 headers: { "Content-Type": "application/json" },
-        //                 body: JSON.stringify(response)
-        //             });
-
-        //             const result = await verify.json();
-
-        //             if (result.success) {
-        //                 $('#register-form').submit(); // ✅ submit only after payment
-        //             } else {
-        //                 Swal.fire("Payment verification failed");
-        //             }
-        //         }
-        //     };
-
-        //     const rzp = new Razorpay(options);
-        //     rzp.open();
-        // });
-
-        // $('#payNow').click(async function () {
-
-        //     const name = $('input[name="name"]').val().trim();
-        //     const email = $('input[name="email"]').val().trim();
-        //     const mobile = $('input[name="mobile"]').val().trim();
-        //     const membershipType = $('#membershipType').val();
-
-        //     // 1️⃣ Validate membership
-        //     if (!selectedAmount || !membershipType) {
-        //         Swal.fire("Please select a membership");
-        //         return;
-        //     }
-
-        //     // 2️⃣ Validate required fields
-        //     if (!name || !email || !mobile) {
-        //         Swal.fire("Please fill all required fields");
-        //         return;
-        //     }
-
-        //     // 3️⃣ Email validation
-        //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        //     if (!emailRegex.test(email)) {
-        //         Swal.fire("Please enter a valid email");
-        //         return;
-        //     }
-
-        //     // 4️⃣ Mobile validation (India)
-        //     if (!/^[6-9]\d{9}$/.test(mobile)) {
-        //         Swal.fire("Please enter a valid 10-digit mobile number");
-        //         return;
-        //     }
-
-        //     // 5️⃣ Create order ONLY after validation passes
-        //     const res = await fetch('/users/payment/create-order', {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({
-        //             amount: selectedAmount,
-        //             membershipType,
-        //             name,
-        //             email,
-        //             mobile
-        //         })
-        //     });
-
-        //     const data = await res.json();
-
-        //     const options = {
-        //         key: data.key,
-        //         amount: selectedAmount * 100,
-        //         currency: "INR",
-        //         name: "BSRF",
-        //         description: "Membership Fee",
-        //         order_id: data.order.id,
-
-        //         handler: async function (response) {
-        //             const verify = await fetch('/users/payment/verify', {
-        //                 method: "POST",
-        //                 headers: { "Content-Type": "application/json" },
-        //                 body: JSON.stringify(response)
-        //             });
-
-        //             const result = await verify.json();
-
-        //             if (result.success) {
-        //                 $('#register-form').submit(); // ✅ submit only after payment success
-        //             } else {
-        //                 Swal.fire("Payment verification failed");
-        //             }
-        //         }
-        //     };
-
-        //     const rzp = new Razorpay(options);
-        //     rzp.open();
-        // });
-
         $('#payNow').click(async function () {
 
             let isValid = true;
@@ -603,59 +476,7 @@
                 return;
             }
 
-            $('#register-form').submit()
-
-            // // 🔹 Create order
-            // const res = await fetch('/users/payment/create-order', {
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({
-            //         amount: selectedAmount,
-            //         membershipType: $('#membershipType').val(),
-            //         name: $('input[name="name"]').val().trim(),
-            //         email,
-            //         mobile
-            //     })
-            // });
-
-            // const data = await res.json();
-            // console.log(data);
-
-            // if (!data.success) {
-            //     Swal.fire({
-            //         icon: "error",
-            //         title: "Oops...",
-            //         text: data.message,
-            //     });
-            //     return;
-            // }
-
-            // const options = {
-            //     key: data.key,
-            //     amount: selectedAmount * 100,
-            //     currency: "INR",
-            //     name: "BSRF",
-            //     description: "Membership Fee",
-            //     order_id: data.order.id,
-
-            //     handler: async function (response) {
-            //         const verify = await fetch('/users/payment/verify', {
-            //             method: "POST",
-            //             headers: { "Content-Type": "application/json" },
-            //             body: JSON.stringify(response)
-            //         });
-
-            //         const result = await verify.json();
-
-            //         if (result.success) {
-            //             $('#register-form').submit(); // ✅ submit only after payment success
-            //         } else {
-            //             Swal.fire("Payment verification failed");
-            //         }
-            //     }
-            // };
-            // const rzp = new Razorpay(options);
-            // rzp.open();
+            $('#register-form').submit();
         });
 
 

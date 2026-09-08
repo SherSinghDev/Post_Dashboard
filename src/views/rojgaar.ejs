@@ -281,7 +281,6 @@
     <!-- <script src="/js/deznav-init.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
     <script>
@@ -447,59 +446,7 @@
                 return;
             }
 
-            $('#register-form').submit()
-
-            // const res = await fetch('/users/payment/create-order', {
-            //     // 🔹 Create order
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({
-            //         amount: selectedAmount,
-            //         membershipType: $('#membershipType').val(),
-            //         name: $('input[name="name"]').val().trim(),
-            //         email,
-            //         mobile
-            //     })
-            // });
-            // const data = await res.json();
-            // console.log(data);
-
-            // if (!data.success) {
-            //     Swal.fire({
-
-            //         icon: "error",
-            //         title: "Oops...",
-            //         text: data.message,
-            //     });
-            //     return;
-            // }
-            // const options = {
-            //     key: data.key,
-
-            //     amount: selectedAmount * 100,
-            //     currency: "INR",
-            //     name: "BSRF",
-            //     description: "Membership Fee",
-            //     order_id: data.order.id,
-
-            //     handler: async function (response) {
-            //         const verify = await fetch('/users/payment/verify', {
-            //             method: "POST",
-            //             headers: { "Content-Type": "application/json" },
-            //             body: JSON.stringify(response)
-            //         });
-
-            //         const result = await verify.json();
-
-            //         if (result.success) {
-            //             $('#register-form').submit(); // ✅ submit only after payment success
-            //         } else {
-            //             Swal.fire("Payment verification failed");
-            //         }
-            //     }
-            // };
-            // const rzp = new Razorpay(options);
-            // rzp.open();
+            $('#register-form').submit();
         });
 
 

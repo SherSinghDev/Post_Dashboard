@@ -220,14 +220,19 @@
         .quick-links {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 9px;
+            gap: 10px;
+            width: 100%;
         }
 
         .quick-link-item {
             display: flex;
             align-items: center;
+            justify-content: center;
+            text-align: center;
             gap: 8px;
-            padding: 9px 12px;
+            padding: 10px 14px;
+            width: 100%;
+            box-sizing: border-box;
             background: #f8fafc;
             border: 1px solid #edf2f7;
             border-radius: 10px;
@@ -236,11 +241,13 @@
             color: #334155;
             text-decoration: none;
             transition: all 0.2s ease;
+            min-height: 42px;
         }
 
         .quick-link-item i {
             color: var(--primary);
             font-size: 13px;
+            flex-shrink: 0;
         }
 
         .quick-link-item:hover {
@@ -251,7 +258,8 @@
         }
 
         .quick-link-full {
-            grid-column: span 2;
+            grid-column: 1 / -1;
+            width: 100%;
         }
 
         .spinner {
@@ -330,6 +338,14 @@
             <div class="divider">Quick Portals</div>
 
             <div class="quick-links">
+                <a href="/applications/type/singleorder" class="quick-link-item">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Member Form</span>
+                </a>
+                <a href="/patientform/02" class="quick-link-item">
+                    <i class="fa-solid fa-file-medical"></i>
+                    <span>Patient Form</span>
+                </a>
                 <a href="/applications/rojgaar" class="quick-link-item">
                     <i class="fa-solid fa-briefcase"></i>
                     <span>Rojgaar Samadhan</span>
@@ -338,17 +354,9 @@
                     <i class="fa-solid fa-user-doctor"></i>
                     <span>Teleconsult</span>
                 </a>
-                <a href="/applications/type/singleorder" class="quick-link-item">
-                    <i class="fa-solid fa-box"></i>
-                    <span>Single Order</span>
-                </a>
-                <a href="/applications/type/stockorder" class="quick-link-item">
+                <a href="/applications/type/stockorder" class="quick-link-item quick-link-full">
                     <i class="fa-solid fa-boxes-stacked"></i>
                     <span>Stock Order</span>
-                </a>
-                <a href="/patientform/02" class="quick-link-item quick-link-full">
-                    <i class="fa-solid fa-file-medical"></i>
-                    <span>Patient Registration Form</span>
                 </a>
             </div>
         </div>

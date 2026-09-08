@@ -119,8 +119,7 @@ nano .env
 ```
 *Paste your environment variables into `.env`:*
 ```env
-RAZORPAY_KEY_ID=rzp_live_SOGFR6WMAl7Acl
-RAZORPAY_KEY_SECRET=jLJLcASdgLVZvdVcVmWtb67y
+MONGODB_URI=your_mongodb_connection_string
 # Add your other environment variables if any
 ```
 *(Press `Ctrl + O` and `Enter` to save, then `Ctrl + X` to exit nano)*

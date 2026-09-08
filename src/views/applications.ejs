@@ -397,7 +397,20 @@
 
 
 
-                                                <!-- Payment Details -->
+                                                <!-- Payment Details for Admin Verification -->
+                                                <h5 class="mt-4 border-top pt-3 text-primary"><i class="fas fa-money-check-alt me-2"></i>Payment Verification</h5>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Payment Mode</strong></label>
+                                                        <input type="text" name="paymentMode" class="form-control" readonly placeholder="N/A">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Payment Receipt</strong></label>
+                                                        <input type="file" name="receiptUrl" class="form-control d-none">
+                                                    </div>
+                                                </div>
+
+                                                <!-- User Verification Field -->
                                                 <h5 class="mt-4 pay-option">User Verification Field</h5>
                                                 <div class="row mb-3 pay-option">
                                                     <div class="col-md-6">
@@ -537,6 +550,7 @@
                                             : key;
 
                                         if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        if (key === 'mode' || key === 'paymentMode') fieldName = 'paymentMode';
                                         const field = form.querySelector(`[name="${fieldName}"]`);
                                         let value = dataObj[key];
                                         // console.log(value);

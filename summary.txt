@@ -20,7 +20,6 @@ This is a **full-stack admin dashboard** for an Indian NGO called **BSRF (Bharti
 | **Database** | MongoDB via Mongoose v8.18 |
 | **Auth** | Express-session (cookie-based) |
 | **File Upload** | Multer v2 (Excel files → `./src/assets/uploads/excelfiles`) |
-| **Payments** | Razorpay (live keys) |
 | **WhatsApp API** | Bol7 (`chat.bol7.com`) for automated notifications |
 | **Excel Parsing** | `xlsx`, `xls-to-json`, `xls-to-json-lc` |
 | **Dev Tool** | Nodemon |
@@ -34,7 +33,6 @@ graph TD
     A["Browser Client"] --> B["Express Server :3200"]
     B --> C["EJS Views (SSR)"]
     B --> D["MongoDB (parceldb)"]
-    B --> E["Razorpay API"]
     B --> F["Bol7 WhatsApp API"]
     B --> G["Proship Webhook"]
     B --> H["Smartship Webhook"]
@@ -60,7 +58,7 @@ graph TD
 
 ```
 Server/
-├── .env                          # Razorpay API keys
+├── .env
 ├── package.json
 └── src/
     ├── index.js                  # Entry point — routes, webhooks, middleware
@@ -80,7 +78,7 @@ Server/
     │   ├── stockTransactions.js  # Stock transfer records
     │   ├── moneyTransaction.js   # Financial transactions
     │   ├── transactions.js       # Generic transactions
-    │   ├── payment.js            # Razorpay payment records
+    │   ├── payment.js            # Payment records
     │   ├── recruiters.js         # Recruiter accounts
     │   ├── support.js            # Support tickets
     │   └── supportAgent.js       # Support agent accounts
@@ -160,7 +158,6 @@ Server/
 - Support agent management with availability status
 
 ### 6. 💰 Payments
-- **Razorpay integration** (live environment) for membership payments
 - Payment statuses: CREATED → SUCCESS/FAILED
 - Transaction records between sender and receiver
 
@@ -209,7 +206,6 @@ flowchart LR
         A["Proship"] -->|Webhook POST| B["Server"]
         C["Smartship"] -->|Webhook POST| B
         B -->|Send Template| D["Bol7 WhatsApp"]
-        B -->|Payment| E["Razorpay"]
     end
     
     subgraph Internal
@@ -228,7 +224,6 @@ flowchart LR
 > - Express-session secret is a weak, hardcoded string (`^*&*(`)
 > - CORS is set to `origin: '*'` (fully open)
 > - Default user password is `1234`
-> - Razorpay **live keys** are stored in `.env` (good), but the DB credentials are not
 
 > [!NOTE]
 > **Code Patterns**
