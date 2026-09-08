@@ -459,7 +459,23 @@
                     method: "POST",
                     body: new FormData(e.target),
                 });
-                const result = await res.json();
+                
+                const contentType = res.headers.get("content-type");
+                let result;
+
+                if (contentType && contentType.includes("application/json")) {
+                    result = await res.json();
+                } else {
+                    const text = await res.text();
+                    console.error("Non-JSON Server response:", text);
+                    if (res.status === 413) {
+                        throw new Error("File size too large. Please upload smaller images/documents (under 10MB).");
+                    } else if (res.status === 502 || res.status === 504) {
+                        throw new Error("Server is temporarily unavailable. Please try again in a few moments.");
+                    } else {
+                        throw new Error(`Server returned error (${res.status} ${res.statusText}). Please check your uploaded files.`);
+                    }
+                }
 
                 if (result.created) {
                     Swal.fire({
@@ -475,16 +491,16 @@
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "Oops...",
-                        text: result.message,
+                        title: "Submission Failed",
+                        text: result.message || "An error occurred while submitting.",
                     });
                 }
             } catch (err) {
                 console.error(err);
                 Swal.fire({
                     icon: "error",
-                    title: "Network Error",
-                    text: err.message,
+                    title: "Submission Error",
+                    text: err.message || "Network or server error occurred.",
                 });
             }
         });

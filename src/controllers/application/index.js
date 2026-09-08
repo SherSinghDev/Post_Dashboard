@@ -11,17 +11,27 @@ const users = require('../../modals/users');
 const rojgaar = require('../../modals/rojgaar');
 const { sendToSuperfone } = require('../../services/superfoneWebhook');
 
+const fs = require('fs');
+
 // ===== MULTER CONFIGURATION =====
+const uploadDir = path.join(__dirname, '../../assets/uploads/documents');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './src/assets/uploads/documents'); // ensure this folder exists
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`)
+    cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
 
-const upload = multer({ storage });
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
 
 // ===== POST ROUTE =====
 router.post(
