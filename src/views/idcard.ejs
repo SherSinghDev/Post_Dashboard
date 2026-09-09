@@ -203,7 +203,6 @@
       position: relative;
       z-index: 1;
     }
-
   </style>
 
 </head>
@@ -218,35 +217,49 @@
           <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="seal">
 
           <div class="name">
-            <p><%= user.name %></p>
-            <p><%= user.head %></p>
+            <p>
+              <%= user.name %>
+            </p>
+            <p>
+              <%= user.head %>
+            </p>
           </div>
 
           <div class="detail_main">
             <div class="detail">
               <p>ID No.</p>
               <p>: </p>
-              <p><%= user.userId %></p>
+              <p>
+                <%= user.userId %>
+              </p>
             </div>
             <div class="detail">
               <p>Blood Group</p>
               <p>: </p>
-              <p><%= user.bloodGroup %></p>
+              <p>
+                <%= user.bloodGroup %>
+              </p>
             </div>
             <div class="detail">
               <p>Mobile</p>
               <p>: </p>
-              <p><%= user.mobile %></p>
+              <p>
+                <%= user.mobile %>
+              </p>
             </div>
             <div class="detail">
               <p>Valid From</p>
               <p>: </p>
-              <p><%= user.validstart ? new Date(user.validstart).toLocaleDateString() : 'N/A' %></p>
+              <p>
+                <%= user.validstart ? new Date(user.validstart).toLocaleDateString() : 'N/A' %>
+              </p>
             </div>
             <div class="detail">
               <p>Valid To</p>
               <p>: </p>
-              <p><%= user.validend ? new Date(user.validend).toLocaleDateString() : 'N/A' %></p>
+              <p>
+                <%= user.validend ? new Date(user.validend).toLocaleDateString() : 'N/A' %>
+              </p>
             </div>
           </div>
         </div>
@@ -263,19 +276,27 @@
 
           <div class="address_main">
             <div class="address">
-              <p><%= user.relationType || 'S/O' %></p>
+              <p>
+                <%= user.relationType || 'S/O' %>
+              </p>
               <p>:</p>
-              <p><%= user.relationWith || 'N/A' %></p>
+              <p>
+                <%= user.relationWith || 'N/A' %>
+              </p>
             </div>
             <div class="address">
               <p>DOB</p>
               <p>:</p>
-              <p><%= user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'N/A' %></p>
+              <p>
+                <%= user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'N/A' %>
+              </p>
             </div>
             <div class="address">
               <p>Address</p>
               <p>:</p>
-              <p><%= user.fullAddress || 'N/A' %></p>
+              <p>
+                <%= user.fullAddress || 'N/A' %>
+              </p>
             </div>
           </div>
         </div>
