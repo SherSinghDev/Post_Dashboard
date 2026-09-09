@@ -115,12 +115,12 @@
         <div class="detail">
             <p>
 
-                <span><%= user.name.toUpperCase() %></span> Address.<span><%= user.fullAddress.toUpperCase() %></span> is appointment on the post of <span><%= user.position.toUpperCase() %> </span>. in the N.G.O for social service in
+                <span><%= (user.name || '').toUpperCase() %></span> Address.<span><%= (user.fullAddress || '').toUpperCase() %></span> is appointment on the post of <span><%= (user.position || '').toUpperCase() %> </span>. in the N.G.O for social service in
                 region.
                 <br><br>
-                (Dist./City/Block/VILL/Colony) <span><%= user.position.toUpperCase() %> </span> <span><%= user.district.toUpperCase() %> </span>.
+                (Dist./City/Block/VILL/Colony) <span><%= (user.position || '').toUpperCase() %> </span> <span><%= (user.district || '').toUpperCase() %> </span>.
                 <br>
-                <span><%= user.state.toUpperCase() %></span> State India.
+                <span><%= (user.state || '').toUpperCase() %></span> State India.
                 <br><br>
                 With best wishes
             </p>

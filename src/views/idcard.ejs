@@ -241,12 +241,12 @@
             <div class="detail">
               <p>Valid From</p>
               <p>: </p>
-              <p><%= user.validstart.toLocaleDateString() %></p>
+              <p><%= user.validstart ? new Date(user.validstart).toLocaleDateString() : 'N/A' %></p>
             </div>
             <div class="detail">
               <p>Valid To</p>
               <p>: </p>
-              <p><%= user.validend.toLocaleDateString() %></p>
+              <p><%= user.validend ? new Date(user.validend).toLocaleDateString() : 'N/A' %></p>
             </div>
           </div>
         </div>
@@ -263,19 +263,19 @@
 
           <div class="address_main">
             <div class="address">
-              <p><%= user.relationType %></p>
+              <p><%= user.relationType || 'S/O' %></p>
               <p>:</p>
-              <p><%= user.relationWith %></p>
+              <p><%= user.relationWith || 'N/A' %></p>
             </div>
             <div class="address">
               <p>DOB</p>
               <p>:</p>
-              <p><%= user.dateOfBirth.toLocaleDateString() %></p>
+              <p><%= user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'N/A' %></p>
             </div>
             <div class="address">
               <p>Address</p>
               <p>:</p>
-              <p><%= user.fullAddress %></p>
+              <p><%= user.fullAddress || 'N/A' %></p>
             </div>
           </div>
         </div>
