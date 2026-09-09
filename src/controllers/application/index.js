@@ -9,6 +9,7 @@ const multer = require('multer');
 let bcrypt = require("bcrypt");
 const users = require('../../modals/users');
 const rojgaar = require('../../modals/rojgaar');
+const stock = require('../../modals/stock');
 const { sendToSuperfone } = require('../../services/superfoneWebhook');
 
 const fs = require('fs');
@@ -90,6 +91,14 @@ router.post(
 
       let referralCode = "TL-" + nanoid(6).toUpperCase()
 
+      let parentUserDoc = null;
+      if (referredBy) {
+        parentUserDoc = await Users.findOne({ userId: referredBy.trim() });
+        if (parentUserDoc && !referrerName) {
+          referrerName = parentUserDoc.name;
+        }
+      }
+
       // create a new application document
       let newApplication = new UserApplication({
         name,
@@ -113,10 +122,11 @@ router.post(
         idDocument,
         otherDocument,
         membershipType,
-        referredBy,
+        referredBy: referredBy || null,
+        parentUser: parentUserDoc ? parentUserDoc._id : null,
         referralCode,
         role: "Coordinator",
-        referrerName,
+        referrerName: referrerName || (parentUserDoc ? parentUserDoc.name : null),
         type,
         position,
         payment: {
@@ -627,6 +637,7 @@ router.get('/one/:id', async (req, res) => {
           membershipType: 1,
           referredBy: 1,
           referrerName: 1,
+          parentUser: 1,
           type: 1,
           position: 1,
           payment: 1,
@@ -639,15 +650,15 @@ router.get('/one/:id', async (req, res) => {
       }
     ]);
 
-    console.log(result);
-    let parents = await users.find({ type: result[0].type })
-    let options = '<option value="">Select Parent User</option>';
+    let appData = result[0] || {};
+    let parents = await users.find({ type: appData.type });
+    let options = '<option value="">Direct Came (No Parent User)</option>';
     parents.forEach((p) => {
-      console.log(p.type);
       if (p.type) {
-        options += `<option value="${p._id}">${p.name} (${p.position})</option>`
+        let isSelected = (appData.parentUser && appData.parentUser.toString() === p._id.toString()) ? 'selected' : '';
+        options += `<option value="${p._id}" ${isSelected}>${p.name} (${p.position}) [ID: ${p.userId}]</option>`;
       }
-    })
+    });
 
 
 
@@ -686,12 +697,16 @@ router.delete('/rojgaar/delete/:id', async (req, res) => {
 
 
 router.get('/type/:type', async (req, res) => {
-  let users = await Users.find({ role: "Coordinator" }).select('name referralCode userId -_id');
-  let type = req.params.type
-  console.log(type);
-  let user = ''
-  res.render('applicationform', { users, user, type })
-})
+  let type = req.params.type;
+  let users;
+  if (type === 'stockorder') {
+    users = await Users.find({ type: 'stockorder' }).select('name userId position -_id');
+  } else {
+    users = await Users.find({ role: "Coordinator" }).select('name referralCode userId position -_id');
+  }
+  let user = '';
+  res.render('applicationform', { users, user, type });
+});
 
 router.get('/rojgaar', async (req, res) => {
   let type = 'singleorder'
@@ -821,7 +836,7 @@ router.post(
         userId,
         type,
         position,
-        parentUser: parentuser,
+        parentUser: parentuser || null,
         role: "Coordinator",
         payment: {
           mode: paymentMode,

@@ -262,7 +262,34 @@
                                                 </select>
                                             </div>
 
+                                            <div class="col-md-6 mb-3">
+                                                <label class="mb-1"><strong>Joining Mode (Referral)*</strong></label>
+                                                <select name="referralMode" id="referralMode" style="padding-block: 11px;" class="form-select">
+                                                    <option value="direct">Direct Came (No Referrer)</option>
+                                                    <option value="referred">Referred by Someone</option>
+                                                </select>
+                                            </div>
+
                                             <input type="text" name="type" class="d-none" value="<%=type%>">
+                                        </div>
+
+                                        <!-- Row 9: Parent User Selection (Visible only when Referred by Someone is chosen) -->
+                                        <div class="row mb-3" id="parentUserSection" style="display: none;">
+                                            <div class="col-md-12">
+                                                <label class="mb-1"><strong>Select Parent User / Referrer Name*</strong></label>
+                                                <select name="referredBy" id="referredBySelect" style="padding-block: 11px;" class="form-select">
+                                                    <option value="">-- Choose Parent User by Name --</option>
+                                                    <% if (users && users.length > 0) { %>
+                                                        <% users.forEach(function(u) { %>
+                                                            <option value="<%= u.userId %>" data-name="<%= u.name %>">
+                                                                <%= u.name %> <%= u.position ? '(' + u.position + ')' : '' %> [ID: <%= u.userId %>]
+                                                            </option>
+                                                        <% }); %>
+                                                    <% } %>
+                                                </select>
+                                                <input type="hidden" name="referrerName" id="referrerNameInput" value="">
+                                                <small class="text-muted">Select the member who referred you to join their network.</small>
+                                            </div>
                                         </div>
                                         <!-- Proceed To Payment Trigger Button -->
                                         <div class="text-center mt-4" id="proceedToPayContainer">
@@ -567,6 +594,22 @@
             $('#amount').val("₹ " + selectedAmount);
         });
 
+        $('#referralMode').change(function () {
+            if ($(this).val() === 'referred') {
+                $('#parentUserSection').slideDown(200);
+            } else {
+                $('#parentUserSection').slideUp(200);
+                $('#referredBySelect').val('');
+                $('#referrerNameInput').val('');
+            }
+        });
+
+        $('#referredBySelect').change(function () {
+            const selectedOpt = $(this).find('option:selected');
+            const refName = selectedOpt.data('name') || '';
+            $('#referrerNameInput').val(refName);
+        });
+
         $('#payNow').click(async function () {
 
             let isValid = true;
@@ -576,6 +619,9 @@
             $('#register-form')
                 .find('input, select, textarea')
                 .each(function () {
+                    // Ignore invisible or excluded fields
+                    if (!$(this).is(':visible')) return;
+
                     const value = $(this).val()?.trim();
                     const type = $(this).attr('type');
 

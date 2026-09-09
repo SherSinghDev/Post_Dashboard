@@ -32,6 +32,10 @@ router.get('/', async (req, res) => {
         try {
             let user = await Users.findOne({ _id: req.session.userId })
 
+            if (user.type === 'stockorder') {
+                return res.redirect('/users/network');
+            }
+
             if (user.role !== 'Admin') {
                 let users = await Users.find({ parentUser: user._id }).sort({ createdAt: -1 }).populate('parentUser')
                 // let refusers = await Users.find({ role: "Coordinator" }).select('name referralCode userId -_id');
@@ -451,4 +455,211 @@ router.get('/coordinators', async (req, res) => {
     }
 })
 
-module.exports = router
+// ==========================================
+// 5-LEVEL USER NETWORK (STOCK ORDER MEMBERS)
+// ==========================================
+
+// Helper: Traverse 5 Levels of Descendant/Child Users
+async function getFiveLevelNetwork(currentUser) {
+    let networkByLevel = {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: []
+    };
+    let allLevelUsers = [];
+    let visitedUserIds = new Set();
+    visitedUserIds.add(currentUser._id.toString());
+
+    // --- LEVEL 1 (Direct Children) ---
+    // Can be linked by parentUser OR referredBy
+    const l1Conditions = [{ parentUser: currentUser._id }];
+    if (currentUser.userId) {
+        l1Conditions.push({ referredBy: currentUser.userId });
+    }
+    if (currentUser.referralCode) {
+        l1Conditions.push({ referredBy: currentUser.referralCode });
+    }
+
+    let l1Docs = await Users.find({
+        _id: { $ne: currentUser._id },
+        $or: l1Conditions
+    }).lean();
+
+    // Deduplicate & populate parent info
+    let l1ParentMap = new Map();
+    for (let u of l1Docs) {
+        const uIdStr = u._id.toString();
+        if (!visitedUserIds.has(uIdStr)) {
+            visitedUserIds.add(uIdStr);
+            u.level = 1;
+            u.parentName = currentUser.name || 'Direct';
+            u.parentDisplayId = currentUser.userId || '';
+            networkByLevel[1].push(u);
+            allLevelUsers.push(u);
+            l1ParentMap.set(uIdStr, u);
+        }
+    }
+
+    // --- LEVELS 2 to 5 ---
+    let prevLevelUsers = networkByLevel[1];
+
+    for (let level = 2; level <= 5; level++) {
+        if (prevLevelUsers.length === 0) break;
+
+        let prevIds = prevLevelUsers.map(u => u._id);
+        let prevUserIds = prevLevelUsers.map(u => u.userId).filter(Boolean);
+        let prevRefCodes = prevLevelUsers.map(u => u.referralCode).filter(Boolean);
+
+        let levelConditions = [{ parentUser: { $in: prevIds } }];
+        if (prevUserIds.length > 0) {
+            levelConditions.push({ referredBy: { $in: prevUserIds } });
+        }
+        if (prevRefCodes.length > 0) {
+            levelConditions.push({ referredBy: { $in: prevRefCodes } });
+        }
+
+        let currDocs = await Users.find({
+            _id: { $nin: Array.from(visitedUserIds).map(id => new mongoose.Types.ObjectId(id)) },
+            $or: levelConditions
+        }).lean();
+
+        let currentLevelList = [];
+        for (let u of currDocs) {
+            const uIdStr = u._id.toString();
+            if (!visitedUserIds.has(uIdStr)) {
+                visitedUserIds.add(uIdStr);
+                u.level = level;
+
+                // Identify parent name & ID from previous level
+                let parentUserRef = prevLevelUsers.find(p => 
+                    (u.parentUser && p._id.toString() === u.parentUser.toString()) ||
+                    (u.referredBy && (p.userId === u.referredBy || p.referralCode === u.referredBy))
+                );
+
+                u.parentName = parentUserRef ? parentUserRef.name : 'N/A';
+                u.parentDisplayId = parentUserRef ? (parentUserRef.userId || '') : '';
+
+                // For privacy protection on Level 2-5:
+                // Only User Name, Address (Village, Block, District/City, State, FullAddress), and Joining Date are allowed.
+                // Sensitive fields (mobile, email, documents, password, etc.) are stripped or masked.
+                u.isMasked = true;
+                u.maskedMobile = u.mobile ? u.mobile.slice(0, 2) + '******' + u.mobile.slice(-2) : 'Protected';
+                u.maskedEmail = u.email ? u.email.replace(/(.{2})(.*)(@.*)/, '$1***$3') : 'Protected';
+
+                currentLevelList.push(u);
+                networkByLevel[level].push(u);
+                allLevelUsers.push(u);
+            }
+        }
+        prevLevelUsers = currentLevelList;
+    }
+
+    return {
+        networkByLevel,
+        allLevelUsers,
+        counts: {
+            total: allLevelUsers.length,
+            l1: networkByLevel[1].length,
+            l2: networkByLevel[2].length,
+            l3: networkByLevel[3].length,
+            l4: networkByLevel[4].length,
+            l5: networkByLevel[5].length,
+        }
+    };
+}
+
+// Route: View 5-Level Network Dashboard
+router.get('/network', async (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/auth/login');
+    }
+
+    try {
+        let user = await Users.findOne({ _id: req.session.userId });
+        if (!user) {
+            return res.redirect('/auth/login');
+        }
+
+        const networkData = await getFiveLevelNetwork(user);
+
+        res.render('stockOrder/network', {
+            user,
+            page: "5-Level Member Network",
+            allLevelUsers: networkData.allLevelUsers,
+            networkByLevel: networkData.networkByLevel,
+            counts: networkData.counts
+        });
+    } catch (error) {
+        console.error("Error loading network dashboard:", error);
+        res.status(500).send("Error loading member network.");
+    }
+});
+
+// Route: Get Single Member Details (Enforces Level 1 full details vs Level 2-5 privacy masking)
+router.get('/network/details/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    try {
+        let currentUser = await Users.findOne({ _id: req.session.userId });
+        if (!currentUser) {
+            return res.status(401).json({ success: false, message: "User not found" });
+        }
+
+        // Check if Admin
+        if (currentUser.role === 'Admin') {
+            let targetUser = await Users.findOne({ _id: req.params.id }).populate('parentUser');
+            return res.json({ success: true, user: targetUser, level: 1, fullAccess: true });
+        }
+
+        const networkData = await getFiveLevelNetwork(currentUser);
+        const member = networkData.allLevelUsers.find(u => u._id.toString() === req.params.id);
+
+        if (!member) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to view this user. They are not in your 5-level network."
+            });
+        }
+
+        if (member.level === 1) {
+            // Full details for Level 1
+            return res.json({
+                success: true,
+                user: member,
+                level: 1,
+                fullAccess: true
+            });
+        } else {
+            // Limited details for Level 2-5: Name, Address, Joining Date
+            return res.json({
+                success: true,
+                user: {
+                    _id: member._id,
+                    name: member.name,
+                    fullAddress: member.fullAddress,
+                    village: member.village,
+                    block: member.block,
+                    district: member.district,
+                    state: member.state,
+                    pinCode: member.pinCode,
+                    createdAt: member.createdAt,
+                    position: member.position,
+                    parentName: member.parentName,
+                    parentDisplayId: member.parentDisplayId,
+                    level: member.level
+                },
+                level: member.level,
+                fullAccess: false
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching network user details:", error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+module.exports = router;

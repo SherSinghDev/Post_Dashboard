@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../globals/head') %>
+
+<style>
+    /* 5-Level Network Dashboard Styling */
+    .network-stat-card {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 18px 20px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .network-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px -3px rgba(15, 23, 42, 0.08);
+    }
+    .network-stat-title {
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+    .network-stat-val {
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+    .network-stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    /* Level Badges */
+    .badge-level-1 { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge-level-2 { background-color: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+    .badge-level-3 { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .badge-level-4 { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .badge-level-5 { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+    .level-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    /* Filter Buttons */
+    .level-filter-btn {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 7px 16px;
+        border-radius: 20px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    .level-filter-btn:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+    }
+    .level-filter-btn.active {
+        background: #0284c7;
+        color: #ffffff;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    /* Privacy indicator tag */
+    .privacy-tag {
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 12px;
+        background: #f8fafc;
+        color: #64748b;
+        border: 1px dashed #cbd5e1;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /* Table styling */
+    .network-table thead th {
+        background: #f8fafc;
+        color: #475569;
+        font-size: 12.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+        padding: 12px 14px;
+    }
+    .network-table tbody td {
+        padding: 14px;
+        vertical-align: middle;
+        font-size: 13.5px;
+    }
+    .network-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    /* ========================================================
+       DARK MODE OVERRIDES FOR 5-LEVEL NETWORK DASHBOARD
+       ======================================================== */
+    [data-theme-version="dark"] .network-stat-card {
+        background: #0f172a !important;
+        border-color: #1e293b !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+    }
+    [data-theme-version="dark"] .network-stat-card:hover {
+        border-color: #38bdf8 !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    }
+    [data-theme-version="dark"] .network-stat-title {
+        color: #94a3b8 !important;
+    }
+
+    /* Filter Buttons in Dark Mode */
+    [data-theme-version="dark"] .level-filter-btn {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .level-filter-btn:hover {
+        background: #334155 !important;
+        color: #f8fafc !important;
+        border-color: #475569 !important;
+    }
+    [data-theme-version="dark"] .level-filter-btn.active {
+        background: #0284c7 !important;
+        color: #ffffff !important;
+        border-color: #0284c7 !important;
+        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4) !important;
+    }
+
+    /* Table & Search in Dark Mode */
+    [data-theme-version="dark"] .network-table thead th {
+        background: #1e293b !important;
+        color: #f8fafc !important;
+        border-bottom-color: #334155 !important;
+    }
+    [data-theme-version="dark"] .network-table tbody td {
+        background: #0f172a !important;
+        border-color: #1e293b !important;
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .network-table tbody tr:hover td {
+        background-color: #1e293b !important;
+    }
+    [data-theme-version="dark"] .privacy-tag {
+        background: #1e293b !important;
+        color: #94a3b8 !important;
+        border-color: #334155 !important;
+    }
+
+    /* Dark Mode Badges */
+    [data-theme-version="dark"] .badge-level-1 { background-color: rgba(29, 78, 216, 0.25) !important; color: #93c5fd !important; border-color: #1d4ed8 !important; }
+    [data-theme-version="dark"] .badge-level-2 { background-color: rgba(126, 34, 206, 0.25) !important; color: #d8b4fe !important; border-color: #7e22ce !important; }
+    [data-theme-version="dark"] .badge-level-3 { background-color: rgba(180, 83, 9, 0.25) !important; color: #fde047 !important; border-color: #b45309 !important; }
+    [data-theme-version="dark"] .badge-level-4 { background-color: rgba(3, 105, 161, 0.25) !important; color: #7dd3fc !important; border-color: #0369a1 !important; }
+    [data-theme-version="dark"] .badge-level-5 { background-color: rgba(71, 85, 105, 0.3) !important; color: #cbd5e1 !important; border-color: #475569 !important; }
+
+    /* Modal Styling in Dark Mode */
+    [data-theme-version="dark"] #networkMemberModal .modal-content {
+        background-color: #0f172a !important;
+        color: #f1f5f9 !important;
+    }
+    [data-theme-version="dark"] #networkMemberModal .bg-light {
+        background-color: #1e293b !important;
+        color: #e2e8f0 !important;
+    }
+    [data-theme-version="dark"] #networkMemberModal .modal-footer.bg-light {
+        background-color: #1e293b !important;
+        border-top-color: #334155 !important;
+    }
+    [data-theme-version="dark"] #networkMemberModal .border {
+        border-color: #334155 !important;
+    }
+    [data-theme-version="dark"] #networkMemberModal .text-dark {
+        color: #f8fafc !important;
+    }
+    [data-theme-version="dark"] #networkMemberModal .border-bottom {
+        border-bottom-color: #334155 !important;
+    }
+    [data-theme-version="dark"] .btn-outline-dark {
+        border-color: #64748b !important;
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .btn-outline-dark:hover {
+        background-color: #334155 !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .btn-secondary {
+        background-color: #334155 !important;
+        border-color: #475569 !important;
+        color: #f1f5f9 !important;
+    }
+    [data-theme-version="dark"] .btn-secondary:hover {
+        background-color: #475569 !important;
+        border-color: #64748b !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .btn-outline-primary {
+        color: #38bdf8 !important;
+        border-color: #0284c7 !important;
+    }
+    [data-theme-version="dark"] .btn-outline-primary:hover {
+        background-color: #0284c7 !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .btn-outline-success {
+        color: #4ade80 !important;
+        border-color: #16a34a !important;
+    }
+    [data-theme-version="dark"] .btn-outline-success:hover {
+        background-color: #16a34a !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .input-group-text.bg-light {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] #networkSearch {
+        background-color: #0f172a !important;
+        border-color: #334155 !important;
+        color: #f1f5f9 !important;
+    }
+    [data-theme-version="dark"] #networkSearch:focus {
+        border-color: #38bdf8 !important;
+    }
+    [data-theme-version="dark"] .network-stat-icon {
+        opacity: 0.9;
+        filter: brightness(0.95);
+    }
+    [data-theme-version="dark"] #emptyNetworkRow td {
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] #emptyNetworkRow i {
+        color: #334155 !important;
+    }
+</style>
+
+<body>
+    <%- include('../globals/preloader') %>
+
+    <div id="main-wrapper" class="show">
+        <%- include('../globals/navHeader') %>
+        <%- include('../globals/header') %>
+        <%- include('../globals/sidebar') %>
+
+        <div class="content-body">
+            <div class="container">
+
+                <!-- Page Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                    <div>
+                        <h3 class="fw-bold text-dark mb-1">
+                            <i class="fas fa-sitemap text-primary me-2"></i>My 5-Level User Network
+                        </h3>
+                        <p class="text-muted small mb-0">
+                            Explore your multi-level referral network down to 5 generations. Direct members (Level 1) have full profiles, while extended levels (2-5) show essential verified contact details.
+                        </p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="/applications/type/stockorder" target="_blank" class="btn btn-primary add-btn">
+                            <i class="fas fa-user-plus me-1"></i>Refer New Member
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Network Stats Overview -->
+                <div class="row g-3 mb-4">
+                    <!-- Total Network -->
+                    <div class="col-xl-4 col-md-4 col-sm-6">
+                        <div class="network-stat-card">
+                            <div>
+                                <div class="network-stat-title">Total 5-Level Network</div>
+                                <div class="network-stat-val text-primary"><%= counts.total || 0 %></div>
+                                <small class="text-muted">Total users across 5 levels</small>
+                            </div>
+                            <div class="network-stat-icon" style="background: #e0f2fe; color: #0284c7;">
+                                <i class="fas fa-users-line"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Level 1 Direct -->
+                    <div class="col-xl-4 col-md-4 col-sm-6">
+                        <div class="network-stat-card">
+                            <div>
+                                <div class="network-stat-title">Level 1 (Direct Referrals)</div>
+                                <div class="network-stat-val" style="color: #2563eb;"><%= counts.l1 || 0 %></div>
+                                <small class="text-success fw-bold"><i class="fas fa-shield-alt me-1"></i>Full Details Visible</small>
+                            </div>
+                            <div class="network-stat-icon" style="background: #dbeafe; color: #2563eb;">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indirect Network (L2-L5) -->
+                    <div class="col-xl-4 col-md-4 col-sm-12">
+                        <div class="network-stat-card">
+                            <div>
+                                <div class="network-stat-title">Indirect Downline (L2–L5)</div>
+                                <div class="network-stat-val" style="color: #7c3aed;">
+                                    <%= (counts.l2 + counts.l3 + counts.l4 + counts.l5) || 0 %>
+                                </div>
+                                <small class="text-muted"><i class="fas fa-lock me-1"></i>Privacy-protected view</small>
+                            </div>
+                            <div class="network-stat-icon" style="background: #f3e8ff; color: #7c3aed;">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level Breakdown Pills -->
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <!-- Filters -->
+                            <div class="d-flex flex-wrap gap-2" id="levelFilterButtons">
+                                <button type="button" class="level-filter-btn active" data-level="all">
+                                    All Levels <span class="badge bg-secondary ms-1 rounded-pill"><%= counts.total || 0 %></span>
+                                </button>
+                                <button type="button" class="level-filter-btn" data-level="1">
+                                    Level 1 (Direct) <span class="badge bg-primary ms-1 rounded-pill"><%= counts.l1 || 0 %></span>
+                                </button>
+                                <button type="button" class="level-filter-btn" data-level="2">
+                                    Level 2 <span class="badge bg-info ms-1 rounded-pill"><%= counts.l2 || 0 %></span>
+                                </button>
+                                <button type="button" class="level-filter-btn" data-level="3">
+                                    Level 3 <span class="badge bg-warning ms-1 text-dark rounded-pill"><%= counts.l3 || 0 %></span>
+                                </button>
+                                <button type="button" class="level-filter-btn" data-level="4">
+                                    Level 4 <span class="badge bg-dark ms-1 rounded-pill"><%= counts.l4 || 0 %></span>
+                                </button>
+                                <button type="button" class="level-filter-btn" data-level="5">
+                                    Level 5 <span class="badge bg-secondary ms-1 rounded-pill"><%= counts.l5 || 0 %></span>
+                                </button>
+                            </div>
+
+                            <!-- Search -->
+                            <div style="min-width: 260px;">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fas fa-search text-muted"></i></span>
+                                    <input type="text" id="networkSearch" class="form-control border-start-0" placeholder="Search by name, district, state...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Members Table Card -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table network-table align-middle mb-0 text-center" id="networkUsersTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Level</th>
+                                        <th class="text-start">User Name</th>
+                                        <th>Position</th>
+                                        <th class="text-start">Address & District</th>
+                                        <th>Referred By</th>
+                                        <th>Joining Date</th>
+                                        <th>Access Level</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (allLevelUsers && allLevelUsers.length > 0) { %>
+                                        <% allLevelUsers.forEach(function(member, index) { %>
+                                            <tr class="network-row" data-level="<%= member.level %>" data-name="<%= (member.name || '').toLowerCase() %>" data-district="<%= (member.district || '').toLowerCase() %>" data-state="<%= (member.state || '').toLowerCase() %>">
+                                                <td class="text-muted fw-bold"><%= index + 1 %></td>
+                                                <td>
+                                                    <% if (member.level === 1) { %>
+                                                        <span class="level-badge badge-level-1">
+                                                            <i class="fas fa-star text-warning"></i>Level 1 (Direct)
+                                                        </span>
+                                                    <% } else if (member.level === 2) { %>
+                                                        <span class="level-badge badge-level-2">Level 2</span>
+                                                    <% } else if (member.level === 3) { %>
+                                                        <span class="level-badge badge-level-3">Level 3</span>
+                                                    <% } else if (member.level === 4) { %>
+                                                        <span class="level-badge badge-level-4">Level 4</span>
+                                                    <% } else { %>
+                                                        <span class="level-badge badge-level-5">Level 5</span>
+                                                    <% } %>
+                                                </td>
+                                                <td class="text-start">
+                                                    <div class="fw-bold text-dark"><%= member.name %></div>
+                                                    <% if (member.level === 1) { %>
+                                                        <small class="text-muted"><i class="fas fa-id-card me-1"></i>ID: <%= member.userId || 'N/A' %></small>
+                                                    <% } else { %>
+                                                        <small class="text-muted"><i class="fas fa-user-shield me-1"></i>ID: Protected</small>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-light text-dark border">
+                                                        <%= member.position || 'Member' %>
+                                                    </span>
+                                                </td>
+                                                <td class="text-start">
+                                                    <% if (member.level === 1) { %>
+                                                        <div class="small fw-semibold text-dark">
+                                                            <%= member.fullAddress || (member.village ? member.village + ', ' : '') + member.district %>
+                                                        </div>
+                                                        <small class="text-muted"><%= member.district %>, <%= member.state %> (<%= member.pinCode || 'N/A' %>)</small>
+                                                    <% } else { %>
+                                                        <!-- Level 2-5: Only User Name, Address, Joining Date -->
+                                                        <div class="small fw-semibold text-dark">
+                                                            <%= [member.village, member.block, member.district].filter(Boolean).join(', ') || member.fullAddress || member.district %>
+                                                        </div>
+                                                        <small class="text-muted"><%= member.district %>, <%= member.state %></small>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <div class="small fw-semibold"><%= member.parentName || 'Direct' %></div>
+                                                    <% if (member.parentDisplayId) { %>
+                                                        <small class="text-muted">[<%= member.parentDisplayId %>]</small>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <div class="small text-muted">
+                                                        <%= new Date(member.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) %>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <% if (member.level === 1) { %>
+                                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                                            <i class="fas fa-eye me-1"></i>Full Details
+                                                        </span>
+                                                    <% } else { %>
+                                                        <span class="privacy-tag">
+                                                            <i class="fas fa-lock text-secondary"></i>Name & Address Only
+                                                        </span>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary view-network-member-btn" data-id="<%= member._id %>" data-level="<%= member.level %>">
+                                                        <i class="fas fa-info-circle me-1"></i>View
+                                                    </button>
+                                                    <% if (member.level === 1 && member.mobile) { %>
+                                                        <a href="tel:+91<%= member.mobile %>" class="btn btn-sm btn-info text-white ms-1" title="Call Member">
+                                                            <i class="fas fa-phone"></i>
+                                                        </a>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <tr id="emptyNetworkRow">
+                                            <td colspan="9" class="text-center py-5 text-muted">
+                                                <i class="fas fa-network-wired fa-3x mb-3 text-light d-block"></i>
+                                                <h6 class="fw-bold">No Network Members Found</h6>
+                                                <p class="small mb-0">Share your referral link/ID to build your 5-level user network.</p>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Details Modal (Dynamic for Level 1 full access vs Level 2-5 privacy protection) -->
+    <div class="modal fade" id="networkMemberModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header text-white" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                    <h5 class="modal-title text-white" id="modalMemberTitle">
+                        <i class="fas fa-user-circle me-2"></i>Member Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="networkMemberModalBody">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status"></div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light py-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required vendors -->
+    <script src="/vendor/global/global.min.js"></script>
+    <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/deznav-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let activeLevel = 'all';
+
+            function filterRows() {
+                const searchVal = $('#networkSearch').val().toLowerCase().trim();
+                let visibleCount = 0;
+
+                $('.network-row').each(function () {
+                    const rowLevel = $(this).data('level').toString();
+                    const name = $(this).data('name') || '';
+                    const district = $(this).data('district') || '';
+                    const state = $(this).data('state') || '';
+
+                    const matchesLevel = (activeLevel === 'all' || rowLevel === activeLevel);
+                    const matchesSearch = !searchVal || 
+                                          name.includes(searchVal) || 
+                                          district.includes(searchVal) || 
+                                          state.includes(searchVal);
+
+                    if (matchesLevel && matchesSearch) {
+                        $(this).show();
+                        visibleCount++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    if (!$('#noFilteredResults').length) {
+                        $('#networkUsersTable tbody').append(`
+                            <tr id="noFilteredResults">
+                                <td colspan="9" class="text-center py-4 text-muted">
+                                    <i class="fas fa-search me-1"></i> No members match the selected filter.
+                                </td>
+                            </tr>
+                        `);
+                    }
+                } else {
+                    $('#noFilteredResults').remove();
+                }
+            }
+
+            // Level Filter Click
+            $('.level-filter-btn').click(function () {
+                $('.level-filter-btn').removeClass('active');
+                $(this).addClass('active');
+                activeLevel = $(this).data('level').toString();
+                filterRows();
+            });
+
+            // Search input
+            $('#networkSearch').on('keyup', filterRows);
+
+            // Check URL param ?level=1
+            const urlParams = new URLSearchParams(window.location.search);
+            const levelParam = urlParams.get('level');
+            if (levelParam && ['1', '2', '3', '4', '5'].includes(levelParam)) {
+                $(`.level-filter-btn[data-level="${levelParam}"]`).trigger('click');
+            }
+
+            // View Member Details in Modal
+            $(document).on('click', '.view-network-member-btn', function () {
+                const memberId = $(this).data('id');
+                const modal = new bootstrap.Modal(document.getElementById('networkMemberModal'));
+                modal.show();
+
+                $('#networkMemberModalBody').html(`
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="small text-muted mt-2">Loading member record...</p>
+                    </div>
+                `);
+
+                fetch(`/users/network/details/${memberId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.success) {
+                            $('#networkMemberModalBody').html(`
+                                <div class="alert alert-danger mb-0">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>${data.message || 'Unable to load member information.'}
+                                </div>
+                            `);
+                            return;
+                        }
+
+                        const u = data.user;
+                        const isL1 = data.level === 1;
+
+                        if (isL1) {
+                            // Full profile for Level 1 Direct
+                            $('#networkMemberModalBody').html(`
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                            <div>
+                                                <h5 class="fw-bold text-dark mb-0">${u.name}</h5>
+                                                <small class="text-primary fw-semibold"><i class="fas fa-award me-1"></i>${u.position || 'Direct Member'} | ID: ${u.userId || 'N/A'}</small>
+                                            </div>
+                                            <span class="level-badge badge-level-1">
+                                                <i class="fas fa-star text-warning"></i>Level 1 (Direct Team)
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 border rounded-3 h-100">
+                                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-address-book me-2 text-primary"></i>Contact Information</h6>
+                                            <p class="mb-2"><strong>Mobile:</strong> <a href="tel:+91${u.mobile}">${u.mobile || 'N/A'}</a></p>
+                                            <p class="mb-2"><strong>Email:</strong> ${u.email || 'N/A'}</p>
+                                            <p class="mb-2"><strong>Gender:</strong> ${u.gender || 'N/A'}</p>
+                                            <p class="mb-0"><strong>Blood Group:</strong> ${u.bloodGroup || 'N/A'}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 border rounded-3 h-100">
+                                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-map-marker-alt me-2 text-danger"></i>Full Address</h6>
+                                            <p class="mb-2"><strong>Full Address:</strong> ${u.fullAddress || 'N/A'}</p>
+                                            <p class="mb-2"><strong>Village / Block:</strong> ${[u.village, u.block].filter(Boolean).join(', ') || 'N/A'}</p>
+                                            <p class="mb-2"><strong>District & State:</strong> ${u.district}, ${u.state}</p>
+                                            <p class="mb-0"><strong>Pincode:</strong> ${u.pinCode || 'N/A'}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="p-3 border rounded-3">
+                                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-id-card-clip me-2 text-success"></i>Membership & Referral</h6>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p class="mb-2"><strong>Membership Plan:</strong> ${u.membershipType || 'N/A'}</p>
+                                                    <p class="mb-0"><strong>Joining Date:</strong> ${new Date(u.createdAt).toLocaleDateString('en-IN')}</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p class="mb-2"><strong>Referred By:</strong> ${u.parentName || 'Direct'} (${u.parentDisplayId || 'N/A'})</p>
+                                                    <p class="mb-0"><strong>Type:</strong> ${u.type || 'Stock Order'}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                        } else {
+                            // Privacy protected view for Level 2-5: Only User Name, Address, Joining Date
+                            $('#networkMemberModalBody').html(`
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                            <div>
+                                                <h5 class="fw-bold text-dark mb-0">${u.name}</h5>
+                                                <small class="text-muted"><i class="fas fa-sitemap me-1"></i>${u.position || 'Network Member'}</small>
+                                            </div>
+                                            <span class="level-badge badge-level-${u.level}">
+                                                Level ${u.level} Downline
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="alert alert-info py-2 px-3 small mb-0">
+                                            <i class="fas fa-shield-alt me-1"></i>
+                                            <strong>Privacy Policy Notice:</strong> For indirect downline network members (Level 2 to Level 5), contact numbers, emails, and identification documents are masked to protect member privacy.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 border rounded-3 h-100">
+                                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-user me-2 text-primary"></i>Member Overview</h6>
+                                            <p class="mb-2"><strong>User Name:</strong> ${u.name}</p>
+                                            <p class="mb-2"><strong>Hierarchy Level:</strong> Level ${u.level}</p>
+                                            <p class="mb-2"><strong>Position:</strong> ${u.position || 'Member'}</p>
+                                            <p class="mb-0"><strong>Joining Date:</strong> ${new Date(u.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="p-3 border rounded-3 h-100">
+                                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-map-marker-alt me-2 text-danger"></i>Address Details</h6>
+                                            <p class="mb-2"><strong>Address:</strong> ${u.fullAddress || [u.village, u.block].filter(Boolean).join(', ') || 'N/A'}</p>
+                                            <p class="mb-2"><strong>District:</strong> ${u.district || 'N/A'}</p>
+                                            <p class="mb-2"><strong>State:</strong> ${u.state || 'N/A'}</p>
+                                            <p class="mb-0"><strong>Pincode:</strong> ${u.pinCode || 'N/A'}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="p-3 bg-light rounded-3 text-muted small">
+                                            <strong>Direct Upline / Referrer:</strong> ${u.parentName || 'N/A'} ${u.parentDisplayId ? '[' + u.parentDisplayId + ']' : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        $('#networkMemberModalBody').html(`
+                            <div class="alert alert-danger mb-0">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Failed to fetch member details.
+                            </div>
+                        `);
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

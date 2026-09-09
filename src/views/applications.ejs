@@ -412,24 +412,6 @@
 
                                                 <!-- User Verification Field -->
                                                 <h5 class="mt-4 pay-option">User Verification Field</h5>
-                                                <div class="row mb-3 pay-option">
-                                                    <div class="col-md-6">
-                                                        <label class="mb-1"><strong>Parent User</strong></label>
-                                                        <select name="parentuser" id="parentuser" style="padding-block: 11px;"
-                                                            class="form-select">
-                                                            <option value="">Select Parent User</option>
-                                                            <option value="Bank Transfer Slip">Bank Transfer Slip
-                                                            </option>
-                                                            <option value="Paytm">Paytm</option>
-                                                            <option value="Google Pay">Google Pay</option>
-                                                            <option value="Phonepe">Phonepe</option>
-                                                            <option value="Amazon Pay">Amazon Pay</option>
-                                                            <option value="Cheque">Cheque</option>
-                                                            <option value="Cash">Cash</option>
-                                                            <option value="Other">Other</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
                                                         <label class="mb-1"><strong>Validity Start <span
@@ -536,7 +518,6 @@
                                 const app = data.data;
                                 // console.log(data.options);
                                 
-                                $('#parentuser').html(data.options)
                                 const form = document.getElementById('approve-form');
 
                                 // 🧩 Function to fill form and show previews
@@ -925,8 +906,6 @@
                     console.log("hii");
                     const validend = form.validend.value.trim();
                     console.log("hii");
-                    const parentUser = form.parentuser.value.trim();
-                    console.log("hii");
                     const position = form.position.value.trim();
                     console.log("hii");
                     const type = form.type.value.trim();
@@ -959,7 +938,6 @@
                     if (!validend) err.push("Please enter Valid End!");
                     if (!type) err.push("Please enter Form Type!");
                     if (!position) err.push("Please enter Valid Position!");
-                    if (!parentUser) err.push("Please enter Valid Parent User!");
 
                     // File validations (if required)
                     // const receiptFile = form.receiptUrl.files[0];
