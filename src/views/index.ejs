@@ -446,8 +446,7 @@
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
                                                                         <div class="dash-card-title">
-                                                                            <%= (user.role=='Admin' )?'Verified
-                                                                                Users':'Your Users' %>
+                                                                            <%= (user.role=='Admin') ? 'Verified Users' : 'Your Users' %>
                                                                         </div>
                                                                         <h3 class="dash-card-value">
                                                                             <%= verified || 0 %>
@@ -503,8 +502,7 @@
                                                                             (Level 1)</div>
                                                                         <h3 class="dash-card-value"
                                                                             style="color: #2563eb;">
-                                                                            <%= (typeof networkCounts !=='undefined' &&
-                                                                                networkCounts.l1) || 0 %>
+                                                                            <%= (typeof networkCounts !== 'undefined' && networkCounts.l1) || 0 %>
                                                                         </h3>
                                                                     </div>
                                                                     <div class="dash-card-icon icon-blue">
@@ -531,8 +529,7 @@
                                                                         </div>
                                                                         <h3 class="dash-card-value"
                                                                             style="color: #7c3aed;">
-                                                                            <%= (typeof networkCounts !=='undefined' &&
-                                                                                networkCounts.total) || 0 %>
+                                                                            <%= (typeof networkCounts !== 'undefined' && networkCounts.total) || 0 %>
                                                                         </h3>
                                                                     </div>
                                                                     <div class="dash-card-icon icon-purple">
