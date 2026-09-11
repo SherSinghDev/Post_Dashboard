@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="text-end">
                                         <a href="javascript:void(0);"
-                                            class="btn btn-primary me-1 create-btn <%- user.position=='Centre Head'?'d-none':'' %>">+
+                                            class="btn btn-primary me-1 create-btn <%- user.role !== 'Admin' ? 'd-none' : '' %>">+
                                             New
                                             Transaction</a>
                                     </div>
