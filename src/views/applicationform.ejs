@@ -11,6 +11,7 @@
     <link rel="shortcut icon" type="image/png" href="https://bsrfindia.com/images/logo/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    <link href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
 </head>
@@ -277,7 +278,7 @@
                                         <div class="row mb-3" id="parentUserSection" style="display: none;">
                                             <div class="col-md-12">
                                                 <label class="mb-1"><strong>Select Parent User / Referrer Name*</strong></label>
-                                                <select name="referredBy" id="referredBySelect" style="padding-block: 11px;" class="form-select">
+                                                <select name="referredBy" id="referredBySelect" style="padding-block: 11px;" class="form-select selectpicker" data-live-search="true">
                                                     <option value="">-- Choose Parent User by Name --</option>
                                                     <% if (users && users.length > 0) { %>
                                                         <% users.forEach(function(u) { %>
@@ -426,10 +427,12 @@
 	Scripts
 ***********************************-->
     <!-- Required vendors -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <!-- <script src="/vendor/global/global.min.js"></script> -->
     <!-- <script src="/js/custom.js"></script> -->
     <!-- <script src="/js/deznav-init.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
 
 

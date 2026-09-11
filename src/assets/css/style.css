@@ -1,4 +1,4 @@
-﻿/*
+/*
     Table of Contents
 
     Name                 : W3CRM
@@ -35133,5 +35133,12 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     background-color: transparent; }
     [data-theme-version="dark"] .footer .copyright p {
       color: #fff; }
+
+/* Hide floating support and buy now widgets */
+.bt-buy-now, .bt-support, .dz-buy-now, .dz-support, #DZScript, a[href*="themeforest.net"], a[href*="dexignzone.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
 
 /*# sourceMappingURL=style.css.map */

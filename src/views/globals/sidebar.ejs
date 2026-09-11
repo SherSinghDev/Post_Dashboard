@@ -374,6 +374,16 @@
                                         <span class="nav-text">5-Level Network</span>
                                     </a>
                                 </li>
+
+                                <!-- Commission History (Stock Order) -->
+                                <li>
+                                    <a href="/stock/commissionhistory" aria-expanded="false">
+                                        <span class="nav-icon-box">
+                                            <i class="fas fa-history"></i>
+                                        </span>
+                                        <span class="nav-text">Commission History</span>
+                                    </a>
+                                </li>
                                 <% } %>
 
                                     <!-- Unverified Patient -->
@@ -445,7 +455,7 @@
 
                                                 <% if(user.role!='doc' && user.type!='singleorder' ) { %>
                                                     <!-- Money Transactions -->
-                                                    <li>
+                                                    <li class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
                                                         <a href="/stock/moneytransactions" aria-expanded="false">
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-money-bill-transfer"></i>
@@ -465,7 +475,7 @@
                                                     </li>
 
                                                     <!-- My Stock -->
-                                                    <li>
+                                                    <li class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
                                                         <a href="/stock/mystock" aria-expanded="false">
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-warehouse"></i>

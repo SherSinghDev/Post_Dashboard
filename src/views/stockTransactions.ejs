@@ -133,9 +133,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Tr. Id</th>
-                                                                <th>Sender Name</th>
                                                                 <th>Receiver Name</th>
-                                                                <th>Sender Position</th>
                                                                 <th>Receiver Position</th>
                                                                 <th>OrthoCare</th>
                                                                 <th>DetoxCare</th>
@@ -162,7 +160,10 @@
                                                                 <th>PowerWellnessCare</th>
                                                                 <th>TotalWellnessCare</th>
                                                                 <th>totalStock</th>
+                                                                <th>Total Amount</th>
+                                                                <th>Payment Status</th>
                                                                 <th>Created At</th>
+                                                                <th>Actions</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -173,13 +174,7 @@
                                                                             <%= app._id %>
                                                                         </td>
                                                                         <td>
-                                                                            <%= app.senderName %>
-                                                                        </td>
-                                                                        <td>
                                                                             <%= app.receiverName %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.senderPosition %>
                                                                         </td>
                                                                         <td>
                                                                             <%= app.receiverPosition %>
@@ -260,13 +255,32 @@
                                                                         <td>
                                                                             <%= app.totalStock %>
                                                                         </td>
+                                                                        <td>
+                                                                            <%= app.totalAmount ? '₹' + app.totalAmount : '-' %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="badge badge-<%= app.paymentStatus === 'Paid' ? 'success' : 'warning' %>">
+                                                                                <%= app.paymentStatus || 'Unpaid' %>
+                                                                            </span>
+                                                                            <% if (app.paymentReceipt) { %>
+                                                                                <br>
+                                                                                <a href="<%= app.paymentReceipt %>" target="_blank" class="text-primary mt-1 d-inline-block" title="View Receipt">
+                                                                                    <i class="fas fa-file-invoice"></i> View Receipt
+                                                                                </a>
+                                                                            <% } %>
+                                                                        </td>
 
 
 
                                                                         <td>
-                                                                            <%= new
-                                                                                Date(app.createdAt).toLocaleDateString()
-                                                                                %>
+                                                                            <%= new Date(app.createdAt).toLocaleDateString() %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <% if (app.paymentStatus !== 'Paid') { %>
+                                                                                <button class="btn btn-sm btn-primary edit-btn <%- user.role != 'Admin' ? 'd-none' : '' %>" data-id="<%= app._id %>" data-app="<%- encodeURIComponent(JSON.stringify(app)) %>"><i class="fas fa-edit"></i> Edit</button>
+                                                                            <% } else { %>
+                                                                                <span class="text-muted">-</span>
+                                                                            <% } %>
                                                                         </td>
 
 
@@ -346,10 +360,9 @@
                                                     <!-- Basic Info -->
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">Receiver
-                                                                *</label>
+                                                            <label class="form-label">Receiver *</label>
                                                             <select name="receiverId" style="padding-block: 11px;"
-                                                                class="form-select">
+                                                                class="form-select selectpicker" data-live-search="true" required>
                                                                 <option value="">Select Receiver</option>
 
                                                                 <% let child=[]; %>
@@ -361,13 +374,13 @@
                                                                                 <% child=centreHeads %>
                                                                                     <% } else if(user.role=='Admin' ){
                                                                                         %>
-                                                                                        <% child=districtHeads %>
+                                                                                        <% child=stockOrderUsers %>
                                                                                             <% } %>
 
                                                                                                 <% child.forEach((c)=>{
                                                                                                     %>
                                                                                                     <option
-                                                                                                        value="<%- c.userId %>">
+                                                                                                        value="<%- c.userId || c._id %>">
                                                                                                         <%- `${c.name}
                                                                                                             (${c.position})`
                                                                                                             %>
@@ -382,157 +395,162 @@
 
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">OrthoCare
-                                                                *</label>
-                                                            <input type="text" name="OrthoCare" class="form-control" />
+                                                            <label class="form-label">OrthoCare</label>
+                                                            <input type="text" name="OrthoCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">DetoxCare</label>
-                                                            <input type="text" name="DetoxCare" class="form-control" />
+                                                            <input type="text" name="DetoxCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
 
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">ParentsWellnessCare
-                                                                *</label>
+                                                            <label class="form-label">ParentsWellnessCare</label>
                                                             <input type="text" name="ParentsWellnessCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">ImmunityBoosterCare</label>
                                                             <input type="text" name="ImmunityBoosterCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">DiabetesCare
-                                                                *</label>
+                                                            <label class="form-label">DiabetesCare</label>
                                                             <input type="text" name="DiabetesCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">HeartCare</label>
-                                                            <input type="text" name="HeartCare" class="form-control" />
+                                                            <input type="text" name="HeartCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">DigestiveCare
-                                                                *</label>
+                                                            <label class="form-label">DigestiveCare</label>
                                                             <input type="text" name="DigestiveCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">EyeCare</label>
-                                                            <input type="text" name="EyeCare" class="form-control" />
+                                                            <input type="text" name="EyeCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">WeightLossCare
-                                                                *</label>
+                                                            <label class="form-label">WeightLossCare</label>
                                                             <input type="text" name="WeightLossCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">EnergyAndWeaknessCare</label>
                                                             <input type="text" name="EnergyAndWeaknessCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">HairCare
-                                                                *</label>
-                                                            <input type="text" name="HairCare" class="form-control" />
+                                                            <label class="form-label">HairCare</label>
+                                                            <input type="text" name="HairCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">SkinCare</label>
-                                                            <input type="text" name="SkinCare" class="form-control" />
+                                                            <input type="text" name="SkinCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">ThyroidCare
-                                                                *</label>
+                                                            <label class="form-label">ThyroidCare</label>
                                                             <input type="text" name="ThyroidCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">LiverAndKidneyCare</label>
                                                             <input type="text" name="LiverAndKidneyCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">LadiesWellnessCare
-                                                                *</label>
+                                                            <label class="form-label">LadiesWellnessCare</label>
                                                             <input type="text" name="LadiesWellnessCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">InfinityMaleWellness</label>
                                                             <input type="text" name="InfinityMaleWellness"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">InfinityFemaleWellness
-                                                                *</label>
+                                                            <label class="form-label">InfinityFemaleWellness</label>
                                                             <input type="text" name="InfinityFemaleWellness"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">PilesCare</label>
-                                                            <input type="text" name="PilesCare" class="form-control" />
+                                                            <input type="text" name="PilesCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">AsthmaCare
-                                                                *</label>
-                                                            <input type="text" name="AsthmaCare" class="form-control" />
+                                                            <label class="form-label">AsthmaCare</label>
+                                                            <input type="text" name="AsthmaCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">NeuroCare</label>
-                                                            <input type="text" name="NeuroCare" class="form-control" />
+                                                            <input type="text" name="NeuroCare" class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">BloodPurifierCare
-                                                                *</label>
+                                                            <label class="form-label">BloodPurifierCare</label>
                                                             <input type="text" name="BloodPurifierCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">BrainAndMemoryCare</label>
                                                             <input type="text" name="BrainAndMemoryCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">PowerWellnessCare
-                                                                *</label>
+                                                            <label class="form-label">PowerWellnessCare</label>
                                                             <input type="text" name="PowerWellnessCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="form-label">TotalWellnessCare</label>
                                                             <input type="text" name="TotalWellnessCare"
-                                                                class="form-control" />
+                                                                class="form-control" placeholder="Enter quantity" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-lg-6">
-                                                            <label class="form-label">totalStock
-                                                                *</label>
-                                                            <input type="text" name="totalStock" class="form-control" />
+                                                            <label class="form-label">totalStock *</label>
+                                                            <input type="text" name="totalStock" class="form-control" placeholder="Enter quantity" required />
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Total Amount *</label>
+                                                            <input type="number" name="totalAmount" class="form-control" placeholder="Enter Amount" required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-6">
+                                                            <label class="form-label">Payment Status *</label>
+                                                            <select name="paymentStatus" id="paymentStatusSelect" class="form-select" style="padding-block: 11px;" required>
+                                                                <option value="Unpaid">Unpaid</option>
+                                                                <option value="Paid">Paid</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-6" id="paymentReceiptContainer" style="display: none;">
+                                                            <label class="form-label">Payment Receipt</label>
+                                                            <input type="file" name="paymentReceipt" id="paymentReceipt" class="form-control" accept="image/*,.pdf" style="padding-block: 8px;" />
                                                         </div>
                                                     </div>
 
@@ -575,7 +593,6 @@
     <script src="/js/deznav-init.js"></script>
     <script src="/js/demo.js"></script>
     <script src="/js/styleSwitcher.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
     <script src="/js/pages/patients.js"></script>
 
@@ -595,6 +612,171 @@
             $('#approve-form').attr('data-url', '/stock/newstocktransaction')
             $('#approve-form').attr('data-type', 'create')
             $('.modal-title').text('Create Stock Transaction')
+            $('#approve-form')[0].reset();
+            $('#paymentStatusSelect').trigger('change');
+            
+            // Refresh selectpicker for Receiver
+            const $rec = $('select[name="receiverId"]');
+            $rec.val('');
+            $rec.find('option').prop('selected', false);
+            if (typeof $rec.selectpicker === 'function') {
+                try {
+                    $rec.selectpicker('val', '');
+                    $rec.selectpicker('refresh');
+                } catch (e) {}
+            }
+            const $btn = $rec.closest('.bootstrap-select').find('button.dropdown-toggle');
+            if ($btn.length) {
+                $btn.attr('title', 'Select Receiver');
+                $btn.find('.filter-option-inner-inner').text('Select Receiver');
+            }
+        });
+
+        function populateEditForm(data) {
+            if (!data) return;
+            const form = document.getElementById('approve-form');
+            if (!form) return;
+
+            const allFieldNames = [
+                'receiverId', 'totalStock', 'totalAmount', 'paymentStatus',
+                'OrthoCare', 'DetoxCare', 'ParentsWellnessCare', 'ImmunityBoosterCare',
+                'DiabetesCare', 'HeartCare', 'DigestiveCare', 'EyeCare', 'WeightLossCare',
+                'EnergyAndWeaknessCare', 'HairCare', 'SkinCare', 'ThyroidCare',
+                'LiverAndKidneyCare', 'LadiesWellnessCare', 'InfinityMaleWellness',
+                'InfinityFemaleWellness', 'PilesCare', 'AsthmaCare', 'NeuroCare',
+                'BloodPurifierCare', 'BrainAndMemoryCare', 'PowerWellnessCare', 'TotalWellnessCare'
+            ];
+
+            allFieldNames.forEach(name => {
+                const field = form.querySelector(`[name="${name}"]`);
+                if (!field) return;
+
+                const val = (data[name] !== undefined && data[name] !== null) ? data[name] : '';
+
+                if (name === 'receiverId') {
+                    let targetVal = String(val).trim();
+                    const $select = $(field);
+
+                    // If receiverId is empty, try finding by receiverName
+                    let option = $select.find(`option[value="${targetVal}"]`);
+                    if ((!option.length || !targetVal) && data.receiverName) {
+                        $select.find('option').each(function () {
+                            if ($(this).text().toLowerCase().includes(data.receiverName.toLowerCase())) {
+                                targetVal = $(this).val();
+                                option = $(this);
+                                return false;
+                            }
+                        });
+                    }
+
+                    // If still not found in select options, append option dynamically
+                    if (!option.length && targetVal) {
+                        const optText = data.receiverName ? `${data.receiverName} (${data.receiverPosition || ''})` : targetVal;
+                        $select.append(new Option(optText, targetVal, true, true));
+                        option = $select.find(`option[value="${targetVal}"]`);
+                    }
+
+                    // 1. Select the option in native select
+                    $select.find('option').prop('selected', false);
+                    if (option.length) {
+                        option.prop('selected', true);
+                    }
+                    field.value = targetVal;
+                    $select.val(targetVal);
+
+                    // 2. Refresh Bootstrap selectpicker plugin
+                    if (typeof $select.selectpicker === 'function') {
+                        try {
+                            $select.selectpicker('val', targetVal);
+                            $select.selectpicker('refresh');
+                        } catch (err) {
+                            console.warn('Selectpicker error:', err);
+                        }
+                    }
+
+                    // 3. Directly update visible Bootstrap Selectpicker button display text as fail-safe
+                    const selectedText = (option.length ? option.text() : (data.receiverName || targetVal)).trim();
+                    const $btn = $select.closest('.bootstrap-select').find('button.dropdown-toggle');
+                    if ($btn.length && selectedText) {
+                        $btn.attr('title', selectedText);
+                        $btn.find('.filter-option-inner-inner').text(selectedText);
+                    }
+                } else if (field.tagName === 'SELECT') {
+                    field.value = val;
+                    $(field).val(val);
+                } else {
+                    field.value = val;
+                }
+            });
+
+            $('#paymentStatusSelect').trigger('change');
+        }
+
+        $(document).on('click', '.edit-btn', function () {
+            const btn = $(this).closest('.edit-btn');
+            const id = btn.attr('data-id');
+            let rawData = btn.attr('data-app') || btn.data('app');
+            let appData = null;
+
+            if (rawData) {
+                try {
+                    appData = typeof rawData === 'string' ? JSON.parse(decodeURIComponent(rawData)) : rawData;
+                } catch (e) {
+                    try {
+                        appData = typeof rawData === 'string' ? JSON.parse(rawData) : rawData;
+                    } catch (err) {
+                        console.error('Error parsing data-app:', err);
+                    }
+                }
+            }
+
+            $('.approve-modal').modal('show');
+            const txId = (appData && appData._id) ? appData._id : id;
+            $('#approve-form').attr('data-url', `/stock/editstocktransaction/${txId}`);
+            $('#approve-form').attr('data-type', 'edit');
+            $('.modal-title').text('Edit Stock Transaction');
+
+            const form = document.getElementById('approve-form');
+            if (form) form.reset();
+
+            // 1. Instantly populate from data-app
+            if (appData) {
+                populateEditForm(appData);
+            }
+
+            // 2. Fetch fresh details from server to guarantee 100% complete field population
+            if (txId) {
+                fetch(`/stock/transaction/${txId}`)
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.success && res.data) {
+                            populateEditForm(res.data);
+                        }
+                    })
+                    .catch(err => console.error('Fetch transaction error:', err));
+            }
+        });
+
+        // 🧮 Live sum calculation for totalStock when care inputs change
+        const careFieldNames = [
+            'OrthoCare', 'DetoxCare', 'ParentsWellnessCare', 'ImmunityBoosterCare',
+            'DiabetesCare', 'HeartCare', 'DigestiveCare', 'EyeCare', 'WeightLossCare',
+            'EnergyAndWeaknessCare', 'HairCare', 'SkinCare', 'ThyroidCare',
+            'LiverAndKidneyCare', 'LadiesWellnessCare', 'InfinityMaleWellness',
+            'InfinityFemaleWellness', 'PilesCare', 'AsthmaCare', 'NeuroCare',
+            'BloodPurifierCare', 'BrainAndMemoryCare', 'PowerWellnessCare', 'TotalWellnessCare'
+        ];
+
+        $(document).on('input', '#approve-form input', function () {
+            const fieldName = $(this).attr('name');
+            if (careFieldNames.includes(fieldName)) {
+                let total = 0;
+                careFieldNames.forEach(name => {
+                    const val = parseFloat($('#approve-form input[name="' + name + '"]').val()) || 0;
+                    total += val;
+                });
+                $('#approve-form input[name="totalStock"]').val(total);
+            }
         });
 
 
@@ -895,7 +1077,42 @@
                 });
                 return
             }
-            if (type != 'create') {
+            if (type === 'create' || type === 'edit') {
+                // If creating or editing stock transaction, use FormData
+                fetch(url, {
+                    method: "POST",
+                    body: new FormData(e.target),
+                })
+                    .then((data) => {
+                        return data.json()
+                    })
+                    .then((result) => {
+                        console.log(result);
+                        if (result.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: type === 'edit' ? "Stock Transaction Updated Successfully!" : "Stock Transfer Successfully!",
+                                timer: 2000
+
+                            });
+                            e.target.reset()
+                            $('.approve-modal').modal('hide');
+                            window.location.reload()
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: result.error || result.message,
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            }
+            else {
                 let data = {}
                 for (let key in inputs) {
                     data = { ...data, [key]: inputs[key].value }
@@ -939,52 +1156,19 @@
                         console.log(err);
                     })
             }
-            else {
-                let data = {}
-                for (let key in inputs) {
-                    data = { ...data, [key]: inputs[key].value }
-                }
-                console.log(data);
-                fetch(url, {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    // body: new FormData(e.target),
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                })
-                    .then((data) => {
-                        return data.json()
-                    })
-                    .then((result) => {
-                        console.log(result);
-                        if (result.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: "Stock Transfer Successfully!",
-                                timer: 2000
-
-                            });
-                            e.target.reset()
-                            $('.approve-modal').modal('hide');
-                            window.location.reload()
-                        }
-                        else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Error in Server",
-                                timer: 1000
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            }
         });
 
+        // 📝 Toggle Payment Receipt input visibility based on Payment Status
+        $(document).on('change', '#paymentStatusSelect', function () {
+            if ($(this).val() === 'Paid') {
+                $('#paymentReceiptContainer').show();
+                $('#paymentReceipt').attr('required', 'required');
+            } else {
+                $('#paymentReceiptContainer').hide();
+                $('#paymentReceipt').val(''); // Clear the file input if Unpaid
+                $('#paymentReceipt').removeAttr('required');
+            }
+        });
 
         $(document).on('submit', '#create-order-form', function (e) {
             e.preventDefault()
@@ -1088,7 +1272,7 @@
                             Swal.fire({
                                 icon: "error",
                                 title: "Oops...",
-                                text: result.error,
+                                text: result.error || result.message,
                                 // timer: 1000
                             });
                         }

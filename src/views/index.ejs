@@ -543,7 +543,32 @@
                                                             </div>
                                                         </div>
 
+                                                        <!-- Card: Platform Wallet Amount - Stock Order -->
+                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
+                                                            data-category="stock"
+                                                            data-title="platform wallet amount commission earnings balance">
+                                                            <div class="dash-card" style="border-left: 4px solid #059669;">
+                                                                <div class="d-flex align-items-start justify-content-between mb-3">
+                                                                    <div>
+                                                                        <div class="dash-card-title">Platform Wallet</div>
+                                                                        <h3 class="dash-card-value" style="color: #059669; font-size:22px;">
+                                                                            &#8377;<%= (platformWalletAmount || 0).toLocaleString('en-IN') %>
+                                                                        </h3>
+                                                                        <div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">Commission Earned</div>
+                                                                    </div>
+                                                                    <div class="dash-card-icon icon-emerald">
+                                                                        <i class="fas fa-coins"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <a href="/stock/commissionhistory" class="dash-card-action" style="color:#059669;">
+                                                                    <span>View Commission History</span>
+                                                                    <i class="fas fa-arrow-right"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
                                                         <!-- Card: Unverified Patients -->
+
                                                         <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>"
                                                             data-category="patients" data-title="unverified patients">
                                                             <div class="dash-card">

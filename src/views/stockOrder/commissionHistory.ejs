@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../globals/head') %>
+
+    <body>
+        <%- include('../globals/preloader') %>
+
+        <div id="main-wrapper">
+            <%- include('../globals/navHeader') %>
+            <%- include('../globals/header') %>
+            <%- include('../globals/sidebar') %>
+
+            <div class="content-body">
+                <div class="container-fluid">
+
+                    <style>
+                        /* Commission History Page Styles */
+                        .ch-hero {
+                            background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
+                            border-radius: 20px;
+                            padding: 32px 36px;
+                            margin-bottom: 28px;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 8px 32px rgba(14, 165, 233, 0.25);
+                        }
+
+                        .ch-hero::before {
+                            content: '';
+                            position: absolute;
+                            top: -40px;
+                            right: -40px;
+                            width: 200px;
+                            height: 200px;
+                            background: rgba(255,255,255,0.07);
+                            border-radius: 50%;
+                        }
+
+                        .ch-hero::after {
+                            content: '';
+                            position: absolute;
+                            bottom: -60px;
+                            right: 80px;
+                            width: 280px;
+                            height: 280px;
+                            background: rgba(255,255,255,0.04);
+                            border-radius: 50%;
+                        }
+
+                        .ch-hero-title {
+                            color: rgba(255,255,255,0.75);
+                            font-size: 13px;
+                            font-weight: 600;
+                            letter-spacing: 1.5px;
+                            text-transform: uppercase;
+                            margin-bottom: 6px;
+                        }
+
+                        .ch-hero-amount {
+                            font-size: 42px;
+                            font-weight: 800;
+                            color: #ffffff;
+                            line-height: 1;
+                            margin-bottom: 8px;
+                        }
+
+                        .ch-hero-sub {
+                            color: rgba(255,255,255,0.6);
+                            font-size: 13.5px;
+                        }
+
+                        .ch-stat-card {
+                            background: #ffffff;
+                            border-radius: 16px;
+                            padding: 22px 24px;
+                            border: 1px solid #e2e8f0;
+                            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+                            margin-bottom: 24px;
+                            transition: transform 0.2s, box-shadow 0.2s;
+                        }
+
+                        .ch-stat-card:hover {
+                            transform: translateY(-3px);
+                            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+                        }
+
+                        .ch-stat-icon {
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 20px;
+                            margin-bottom: 14px;
+                        }
+
+                        .ch-stat-label {
+                            font-size: 12.5px;
+                            font-weight: 600;
+                            color: #94a3b8;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                            margin-bottom: 4px;
+                        }
+
+                        .ch-stat-value {
+                            font-size: 24px;
+                            font-weight: 700;
+                            color: #0f172a;
+                            line-height: 1.2;
+                        }
+
+                        /* Table Styles */
+                        .ch-table-card {
+                            background: #ffffff;
+                            border-radius: 16px;
+                            border: 1px solid #e2e8f0;
+                            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+                            overflow: hidden;
+                        }
+
+                        .ch-table-header {
+                            padding: 20px 24px;
+                            border-bottom: 1px solid #f1f5f9;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            flex-wrap: wrap;
+                            gap: 12px;
+                        }
+
+                        .ch-table-title {
+                            font-size: 16px;
+                            font-weight: 700;
+                            color: #0f172a;
+                        }
+
+                        .ch-search {
+                            border: 1px solid #e2e8f0;
+                            border-radius: 20px;
+                            padding: 7px 16px 7px 36px;
+                            font-size: 13px;
+                            background: #f8fafc;
+                            width: 220px;
+                            transition: all 0.2s;
+                        }
+
+                        .ch-search:focus {
+                            background: #fff;
+                            border-color: #0ea5e9;
+                            outline: none;
+                            box-shadow: 0 0 0 3px rgba(14,165,233,0.12);
+                        }
+
+                        .ch-table thead th {
+                            background: #f8fafc;
+                            color: #64748b;
+                            font-size: 12px;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                            letter-spacing: 0.6px;
+                            padding: 14px 16px;
+                            border-bottom: 1px solid #e2e8f0;
+                            white-space: nowrap;
+                        }
+
+                        .ch-table tbody td {
+                            padding: 14px 16px;
+                            vertical-align: middle;
+                            border-bottom: 1px solid #f8fafc;
+                            font-size: 13.5px;
+                            color: #334155;
+                        }
+
+                        .ch-table tbody tr:last-child td {
+                            border-bottom: none;
+                        }
+
+                        .ch-table tbody tr:hover td {
+                            background: #f8fafc;
+                        }
+
+                        /* Level Badges */
+                        .level-badge {
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 5px;
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            font-weight: 700;
+                        }
+
+                        .level-1 { background: #dbeafe; color: #1d4ed8; }
+                        .level-2 { background: #d1fae5; color: #065f46; }
+                        .level-3 { background: #fef3c7; color: #92400e; }
+                        .level-4 { background: #ede9fe; color: #5b21b6; }
+                        .level-5 { background: #ffe4e6; color: #9f1239; }
+
+                        /* Commission amount badge */
+                        .commission-amount {
+                            font-size: 15px;
+                            font-weight: 700;
+                            color: #059669;
+                        }
+
+                        .empty-state {
+                            text-align: center;
+                            padding: 64px 32px;
+                        }
+
+                        .empty-state-icon {
+                            width: 80px;
+                            height: 80px;
+                            background: #f1f5f9;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto 20px;
+                            font-size: 32px;
+                            color: #94a3b8;
+                        }
+
+                        /* Dark Mode */
+                        [data-theme-version="dark"] .ch-stat-card,
+                        [data-theme-version="dark"] .ch-table-card {
+                            background: #0f172a !important;
+                            border-color: #1e293b !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-table-header {
+                            border-bottom-color: #1e293b !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-table-title {
+                            color: #f8fafc !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-stat-label {
+                            color: #64748b !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-stat-value {
+                            color: #f8fafc !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-table thead th {
+                            background: #1e293b !important;
+                            color: #94a3b8 !important;
+                            border-bottom-color: #334155 !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-table tbody td {
+                            color: #cbd5e1 !important;
+                            border-bottom-color: #1e293b !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-table tbody tr:hover td {
+                            background: #1e293b !important;
+                        }
+
+                        [data-theme-version="dark"] .ch-search {
+                            background: #1e293b !important;
+                            border-color: #334155 !important;
+                            color: #f8fafc !important;
+                        }
+
+                        /* Dark mode - member name and position */
+                        .ch-member-name { color: #0f172a; }
+                        .ch-member-position { color: #64748b; }
+                        [data-theme-version="dark"] .ch-member-name {
+                            color: #f1f5f9 !important;
+                        }
+                        [data-theme-version="dark"] .ch-member-position {
+                            color: #94a3b8 !important;
+                        }
+
+                        /* Level Badge Dark Mode Overrides */
+                        [data-theme-version="dark"] .level-badge.level-1 {
+                            background: #1e40af !important;
+                            color: #bfdbfe !important;
+                        }
+                        [data-theme-version="dark"] .level-badge.level-2 {
+                            background: #065f46 !important;
+                            color: #a7f3d0 !important;
+                        }
+                        [data-theme-version="dark"] .level-badge.level-3 {
+                            background: #78350f !important;
+                            color: #fde68a !important;
+                        }
+                        [data-theme-version="dark"] .level-badge.level-4 {
+                            background: #4c1d95 !important;
+                            color: #ddd6fe !important;
+                        }
+                        [data-theme-version="dark"] .level-badge.level-5 {
+                            background: #881337 !important;
+                            color: #fecdd3 !important;
+                        }
+                    </style>
+
+                    <!-- Page Header -->
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h4 class="mb-1 fw-bold" style="color:#0f172a;">Commission History</h4>
+                                    <p class="mb-0 text-muted" style="font-size:13.5px;">Track all commissions earned from your downline network</p>
+                                </div>
+                                <a href="/" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Dashboard
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Banner -->
+                    <div class="ch-hero">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="ch-hero-title">Platform Wallet Balance</div>
+                                <div class="ch-hero-amount">₹<%= (platformWalletAmount || 0).toLocaleString('en-IN') %></div>
+                                <div class="ch-hero-sub">Total commissions credited to your wallet</div>
+                            </div>
+                            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                                <div style="color:rgba(255,255,255,0.7); font-size:13px;">Total Records</div>
+                                <div style="font-size:36px; font-weight:800; color:#fff;"><%= history.length %></div>
+                                <div style="color:rgba(255,255,255,0.6); font-size:13px;">commission entries</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat Cards -->
+                    <div class="row">
+                        <!-- Total Earned -->
+                        <div class="col-xl-3 col-md-6">
+                            <div class="ch-stat-card">
+                                <div class="ch-stat-icon" style="background:#d1fae5; color:#059669;">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="ch-stat-label">Total Earned</div>
+                                <div class="ch-stat-value text-success">₹<%= totalEarned.toLocaleString('en-IN') %></div>
+                            </div>
+                        </div>
+
+                        <!-- Level 1 Commission -->
+                        <div class="col-xl-3 col-md-6">
+                            <div class="ch-stat-card">
+                                <div class="ch-stat-icon" style="background:#dbeafe; color:#1d4ed8;">
+                                    <i class="fas fa-user-friends"></i>
+                                </div>
+                                <div class="ch-stat-label">Level 1 (₹10/unit)</div>
+                                <div class="ch-stat-value" style="color:#1d4ed8;">
+                                    ₹<%= history.filter(h=>h.level===1).reduce((s,h)=>s+h.commissionAmount,0).toLocaleString('en-IN') %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Level 2 Commission -->
+                        <div class="col-xl-3 col-md-6">
+                            <div class="ch-stat-card">
+                                <div class="ch-stat-icon" style="background:#fef3c7; color:#d97706;">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <div class="ch-stat-label">Level 2–3 (₹5–₹3/unit)</div>
+                                <div class="ch-stat-value" style="color:#d97706;">
+                                    ₹<%= history.filter(h=>h.level===2||h.level===3).reduce((s,h)=>s+h.commissionAmount,0).toLocaleString('en-IN') %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Level 4-5 Commission -->
+                        <div class="col-xl-3 col-md-6">
+                            <div class="ch-stat-card">
+                                <div class="ch-stat-icon" style="background:#ede9fe; color:#7c3aed;">
+                                    <i class="fas fa-sitemap"></i>
+                                </div>
+                                <div class="ch-stat-label">Level 4–5 (₹2–₹1/unit)</div>
+                                <div class="ch-stat-value" style="color:#7c3aed;">
+                                    ₹<%= history.filter(h=>h.level===4||h.level===5).reduce((s,h)=>s+h.commissionAmount,0).toLocaleString('en-IN') %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Commission Rate Reference -->
+                    <div class="ch-table-card mb-4">
+                        <div class="ch-table-header">
+                            <div class="ch-table-title"><i class="fas fa-info-circle text-primary me-2"></i>Commission Rate Structure</div>
+                        </div>
+                        <div class="px-4 py-3">
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background:#dbeafe;">
+                                    <span class="level-badge level-1">L1</span>
+                                    <span style="font-size:13px; font-weight:600; color:#1d4ed8;">₹10 per stock unit</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background:#d1fae5;">
+                                    <span class="level-badge level-2">L2</span>
+                                    <span style="font-size:13px; font-weight:600; color:#065f46;">₹5 per stock unit</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background:#fef3c7;">
+                                    <span class="level-badge level-3">L3</span>
+                                    <span style="font-size:13px; font-weight:600; color:#92400e;">₹3 per stock unit</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background:#ede9fe;">
+                                    <span class="level-badge level-4">L4</span>
+                                    <span style="font-size:13px; font-weight:600; color:#5b21b6;">₹2 per stock unit</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background:#ffe4e6;">
+                                    <span class="level-badge level-5">L5</span>
+                                    <span style="font-size:13px; font-weight:600; color:#9f1239;">₹1 per stock unit</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Table -->
+                    <div class="ch-table-card">
+                        <div class="ch-table-header">
+                            <div class="ch-table-title"><i class="fas fa-history me-2 text-primary"></i>Transaction History</div>
+                            <div class="position-relative">
+                                <i class="fas fa-search position-absolute" style="left:12px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:12px;"></i>
+                                <input type="text" id="chSearch" class="ch-search" placeholder="Search history...">
+                            </div>
+                        </div>
+
+                        <% if (history.length === 0) { %>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <h5 class="fw-bold" style="color:#0f172a;">No Commission Earned Yet</h5>
+                            <p class="text-muted" style="max-width:340px; margin:0 auto;">When your downline network members receive paid stock transactions, your commissions will appear here automatically.</p>
+                        </div>
+                        <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table ch-table mb-0" id="chTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>From Member</th>
+                                        <th>Position</th>
+                                        <th>Level</th>
+                                        <th>Stock Units</th>
+                                        <th>Rate/Unit</th>
+                                        <th>Commission</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="chTableBody">
+                                    <% history.forEach((entry, idx) => { %>
+                                    <tr class="ch-row">
+                                        <td class="text-muted" style="font-size:12px;"><%= idx + 1 %></td>
+                                        <td>
+                                            <div class="fw-semibold ch-member-name"><%= entry.fromUserName || 'N/A' %></div>
+                                            <div class="text-muted" style="font-size:11.5px;"><%= entry.fromUserDisplayId || '' %></div>
+                                        </td>
+                                        <td>
+                                            <span class="ch-member-position" style="font-size:12.5px;"><%= entry.fromUserPosition || '—' %></span>
+                                        </td>
+                                        <td>
+                                            <span class="level-badge level-<%= entry.level %>">
+                                                <i class="fas fa-circle" style="font-size:6px;"></i>
+                                                Level <%= entry.level %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="fw-semibold"><%= entry.stockCount %></span>
+                                            <span class="text-muted" style="font-size:11.5px;"> units</span>
+                                        </td>
+                                        <td>
+                                            <span class="fw-semibold text-primary">₹<%= entry.ratePerStock %></span>
+                                        </td>
+                                        <td>
+                                            <span class="commission-amount">+₹<%= entry.commissionAmount.toLocaleString('en-IN') %></span>
+                                        </td>
+                                        <td>
+                                            <span class="badge" style="background:#d1fae5; color:#059669; border-radius:20px; padding:4px 12px; font-weight:600; font-size:11.5px;">
+                                                <i class="fas fa-check-circle me-1"></i><%= entry.status || 'Credited' %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div style="font-size:12.5px; color:#475569;">
+                                                <%= new Date(entry.createdAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) %>
+                                            </div>
+                                            <div style="font-size:11px; color:#94a3b8;">
+                                                <%= new Date(entry.createdAt).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' }) %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <% } %>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Vendor Scripts -->
+        <script src="/vendor/global/global.min.js"></script>
+        <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+        <script src="/js/custom.js"></script>
+        <script src="/js/deznav-init.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+
+        <script>
+            // Live search
+            document.getElementById('chSearch')?.addEventListener('input', function () {
+                const q = this.value.toLowerCase();
+                document.querySelectorAll('#chTableBody .ch-row').forEach(row => {
+                    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+                });
+            });
+
+            // Nav toggle
+            $('.nav-control').on('click', function () {
+                $('#main-wrapper').toggleClass('menu-toggle');
+                $('.hamburger').toggleClass('is-active');
+            });
+
+            // Logout Logic
+            $(document).on('click', '.logout-btn', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "Do you want to Logout?",
+                    showDenyButton: true,
+                    confirmButtonText: "Yes",
+                    denyButtonText: `Cancel`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/auth/logout`,
+                            method: "POST",
+                            success: function (data) {
+                                if (data.logout) {
+                                    window.location.href = '/';
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "Something Went Wrong",
+                                        timer: 1500
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                console.error(err);
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

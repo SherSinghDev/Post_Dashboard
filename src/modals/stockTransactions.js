@@ -104,7 +104,21 @@ const stockTransactionSchema = new Schema({
     status: {
         type: String,
     },
-    
+    totalAmount: {
+        type: Number,
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['Paid', 'Unpaid'],
+        default: 'Unpaid'
+    },
+    paymentReceipt: {
+        type: String,
+    },
+    commissionDistributed: {
+        type: Boolean,
+        default: false,
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model("StockTransaction", stockTransactionSchema);

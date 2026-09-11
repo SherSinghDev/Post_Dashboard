@@ -134,7 +134,8 @@ router.get('/', async (req, res) => {
             patientsOrders, 
             deliveredOrders,
             pendingpatients,
-            networkCounts
+            networkCounts,
+            platformWalletAmount: user.platformWalletAmount || 0
         });
     }
     else {

@@ -640,8 +640,9 @@ var Salero = function () {
 
 	/* Handle Support ============ */
 	var handleSupport = function () {
-		var support = '<script id="DZScript" src="https://dzassets.s3.amazonaws.com/w3-global-2.0.js?token=W-ecfba3fd59c15e901d1f43977072de83"></script>';
-		jQuery('body').append(support);
+		// Removed floating Support and Buy Now buttons
+		jQuery('#DZScript').remove();
+		jQuery('.bt-buy-now, .bt-support, .dz-buy-now, .dz-support, a[href*="themeforest"], a[href*="dexignzone"]').remove();
 	}
 
 	/* Function ============ */

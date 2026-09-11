@@ -271,3 +271,17 @@ You don't need to expose port 27017 to the public internet. Connect securely usi
    - **SSH Username:** `root`
    - **SSH Password:** *(Your server root password)*
 6. Click **Save & Connect**.
+
+
+
+5-Level Commission Distribution, Platform Wallet & Commission History
+Implement a 5-level commission distribution system for stock order users where commissions are credited to a new "Platform Wallet" whenever a child user receives a stock transaction marked as "Paid" by the admin. Users can track all earned commissions in a dedicated Commission History page and view their live wallet balance on the dashboard.
+
+Commission Structure (Level-Wise)
+When a child user receives a stock transaction of N total stock:
+
+Level 1 Parent (Direct referrer): ₹10 per stock unit (N * 10)
+Level 2 Parent: ₹5 per stock unit (N * 5)
+Level 3 Parent: ₹3 per stock unit (N * 3)
+Level 4 Parent: ₹2 per stock unit (N * 2)
+Level 5 Parent: ₹1 per stock unit (N * 1)
