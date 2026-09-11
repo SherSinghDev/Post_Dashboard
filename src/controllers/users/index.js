@@ -326,10 +326,10 @@ router.post(
 
 
             // extract file paths safely
-            const profilePicture = req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : appUser.profilePicture;
-            const idDocument = req.files['idDocument'] ? `/uploads/documents/${req.files['idDocument'][0].filename}` : appUser.idDocument;
-            const otherDocument = req.files['otherDocument'] ? `/uploads/documents/${req.files['otherDocument'][0].filename}` : appUser.otherDocument;
-            const receiptUrl = req.files['receiptUrl'] ? `/uploads/documents/${req.files['receiptUrl'][0].filename}` : appUser.receiptUrl;
+            const profilePicture = req.body.remove_profilePicture ? null : (req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : appUser.profilePicture);
+            const idDocument = req.body.remove_idDocument ? null : (req.files['idDocument'] ? `/uploads/documents/${req.files['idDocument'][0].filename}` : appUser.idDocument);
+            const otherDocument = req.body.remove_otherDocument ? null : (req.files['otherDocument'] ? `/uploads/documents/${req.files['otherDocument'][0].filename}` : appUser.otherDocument);
+            const receiptUrl = req.body.remove_receiptUrl ? null : (req.files['receiptUrl'] ? `/uploads/documents/${req.files['receiptUrl'][0].filename}` : appUser.receiptUrl);
 
 
 

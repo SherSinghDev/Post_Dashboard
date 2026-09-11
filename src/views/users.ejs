@@ -671,6 +671,18 @@
 								$('#parentUser').html(options)
 								const form = document.getElementById('edit-form');
 
+								// RESET FORM STATE BEFORE FILLING
+								form.reset();
+								form.querySelectorAll('input[type="file"]').forEach(input => {
+									input.classList.remove('d-none'); // Ensure file inputs are visible by default
+									const previewContainer = document.getElementById(`${input.name}-preview-container`);
+									if (previewContainer) previewContainer.innerHTML = '';
+									
+									// Remove any lingering hidden inputs for deletion
+									const existingHidden = form.querySelector(`input[name="remove_${input.name}"]`);
+									if (existingHidden) existingHidden.remove();
+								});
+
 								// 🧩 Function to fill form and show previews
 								const fillForm = (dataObj, prefix = '') => {
 									Object.keys(dataObj).forEach(key => {
@@ -690,8 +702,8 @@
                                                         <option value="District Advisor">District Advisor</option>
                                                         <option value="Assistant District Advisor">Assistant District
                                                             Advisor</option>
-                                                        <option value="Block Advisor/City Advisor">Block Advisor/City
-                                                            Advisor</option>
+                                                        <option value="Block Advisor">Block Advisor</option>
+                                                        <option value="City Advisor">City Advisor</option>
                                                         <option value="Centre Advisor">Centre Advisor</option>
                                                         </option>`
 
@@ -702,8 +714,8 @@
                                                             <option value="District Head">District Head</option>
                                                             <option value="Assistant District Head">Assistant District
                                                                 Head</option>
-                                                            <option value="Block Head/City Head">Block Head/City Head
-                                                            </option>
+                                                            <option value="Block Head">Block Head</option>
+                                                            <option value="City Head">City Head</option>
                                                             <option value="Centre Head">Centre Head</option>`
 											// console.log(dataObj.type);
 
@@ -730,24 +742,33 @@
 											key.toLowerCase().includes('image') ||
 											key.toLowerCase().includes('url')
 										) {
-											const previewContainerId = `${fieldName}-preview-container`;
-											let container = document.getElementById(previewContainerId);
+											try {
+												const previewContainerId = `${fieldName}-preview-container`;
+												let container = document.getElementById(previewContainerId);
 
-											if (!container) {
-												container = document.createElement('div');
-												container.id = previewContainerId;
-												container.style.marginTop = '10px';
-												field.insertAdjacentElement('afterend', container);
-											}
+												if (!container) {
+													container = document.createElement('div');
+													container.id = previewContainerId;
+													container.style.marginTop = '10px';
+													field.insertAdjacentElement('afterend', container);
+												}
 
-											container.innerHTML = '';
+												container.innerHTML = '';
 
+											let thumb;
+											
 											if (value && typeof value === 'string' && (value.startsWith('http') || value.startsWith('/'))) {
 												const base = window.location.origin;
 												const url = value.startsWith('http') ? value : `${base}${value}`;
 
+												// 🧩 Create thumbnail wrapper
+												const thumbWrapper = document.createElement('div');
+												thumbWrapper.style.position = 'relative';
+												thumbWrapper.style.display = 'inline-block';
+												thumbWrapper.style.marginRight = '10px';
+
 												// 🧩 Create thumbnail image
-												const thumb = document.createElement('img');
+												thumb = document.createElement('img');
 												thumb.src = url;
 												thumb.style.width = '120px';
 												thumb.style.height = '120px';
@@ -760,11 +781,98 @@
 												thumb.addEventListener('mouseleave', () => thumb.style.transform = 'scale(1)');
 
 												// Click → open full preview
-												thumb.addEventListener('click', () => openFullPreview(url));
+												thumb.addEventListener('click', () => openFullPreview(thumb.src));
 
-												container.appendChild(thumb);
+												thumbWrapper.appendChild(thumb);
+
+												// Action Buttons Container
+												const actions = document.createElement('div');
+												actions.style.marginTop = '5px';
+												actions.style.display = 'flex';
+												actions.style.justifyContent = 'center';
+												actions.style.gap = '10px';
+
+												// Edit Button
+												const editBtn = document.createElement('button');
+												editBtn.type = 'button';
+												editBtn.className = 'btn btn-sm btn-primary';
+												editBtn.innerHTML = '<i class="fa-solid fa-pen"></i>';
+												editBtn.title = 'Change Image';
+												editBtn.addEventListener('click', (e) => {
+													e.preventDefault();
+													field.click();
+												});
+
+												// Delete Button
+												const deleteBtn = document.createElement('button');
+												deleteBtn.type = 'button';
+												deleteBtn.className = 'btn btn-sm btn-danger';
+												deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+												deleteBtn.title = 'Delete Image';
+												deleteBtn.addEventListener('click', (e) => {
+													e.preventDefault();
+													Swal.fire({
+														title: "Are you sure?",
+														text: "Do you want to remove this image?",
+														icon: "warning",
+														showCancelButton: true,
+														confirmButtonText: "Yes, remove it!",
+														cancelButtonText: "Cancel"
+													}).then((result) => {
+														if (result.isConfirmed) {
+															thumbWrapper.remove();
+															const hiddenInput = document.createElement('input');
+															hiddenInput.type = 'hidden';
+															hiddenInput.name = `remove_${fieldName}`;
+															hiddenInput.value = 'true';
+															form.appendChild(hiddenInput);
+															field.value = '';
+															field.classList.remove('d-none'); // Show the file input so they can upload a new one
+														}
+													});
+												});
+
+												actions.appendChild(editBtn);
+												actions.appendChild(deleteBtn);
+												thumbWrapper.appendChild(actions);
+
+												container.appendChild(thumbWrapper);
+												
+												field.classList.add('d-none'); // Hide the file input since we have a preview
+											} else {
+												// If there is no image, ensure the file input is visible
+												field.classList.remove('d-none');
 											}
 
+											// Update preview when a new file is selected
+											field.onchange = function(e) {
+												if (this.files && this.files[0]) {
+													const reader = new FileReader();
+													reader.onload = function(e) {
+														if (thumb && thumb.parentElement) {
+															thumb.src = e.target.result;
+														} else {
+															// If no previous image existed, just display it
+															container.innerHTML = '';
+															const newThumb = document.createElement('img');
+															newThumb.src = e.target.result;
+															newThumb.style.width = '120px';
+															newThumb.style.height = '120px';
+															newThumb.style.objectFit = 'cover';
+															newThumb.style.border = '1px solid #ddd';
+															newThumb.style.borderRadius = '6px';
+															container.appendChild(newThumb);
+														}
+														// Remove any hidden delete inputs for this field
+														const existingHidden = form.querySelector(`input[name="remove_${fieldName}"]`);
+														if (existingHidden) existingHidden.remove();
+													}
+													reader.readAsDataURL(this.files[0]);
+												}
+											};
+											} catch (e) {
+												alert('Error rendering image ' + fieldName + ': ' + e.message);
+											}
 											return;
 										}
 

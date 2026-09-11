@@ -253,7 +253,7 @@
                                     <% if(user.position=='District Head'){ %>
                                         <% text = 'Stock of Block Heads' %>
                                         <% child = blockHeadStock %>
-                                    <% } else if(user.position=='Block Head/City Head'){%>
+                                    <% } else if(user.position=='Block Head' || user.position=='City Head'){%>
                                         <% text = 'Stock of Centre Heads' %>
                                         <% child = centreHeadStock %>
                                     <% } else if(user.role=='Admin'){%>
