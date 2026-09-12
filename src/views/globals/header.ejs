@@ -402,13 +402,13 @@
                 .then(function(res) { return res.json(); })
                 .then(function(data) {
                     if (data && data.logout) {
-                        window.location.href = '/login';
+                        window.location.href = '/auth/login';
                     } else {
-                        window.location.href = '/login';
+                        window.location.href = '/auth/login';
                     }
                 })
                 .catch(function() {
-                    window.location.href = '/login';
+                    window.location.href = '/auth/login';
                 });
             }
 

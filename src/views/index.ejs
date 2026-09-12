@@ -569,7 +569,7 @@
 
                                                         <!-- Card: Unverified Patients -->
 
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>"
+                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
                                                             data-category="patients" data-title="unverified patients">
                                                             <div class="dash-card">
                                                                 <div
@@ -594,7 +594,7 @@
                                                         </div>
 
                                                         <!-- Card: Pending Patients -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>"
+                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
                                                             data-category="patients" data-title="pending patients">
                                                             <div class="dash-card">
                                                                 <div
@@ -619,7 +619,7 @@
                                                         </div>
 
                                                         <!-- Card: Verified Patients -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>"
+                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
                                                             data-category="patients" data-title="verified patients">
                                                             <div class="dash-card">
                                                                 <div
@@ -718,7 +718,7 @@
                                                         </div>
 
                                                         <!-- Card: Money Transactions -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- user.type!='stockorder' ?'d-none':'' %>"
+                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item d-none"
                                                             data-category="stock"
                                                             data-title="money transactions payments finance">
                                                             <div class="dash-card">
@@ -770,7 +770,7 @@
                                                         </div>
 
                                                         <!-- Card: My Stock -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>"
+                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role!='Admin') ?'d-none':'' %>"
                                                             data-category="stock"
                                                             data-title="my stock inventory available balance">
                                                             <div class="dash-card">

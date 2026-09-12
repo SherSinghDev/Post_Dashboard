@@ -110,9 +110,10 @@
                 <p class="sno">S. No. - <%= user.userId %></p></p>
 
                 <% let amount; %>
-                    <% if(user.membershipType=='One year Membership Fee (₹365)') amount = '(three hundred and sixty five Rupees)' %>
-                    <% if(user.membershipType=='Life time membership Fee (₹500)') amount = '(five hundred Rupees)' %>
-                    <% if(user.membershipType=='One year membership Fee And Life time membership Fee (₹865)') amount = '(eight hundred and sixty five Rupees)' %>
+                    <% if(user.membershipType=='₹1 Per Day  Donation - Annual Contribution ₹365') amount = '(three hundred and sixty five Rupees)' %>
+                    <% if(user.membershipType=='District Level Membership - ₹2365') amount = '(two thousand three hundred and sixty five Rupees)' %>
+                    <% if(user.membershipType=='Block Level Membership - ₹1365') amount = '(one thousand three hundred and sixty five Rupees)' %>
+                    <% if(user.membershipType=='Centre Level Membership - ₹865') amount = '(eight hundred and sixty five Rupees)' %>
 
                 <div class="detail">
                     <% let date = new Date() %>
@@ -123,9 +124,10 @@
 
                 <div class="amount">
                     <% let rupee; %>
-                    <% if(user.membershipType=='One year Membership Fee (₹365)') rupee = 365 %>
-                    <% if(user.membershipType=='Life time membership Fee (₹500)') rupee = 500 %>
-                    <% if(user.membershipType=='One year membership Fee And Life time membership Fee (₹865)') rupee = 865 %>
+                    <% if(user.membershipType=='₹1 Per Day  Donation - Annual Contribution ₹365') rupee = 365 %>
+                    <% if(user.membershipType=='District Level Membership - ₹2365') rupee = 2365 %>
+                    <% if(user.membershipType=='Block Level Membership - ₹1365') rupee = 1365 %>
+                    <% if(user.membershipType=='Centre Level Membership - ₹865') rupee = 865 %>
                     <p>Donation Amount : ₹<%-rupee%>/-</p>
                 </div>
 

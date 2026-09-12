@@ -17,25 +17,29 @@ router.get('/', async (req, res) => {
     if (req.session.userId) {
         let verified = (await Users.find({ role: "Coordinator" })).length
         let unverified = (await UserApplication.find({ approveStatus: "Pending" })).length
-        let patients = (await PatientForm.find({ "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } })).length
+        let patients = (await PatientForm.find({ "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] }, type: { $ne: "stockorder" } })).length
         let pendingpatients = (await PatientForm.find({
             "otherStatus.doctorStatus": { $in: [null, ""] },
             "otherStatus.supportStatus": { $nin: [null, ""] },
             "otherStatus.trackingIdStatus": { $in: [null, ""] },
-            "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+            "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+            type: { $ne: "stockorder" }
         })).length
         let varifiedPatients = (await PatientForm.find({
             "otherStatus.doctorStatus": { $nin: [null, ""] },
             "otherStatus.trackingIdStatus": { $in: [null, ""] },
-            "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+            "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+            type: { $ne: "stockorder" }
         })).length
         let patientsOrders = (await PatientForm.find({
             // "otherStatus.doctorStatus": { $nin: [null, ""] },
             "otherStatus.trackingIdStatus": { $nin: [null, ""] },
-            "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+            "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+            type: { $ne: "stockorder" }
         })).length
         let deliveredOrders = (await PatientForm.find({
-            "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] }
+            "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] },
+            type: { $ne: "stockorder" }
         })).length
 
         let user = await Users.findOne({ _id: req.session.userId })

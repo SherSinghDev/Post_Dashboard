@@ -407,8 +407,7 @@
                                     </li>
 
                                     <!-- Pending Patient -->
-                                    <li
-                                        class="<%- (user.type=='stockorder' && user.position!='Centre Head') ? 'd-none' : '' %>">
+                                    <li class="">
                                         <a href="/patientform/pendingpatients" aria-expanded="false">
                                             <span class="nav-icon-box">
                                                 <i class="fas fa-hourglass-half"></i>
@@ -453,7 +452,8 @@
 
                                                 <% if(user.role!='doc' && user.type!='singleorder' ) { %>
                                                     <!-- Money Transactions -->
-                                                    <li class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
+                                                    <li
+                                                        class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
                                                         <a href="/stock/moneytransactions" aria-expanded="false">
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-money-bill-transfer"></i>
@@ -473,7 +473,8 @@
                                                     </li>
 
                                                     <!-- My Stock -->
-                                                    <li class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
+                                                    <li
+                                                        class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
                                                         <a href="/stock/mystock" aria-expanded="false">
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-warehouse"></i>

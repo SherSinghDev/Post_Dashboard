@@ -524,38 +524,7 @@
                 $('.hamburger').toggleClass('is-active');
             });
 
-            // Logout Logic
-            $(document).on('click', '.logout-btn', function (e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: "Do you want to Logout?",
-                    showDenyButton: true,
-                    confirmButtonText: "Yes",
-                    denyButtonText: `Cancel`
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: `/auth/logout`,
-                            method: "POST",
-                            success: function (data) {
-                                if (data.logout) {
-                                    window.location.href = '/';
-                                } else {
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: "Oops...",
-                                        text: "Something Went Wrong",
-                                        timer: 1500
-                                    });
-                                }
-                            },
-                            error: function (err) {
-                                console.error(err);
-                            }
-                        });
-                    }
-                });
-            });
+
         </script>
     </body>
 </html>

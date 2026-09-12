@@ -121,9 +121,10 @@ const userApplySchema = new Schema({
   membershipType: {
     type: String,
     enum: [
-      "One year Membership Fee (₹365)",
-      "Life time membership Fee (₹500)",
-      "One year membership Fee And Life time membership Fee (₹865)"
+      "₹1 Per Day  Donation - Annual Contribution ₹365",
+      "District Level Membership - ₹2365",
+      "Block Level Membership - ₹1365",
+      "Centre Level Membership - ₹865"
     ],
     required: true,
   },

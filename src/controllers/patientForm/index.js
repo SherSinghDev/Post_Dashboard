@@ -203,7 +203,8 @@ router.get('/patients', async (req, res) => {
       } else {
         matchQuery = {
           "otherStatus.doctorStatus": { $in: [null, ""] },
-          "otherStatus.supportStatus": { $in: [null, "", undefined] }
+          "otherStatus.supportStatus": { $in: [null, "", undefined] },
+          type: { $ne: "stockorder" }
         };
       }
 
@@ -295,7 +296,8 @@ router.get('/varifiedpatients', async (req, res) => {
         matchQuery = {
           "otherStatus.doctorStatus": { $nin: [null, ""] },
           "otherStatus.trackingIdStatus": { $in: [null, ""] },
-          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+          type: { $ne: "stockorder" }
         };
       }
 
@@ -521,7 +523,8 @@ router.get('/pendingpatients', async (req, res) => {
               "otherStatus.doctorStatus": { $in: [null, ""] },
               "otherStatus.supportStatus": { $nin: [null, ""] },
               "otherStatus.trackingIdStatus": { $in: [null, ""] },
-              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+              type: { $ne: "stockorder" }
             }
           }
           ,
@@ -657,7 +660,8 @@ router.get('/orders', async (req, res) => {
             $match: {
               // "otherStatus.doctorStatus": { $nin: [null, ""] },
               "otherStatus.trackingIdStatus": { $nin: [null, ""] },
-              // "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+              // "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+              type: { $ne: "stockorder" }
             }
           }
           ,
@@ -790,7 +794,8 @@ router.get('/delivered', async (req, res) => {
         result = await PatientForm.aggregate([
           {
             $match: {
-              "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] }
+              "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] },
+              type: { $ne: "stockorder" }
             }
           }
           ,
