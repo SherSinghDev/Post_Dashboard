@@ -188,109 +188,74 @@ router.get('/patients', async (req, res) => {
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = false
-      if (user.role == "Coordinator") {
-        result = await PatientForm.aggregate([
-          {
-            $match: { referredBy: user.userId, "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] }, } // latest first
-          },
-          {
-            $sort: { createdAt: -1 } // latest first
-          },
-          {
-            $lookup: {
-              from: "users",                // users collection
-              localField: "referredBy",     // referral code in PatientForm
-              foreignField: "userId", // referral code in User
-              as: "referrer"
-            }
-          },
-          {
-            $unwind: {
-              path: "$referrer",
-              preserveNullAndEmptyArrays: true // keep even if no referrer
-            }
-          },
-          {
-            $project: {
-              patientName: 1,
-              fatherOrHusbandName: 1,
-              gender: 1,
-              houseOrStreet: 1,
-              locality: 1,
-              cityOrDistrict: 1,
-              state: 1,
-              landmark: 1,
-              pinCode: 1,
-              mobileNumber: 1,
-              emergencyContact: 1,
-              referredBy: 1,
-              diseaseName: 1,
-              medicalReport: 1,
-              otherStatus: 1,
-              registerNo: 1,
-              createdAt: 1,
-              duration: 1,
-              type: 1,
-              // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
-          }
-        ]);
+      let matchQuery = {};
+      if (user.type == "stockorder") {
+        matchQuery = {
+          referredBy: user.userId,
+          "otherStatus.trackingIdStatus": { $in: [null, ""] }
+        };
+      } else if (user.role == "Coordinator") {
+        matchQuery = {
+          referredBy: user.userId,
+          "otherStatus.doctorStatus": { $in: [null, ""] },
+          "otherStatus.supportStatus": { $in: [null, "", undefined] }
+        };
+      } else {
+        matchQuery = {
+          "otherStatus.doctorStatus": { $in: [null, ""] },
+          "otherStatus.supportStatus": { $in: [null, "", undefined] }
+        };
       }
-      else {
 
-        result = await PatientForm.aggregate([
-          {
-            $match: { "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } } // latest first
-          },
-          {
-            $sort: { createdAt: -1 } // latest first
-          },
-          {
-            $lookup: {
-              from: "users",                // users collection
-              localField: "referredBy",     // referral code in PatientForm
-              foreignField: "userId", // referral code in User
-              as: "referrer"
-            }
-          },
-          {
-            $unwind: {
-              path: "$referrer",
-              preserveNullAndEmptyArrays: true // keep even if no referrer
-            }
-          },
-          {
-            $project: {
-              patientName: 1,
-              fatherOrHusbandName: 1,
-              gender: 1,
-              houseOrStreet: 1,
-              locality: 1,
-              cityOrDistrict: 1,
-              state: 1,
-              landmark: 1,
-              pinCode: 1,
-              mobileNumber: 1,
-              emergencyContact: 1,
-              referredBy: 1,
-              diseaseName: 1,
-              medicalReport: 1,
-              otherStatus: 1,
-              registerNo: 1,
-              createdAt: 1,
-              duration: 1,
-              type: 1,
-              // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+      result = await PatientForm.aggregate([
+        {
+          $match: matchQuery
+        },
+        {
+          $sort: { createdAt: -1 } // latest first
+        },
+        {
+          $lookup: {
+            from: "users",                // users collection
+            localField: "referredBy",     // referral code in PatientForm
+            foreignField: "userId", // referral code in User
+            as: "referrer"
           }
-        ]);
-      }
+        },
+        {
+          $unwind: {
+            path: "$referrer",
+            preserveNullAndEmptyArrays: true // keep even if no referrer
+          }
+        },
+        {
+          $project: {
+            patientName: 1,
+            fatherOrHusbandName: 1,
+            gender: 1,
+            houseOrStreet: 1,
+            locality: 1,
+            cityOrDistrict: 1,
+            state: 1,
+            landmark: 1,
+            pinCode: 1,
+            mobileNumber: 1,
+            emergencyContact: 1,
+            referredBy: 1,
+            diseaseName: 1,
+            medicalReport: 1,
+            otherStatus: 1,
+            registerNo: 1,
+            createdAt: 1,
+            duration: 1,
+            type: 1,
+            // only select _id and name from the referred user
+            "referrer._id": 1,
+            "referrer.name": 1,
+            "referrer.userId": 1
+          }
+        }
+      ]);
       console.log(result[0]);
       res.render('forms', { applications: result, page: "Patient Form Data", user, createOrder });
     } catch (error) {
@@ -313,120 +278,76 @@ router.get('/varifiedpatients', async (req, res) => {
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = true
-      if (user.role == "Coordinator") {
-        result = await PatientForm.aggregate([
-          {
-            $match: {
-              referredBy: user.userId,
-              "otherStatus.doctorStatus": { $nin: [null, ""] },
-              "otherStatus.trackingIdStatus": { $in: [null, ""] },
-              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
-            }
-          }
-          ,
-          {
-            $sort: { createdAt: -1 } // latest first
-          },
-          {
-            $lookup: {
-              from: "users",                // users collection
-              localField: "referredBy",     // referral code in PatientForm
-              foreignField: "userId", // referral code in User
-              as: "referrer"
-            }
-          },
-          {
-            $unwind: {
-              path: "$referrer",
-              preserveNullAndEmptyArrays: true // keep even if no referrer
-            }
-          },
-          {
-            $project: {
-              patientName: 1,
-              fatherOrHusbandName: 1,
-              gender: 1,
-              houseOrStreet: 1,
-              locality: 1,
-              cityOrDistrict: 1,
-              state: 1,
-              landmark: 1,
-              pinCode: 1,
-              mobileNumber: 1,
-              emergencyContact: 1,
-              referredBy: 1,
-              diseaseName: 1,
-              medicalReport: 1,
-              otherStatus: 1,
-              registerNo: 1,
-              createdAt: 1,
-              duration: 1,
-              type: 1,
-              // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
-          }
-        ]);
+      let matchQuery = {};
+      if (user.type == "stockorder") {
+        matchQuery = {
+          referredBy: user.userId,
+          "otherStatus.trackingIdStatus": { $nin: [null, ""] }
+        };
+      } else if (user.role == "Coordinator") {
+        matchQuery = {
+          referredBy: user.userId,
+          "otherStatus.doctorStatus": { $nin: [null, ""] },
+          "otherStatus.trackingIdStatus": { $in: [null, ""] },
+          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+        };
+      } else {
+        matchQuery = {
+          "otherStatus.doctorStatus": { $nin: [null, ""] },
+          "otherStatus.trackingIdStatus": { $in: [null, ""] },
+          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+        };
       }
-      else {
 
-        result = await PatientForm.aggregate([
-          {
-            $match: {
-              "otherStatus.doctorStatus": { $nin: [null, ""] },
-              "otherStatus.trackingIdStatus": { $in: [null, ""] },
-              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
-            }
+      result = await PatientForm.aggregate([
+        {
+          $match: matchQuery
+        },
+        {
+          $sort: { createdAt: -1 } // latest first
+        },
+        {
+          $lookup: {
+            from: "users",                // users collection
+            localField: "referredBy",     // referral code in PatientForm
+            foreignField: "userId", // referral code in User
+            as: "referrer"
           }
-          ,
-          {
-            $sort: { createdAt: -1 } // latest first
-          },
-          {
-            $lookup: {
-              from: "users",                // users collection
-              localField: "referredBy",     // referral code in PatientForm
-              foreignField: "userId", // referral code in User
-              as: "referrer"
-            }
-          },
-          {
-            $unwind: {
-              path: "$referrer",
-              preserveNullAndEmptyArrays: true // keep even if no referrer
-            }
-          },
-          {
-            $project: {
-              patientName: 1,
-              fatherOrHusbandName: 1,
-              gender: 1,
-              houseOrStreet: 1,
-              locality: 1,
-              cityOrDistrict: 1,
-              state: 1,
-              landmark: 1,
-              pinCode: 1,
-              mobileNumber: 1,
-              emergencyContact: 1,
-              referredBy: 1,
-              diseaseName: 1,
-              medicalReport: 1,
-              otherStatus: 1,
-              registerNo: 1,
-              createdAt: 1,
-              duration: 1,
-              type: 1,
-              // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+        },
+        {
+          $unwind: {
+            path: "$referrer",
+            preserveNullAndEmptyArrays: true // keep even if no referrer
           }
-        ]);
-      }
+        },
+        {
+          $project: {
+            patientName: 1,
+            fatherOrHusbandName: 1,
+            gender: 1,
+            houseOrStreet: 1,
+            locality: 1,
+            cityOrDistrict: 1,
+            state: 1,
+            landmark: 1,
+            pinCode: 1,
+            mobileNumber: 1,
+            emergencyContact: 1,
+            referredBy: 1,
+            diseaseName: 1,
+            medicalReport: 1,
+            otherStatus: 1,
+            registerNo: 1,
+            createdAt: 1,
+            duration: 1,
+            type: 1,
+            // only select _id and name from the referred user
+            "referrer._id": 1,
+            "referrer.name": 1,
+            "referrer.userId": 1
+          }
+        }
+      ]);
 
 
       // console.log(result);

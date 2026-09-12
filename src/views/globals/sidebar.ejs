@@ -387,8 +387,7 @@
                                 <% } %>
 
                                     <!-- Unverified Patient -->
-                                    <li
-                                        class="<%- (user.type=='stockorder' && user.position!='Centre Head') ? 'd-none' : '' %>">
+                                    <li class="">
                                         <a href="/patientform/patients" aria-expanded="false">
                                             <span class="nav-icon-box">
                                                 <i class="fas fa-hospital-user"></i>
@@ -398,8 +397,7 @@
                                     </li>
 
                                     <!-- Verified Patient -->
-                                    <li
-                                        class="<%- (user.type=='stockorder' && user.position!='Centre Head') ? 'd-none' : '' %>">
+                                    <li class="">
                                         <a href="/patientform/varifiedpatients" aria-expanded="false">
                                             <span class="nav-icon-box">
                                                 <i class="fas fa-user-check"></i>
