@@ -2,248 +2,282 @@
 <html lang="en">
 <%- include('./globals/head') %>
 
-<body>
-    <%- include('./globals/preloader') %>
+    <body>
+        <%- include('./globals/preloader') %>
 
-    <div id="main-wrapper">
-        <%- include('globals/navHeader') %>
-        <%- include('globals/header') %>
-
-        <!--**********************************
-            Sidebar start
-        ***********************************-->
-        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" ){%>
-            <%- include('./globals/sidebar') %>
-                <%} else{ %>
-            <%- include('./globals/doctor_sidebar') %>
-        <%}%>
+            <div id="main-wrapper">
+                <%- include('globals/navHeader') %>
+                    <%- include('globals/header') %>
 
                         <!--**********************************
+            Sidebar start
+        ***********************************-->
+                        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" ){%>
+                            <%- include('./globals/sidebar') %>
+                                <%} else{ %>
+                                    <%- include('./globals/doctor_sidebar') %>
+                                        <%}%>
+
+                                            <!--**********************************
             Sidebar end
         ***********************************-->
 
-                        <!--**********************************
+                                            <!--**********************************
           Content body start
     ***********************************-->
-                        <div class="content-body">
-                            <div class="container">
-                                <div class="d-flex justify-content-between mb-4 flex-wrap">
-                                    <div class="input-group w-auto mb-2 mb-xxl-0">
-                                        <input type="text" placeholder="Search by Reg No., name, city, or mobile"
-                                            class="form-control search-input" style="width: 300px;">
-                                        <% if(user.assignedForm) { %>
-                                        <div class="ms-3 d-flex gap-2 align-items-center" id="doctorStatusFilterButtons">
-                                            <button type="button" class="btn btn-primary btn-sm doc-filter-btn" onclick="filterDoctorStatus('all', this)">All</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm doc-filter-btn" onclick="filterDoctorStatus('filled', this)">Filled</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm doc-filter-btn" onclick="filterDoctorStatus('unfilled', this)">Unfilled</button>
-                                        </div>
-                                        <% } %>
-                                    </div>
-                                    <% if(!user.assignedForm) { %>
-                                    <div class="text-end">
-                                        <a href="/patientform/<%= user.userId %>" target="_blank"
-                                            class="btn btn-primary me-1 add-btn">+ New
-                                            Patient</a>
-                                    </div>
-                                    <% } %>
+                                            <div class="content-body">
+                                                <div class="container">
+                                                    <div class="d-flex justify-content-between mb-4 flex-wrap">
+                                                        <div class="input-group w-auto mb-2 mb-xxl-0">
+                                                            <input type="text"
+                                                                placeholder="Search by Reg No., name, city, or mobile"
+                                                                class="form-control search-input" style="width: 300px;">
+                                                            <% if(user.assignedForm) { %>
+                                                                <div class="ms-3 d-flex gap-2 align-items-center"
+                                                                    id="doctorStatusFilterButtons">
+                                                                    <button type="button"
+                                                                        class="btn btn-primary btn-sm doc-filter-btn"
+                                                                        onclick="filterDoctorStatus('all', this)">All</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                        onclick="filterDoctorStatus('filled', this)">Filled</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                        onclick="filterDoctorStatus('unfilled', this)">Unfilled</button>
+                                                                </div>
+                                                                <% } %>
+                                                        </div>
+                                                        <% if(!user.assignedForm) { %>
+                                                            <div class="text-end">
+                                                                <a href="/patientform/<%= user.userId %>"
+                                                                    target="_blank"
+                                                                    class="btn btn-primary me-1 add-btn">+ New
+                                                                    Patient</a>
+                                                            </div>
+                                                            <% } %>
 
 
-                                </div>
+                                                    </div>
 
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="card mt-2">
-                                            <div class="card-body">
-                                                <div class="table-responsive text-center">
-                                                    <table class="table table-striped align-middle main-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Reg No.</th>
-                                                                <th>Name</th>
-                                                                <th>Gender</th>
-                                                                <th>City</th>
-                                                                <th>State</th>
-                                                                <th>Mobile</th>
-                                                                <th>Duration</th>
-                                                                <th>Type</th>
-                                                                <th>Patient Of</th>
-                                                                <th>Desease Name</th>
-                                                                <th>Report</th>
-                                                                <th>Patient Status</th>
-                                                                <th>Doctor Status</th>
-                                                                <th>Support Status</th>
-                                                                <th>Office Status</th>
-                                                                <th>Admin Status</th>
-                                                                <th>Post Office Status</th>
-                                                                <th>delivery Status</th>
-                                                                <th>Tracking Id</th>
-                                                                <th>Track</th>
-                                                                <th>Applied On</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% if (applications.length> 0) { %>
-                                                                <% applications.forEach((app, index)=> { %>
-                                                                    <tr id="tr-<%= app._id %>" class="patient-row" data-doctor-status="<%= (app.otherStatus && app.otherStatus.doctorStatus) ? 'filled' : 'unfilled' %>">
-                                                                        <td>
-                                                                            <%= app.registerNo %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.patientName %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.gender %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.cityOrDistrict %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.state %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="tel:+91 <%= app.mobileNumber %>">
-                                                                                <%= app.mobileNumber %>
-                                                                            </a>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.duration || 'not selected' %>
-                                                                        </td>
+                                                    <div class="row">
+                                                        <div class="col-xl-12">
+                                                            <div class="card mt-2">
+                                                                <div class="card-body">
+                                                                    <div class="table-responsive text-center">
+                                                                        <table
+                                                                            class="table table-striped align-middle main-table">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Reg No.</th>
+                                                                                    <th>Name</th>
+                                                                                    <th>Gender</th>
+                                                                                    <th>City</th>
+                                                                                    <th>State</th>
+                                                                                    <th>Mobile</th>
+                                                                                    <th>Duration</th>
+                                                                                    <th>Type</th>
+                                                                                    <th>Patient Of</th>
+                                                                                    <th>Desease Name</th>
+                                                                                    <th>Report</th>
+                                                                                    <th>Patient Status</th>
+                                                                                    <th>Doctor Status</th>
+                                                                                    <th>Support Status</th>
+                                                                                    <th>Office Status</th>
+                                                                                    <th>Admin Status</th>
+                                                                                    <th>Post Office Status</th>
+                                                                                    <th>delivery Status</th>
+                                                                                    <th>Tracking Id</th>
+                                                                                    <th>Track</th>
+                                                                                    <th>Applied On</th>
+                                                                                    <th>Actions</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <% if (applications.length> 0) { %>
+                                                                                    <% applications.forEach((app,
+                                                                                        index)=> { %>
+                                                                                        <tr id="tr-<%= app._id %>"
+                                                                                            class="patient-row"
+                                                                                            data-doctor-status="<%= (app.otherStatus && app.otherStatus.doctorStatus) ? 'filled' : 'unfilled' %>">
+                                                                                            <td>
+                                                                                                <%= app.registerNo %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.patientName %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.gender %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.cityOrDistrict
+                                                                                                    %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.state %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <a
+                                                                                                    href="tel:+91 <%= app.mobileNumber %>">
+                                                                                                    <%= app.mobileNumber
+                                                                                                        %>
+                                                                                                </a>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.duration
+                                                                                                    || 'not selected' %>
+                                                                                            </td>
 
-                                                                        <td>
-                                                                            <%= app.type || 'NA' %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.referrer? app.referrer?.name + ' ( '
-                                                                                + 'id : ' + + app.referrer.userId + ' )'
-                                                                                : 'NA' %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.diseaseName %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="javascript:void(0)"
-                                                                                data-id="<%= app._id %>"
-                                                                                class="view-btn">View Report</a>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.patientStatus || 'N/A'
-                                                                                %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.doctorStatus || 'N/A'
-                                                                                %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.supportStatus || 'N/A'
-                                                                                %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.officeStatus || 'N/A'
-                                                                                %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.adminStatus || 'N/A' %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.postOfficeStatus
-                                                                                || 'N/A' %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.deliveryStatus || 'N/A'
-                                                                                %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.otherStatus?.trackingIdStatus
-                                                                                || 'N/A' %>
-                                                                        </td>
-                                                                        <td><a href="javascript:void(0)"
-                                                                                data-id="<%= app.otherStatus?.trackingIdStatus%>"
-                                                                                class="btn-link me-1 track-btn">Track</a>
-                                                                        </td>
+                                                                                            <td>
+                                                                                                <%= app.type || 'NA' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.referrer?
+                                                                                                    app.referrer?.name
+                                                                                                    + ' ( ' + 'id : ' +
+                                                                                                    +
+                                                                                                    app.referrer.userId
+                                                                                                    + ' )' : 'NA' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.diseaseName %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <a href="javascript:void(0)"
+                                                                                                    data-id="<%= app._id %>"
+                                                                                                    class="view-btn">View
+                                                                                                    Report</a>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.patientStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.doctorStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.supportStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.officeStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.adminStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.postOfficeStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.deliveryStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= app.otherStatus?.trackingIdStatus
+                                                                                                    || 'N/A' %>
+                                                                                            </td>
+                                                                                            <td><a href="javascript:void(0)"
+                                                                                                    data-id="<%= app.otherStatus?.trackingIdStatus%>"
+                                                                                                    class="btn-link me-1 track-btn">Track</a>
+                                                                                            </td>
 
-                                                                        <td>
-                                                                            <%= new
-                                                                                Date(app.createdAt).toLocaleDateString()
-                                                                                %>
-                                                                        </td>
+                                                                                            <td>
+                                                                                                <%= new
+                                                                                                    Date(app.createdAt).toLocaleDateString()
+                                                                                                    %>
+                                                                                            </td>
 
-                                                                        <td>
-                                                                            <a href="https://wa.me/+91<%= app.mobileNumber %>"
-                                                                                class=" btn btn-sm btn-success">
-                                                                                <i class="fa-brands fa-whatsapp"
-                                                                                    style="color:white;font-size: 16px;"></i>
-                                                                                <!-- <i class="fa-solid fa-whatsapp"
+                                                                                            <td>
+                                                                                                <a href="https://wa.me/+91<%= app.mobileNumber %>"
+                                                                                                    class=" btn btn-sm btn-success">
+                                                                                                    <i class="fa-brands fa-whatsapp"
+                                                                                                        style="color:white;font-size: 16px;"></i>
+                                                                                                    <!-- <i class="fa-solid fa-whatsapp"
                                                                                     style="color:white;"></i> -->
-                                                                            </a>
-                                                                            <a href="tel:+91 <%= app.mobileNumber %>"
-                                                                                class=" btn btn-sm btn-info">
-                                                                                <i class="fa-solid fa-phone"
-                                                                                    style="color:white;"></i>
-                                                                            </a>
+                                                                                                </a>
+                                                                                                <a href="tel:+91 <%= app.mobileNumber %>"
+                                                                                                    class=" btn btn-sm btn-info">
+                                                                                                    <i class="fa-solid fa-phone"
+                                                                                                        style="color:white;"></i>
+                                                                                                </a>
 
-                                                                            <a href="javascript:void(0)"
-                                                                                data-id="<%= app._id %>"
-                                                                                class="btn btn-sm btn-success approve-btn"><i
-                                                                                    class="fa-solid fa-pen"></i></a>
+                                                                                                <a href="javascript:void(0)"
+                                                                                                    data-id="<%= app._id %>"
+                                                                                                    class="btn btn-sm btn-success approve-btn"><i
+                                                                                                        class="fa-solid fa-pen"></i></a>
 
-                                                                            <% if(!user.assignedForm) { %>
-                                                                            <a href="javascript:void(0)"
-                                                                                data-id="<%= app._id %>"
-                                                                                class="btn btn-sm btn-danger delete-btn">
-                                                                                <i class="fa-solid fa-trash"></i>
-                                                                            </a>
-                                                                            <% } %>
-                                                                            <% if (typeof notInterested !== 'undefined' && notInterested) { %>
-                                                                                <a href="javascript:void(0)"
-                                                                                    data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-warning restore-btn" title="Restore back to unverified">
-                                                                                    <i class="fa-solid fa-rotate-left" style="color:white;"></i>
-                                                                                </a>
-                                                                            <% } %>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <% }) %>
-                                                                        <% } else { %>
-                                                                            <tr>
-                                                                                <td colspan="10"
-                                                                                    class="text-center text-muted">
-                                                                                    No Data found</td>
-                                                                            </tr>
-                                                                            <% } %>
-                                                        </tbody>
-                                                    </table>
+                                                                                                <% if(!user.assignedForm)
+                                                                                                    { %>
+                                                                                                    <a href="javascript:void(0)"
+                                                                                                        data-id="<%= app._id %>"
+                                                                                                        class="btn btn-sm btn-danger delete-btn">
+                                                                                                        <i
+                                                                                                            class="fa-solid fa-trash"></i>
+                                                                                                    </a>
+                                                                                                    <% } %>
+                                                                                                        <% if (typeof
+                                                                                                            notInterested
+                                                                                                            !=='undefined'
+                                                                                                            &&
+                                                                                                            notInterested)
+                                                                                                            { %>
+                                                                                                            <a href="javascript:void(0)"
+                                                                                                                data-id="<%= app._id %>"
+                                                                                                                class="btn btn-sm btn-warning restore-btn"
+                                                                                                                title="Restore back to unverified">
+                                                                                                                <i class="fa-solid fa-rotate-left"
+                                                                                                                    style="color:white;"></i>
+                                                                                                            </a>
+                                                                                                            <% } %>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <% }) %>
+                                                                                            <% } else { %>
+                                                                                                <tr>
+                                                                                                    <td colspan="10"
+                                                                                                        class="text-center text-muted">
+                                                                                                        No Data found
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <% } %>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--**********************************
+                                            <!--**********************************
           Content body end
     ***********************************-->
 
-                        <!-- View Modal -->
-                        <div class="modal fade view-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Medical Report</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="view-details" class="p-2">
+                                            <!-- View Modal -->
+                                            <div class="modal fade view-modal bd-example-modal-xl" tabindex="-1"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Medical Report</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div id="view-details" class="p-2">
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
-                        <!-- Approve Modal -->
-                        <!-- <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                                            <!-- Approve Modal -->
+                                            <!-- <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -262,1048 +296,1206 @@
                         </div> -->
 
 
-                        <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Edit Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="approve-details">
-                                            <div class="basic-form">
-                                                <form action="/submit-patient-form" method="POST" id="approve-form"
-                                                    enctype="multipart/form-data">
-
-                                                    <!-- Basic Info -->
-                                                    <div class="form-section-title">Personal Information</div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">मरीज का नाम / Patient's Name
-                                                                *</label>
-                                                            <input type="text" name="patientName" class="form-control"
-                                                                required />
+                                            <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Details</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"></button>
                                                         </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">पिता/पति का नाम / Father's or
-                                                                Husband's Name *</label>
-                                                            <input type="text" name="fatherOrHusbandName"
-                                                                class="form-control" required />
-                                                        </div>
-                                                    </div>
+                                                        <div class="modal-body">
+                                                            <div id="approve-details">
+                                                                <div class="basic-form">
+                                                                    <form action="/submit-patient-form" method="POST"
+                                                                        id="approve-form" enctype="multipart/form-data">
 
-                                                    <div class="mb-3">
-                                                        <label class="form-label">लिंग / Gender *</label>
-                                                        <div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="gender" value="Male" required />
-                                                                <label class="form-check-label">Male</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="gender" value="Female" />
-                                                                <label class="form-check-label">Female</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="gender" value="Other" />
-                                                                <label class="form-check-label">Other</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                                        <!-- Basic Info -->
+                                                                        <div class="form-section-title">Personal
+                                                                            Information</div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">मरीज का नाम /
+                                                                                    Patient's Name
+                                                                                    *</label>
+                                                                                <input type="text" name="patientName"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">पिता/पति का
+                                                                                    नाम / Father's or
+                                                                                    Husband's Name *</label>
+                                                                                <input type="text"
+                                                                                    name="fatherOrHusbandName"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
 
-                                                    <!-- Address Section -->
-                                                    <div class="form-section-title mt-4">Address Details</div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">मकान / सड़क / House / Flat /
-                                                                Street *</label>
-                                                            <input type="text" name="houseOrStreet" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">इलाका / गाँव / मोहल्ला / Locality
-                                                                *</label>
-                                                            <input type="text" name="locality" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">लिंग / Gender
+                                                                                *</label>
+                                                                            <div>
+                                                                                <div
+                                                                                    class="form-check form-check-inline">
+                                                                                    <input class="form-check-input"
+                                                                                        type="radio" name="gender"
+                                                                                        value="Male" required />
+                                                                                    <label
+                                                                                        class="form-check-label">Male</label>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="form-check form-check-inline">
+                                                                                    <input class="form-check-input"
+                                                                                        type="radio" name="gender"
+                                                                                        value="Female" />
+                                                                                    <label
+                                                                                        class="form-check-label">Female</label>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="form-check form-check-inline">
+                                                                                    <input class="form-check-input"
+                                                                                        type="radio" name="gender"
+                                                                                        value="Other" />
+                                                                                    <label
+                                                                                        class="form-check-label">Other</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
 
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">शहर / तहसील / जिला / City /
-                                                                District *</label>
-                                                            <input type="text" name="cityOrDistrict"
-                                                                class="form-control" required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">राज्य / State *</label>
-                                                            <input type="text" name="state" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+                                                                        <!-- Address Section -->
+                                                                        <div class="form-section-title mt-4">Address
+                                                                            Details</div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">मकान / सड़क /
+                                                                                    House / Flat /
+                                                                                    Street *</label>
+                                                                                <input type="text" name="houseOrStreet"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">इलाका / गाँव /
+                                                                                    मोहल्ला / Locality
+                                                                                    *</label>
+                                                                                <input type="text" name="locality"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
 
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">LANDMARK / नज़दीकी प्रसिद्ध स्थान
-                                                                *</label>
-                                                            <input type="text" name="landmark" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">पिन कोड / Pin Code *</label>
-                                                            <input type="text" name="pinCode" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">शहर / तहसील /
+                                                                                    जिला / City /
+                                                                                    District *</label>
+                                                                                <input type="text" name="cityOrDistrict"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">राज्य / State
+                                                                                    *</label>
+                                                                                <input type="text" name="state"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
 
-                                                    <!-- Contact Section -->
-                                                    <div class="form-section-title mt-4">Contact Details</div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">मोबाइल नंबर / Mobile Number
-                                                                *</label>
-                                                            <input type="text" name="mobileNumber" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Emergency Contact Number</label>
-                                                            <input type="text" name="emergencyContact"
-                                                                class="form-control" />
-                                                        </div>
-                                                    </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">LANDMARK /
+                                                                                    नज़दीकी प्रसिद्ध स्थान
+                                                                                    *</label>
+                                                                                <input type="text" name="landmark"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">पिन कोड / Pin
+                                                                                    Code *</label>
+                                                                                <input type="text" name="pinCode"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Contact Section -->
+                                                                        <div class="form-section-title mt-4">Contact
+                                                                            Details</div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">मोबाइल नंबर /
+                                                                                    Mobile Number
+                                                                                    *</label>
+                                                                                <input type="text" name="mobileNumber"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Emergency
+                                                                                    Contact Number</label>
+                                                                                <input type="text"
+                                                                                    name="emergencyContact"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                        </div>
 
 
 
 
 
-                                                    <!-- Medical Info -->
-                                                    <div class="form-section-title mt-4">Medical Details</div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">बीमारी का लक्षण / Name of Disease
-                                                            *</label>
-                                                        <input type="text" name="diseaseName" class="form-control"
-                                                            required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">औषधि अवधि / Treatment Duration
-                                                            *</label>
-                                                        <select name="duration" style="padding-block: 11px;"
-                                                            class="form-select" required>
-                                                            <option value="">Select Treatment Duration</option>
-                                                            <option value="3 Months 299">3 Months 299</option>
-                                                            <option value="6 Months 499">6 Months 499</option>
-                                                            <option value="12 Months 799">12 Months 799</option>
-                                                            <option value="3 Months">3 Months</option>
-                                                            <option value="6 Months">6 Months</option>
-                                                            <option value="9 Months">9 Months</option>
-                                                            <option value="12 Months">12 Months</option>
-                                                        </select>
-                                                    </div>
-                                                    <!-- <div class="mb-3">
+                                                                        <!-- Medical Info -->
+                                                                        <div class="form-section-title mt-4">Medical
+                                                                            Details</div>
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">बीमारी का लक्षण /
+                                                                                Name of Disease
+                                                                                *</label>
+                                                                            <input type="text" name="diseaseName"
+                                                                                class="form-control" required />
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">औषधि अवधि /
+                                                                                Treatment Duration
+                                                                                *</label>
+                                                                            <select name="duration"
+                                                                                style="padding-block: 11px;"
+                                                                                class="form-select" required>
+                                                                                <option value="">Select Treatment
+                                                                                    Duration</option>
+                                                                                <option value="3 Months 299">3 Months
+                                                                                    299</option>
+                                                                                <option value="6 Months 499">6 Months
+                                                                                    499</option>
+                                                                                <option value="12 Months 799">12 Months
+                                                                                    799</option>
+                                                                                <option value="3 Months">3 Months
+                                                                                </option>
+                                                                                <option value="6 Months">6 Months
+                                                                                </option>
+                                                                                <option value="9 Months">9 Months
+                                                                                </option>
+                                                                                <option value="12 Months">12 Months
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <!-- <div class="mb-3">
                                                         <label class="form-label">Reports / यदि हो तो</label>
                                                         <input type="file" name="medicalReport" class="form-control" />
                                                     </div> -->
-                                                    <% if(user.role=="Admin" || user.type=='stockorder' ){%>
-                                                        <div class="row">
-                                                            <div class="mb-3 col-md-6">
-                                                                <label class="form-label">Patient Status</label>
-                                                                <input type="text" name="patientStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div class="mb-3 col-md-6">
-                                                                <label>Doctor Status </label>
-                                                                <input type="text" name="doctorStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div class="mb-3 col-md-6">
-                                                                <label>Support Status </label>
-                                                                <input type="text" name="supportStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div class="mb-3 col-md-6">
-                                                                <label>Office Status </label>
-                                                                <input type="text" name="officeStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div class="mb-3 col-md-6">
-                                                                <label>Admin Status </label>
-                                                                <input type="text" name="adminStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div
-                                                                class="mb-3 col-md-6 <%- user.type=='stockorder'?'d-none':'' %>">
-                                                                <label>Post Office Status </label>
-                                                                <input type="text" name="postOfficeStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div class="mb-3 col-md-6">
-                                                                <label>Tracking Id Status </label>
-                                                                <input type="text" name="trackingIdStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div class="mb-3 col-md-6">
-                                                                <label>Delivery Status </label>
-                                                                <input type="text" name="deliveryStatus"
-                                                                    class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <%}%>
+                                                                        <% if(user.role=="Admin" ||
+                                                                            user.type=='stockorder' || user.assignedForm
+                                                                            ){%>
+                                                                            <div class="row">
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label class="form-label">Patient
+                                                                                        Status</label>
+                                                                                    <input type="text"
+                                                                                        name="patientStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Doctor Status </label>
+                                                                                    <input type="text"
+                                                                                        name="doctorStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Support Status </label>
+                                                                                    <input type="text"
+                                                                                        name="supportStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Office Status </label>
+                                                                                    <input type="text"
+                                                                                        name="officeStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Admin Status </label>
+                                                                                    <input type="text"
+                                                                                        name="adminStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div
+                                                                                    class="mb-3 col-md-6 <%- user.type=='stockorder'?'d-none':'' %>">
+                                                                                    <label>Post Office Status </label>
+                                                                                    <input type="text"
+                                                                                        name="postOfficeStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Tracking Id Status </label>
+                                                                                    <input type="text"
+                                                                                        name="trackingIdStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Delivery Status </label>
+                                                                                    <input type="text"
+                                                                                        name="deliveryStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                            <%}%>
 
-                                                            <div class="text-center mt-4">
-                                                                <button type="submit"
-                                                                    class="btn btn-success px-5 py-2">Submit</button>
-                                                                <% if(createOrder && user?.type!='stockorder' ){ %>
-                                                                    <button type="button"
-                                                                        class="btn btn-info px-5 py-2 create-order">Create
-                                                                        Order With Proship</button>
-                                                                    <button type="button" data-type="smart-ship"
-                                                                        class="btn btn-primary px-5 py-2 create-order">Create
-                                                                        Order With Smart Ship</button>
-                                                                    <% } %>
-                                                            </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade create-order-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Edit Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="approve-details">
-                                            <div class="basic-form">
-                                                <form action="/submit-patient-form" method="POST" id="create-order-form"
-                                                    enctype="multipart/form-data">
-
-                                                    <!-- Basic Info -->
-                                                    <div class="form-section-title fw-bold">Patient Information
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Recipient Name *</label>
-                                                            <input type="text" name="patientName" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Recipient Mobile *</label>
-                                                            <input type="text" name="mobileNumber" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Complete Address *</label>
-                                                            <input type="text" name="houseOrStreet" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">City *</label>
-                                                            <input type="text" name="cityOrDistrict"
-                                                                class="form-control" required />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">State *</label>
-                                                            <input type="text" name="state" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Pin Code </label>
-                                                            <input type="text" name="pinCode" class="form-control" />
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-section-title fw-bold">Pickup Details</div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-12">
-                                                            <label class="form-label">Pickup Location *</label>
-                                                            <select name="pickupLocation" style="padding-block: 11px;"
-                                                                class="form-select" required>
-                                                                <option value="">Select Pickup Location</option>
-                                                                <option
-                                                                    value="BSRF NGO, SARSWATI VIHAR GANGA FORM HOUSE KE SAMNE BHATI LAB WALI NEW BUILDING MELROSE BYE PASS ALIGARH UTTAR PRADESH, Aligarh, Uttar Pradesh, India, 202001">
-                                                                    BSRF NGO, SARSWATI VIHAR GANGA FORM HOUSE KE SAMNE
-                                                                    BHATI LAB WALI NEW BUILDING MELROSE BYE PASS ALIGARH
-                                                                    UTTAR PRADESH, Aligarh, Uttar Pradesh, India, 202001
-                                                                </option>
-                                                                <option
-                                                                    value="BSRF INDIA, 228 Durga Nagar Ram Nagar Melrose bye pass Aligarh UPB B Grirls inter college, ALIGARH, Uttar Pradesh, India, 202001">
-                                                                    BSRF INDIA, 228 Durga Nagar Ram Nagar Melrose bye
-                                                                    pass Aligarh UPB B Grirls inter college, ALIGARH,
-                                                                    Uttar Pradesh, India, 202001</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section-title fw-bold">Order Details</div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Payment Mode *</label>
-                                                            <div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="paymentMode" value="Prepaid" required />
-                                                                    <label class="form-check-label">Prepaid</label>
+                                                                                <div class="text-center mt-4">
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-success px-5 py-2">Submit</button>
+                                                                                    <% if(createOrder &&
+                                                                                        user?.type!='stockorder' ){ %>
+                                                                                        <button type="button"
+                                                                                            class="btn btn-info px-5 py-2 create-order">Create
+                                                                                            Order With Proship</button>
+                                                                                        <button type="button"
+                                                                                            data-type="smart-ship"
+                                                                                            class="btn btn-primary px-5 py-2 create-order">Create
+                                                                                            Order With Smart
+                                                                                            Ship</button>
+                                                                                        <% } %>
+                                                                                </div>
+                                                                    </form>
                                                                 </div>
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="paymentMode" value="COD" />
-                                                                    <label class="form-check-label">COD</label>
-                                                                </div>
-
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Client Order Id </label>
-                                                            <input type="text" name="orderId"
-                                                                placeholder="Enter Client Order Id"
-                                                                class="form-control" />
-                                                        </div>
                                                     </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Shipping Label Id </label>
-                                                            <input type="text" name="labelId"
-                                                                placeholder="Enter Shipping Label Id"
-                                                                class="form-control" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Channel Name</label>
-                                                            <input type="text" name="channel"
-                                                                placeholder="Enter Channel Name" class="form-control" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Invoice Value *</label>
-                                                            <input type="text" name="invoiceValue"
-                                                                placeholder="Total Invoice Amount" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Sku Id *</label>
-                                                            <input type="text" name="skuId" placeholder="Enter Sku Id"
-                                                                class="form-control" required />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Name *</label>
-                                                            <input type="text" name="productName"
-                                                                placeholder="Product Name" class="form-control"
-                                                                required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Quantity *</label>
-                                                            <input type="text" name="productQuantity"
-                                                                placeholder="Product Quantity" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Unit Price *</label>
-                                                            <input type="text" name="unitPrice"
-                                                                placeholder="Enter Unit Price" class="form-control"
-                                                                required />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-section-title fw-bold">Package Details</div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Weight(gms) *</label>
-                                                            <input type="text" name="weight" placeholder="Weight(gms)"
-                                                                class="form-control" required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Length(cm) *</label>
-                                                            <input type="text" name="length" placeholder="Length(cm)"
-                                                                class="form-control" required />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Breadth(cm) *</label>
-                                                            <input type="text" name="breadth" placeholder="Breadth(cm)"
-                                                                class="form-control" required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Height(cm) *</label>
-                                                            <input type="text" name="height" placeholder="Height(cm)"
-                                                                class="form-control" required />
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="text-center mt-4">
-                                                        <button type="submit"
-                                                            class="btn btn-success px-5 py-2">Submit</button>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!--**********************************
+                                            <div class="modal fade create-order-modal bd-example-modal-xl" tabindex="-1"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Details</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div id="approve-details">
+                                                                <div class="basic-form">
+                                                                    <form action="/submit-patient-form" method="POST"
+                                                                        id="create-order-form"
+                                                                        enctype="multipart/form-data">
+
+                                                                        <!-- Basic Info -->
+                                                                        <div class="form-section-title fw-bold">Patient
+                                                                            Information
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Recipient Name
+                                                                                    *</label>
+                                                                                <input type="text" name="patientName"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Recipient
+                                                                                    Mobile *</label>
+                                                                                <input type="text" name="mobileNumber"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Complete
+                                                                                    Address *</label>
+                                                                                <input type="text" name="houseOrStreet"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">City *</label>
+                                                                                <input type="text" name="cityOrDistrict"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">State
+                                                                                    *</label>
+                                                                                <input type="text" name="state"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Pin Code
+                                                                                </label>
+                                                                                <input type="text" name="pinCode"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-section-title fw-bold">Pickup
+                                                                            Details</div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-12">
+                                                                                <label class="form-label">Pickup
+                                                                                    Location *</label>
+                                                                                <select name="pickupLocation"
+                                                                                    style="padding-block: 11px;"
+                                                                                    class="form-select" required>
+                                                                                    <option value="">Select Pickup
+                                                                                        Location</option>
+                                                                                    <option
+                                                                                        value="BSRF NGO, SARSWATI VIHAR GANGA FORM HOUSE KE SAMNE BHATI LAB WALI NEW BUILDING MELROSE BYE PASS ALIGARH UTTAR PRADESH, Aligarh, Uttar Pradesh, India, 202001">
+                                                                                        BSRF NGO, SARSWATI VIHAR GANGA
+                                                                                        FORM HOUSE KE SAMNE
+                                                                                        BHATI LAB WALI NEW BUILDING
+                                                                                        MELROSE BYE PASS ALIGARH
+                                                                                        UTTAR PRADESH, Aligarh, Uttar
+                                                                                        Pradesh, India, 202001
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="BSRF INDIA, 228 Durga Nagar Ram Nagar Melrose bye pass Aligarh UPB B Grirls inter college, ALIGARH, Uttar Pradesh, India, 202001">
+                                                                                        BSRF INDIA, 228 Durga Nagar Ram
+                                                                                        Nagar Melrose bye
+                                                                                        pass Aligarh UPB B Grirls inter
+                                                                                        college, ALIGARH,
+                                                                                        Uttar Pradesh, India, 202001
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-section-title fw-bold">Order
+                                                                            Details</div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Payment Mode
+                                                                                    *</label>
+                                                                                <div>
+                                                                                    <div
+                                                                                        class="form-check form-check-inline">
+                                                                                        <input class="form-check-input"
+                                                                                            type="radio"
+                                                                                            name="paymentMode"
+                                                                                            value="Prepaid" required />
+                                                                                        <label
+                                                                                            class="form-check-label">Prepaid</label>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="form-check form-check-inline">
+                                                                                        <input class="form-check-input"
+                                                                                            type="radio"
+                                                                                            name="paymentMode"
+                                                                                            value="COD" />
+                                                                                        <label
+                                                                                            class="form-check-label">COD</label>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Client Order
+                                                                                    Id </label>
+                                                                                <input type="text" name="orderId"
+                                                                                    placeholder="Enter Client Order Id"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Shipping Label
+                                                                                    Id </label>
+                                                                                <input type="text" name="labelId"
+                                                                                    placeholder="Enter Shipping Label Id"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Channel
+                                                                                    Name</label>
+                                                                                <input type="text" name="channel"
+                                                                                    placeholder="Enter Channel Name"
+                                                                                    class="form-control" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Invoice Value
+                                                                                    *</label>
+                                                                                <input type="text" name="invoiceValue"
+                                                                                    placeholder="Total Invoice Amount"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Sku Id
+                                                                                    *</label>
+                                                                                <input type="text" name="skuId"
+                                                                                    placeholder="Enter Sku Id"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Name *</label>
+                                                                                <input type="text" name="productName"
+                                                                                    placeholder="Product Name"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Quantity
+                                                                                    *</label>
+                                                                                <input type="text"
+                                                                                    name="productQuantity"
+                                                                                    placeholder="Product Quantity"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Unit Price
+                                                                                    *</label>
+                                                                                <input type="text" name="unitPrice"
+                                                                                    placeholder="Enter Unit Price"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-section-title fw-bold">Package
+                                                                            Details</div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Weight(gms)
+                                                                                    *</label>
+                                                                                <input type="text" name="weight"
+                                                                                    placeholder="Weight(gms)"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Length(cm)
+                                                                                    *</label>
+                                                                                <input type="text" name="length"
+                                                                                    placeholder="Length(cm)"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Breadth(cm)
+                                                                                    *</label>
+                                                                                <input type="text" name="breadth"
+                                                                                    placeholder="Breadth(cm)"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <label class="form-label">Height(cm)
+                                                                                    *</label>
+                                                                                <input type="text" name="height"
+                                                                                    placeholder="Height(cm)"
+                                                                                    class="form-control" required />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <% if(user.role=="Admin" ||
+                                                                            user.type=='stockorder' || user.assignedForm
+                                                                            ) {%>
+                                                                            <div class="row">
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label class="form-label">Patient
+                                                                                        Status</label>
+                                                                                    <input type="text"
+                                                                                        name="patientStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Doctor Status </label>
+                                                                                    <input type="text"
+                                                                                        name="doctorStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Support Status </label>
+                                                                                    <input type="text"
+                                                                                        name="supportStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Office Status </label>
+                                                                                    <input type="text"
+                                                                                        name="officeStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Admin Status </label>
+                                                                                    <input type="text"
+                                                                                        name="adminStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div
+                                                                                    class="mb-3 col-md-6 <%- user.type=='stockorder'?'d-none':'' %>">
+                                                                                    <label>Post Office Status </label>
+                                                                                    <input type="text"
+                                                                                        name="postOfficeStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Tracking Id Status </label>
+                                                                                    <input type="text"
+                                                                                        name="trackingIdStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-6">
+                                                                                    <label>Delivery Status </label>
+                                                                                    <input type="text"
+                                                                                        name="deliveryStatus"
+                                                                                        class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                            <%}%>
+
+                                                                                <div class="text-center mt-4">
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-success px-5 py-2">Submit</button>
+                                                                                </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--**********************************
           Footer start
     ***********************************-->
 
-                        <!--**********************************
+                                            <!--**********************************
           Footer end
     ***********************************-->
 
-    </div>
+            </div>
 
-    <!--**********************************
+            <!--**********************************
         Scripts
   ***********************************-->
-    <script src="/vendor/global/global.min.js"></script>
-    <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
-    <!-- Dashboard 1 -->
-    <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="/js/plugins-init/datatables.init.js"></script>
-    <script src="/js/custom.js"></script>
-    <script src="/js/deznav-init.js"></script>
-    <script src="/js/demo.js"></script>
-    <script src="/js/styleSwitcher.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
-    <script src="/js/pages/patients.js"></script>
+            <!-- Dashboard 1 -->
+            <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="/js/plugins-init/datatables.init.js"></script>
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+            <script src="/js/pages/patients.js"></script>
 
-    <script>
-        // 🔍 Search filter
-        $(document).on('keyup', '.search-input', function () {
-            const value = $(this).val().toLowerCase();
-            $('tbody tr').filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            });
-        });
+            <script>
+                // 🔍 Search filter
+                $(document).on('keyup', '.search-input', function () {
+                    const value = $(this).val().toLowerCase();
+                    $('tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                    });
+                });
 
-        // 👁 View application details
-        $(document).on('click', '.view-btn', function () {
-            const id = $(this).data('id');
-            fetch(`/patientform/report/${id}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        const report = data.report;
-                        console.log(report);
+                // 👁 View application details
+                $(document).on('click', '.view-btn', function () {
+                    const id = $(this).data('id');
+                    fetch(`/patientform/report/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const report = data.report;
+                                console.log(report);
 
-                        $('#view-details').html(`
+                                $('#view-details').html(`
                                   <div class="row">
                                  <div class="col-12 text-center">
                                                     <img src="${report}" class="mb-3 w-75" alt="">
                                                 </div>
                                     
                                 `);
-                        $('.view-modal').modal('show');
+                                $('.view-modal').modal('show');
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+
+
+
+                $(document).on('click', '.create-order', function () {
+                    $('.create-order-modal').modal('show');
+                    const id = $(this).data('id');
+                    const type = $(this).data('type');
+
+                    let url;
+                    if (type != 'smart-ship') {
+                        url = '/patientorder/create-order'
                     }
-                })
-                .catch(err => console.error(err));
-        });
-
-
-
-        $(document).on('click', '.create-order', function () {
-            $('.create-order-modal').modal('show');
-            const id = $(this).data('id');
-            const type = $(this).data('type');
-
-            let url;
-            if (type != 'smart-ship') {
-                url = '/patientorder/create-order'
-            }
-            else {
-                url = '/patientorder/create-order-with-smartship'
-            }
-
-
-            $('#create-order-form').attr('data-id', id)
-            $('#create-order-form').attr('data-url', url)
-            $('.approve-modal').modal('hide');
-            fetch(`/patientform/details/${id}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        let app = data.data;
-                        console.log(app);
-                        const form = document.getElementById('create-order-form');
-
-                        // 🧩 Function to fill form and show previews
-                        const fillForm = (dataObj, prefix = '') => {
-                            Object.keys(dataObj).forEach(key => {
-                                let fieldName = key;
-
-                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
-                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
-                                const field = form.querySelector(`[name="${fieldName}"]`);
-                                let value = dataObj[key];
-                                if (!field) return;
-                                field.value = value || '';
-                            });
-                        };
-
-                        // 🧩 Fill top-level and nested data
-                        fillForm(app);
+                    else {
+                        url = '/patientorder/create-order-with-smartship'
                     }
-                })
-                .catch(err => console.error(err));
-        })
 
 
+                    $('#create-order-form').attr('data-id', id)
+                    $('#create-order-form').attr('data-url', url)
+                    $('.approve-modal').modal('hide');
+                    fetch(`/patientform/details/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                let app = data.data;
+                                console.log(app);
+                                const form = document.getElementById('create-order-form');
 
-        $(document).on('click', '.approve-btn', function () {
-            $('.approve-modal').modal('show');
-            const id = $(this).data('id');
-            $('#approve-form').attr('data-id', id)
-            $('.create-order').attr('data-id', id)
-            $('#create-order-form').attr('data-id', id)
+                                // 🧩 Function to fill form and show previews
+                                const fillForm = (dataObj, prefix = '') => {
+                                    Object.keys(dataObj).forEach(key => {
+                                        let fieldName = key;
 
-            fetch(`/patientform/details/${id}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        let app = data.data;
-                        console.log(app);
-
-                        let statuss = app.otherStatus
-                        app = { ...app, ...statuss }
-                        const form = document.getElementById('approve-form');
-
-                        // 🧩 Function to fill form and show previews
-                        const fillForm = (dataObj, prefix = '') => {
-                            Object.keys(dataObj).forEach(key => {
-                                let fieldName = prefix
-                                    ? `${prefix}${key.charAt(0).toUpperCase() + key.slice(1)}`
-                                    : key;
-
-                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
-                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
-                                const field = form.querySelector(`[name="${fieldName}"]`);
-                                let value = dataObj[key];
-                                if (!field) return;
-                                if (key === 'referredBy') value = `${app.referralUser.name}(${app.referredBy})`
-
-                                // 🖼 Handle all file/document/image fields
-                                if (
-                                    field.type === 'file' ||
-                                    key.toLowerCase().includes('file') ||
-                                    key.toLowerCase().includes('document') ||
-                                    key.toLowerCase().includes('image') ||
-                                    key.toLowerCase().includes('url')
-                                ) {
-                                    const previewContainerId = `${fieldName}-preview-container`;
-                                    let container = document.getElementById(previewContainerId);
-
-                                    if (!container) {
-                                        container = document.createElement('div');
-                                        container.id = previewContainerId;
-                                        container.style.marginTop = '10px';
-                                        field.insertAdjacentElement('afterend', container);
-                                    }
-
-                                    container.innerHTML = '';
-
-                                    if (value && typeof value === 'string' && (value.startsWith('http') || value.startsWith('/'))) {
-                                        const base = window.location.origin;
-                                        const url = value.startsWith('http') ? value : `${base}${value}`;
-
-                                        // 🧩 Create thumbnail image
-                                        const thumb = document.createElement('img');
-                                        thumb.src = url;
-                                        thumb.style.width = '120px';
-                                        thumb.style.height = '120px';
-                                        thumb.style.objectFit = 'cover';
-                                        thumb.style.border = '1px solid #ddd';
-                                        thumb.style.borderRadius = '6px';
-                                        thumb.style.cursor = 'pointer';
-                                        thumb.style.transition = 'transform 0.2s ease';
-                                        thumb.addEventListener('mouseenter', () => thumb.style.transform = 'scale(1.05)');
-                                        thumb.addEventListener('mouseleave', () => thumb.style.transform = 'scale(1)');
-
-                                        // Click → open full preview
-                                        thumb.addEventListener('click', () => openFullPreview(url));
-
-                                        container.appendChild(thumb);
-                                    }
-
-                                    return;
-                                }
-
-                                // 🗓 Date fields
-                                if (field.type === 'date' && value) {
-                                    field.value = new Date(value).toISOString().split('T')[0];
-                                    return;
-                                }
-
-                                // 🔘 Others
-                                if (field.tagName === 'SELECT') {
-                                    field.value = value || '';
-                                } else if (field.type === 'radio' || field.type === 'checkbox') {
-                                    form.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
-                                        el.checked = el.value === value;
+                                        // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        const field = form.querySelector(`[name="${fieldName}"]`);
+                                        let value = dataObj[key];
+                                        if (!field) return;
+                                        field.value = value || '';
                                     });
-                                } else {
-                                    field.value = value || '';
-                                }
-                            });
-                        };
+                                };
 
-                        // 🧩 Fill top-level and nested data
-                        fillForm(app);
-                        if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
-                        if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
+                                // 🧩 Fill top-level and nested data
+                                fillForm(app);
+                            }
+                        })
+                        .catch(err => console.error(err));
+                })
 
-                        // $('.view-modal').modal('show');
+
+
+                $(document).on('click', '.approve-btn', function () {
+                    $('.approve-modal').modal('show');
+                    const id = $(this).data('id');
+                    $('#approve-form').attr('data-id', id)
+                    $('.create-order').attr('data-id', id)
+                    $('#create-order-form').attr('data-id', id)
+
+                    fetch(`/patientform/details/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                let app = data.data;
+                                console.log(app);
+
+                                let statuss = app.otherStatus
+                                app = { ...app, ...statuss }
+                                const form = document.getElementById('approve-form');
+
+                                // 🧩 Function to fill form and show previews
+                                const fillForm = (dataObj, prefix = '') => {
+                                    Object.keys(dataObj).forEach(key => {
+                                        let fieldName = prefix
+                                            ? `${prefix}${key.charAt(0).toUpperCase() + key.slice(1)}`
+                                            : key;
+
+                                        // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        const field = form.querySelector(`[name="${fieldName}"]`);
+                                        let value = dataObj[key];
+                                        if (!field) return;
+                                        if (key === 'referredBy') value = `${app.referralUser.name}(${app.referredBy})`
+
+                                        // 🖼 Handle all file/document/image fields
+                                        if (
+                                            field.type === 'file' ||
+                                            key.toLowerCase().includes('file') ||
+                                            key.toLowerCase().includes('document') ||
+                                            key.toLowerCase().includes('image') ||
+                                            key.toLowerCase().includes('url')
+                                        ) {
+                                            const previewContainerId = `${fieldName}-preview-container`;
+                                            let container = document.getElementById(previewContainerId);
+
+                                            if (!container) {
+                                                container = document.createElement('div');
+                                                container.id = previewContainerId;
+                                                container.style.marginTop = '10px';
+                                                field.insertAdjacentElement('afterend', container);
+                                            }
+
+                                            container.innerHTML = '';
+
+                                            if (value && typeof value === 'string' && (value.startsWith('http') || value.startsWith('/'))) {
+                                                const base = window.location.origin;
+                                                const url = value.startsWith('http') ? value : `${base}${value}`;
+
+                                                // 🧩 Create thumbnail image
+                                                const thumb = document.createElement('img');
+                                                thumb.src = url;
+                                                thumb.style.width = '120px';
+                                                thumb.style.height = '120px';
+                                                thumb.style.objectFit = 'cover';
+                                                thumb.style.border = '1px solid #ddd';
+                                                thumb.style.borderRadius = '6px';
+                                                thumb.style.cursor = 'pointer';
+                                                thumb.style.transition = 'transform 0.2s ease';
+                                                thumb.addEventListener('mouseenter', () => thumb.style.transform = 'scale(1.05)');
+                                                thumb.addEventListener('mouseleave', () => thumb.style.transform = 'scale(1)');
+
+                                                // Click → open full preview
+                                                thumb.addEventListener('click', () => openFullPreview(url));
+
+                                                container.appendChild(thumb);
+                                            }
+
+                                            return;
+                                        }
+
+                                        // 🗓 Date fields
+                                        if (field.type === 'date' && value) {
+                                            field.value = new Date(value).toISOString().split('T')[0];
+                                            return;
+                                        }
+
+                                        // 🔘 Others
+                                        if (field.tagName === 'SELECT') {
+                                            field.value = value || '';
+                                        } else if (field.type === 'radio' || field.type === 'checkbox') {
+                                            form.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
+                                                el.checked = el.value === value;
+                                            });
+                                        } else {
+                                            field.value = value || '';
+                                        }
+                                    });
+                                };
+
+                                // 🧩 Fill top-level and nested data
+                                fillForm(app);
+                                if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
+                                if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
+
+                                // $('.view-modal').modal('show');
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+
+
+                // 🧩 Function to open fullscreen preview popup
+                function openFullPreview(url) {
+                    let overlay = document.getElementById('fullscreen-preview');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.id = 'fullscreen-preview';
+                        overlay.style.position = 'fixed';
+                        overlay.style.top = 0;
+                        overlay.style.left = 0;
+                        overlay.style.width = '100vw';
+                        overlay.style.height = '100vh';
+                        overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+                        overlay.style.display = 'flex';
+                        overlay.style.alignItems = 'center';
+                        overlay.style.justifyContent = 'center';
+                        overlay.style.zIndex = 2000;
+
+                        // close button
+                        const closeBtn = document.createElement('span');
+                        closeBtn.innerHTML = '&times;';
+                        closeBtn.style.position = 'absolute';
+                        closeBtn.style.top = '20px';
+                        closeBtn.style.right = '30px';
+                        closeBtn.style.fontSize = '40px';
+                        closeBtn.style.color = '#fff';
+                        closeBtn.style.cursor = 'pointer';
+                        closeBtn.addEventListener('click', () => overlay.remove());
+                        overlay.appendChild(closeBtn);
+
+                        // content
+                        const content = document.createElement('div');
+                        content.id = 'preview-content';
+                        content.style.maxWidth = '90vw';
+                        content.style.maxHeight = '85vh';
+                        content.style.overflow = 'auto';
+                        overlay.appendChild(content);
+
+                        document.body.appendChild(overlay);
                     }
-                })
-                .catch(err => console.error(err));
-        });
 
+                    const content = document.getElementById('preview-content');
+                    content.innerHTML = '';
 
-        // 🧩 Function to open fullscreen preview popup
-        function openFullPreview(url) {
-            let overlay = document.getElementById('fullscreen-preview');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.id = 'fullscreen-preview';
-                overlay.style.position = 'fixed';
-                overlay.style.top = 0;
-                overlay.style.left = 0;
-                overlay.style.width = '100vw';
-                overlay.style.height = '100vh';
-                overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
-                overlay.style.display = 'flex';
-                overlay.style.alignItems = 'center';
-                overlay.style.justifyContent = 'center';
-                overlay.style.zIndex = 2000;
-
-                // close button
-                const closeBtn = document.createElement('span');
-                closeBtn.innerHTML = '&times;';
-                closeBtn.style.position = 'absolute';
-                closeBtn.style.top = '20px';
-                closeBtn.style.right = '30px';
-                closeBtn.style.fontSize = '40px';
-                closeBtn.style.color = '#fff';
-                closeBtn.style.cursor = 'pointer';
-                closeBtn.addEventListener('click', () => overlay.remove());
-                overlay.appendChild(closeBtn);
-
-                // content
-                const content = document.createElement('div');
-                content.id = 'preview-content';
-                content.style.maxWidth = '90vw';
-                content.style.maxHeight = '85vh';
-                content.style.overflow = 'auto';
-                overlay.appendChild(content);
-
-                document.body.appendChild(overlay);
-            }
-
-            const content = document.getElementById('preview-content');
-            content.innerHTML = '';
-
-            // 🖼 If image
-            if (url.match(/\.(jpeg|jpg|png|gif|webp)$/i)) {
-                const img = document.createElement('img');
-                img.src = url;
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '85vh';
-                img.style.borderRadius = '10px';
-                img.style.boxShadow = '0 0 15px rgba(255,255,255,0.2)';
-                content.appendChild(img);
-            }
-            // 📄 If PDF
-            else if (url.endsWith('.pdf')) {
-                const iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.style.width = '90vw';
-                iframe.style.height = '85vh';
-                iframe.style.border = 'none';
-                iframe.style.borderRadius = '10px';
-                content.appendChild(iframe);
-            }
-            // 🔗 Else just show link
-            else {
-                const link = document.createElement('a');
-                link.href = url;
-                link.textContent = 'View Document';
-                link.target = '_blank';
-                link.style.color = '#fff';
-                link.style.fontSize = '20px';
-                content.appendChild(link);
-            }
-        }
-
-
-        // 
-
-
-        // 🗑 Delete
-        $(document).on('click', '.delete-btn', function () {
-            const id = $(this).data('id');
-            Swal.fire({
-                title: "Are you sure?",
-                text: "This will Send the patient data in not interested Page.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, Send it!",
-            }).then(result => {
-                if (result.isConfirmed) {
-                    fetch(`/patientform/delete/${id}`, { method: "DELETE" })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                $(`#tr-${id}`).fadeOut(800);
-                                Swal.fire("Deleted!", "Patient Form sent to not interested successfully.", "success");
-                            }
-                        })
-                        .catch(err => console.error(err));
+                    // 🖼 If image
+                    if (url.match(/\.(jpeg|jpg|png|gif|webp)$/i)) {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.style.maxWidth = '100%';
+                        img.style.maxHeight = '85vh';
+                        img.style.borderRadius = '10px';
+                        img.style.boxShadow = '0 0 15px rgba(255,255,255,0.2)';
+                        content.appendChild(img);
+                    }
+                    // 📄 If PDF
+                    else if (url.endsWith('.pdf')) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = url;
+                        iframe.style.width = '90vw';
+                        iframe.style.height = '85vh';
+                        iframe.style.border = 'none';
+                        iframe.style.borderRadius = '10px';
+                        content.appendChild(iframe);
+                    }
+                    // 🔗 Else just show link
+                    else {
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.textContent = 'View Document';
+                        link.target = '_blank';
+                        link.style.color = '#fff';
+                        link.style.fontSize = '20px';
+                        content.appendChild(link);
+                    }
                 }
-            });
-        });
-
-        // ♻ Restore
-        $(document).on('click', '.restore-btn', function () {
-            const id = $(this).data('id');
-            Swal.fire({
-                title: "Are you sure?",
-                text: "This will restore the patient back to the unverified page.",
-                icon: "info",
-                showCancelButton: true,
-                confirmButtonText: "Yes, Restore it!",
-            }).then(result => {
-                if (result.isConfirmed) {
-                    fetch(`/patientform/restore/${id}`, { method: "PUT" })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                $(`#tr-${id}`).fadeOut(800);
-                                Swal.fire("Restored!", "Patient has been restored successfully.", "success");
-                            } else {
-                                Swal.fire("Error!", data.message || "Failed to restore.", "error");
-                            }
-                        })
-                        .catch(err => console.error(err));
-                }
-            });
-        });
-
-        // approve
-        $(document).on('submit', '#approve-form', function (e) {
-            e.preventDefault()
-            const id = $(this).data('id');
-            console.log(id);
-            let form = this
-            let {
-                patientStatus,
-                doctorStatus,
-                supportStatus,
-                officeStatus,
-                adminStatus,
-                postOfficeStatus,
-                trackingIdStatus,
-                deliveryStatus,
-                duration
-            } = form
-
-            let inputs = {
-                patientStatus,
-                doctorStatus,
-                supportStatus,
-                officeStatus,
-                adminStatus,
-                postOfficeStatus,
-                trackingIdStatus,
-                duration
-            }
 
 
-            let err = []
+                // 
 
-            // for (let key in inputs) {
-            //     if (!inputs[key].value) {
-            //         let text = inputs[key].previousElementSibling?.innerText
-            //         err.push(text)
-            //     }
-            // }
 
-            if (err.length > 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    html: err.join('<br>'),
+                // 🗑 Delete
+                $(document).on('click', '.delete-btn', function () {
+                    const id = $(this).data('id');
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This will Send the patient data in not interested Page.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, Send it!",
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            fetch(`/patientform/delete/${id}`, { method: "DELETE" })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        $(`#tr-${id}`).fadeOut(800);
+                                        Swal.fire("Deleted!", "Patient Form sent to not interested successfully.", "success");
+                                    }
+                                })
+                                .catch(err => console.error(err));
+                        }
+                    });
                 });
-            }
-            else {
-                let data = {}
-                for (let key in inputs) {
-                    data = { ...data, [key]: inputs[key].value }
-                }
-                console.log(data);
-                fetch(`/patientform/approve/${id}`, {
-                    method: "POST",
-                    // body: JSON.stringify(data),
-                    body: new FormData(e.target),
-                    // headers: {
-                    //     "Content-Type": "application/json"
-                    // },
-                })
-                    .then((data) => {
-                        return data.json()
-                    })
-                    .then((result) => {
-                        // console.log(result);
-                        if (result.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: "Patient Form is Approved!",
-                                timer: 2000
 
-                            });
-                            e.target.reset()
-                            $('.approve-modal').modal('hide');
-                            window.location.reload()
+                // ♻ Restore
+                $(document).on('click', '.restore-btn', function () {
+                    const id = $(this).data('id');
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This will restore the patient back to the unverified page.",
+                        icon: "info",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, Restore it!",
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            fetch(`/patientform/restore/${id}`, { method: "PUT" })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        $(`#tr-${id}`).fadeOut(800);
+                                        Swal.fire("Restored!", "Patient has been restored successfully.", "success");
+                                    } else {
+                                        Swal.fire("Error!", data.message || "Failed to restore.", "error");
+                                    }
+                                })
+                                .catch(err => console.error(err));
                         }
-                        else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Error in Server",
-                                timer: 1000
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            }
-        });
-
-
-        $(document).on('submit', '#create-order-form', function (e) {
-            e.preventDefault()
-            const id = $(this).data('id');
-            const url = $(this).data('url');
-            console.log(id);
-            let form = this
-            let {
-                patientName,
-                mobileNumber,
-                houseOrStreet,
-                cityOrDistrict,
-                state,
-                pinCode,
-                pickupLocation,
-                paymentMode,
-                skuId,
-                invoiceValue,
-                productName,
-                productQuantity,
-                unitPrice,
-                weight,
-                length,
-                breadth,
-                height,
-                channel
-            } = form
-
-            let inputs = {
-                patientName,
-                mobileNumber,
-                houseOrStreet,
-                cityOrDistrict,
-                state,
-                pinCode,
-                pickupLocation,
-                paymentMode,
-                skuId,
-                invoiceValue,
-                productName,
-                productQuantity,
-                unitPrice,
-                weight,
-                length,
-                breadth,
-                height,
-                channel
-            }
-
-
-            let err = []
-
-            for (let key in inputs) {
-                if (!inputs[key].value) {
-                    let text = inputs[key].previousElementSibling?.innerText
-                    err.push(text)
-                }
-            }
-
-            if (err.length > 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    html: err.join('<br>'),
+                    });
                 });
-            }
-            else {
-                let data = {}
-                for (let key in inputs) {
-                    data = { ...data, [key]: inputs[key].value }
-                }
 
-                data = { ...data, id }
-                // console.log(data);
-                fetch(`${url}`, {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    // body: new FormData(e.target),
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                // approve
+                $(document).on('submit', '#approve-form', function (e) {
+                    e.preventDefault()
+                    const id = $(this).data('id');
+                    console.log(id);
+                    let form = this
+                    let {
+                        patientStatus,
+                        doctorStatus,
+                        supportStatus,
+                        officeStatus,
+                        adminStatus,
+                        postOfficeStatus,
+                        trackingIdStatus,
+                        deliveryStatus,
+                        duration
+                    } = form
+
+                    let inputs = {
+                        patientStatus,
+                        doctorStatus,
+                        supportStatus,
+                        officeStatus,
+                        adminStatus,
+                        postOfficeStatus,
+                        trackingIdStatus,
+                        duration
+                    }
+
+
+                    let err = []
+
+                    // for (let key in inputs) {
+                    //     if (!inputs[key].value) {
+                    //         let text = inputs[key].previousElementSibling?.innerText
+                    //         err.push(text)
+                    //     }
+                    // }
+
+                    if (err.length > 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            html: err.join('<br>'),
+                        });
+                    }
+                    else {
+                        let data = {}
+                        for (let key in inputs) {
+                            data = { ...data, [key]: inputs[key].value }
+                        }
+                        console.log(data);
+                        fetch(`/patientform/approve/${id}`, {
+                            method: "POST",
+                            // body: JSON.stringify(data),
+                            body: new FormData(e.target),
+                            // headers: {
+                            //     "Content-Type": "application/json"
+                            // },
+                        })
+                            .then((data) => {
+                                return data.json()
+                            })
+                            .then((result) => {
+                                // console.log(result);
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: "Success!",
+                                        icon: "success",
+                                        text: "Patient Form is Approved!",
+                                        timer: 2000
+
+                                    });
+                                    e.target.reset()
+                                    $('.approve-modal').modal('hide');
+                                    window.location.reload()
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "Error in Server",
+                                        timer: 1000
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
+                    }
+                });
+
+
+                $(document).on('submit', '#create-order-form', function (e) {
+                    e.preventDefault()
+                    const id = $(this).data('id');
+                    const url = $(this).data('url');
+                    console.log(id);
+                    let form = this
+                    let {
+                        patientName,
+                        mobileNumber,
+                        houseOrStreet,
+                        cityOrDistrict,
+                        state,
+                        pinCode,
+                        pickupLocation,
+                        paymentMode,
+                        skuId,
+                        invoiceValue,
+                        productName,
+                        productQuantity,
+                        unitPrice,
+                        weight,
+                        length,
+                        breadth,
+                        height,
+                        channel
+                    } = form
+
+                    let inputs = {
+                        patientName,
+                        mobileNumber,
+                        houseOrStreet,
+                        cityOrDistrict,
+                        state,
+                        pinCode,
+                        pickupLocation,
+                        paymentMode,
+                        skuId,
+                        invoiceValue,
+                        productName,
+                        productQuantity,
+                        unitPrice,
+                        weight,
+                        length,
+                        breadth,
+                        height,
+                        channel
+                    }
+
+
+                    let err = []
+
+                    for (let key in inputs) {
+                        if (!inputs[key].value) {
+                            let text = inputs[key].previousElementSibling?.innerText
+                            err.push(text)
+                        }
+                    }
+
+                    if (err.length > 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            html: err.join('<br>'),
+                        });
+                    }
+                    else {
+                        let data = {}
+                        for (let key in inputs) {
+                            data = { ...data, [key]: inputs[key].value }
+                        }
+
+                        data = { ...data, id }
+                        // console.log(data);
+                        fetch(`${url}`, {
+                            method: "POST",
+                            body: JSON.stringify(data),
+                            // body: new FormData(e.target),
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                        })
+                            .then((data) => {
+                                return data.json()
+                            })
+                            .then((result) => {
+                                console.log(result);
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: "Success!",
+                                        icon: "success",
+                                        text: "New Order Created!",
+                                        timer: 2000
+
+                                    });
+                                    e.target.reset()
+                                    $('.create-order-modal').modal('hide');
+                                    window.location.reload()
+                                }
+                                else {
+
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: result.error,
+                                        // timer: 1000
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
+                    }
+                });
+
+
+
+
+
+
+
+
+                $(document).on('click', '.logout-btn', function (e) {
+                    Swal.fire({
+                        title: "Do you want to Logout?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: `/auth/logout`,
+                                method: "POST",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.logout) {
+                                        window.location.href = '/'
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
                 })
-                    .then((data) => {
-                        return data.json()
-                    })
-                    .then((result) => {
-                        console.log(result);
-                        if (result.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: "New Order Created!",
-                                timer: 2000
 
-                            });
-                            e.target.reset()
-                            $('.create-order-modal').modal('hide');
-                            window.location.reload()
-                        }
-                        else {
-
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: result.error,
-                                // timer: 1000
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            }
-        });
-
-
-
-
-
-
-
-
-        $(document).on('click', '.logout-btn', function (e) {
-            Swal.fire({
-                title: "Do you want to Logout?",
-                showDenyButton: true,
-                // showCancelButton: true,
-                confirmButtonText: "Yes",
-                denyButtonText: `Cancel`
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        url: `/auth/logout`,
-                        method: "POST",
-                        success: function (data) {
-                            console.log(data);
-                            if (data.logout) {
-                                window.location.href = '/'
-                            }
-                            else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: "Something Went Wrong",
-                                    timer: 1500
-                                });
-                            }
-                        },
-                        error: function (err) {
+                // track btn
+                $(document).on('click', ".track-btn", function () {
+                    let id = $(this).attr('data-id')
+                    console.log(id);
+                    navigator.clipboard.writeText(id)
+                        .then(() => {
+                            console.log("Copied to clipboard");
+                            window.open('https://www.indiapost.gov.in/home', "_blank")
+                        })
+                        .catch((err) => {
                             console.log(err);
+                        })
+                })
+
+                var handleNavigation = function () {
+                    $(".nav-control").on('click', function () {
+
+                        $('#main-wrapper').toggleClass("menu-toggle");
+
+                        $(".hamburger").toggleClass("is-active");
+                    });
+                }
+
+                handleNavigation()
+                function filterDoctorStatus(filterValue, btnElement) {
+                    // Update button styles
+                    var buttons = document.querySelectorAll(".doc-filter-btn");
+                    buttons.forEach(function (btn) {
+                        btn.classList.remove("btn-primary");
+                        btn.classList.add("btn-outline-primary");
+                    });
+                    btnElement.classList.remove("btn-outline-primary");
+                    btnElement.classList.add("btn-primary");
+
+                    // Filter rows
+                    var rows = document.querySelectorAll(".patient-row");
+                    rows.forEach(function (row) {
+                        var status = row.getAttribute("data-doctor-status");
+                        if (filterValue === "all" || status === filterValue) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
                         }
-                    })
+                    });
                 }
-            });
-        })
-
-        // track btn
-        $(document).on('click', ".track-btn", function () {
-            let id = $(this).attr('data-id')
-            console.log(id);
-            navigator.clipboard.writeText(id)
-                .then(() => {
-                    console.log("Copied to clipboard");
-                    window.open('https://www.indiapost.gov.in/home', "_blank")
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        })
-
-        var handleNavigation = function () {
-            $(".nav-control").on('click', function () {
-
-                $('#main-wrapper').toggleClass("menu-toggle");
-
-                $(".hamburger").toggleClass("is-active");
-            });
-        }
-
-        handleNavigation()
-        function filterDoctorStatus(filterValue, btnElement) {
-            // Update button styles
-            var buttons = document.querySelectorAll(".doc-filter-btn");
-            buttons.forEach(function(btn) {
-                btn.classList.remove("btn-primary");
-                btn.classList.add("btn-outline-primary");
-            });
-            btnElement.classList.remove("btn-outline-primary");
-            btnElement.classList.add("btn-primary");
-
-            // Filter rows
-            var rows = document.querySelectorAll(".patient-row");
-            rows.forEach(function(row) {
-                var status = row.getAttribute("data-doctor-status");
-                if (filterValue === "all" || status === filterValue) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        }
-    </script>
-</body>
+            </script>
+    </body>
 
 </html>
