@@ -18,7 +18,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* Using Plus Jakarta Sans font for premium design */
-        body {
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
             font-family: 'Plus Jakarta Sans', sans-serif;
             scroll-behavior: smooth;
         }
@@ -96,11 +101,11 @@
     </style>
 </head>
 
-<body class="bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+<body class="bg-gray-50 dark:bg-slate-900 transition-colors duration-300 overflow-x-hidden">
 
     <!-- Navbar Section -->
     <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 shadow-sm transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="w-full px-2 sm:px-4">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo/Brand -->
                 <a href="/home" class="flex items-center gap-2 md:gap-3 flex-shrink-0 group">
@@ -153,19 +158,19 @@
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col gap-6 relative">
+    <main class="w-full py-8 md:py-12 flex flex-col gap-6 relative">
         <!-- Background decorative blob -->
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-100/50 dark:bg-indigo-900/20 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
 
         <!-- Welcome / Call to Action -->
-        <section class="w-full flex flex-col items-center text-center max-w-3xl mx-auto mt-6">
+        <section class="w-full flex flex-col items-center text-center mt-6 px-4">
             <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
                 Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 dark:from-indigo-400 dark:to-blue-400">BSRF INDIA</span>
             </h1>
         </section>
 
         <!-- Promo Section -->
-        <section class="w-full max-w-5xl mx-auto">
+        <section class="w-full px-4">
             <div class="text-center mb-10">
                 <span class="inline-block py-1 px-3 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-bold tracking-wider uppercase text-xs mb-3">Stay Connected</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Community Groups</h2>
@@ -193,11 +198,22 @@
                         </div>
                     </div>
                 </a>
+
+                <a href="https://chat.whatsapp.com/HQtMXKyQIox3MdWa5hjbCt?s=sh&p=a&mlu=0&ilr=4" target="_blank" class="promo-card hover:border-green-300">
+                    <img src="/images/banking.jpeg" alt="Banking Promo" class="promo-image">
+                    <div class="promo-content">
+                        <i class="fa-brands fa-whatsapp promo-icon"></i>
+                        <div class="promo-text-wrapper">
+                            <span class="promo-title">Banking Services</span>
+                            <span class="promo-link"><span class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span> chat.whatsapp.com/HQtMXKyQIox...</span>
+                        </div>
+                    </div>
+                </a>
             </div>
         </section>
 
         <!-- Quick Portals Section -->
-        <section class="w-full max-w-5xl mx-auto pb-12 pt-10">
+        <section class="w-full pb-12 pt-10 px-4">
             <div class="text-center mb-10">
                 <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 font-bold tracking-wider uppercase text-xs mb-3">Quick Access</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Important Portals</h2>
@@ -228,7 +244,7 @@
         </section>
 
         <!-- Login Section -->
-        <section class="w-full max-w-5xl mx-auto pb-16 pt-8">
+        <section class="w-full pb-16 pt-8 px-4">
             <div class="text-center mb-10">
                 <span class="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-bold tracking-wider uppercase text-xs mb-3">Secure Access</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Login to Dashboard</h2>
