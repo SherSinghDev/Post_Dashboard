@@ -118,7 +118,21 @@ router.post('/login', async (req, res) => {
                 }
             }
             else {
-                message = "User Does'nt Exists"
+                // Check if they are a Doctor without the 'doctor' prefix
+                let prevDoctor = await Doctor.findOne({ email })
+                if (prevDoctor) {
+                    let pass = await bcrypt.compare(password, prevDoctor.password)
+                    if (pass) {
+                        login = true
+                        message = "Login Successfully"
+                        loginType = 'doctor'
+                        req.session.userId = prevDoctor._id
+                    } else {
+                        message = "Wrong Credentials"
+                    }
+                } else {
+                    message = "User Does'nt Exists"
+                }
             }
         }
 

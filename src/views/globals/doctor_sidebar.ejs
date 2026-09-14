@@ -1,0 +1,302 @@
+<style>
+    /* Premium Sidebar White Theme Styling */
+    .deznav {
+        background: #ffffff !important;
+        border-right: 1px solid #e2e8f0;
+        box-shadow: 2px 0 12px rgba(15, 23, 42, 0.03);
+    }
+
+    .deznav .deznav-scroll {
+        padding-top: 15px;
+        padding-bottom: 30px;
+    }
+
+    .deznav .metismenu {
+        padding: 0 12px;
+    }
+
+    .deznav .metismenu li.menu-title {
+        color: #94a3b8 !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        letter-spacing: 1px !important;
+        text-transform: uppercase;
+        padding: 14px 16px 8px !important;
+    }
+
+    .deznav .metismenu>li {
+        margin-bottom: 4px;
+    }
+
+    .deznav .metismenu>li>a {
+        display: flex;
+        align-items: center;
+        padding: 11px 16px;
+        border-radius: 10px;
+        color: #475569 !important;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s ease-in-out;
+        text-decoration: none;
+    }
+
+    .deznav .metismenu>li>a .nav-icon-box {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 15px;
+        background: #f8fafc;
+        color: #64748b;
+        transition: all 0.2s ease-in-out;
+        flex-shrink: 0;
+        border: 1px solid #f1f5f9;
+    }
+
+    .deznav .metismenu>li>a:hover {
+        background-color: #f1f5f9;
+        color: #0f172a !important;
+    }
+
+    .deznav .metismenu>li>a:hover .nav-icon-box {
+        background-color: #e0f2fe;
+        color: #0284c7;
+        border-color: #bae6fd;
+        transform: scale(1.05);
+    }
+
+    .deznav .metismenu>li.mm-active>a,
+    .deznav .metismenu>li>a.active {
+        background: #e0f2fe !important;
+        color: #0284c7 !important;
+        font-weight: 600 !important;
+    }
+
+    .deznav .metismenu>li.mm-active>a .nav-icon-box,
+    .deznav .metismenu>li>a.active .nav-icon-box {
+        background: #0284c7 !important;
+        color: #ffffff !important;
+        border-color: #0284c7;
+        box-shadow: 0 3px 8px rgba(2, 132, 199, 0.25);
+    }
+
+    .deznav-divider {
+        border-top: 1px solid #e2e8f0;
+        margin: 12px 10px;
+    }
+
+    .logout-nav-item a:hover .nav-icon-box {
+        background-color: #ffe4e6 !important;
+        color: #e11d48 !important;
+        border-color: #fecdd3 !important;
+    }
+
+    .logout-nav-item a:hover {
+        color: #e11d48 !important;
+        background-color: #fff1f2 !important;
+    }
+
+    /* =========================================
+       DARK MODE OVERRIDES (Inlined for reliability)
+       ========================================= */
+    [data-theme-version="dark"] .deznav {
+        background: #0f172a !important;
+        border-right-color: #1e293b !important;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    [data-theme-version="dark"] .deznav .deznav-scroll {
+        background: #0f172a !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu li.menu-title {
+        color: #64748b !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li>a {
+        color: #cbd5e1 !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li>a .nav-icon-box {
+        background: #1e293b !important;
+        color: #94a3b8 !important;
+        border-color: #334155 !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li>a .menu-icon svg path {
+        fill: #94a3b8 !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li>a:hover {
+        background-color: #1e293b !important;
+        color: #f8fafc !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li>a:hover .nav-icon-box {
+        background-color: #0369a1 !important;
+        color: #ffffff !important;
+        border-color: #0284c7 !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li>a:hover .menu-icon svg path {
+        fill: #38bdf8 !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li.mm-active>a,
+    [data-theme-version="dark"] .deznav .metismenu>li>a.active {
+        background: #0369a1 !important;
+        color: #ffffff !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li.mm-active>a .nav-icon-box,
+    [data-theme-version="dark"] .deznav .metismenu>li>a.active .nav-icon-box {
+        background: #38bdf8 !important;
+        color: #0f172a !important;
+        border-color: #38bdf8 !important;
+    }
+
+    [data-theme-version="dark"] .deznav .metismenu>li.mm-active>a .menu-icon svg path,
+    [data-theme-version="dark"] .deznav .metismenu>li>a.active .menu-icon svg path {
+        fill: #ffffff !important;
+    }
+
+    [data-theme-version="dark"] .deznav-divider {
+        border-top-color: #1e293b !important;
+    }
+
+    /* Collapsed Sidebar Alignment on Desktop (min-width: 769px) */
+    @media (min-width: 769px) {
+        .menu-toggle .deznav {
+            width: 5rem !important;
+        }
+
+        .menu-toggle .deznav .metismenu {
+            padding: 0 8px !important;
+        }
+
+        .menu-toggle .deznav .metismenu li.menu-title {
+            display: none !important;
+        }
+
+        .menu-toggle .deznav .metismenu>li>a {
+            padding: 10px 0 !important;
+            justify-content: center !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .menu-toggle .deznav .metismenu>li>a .nav-icon-box {
+            margin-right: 0 !important;
+            width: 38px !important;
+            height: 38px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .menu-toggle .deznav .metismenu>li>a .nav-text {
+            display: none !important;
+        }
+
+        .menu-toggle .deznav .deznav-divider {
+            margin: 10px 4px !important;
+        }
+    }
+
+    /* Small Screen / Mobile Devices: Full screen sidebar on toggle open */
+    @media (max-width: 768px) {
+        .deznav {
+            position: fixed !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100vw !important;
+            max-width: 100% !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            z-index: 1050 !important;
+            transition: left 0.3s ease-in-out !important;
+            overflow-y: auto !important;
+            padding-top: 60px !important;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .menu-toggle .deznav {
+            left: 0 !important;
+            width: 100vw !important;
+            max-width: 100% !important;
+            display: block !important;
+        }
+
+        .menu-toggle .deznav .metismenu {
+            padding: 0 16px !important;
+        }
+
+        .menu-toggle .deznav .metismenu li.menu-title {
+            display: block !important;
+        }
+
+        .menu-toggle .deznav .metismenu>li>a {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding: 12px 16px !important;
+        }
+
+        .menu-toggle .deznav .metismenu>li>a .nav-icon-box {
+            margin-right: 12px !important;
+            width: 36px !important;
+            height: 36px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .menu-toggle .deznav .metismenu>li>a .nav-text {
+            display: inline-block !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            color: inherit !important;
+        }
+    }
+</style>
+
+<div class="deznav">
+    <div class="deznav-scroll">
+        <ul class="metismenu" id="menu">
+            <li class="menu-title">YOUR COMPANY</li>
+            <!-- Dashboard -->
+            <li>
+                <a href="/doctors/dashboard" aria-expanded="false">
+                    <span class="nav-icon-box">
+                        <i class="fas fa-home"></i>
+                    </span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Single Order Patients -->
+            <li>
+                <a href="/doctors/patients/single" aria-expanded="false">
+                    <span class="nav-icon-box">
+                        <i class="fas fa-file-prescription"></i>
+                    </span>
+                    <span class="nav-text">Single Order Patients</span>
+                </a>
+            </li>
+
+            <!-- Stock Order Patients -->
+            <li>
+                <a href="/doctors/patients/stock" aria-expanded="false">
+                    <span class="nav-icon-box">
+                        <i class="fas fa-boxes"></i>
+                    </span>
+                    <span class="nav-text">Stock Order Patients</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>

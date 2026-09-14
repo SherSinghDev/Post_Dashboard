@@ -8,31 +8,18 @@
     <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
     <!-- Load Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for Hero Section background and overlay */
-        .hero-background {
-            /* Removed fixed background-image here; it is now set dynamically by JavaScript */
-            background-size: 100% 100%;
-            background-position: center;
-            position: relative;
-            transition: background-image 0.8s ease-in-out;
-            /* Smooth transition for background image change */
-        }
-
-        .hero-overlay {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.1);
-            /* Dark overlay for text readability */
-        }
-
-        /* Using Inter font, as requested for good design */
+        /* Using Plus Jakarta Sans font for premium design */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             scroll-behavior: smooth;
         }
 
@@ -40,137 +27,276 @@
         .transition-all {
             transition: all 0.3s ease;
         }
+    </style>
+    <!-- FontAwesome & SweetAlert -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
+    <style>
+        .quick-links { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; }
+        .quick-link-item { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; font-size: 15px; font-weight: 600; color: #334155; text-decoration: none; transition: all 0.2s; }
+        .quick-link-item i { color: #2563eb; font-size: 18px; }
+        .quick-link-item:hover { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; transform: translateY(-2px); }
+        
+        .promo-section { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+        .promo-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; text-decoration: none; color: #1e293b; transition: all 0.2s; display: flex; flex-direction: column; }
+        .promo-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -4px rgba(0,0,0,0.1); border-color: #cbd5e1; }
+        .promo-image { width: 100%; height: auto; display: block; }
+        .promo-content { padding: 16px 20px; display: flex; align-items: center; gap: 16px; background: #ffffff; border-top: 1px solid #e2e8f0; }
+        .promo-icon { color: #25D366; font-size: 32px; flex-shrink: 0; }
+        .promo-text-wrapper { display: flex; flex-direction: column; overflow: hidden; width: 100%; }
+        .promo-title { font-size: 18px; font-weight: 700; color: #1e293b; }
+        .promo-link { font-size: 14px; color: #2563eb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; }
 
-        /* Custom styles for smooth carousel transitions (text fades) */
-        .carousel-slide {
-            transition: opacity 0.7s ease-in-out;
+        @media (min-width: 480px) {
+            .quick-links { grid-template-columns: repeat(2, 1fr); }
+            .quick-link-item { padding: 16px 20px; font-size: 16px; }
         }
+        @media (min-width: 768px) {
+            .quick-links { grid-template-columns: repeat(3, 1fr); }
+            .promo-section { flex-direction: row; align-items: flex-start; }
+            .promo-card { flex: 1; }
+        }
+        @media (min-width: 1024px) {
+            .quick-links { grid-template-columns: repeat(5, 1fr); }
+        }
+
+        /* Login Form Styles */
+        .login-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 36px 32px; box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5); width: 100%; max-width: 460px; margin: 0 auto; }
+        @media (max-width: 480px) {
+            .login-card { padding: 26px 18px; border-radius: 16px; }
+        }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 7px; }
+        .input-group { position: relative; display: flex; align-items: center; }
+        .input-icon { position: absolute; left: 14px; color: #94a3b8; font-size: 15px; pointer-events: none; transition: color 0.2s ease; }
+        .form-control { width: 100%; padding: 12px 16px 12px 42px; border-radius: 12px; border: 1.5px solid #e2e8f0; background: #f8fafc; font-size: 14px; color: #1e293b; outline: none; transition: all 0.2s ease; }
+        .form-control:focus { background: #ffffff; border-color: #2563eb; box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.12); }
+        .form-control:focus + .input-icon, .input-group:focus-within .input-icon { color: #2563eb; }
+        .toggle-password { position: absolute; right: 14px; background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 15px; padding: 4px; transition: color 0.2s ease; }
+        .toggle-password:hover { color: #1e293b; }
+        .btn-submit { width: 100%; padding: 12.5px; margin-top: 8px; background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%); border: none; border-radius: 12px; color: white; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 16px -3px rgba(37, 99, 235, 0.35); transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 12px 20px -3px rgba(37, 99, 235, 0.45); }
+        .btn-submit:active { transform: translateY(0); }
+        .btn-submit:disabled { opacity: 0.75; cursor: not-allowed; transform: none; }
+        .spinner { display: none; width: 18px; height: 18px; border: 2.5px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Dark Mode Overrides */
+        .dark body { background-color: #0f172a; }
+        .dark .quick-link-item { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+        .dark .quick-link-item:hover { background: #334155; border-color: #475569; }
+        .dark .promo-card { background: #1e293b; border-color: #334155; }
+        .dark .promo-content { background: #0f172a; border-top-color: #334155; }
+        .dark .promo-title { color: #f8fafc; }
+        .dark .login-card { background: #1e293b; border-color: #334155; box-shadow: 0 20px 45px -10px rgba(0,0,0,0.8); }
+        .dark .form-label { color: #e2e8f0; }
+        .dark .form-control { background: #0f172a; border-color: #334155; color: #e2e8f0; }
+        .dark .form-control:focus { background: #1e293b; }
+        .dark .toggle-password:hover { color: #e2e8f0; }
     </style>
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
 
     <!-- Navbar Section -->
-    <nav class="sticky top-0 z-50 shadow-lg" style="background-color: rgb(241, 241, 241);">
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 shadow-sm transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-20">
                 <!-- Logo/Brand -->
-                <a href="/home" class="flex-shrink-0 text-xl font-extrabold text-indigo-700"
-                    style="display: flex; align-items: center;">
-                    <img src="https://bsrfindia.com/images/logo/logo.png" alt="" width="50">
-                    <span>BSRF <span class="text-gray-900 font-medium">INDIA</span></span>
+                <a href="/home" class="flex items-center gap-2 md:gap-3 flex-shrink-0 group">
+                    <img src="https://bsrfindia.com/images/logo/logo.png" alt="BSRF" class="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform">
+                    <span class="text-xl md:text-2xl font-extrabold text-indigo-700 tracking-tight">BSRF <span class="text-gray-900 dark:text-white font-medium hidden sm:inline">INDIA</span></span>
                 </a>
 
-                <!-- Desktop Menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="/applications"
-                            class="text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Member
-                            Form</a>
-                        <a href="/patientform/form1"
-                            class="text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Patient
-                            Form</a>
-                        <!-- <a href="#cta"
-                            class="text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Download
-                            Id</a>
-                        <a href="#cta"
-                            class="text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Jobs</a> -->
-                        <a href="/auth/login"
-                            class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-full text-sm font-semibold transition-all shadow-md">Login</a>
+                <div class="flex items-center gap-2 md:gap-4">
+                    <!-- Desktop Menu -->
+                    <div class="hidden lg:flex items-center space-x-1">
+                        <a href="/applications" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Member Form</a>
+                        <a href="/patientform/form1" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Patient Form</a>
+                        <a href="/applications/rojgaar" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Rojgaar</a>
+                        <a href="/teleconsult" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Teleconsult</a>
+                        <a href="/applications/type/stockorder" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Stock Order</a>
+                        <a href="/auth/login" class="ml-2 bg-indigo-600 text-white hover:bg-indigo-700 px-5 py-2 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Login</a>
                     </div>
-                </div>
 
-                <!-- Mobile Menu Button -->
-                <div class="-mr-2 flex md:hidden">
-                    <button id="mobile-menu-button" type="button"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                        aria-controls="mobile-menu" aria-expanded="false">
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors" aria-label="Toggle Dark Mode">
+                        <i class="fa-solid fa-moon text-lg hidden dark:block"></i>
+                        <i class="fa-solid fa-sun text-lg block dark:hidden"></i>
                     </button>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="flex lg:hidden items-center">
+                        <button id="mobile-menu-button" type="button" class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors" aria-controls="mobile-menu" aria-expanded="false">
+                            <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Menu (Hidden by default) -->
-        <div class="md:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="/applications"
-                    class="block text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium transition-all">Member
-                    Form</a>
-                <a href="/patientform/form1"
-                    class="block text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium transition-all">Patient
-                            Form</a>
-                <!-- <a href="#cta"
-                    class="block text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium transition-all">Contact
-                    Us</a> -->
-                <a href="/auth/login"
-                    class="block bg-red-500 text-white hover:bg-red-600 px-3 py-2 rounded-md text-base font-semibold transition-all text-center mt-2">Login</a>
+        <div class="lg:hidden hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 shadow-xl absolute w-full" id="mobile-menu">
+            <div class="px-4 pt-2 pb-4 space-y-2">
+                <a href="/applications" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Member Form</a>
+                <a href="/patientform/form1" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Patient Form</a>
+                <a href="/applications/rojgaar" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Rojgaar</a>
+                <a href="/teleconsult" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Teleconsult</a>
+                <a href="/applications/type/stockorder" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Stock Order</a>
+                <a href="/auth/login" class="block bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-3 rounded-xl text-base font-bold transition-all text-center mt-4 shadow-md">Login to Dashboard</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section (CAROUSEL IMPLEMENTATION) -->
-    <header id="home"
-        class="hero-background h-[50vh] md:h-screen flex items-center justify-center text-white relative overflow-hidden">
-        <div class="hero-overlay"></div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col gap-6 relative">
+        <!-- Background decorative blob -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-100/50 dark:bg-indigo-900/20 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
 
-        <!-- Carousel Container -->
-        <div id="hero-carousel" class="relative w-full h-full">
+        <!-- Welcome / Call to Action -->
+        <section class="w-full flex flex-col items-center text-center max-w-3xl mx-auto mt-6">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
+                Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 dark:from-indigo-400 dark:to-blue-400">BSRF INDIA</span>
+            </h1>
+        </section>
 
-            <!-- Slide 1: Serving Humanity (Default/Justice Focus) -->
-            <div class="carousel-slide absolute inset-0 flex items-center justify-center text-center transition-opacity duration-700"
-                data-slide="0">
-
+        <!-- Promo Section -->
+        <section class="w-full max-w-5xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="inline-block py-1 px-3 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-bold tracking-wider uppercase text-xs mb-3">Stay Connected</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Community Groups</h2>
             </div>
 
-            <!-- Slide 2: Health Focus -->
-            <div class="carousel-slide hidden absolute inset-0 flex items-center justify-center text-center transition-opacity duration-700"
-                data-slide="1">
+            <div class="promo-section">
+                <a href="https://chat.whatsapp.com/I469plVUcbhIDF9Z9Zt15T" target="_blank" class="promo-card hover:border-green-300">
+                    <img src="/images/bsrf.jpeg" alt="BSRF Promo" class="promo-image">
+                    <div class="promo-content">
+                        <i class="fa-brands fa-whatsapp promo-icon"></i>
+                        <div class="promo-text-wrapper">
+                            <span class="promo-title">BSRF Official Group</span>
+                            <span class="promo-link"><span class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span> chat.whatsapp.com/I469plVUcbhIDF9Z9Zt15T</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="https://chat.whatsapp.com/IQ5loazxNenCgxv740E0b2" target="_blank" class="promo-card hover:border-green-300">
+                    <img src="/images/dropshipping.jpeg" alt="Dropshipping Promo" class="promo-image">
+                    <div class="promo-content">
+                        <i class="fa-brands fa-whatsapp promo-icon"></i>
+                        <div class="promo-text-wrapper">
+                            <span class="promo-title">Dropshipping Services</span>
+                            <span class="promo-link"><span class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span> chat.whatsapp.com/IQ5loazxNenCgxv740E0b2</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
 
+        <!-- Quick Portals Section -->
+        <section class="w-full max-w-5xl mx-auto pb-12 pt-10">
+            <div class="text-center mb-10">
+                <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 font-bold tracking-wider uppercase text-xs mb-3">Quick Access</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Important Portals</h2>
+            </div>
+            
+            <div class="quick-links">
+                <a href="/applications/type/singleorder" class="quick-link-item hover:shadow-md">
+                    <i class="fa-solid fa-user-plus text-indigo-500"></i>
+                    <span>Member Form</span>
+                </a>
+                <a href="/patientform/admin" class="quick-link-item hover:shadow-md">
+                    <i class="fa-solid fa-file-medical text-indigo-500"></i>
+                    <span>Patient Form</span>
+                </a>
+                <a href="/applications/rojgaar" class="quick-link-item hover:shadow-md">
+                    <i class="fa-solid fa-briefcase text-indigo-500"></i>
+                    <span>Rojgaar</span>
+                </a>
+                <a href="/teleconsult" class="quick-link-item hover:shadow-md">
+                    <i class="fa-solid fa-user-doctor text-indigo-500"></i>
+                    <span>Teleconsult</span>
+                </a>
+                <a href="/applications/type/stockorder" class="quick-link-item hover:shadow-md">
+                    <i class="fa-solid fa-boxes-stacked text-indigo-500"></i>
+                    <span>Stock Order</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section class="w-full max-w-5xl mx-auto pb-16 pt-8">
+            <div class="text-center mb-10">
+                <span class="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-bold tracking-wider uppercase text-xs mb-3">Secure Access</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Login to Dashboard</h2>
             </div>
 
-            <!-- Slide 3: Education Focus -->
-            <div class="carousel-slide hidden absolute inset-0 flex items-center justify-center text-center transition-opacity duration-700"
-                data-slide="2">
+            <div class="login-card">
+                <div class="text-center mb-6">
+                    <img src="/images/logo/logo.png" alt="BSRF Logo" class="max-h-16 mx-auto mb-3 object-contain" onerror="this.src='https://bsrfindia.com/images/logo/logo.png'">
+                    <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 dark:text-white">Welcome Back</h3>
+                    <p class="text-xs md:text-sm text-gray-500 dark:text-slate-400 mt-1 font-medium">Log in to your BSRF Management account</p>
+                </div>
 
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <div class="input-group">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <div class="input-group">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                                <i class="fa-regular fa-eye" id="togglePasswordIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <span class="spinner" id="btnSpinner"></span>
+                        <span id="btnText">Sign In</span>
+                        <i class="fa-solid fa-arrow-right" id="btnArrow"></i>
+                    </button>
+                </form>
             </div>
+        </section>
 
-            <!-- Carousel Navigation (Arrows) -->
-            <button id="prev-slide"
-                class="absolute top-1/2 left-4 transform -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 rounded-full transition-all z-20">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-            </button>
-            <button id="next-slide"
-                class="absolute top-1/2 right-4 transform -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 rounded-full transition-all z-20">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </button>
+    </main>
 
-            <!-- Carousel Indicators (Dots) -->
-            <div id="carousel-dots" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
-                <!-- Dots will be generated here by JavaScript -->
-            </div>
-        </div>
-    </header>
-
-
-
-    <!-- JavaScript for Mobile Menu Toggle and Carousel Logic -->
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <!-- Theme & Menu Scripts -->
     <script>
+        // --- Theme Toggle Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        
+        // Check for saved theme preference or system preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            // Toggle the dark class on the html element
+            document.documentElement.classList.toggle('dark');
+            
+            // Save the preference
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                localStorage.setItem('color-theme', 'light');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             // --- Mobile Menu Toggle Logic ---
             const menuButton = document.getElementById('mobile-menu-button');
@@ -187,115 +313,110 @@
                 iconOpen.classList.toggle('hidden');
                 iconClosed.classList.toggle('hidden');
             });
-
-
-            // --- Carousel Logic ---
-            const slides = document.querySelectorAll('.carousel-slide');
-            const dotsContainer = document.getElementById('carousel-dots');
-            const prevButton = document.getElementById('prev-slide');
-            const nextButton = document.getElementById('next-slide');
-            const heroHeader = document.getElementById('home'); // The element whose background we will change
-
-            let currentSlideIndex = 0;
-            const slideIntervalTime = 5000; // 5 seconds
-            let slideInterval;
-
-            // Define background images corresponding to slides
-            const backgroundImages = [
-                'https://bsrfjjss.in/testinomial-img/1000171123_04252024040049.jpg', // Slide 0 (General/Justice)
-                'https://bsrfjjss.in/testinomial-img/ayurvedic-pcd-pharma-franchise_02152024064917.jpg', // Slide 1 (Health)
-                'https://bsrfjjss.in/testinomial-img/%E0%A4%A8%E0%A4%B6%E0%A4%BE%20%E0%A4%AE%E0%A5%81%E0%A4%95%E0%A5%8D%E0%A4%A4%20%E0%A4%AD%E0%A4%BE%E0%A4%B0%E0%A4%A4%20%E0%A4%85%E0%A4%AD%E0%A4%BF%E0%A4%AF%E0%A4%BE%E0%A4%A8_02182024071008.jpeg'    // Slide 2 (Education)
-            ];
-
-
-            if (slides.length > 0) {
-
-                // 1. Create Dots based on number of slides
-                slides.forEach((_, index) => {
-                    const dot = document.createElement('button');
-                    dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-white/50', 'hover:bg-white', 'transition-all');
-                    dot.setAttribute('data-index', index);
-                    dot.addEventListener('click', () => {
-                        resetInterval();
-                        showSlide(index);
-                    });
-                    dotsContainer.appendChild(dot);
-                });
-
-                const dots = dotsContainer.querySelectorAll('button');
-
-                // 2. Function to display the correct slide and update dots
-                const showSlide = (index) => {
-                    currentSlideIndex = index;
-
-                    // *** Dynamic Background Change ***
-                    heroHeader.style.backgroundImage = `url('${backgroundImages[currentSlideIndex]}')`;
-
-                    // Hide all slides, show the current one
-                    slides.forEach((slide, i) => {
-                        if (i === currentSlideIndex) {
-                            slide.classList.remove('hidden');
-                            slide.style.opacity = '1';
-                        } else {
-                            slide.classList.add('hidden');
-                            slide.style.opacity = '0';
-                        }
-                    });
-
-                    // Update dot colors
-                    dots.forEach((dot, i) => {
-                        if (i === currentSlideIndex) {
-                            dot.classList.remove('bg-white/50');
-                            dot.classList.add('bg-white', 'w-5'); // Highlight current dot
-                        } else {
-                            dot.classList.remove('bg-white', 'w-5');
-                            dot.classList.add('bg-white/50');
-                        }
-                    });
-                };
-
-                // 3. Navigation Functions
-                const nextSlide = () => {
-                    let newIndex = (currentSlideIndex + 1) % slides.length;
-                    showSlide(newIndex);
-                };
-
-                const prevSlide = () => {
-                    let newIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-                    showSlide(newIndex);
-                };
-
-                // 4. Interval Management
-                const startInterval = () => {
-                    slideInterval = setInterval(nextSlide, slideIntervalTime);
-                };
-
-                const resetInterval = () => {
-                    clearInterval(slideInterval);
-                    startInterval();
-                };
-
-                // Attach event listeners for arrows
-                nextButton.addEventListener('click', () => {
-                    nextSlide();
-                    resetInterval(); // Restart timer on manual interaction
-                });
-
-                prevButton.addEventListener('click', () => {
-                    prevSlide();
-                    resetInterval(); // Restart timer on manual interaction
-                });
-
-                // Initialize the carousel
-                showSlide(currentSlideIndex);
-                startInterval();
-
-            } else {
-                console.error("No slides found for the carousel.");
-            }
         });
     </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+    <script>
+        // Password Visibility Toggle
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const passwordInput = document.getElementById('password');
+        const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+        if (togglePasswordBtn) {
+            togglePasswordBtn.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                togglePasswordIcon.classList.toggle('fa-eye');
+                togglePasswordIcon.classList.toggle('fa-eye-slash');
+            });
+        }
+
+        // Form Submission
+        $(document).on('submit', '#login-form', function (e) {
+            e.preventDefault();
+            const form = this;
+            const email = form.email.value.trim();
+            const password = form.password.value;
+            const submitBtn = $('#submitBtn');
+            const btnSpinner = $('#btnSpinner');
+            const btnText = $('#btnText');
+            const btnArrow = $('#btnArrow');
+
+            if (!email || !password) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Missing Fields",
+                    text: "Please enter both your email and password.",
+                    confirmButtonColor: "#2563eb"
+                });
+                return;
+            }
+
+            // Set loading state
+            submitBtn.prop('disabled', true);
+            btnSpinner.show();
+            btnArrow.hide();
+            btnText.text('Signing In...');
+
+            $.ajax({
+                url: '/auth/login',
+                method: "POST",
+                data: JSON.stringify({ email, password }),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                success: function (data) {
+                    if (data.login) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Welcome!",
+                            text: data.message || "Logged in successfully",
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(() => {
+                            if (data.loginType === 'user') {
+                                window.location.href = '/';
+                            } else if (data.loginType === 'support agent') {
+                                window.location.href = '/support/dashboard';
+                            } else if (data.loginType === 'recruiter') {
+                                window.location.href = '/jobs/dashboard';
+                            } else {
+                                window.location.href = '/doctors/dashboard';
+                            }
+                        });
+                    } else {
+                        submitBtn.prop('disabled', false);
+                        btnSpinner.hide();
+                        btnArrow.show();
+                        btnText.text('Sign In');
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Login Failed",
+                            text: data.message || "Invalid credentials",
+                            confirmButtonColor: "#2563eb"
+                        });
+                    }
+                },
+                error: function (err) {
+                    submitBtn.prop('disabled', false);
+                    btnSpinner.hide();
+                    btnArrow.show();
+                    btnText.text('Sign In');
+
+                    console.error(err);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Server Error",
+                        text: "Something went wrong. Please try again later.",
+                        confirmButtonColor: "#2563eb"
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

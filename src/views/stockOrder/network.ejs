@@ -3,7 +3,7 @@
 <%- include('../globals/head') %>
 
 <style>
-    /* 5-Level Network Dashboard Styling */
+    /* 5 Steps Economic Help Dashboard Styling */
     .network-stat-card {
         background: #ffffff;
         border-radius: 14px;
@@ -117,7 +117,7 @@
     }
 
     /* ========================================================
-       DARK MODE OVERRIDES FOR 5-LEVEL NETWORK DASHBOARD
+       DARK MODE OVERRIDES FOR 5 Steps Economic Help DASHBOARD
        ======================================================== */
     [data-theme-version="dark"] .network-stat-card {
         background: #0f172a !important;
@@ -273,11 +273,9 @@
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                     <div>
                         <h3 class="fw-bold text-dark mb-1">
-                            <i class="fas fa-sitemap text-primary me-2"></i>My 5-Level User Network
+                            <i class="fas fa-sitemap text-primary me-2"></i>My 5 Steps Economic Help
                         </h3>
-                        <p class="text-muted small mb-0">
-                            Explore your multi-level referral network down to 5 generations. Direct members (Level 1) have full profiles, while extended levels (2-5) show essential verified contact details.
-                        </p>
+
                     </div>
                     <div class="d-flex gap-2">
                         <a href="/applications/type/stockorder" target="_blank" class="btn btn-primary add-btn">
@@ -292,9 +290,9 @@
                     <div class="col-xl-4 col-md-4 col-sm-6">
                         <div class="network-stat-card">
                             <div>
-                                <div class="network-stat-title">Total 5-Level Network</div>
+                                <div class="network-stat-title">Total 5 Steps Economic Help</div>
                                 <div class="network-stat-val text-primary"><%= counts.total || 0 %></div>
-                                <small class="text-muted">Total users across 5 levels</small>
+                                <small class="text-muted">Total users across 5 steps</small>
                             </div>
                             <div class="network-stat-icon" style="background: #e0f2fe; color: #0284c7;">
                                 <i class="fas fa-users-line"></i>
@@ -302,11 +300,11 @@
                         </div>
                     </div>
 
-                    <!-- Level 1 Direct -->
+                    <!-- Step 1 Direct -->
                     <div class="col-xl-4 col-md-4 col-sm-6">
                         <div class="network-stat-card">
                             <div>
-                                <div class="network-stat-title">Level 1 (Direct Referrals)</div>
+                                <div class="network-stat-title">Step 1 (Direct Referrals)</div>
                                 <div class="network-stat-val" style="color: #2563eb;"><%= counts.l1 || 0 %></div>
                                 <small class="text-success fw-bold"><i class="fas fa-shield-alt me-1"></i>Full Details Visible</small>
                             </div>
@@ -340,22 +338,22 @@
                             <!-- Filters -->
                             <div class="d-flex flex-wrap gap-2" id="levelFilterButtons">
                                 <button type="button" class="level-filter-btn active" data-level="all">
-                                    All Levels <span class="badge bg-secondary ms-1 rounded-pill"><%= counts.total || 0 %></span>
+                                    All Steps <span class="badge bg-secondary ms-1 rounded-pill"><%= counts.total || 0 %></span>
                                 </button>
                                 <button type="button" class="level-filter-btn" data-level="1">
-                                    Level 1 (Direct) <span class="badge bg-primary ms-1 rounded-pill"><%= counts.l1 || 0 %></span>
+                                    Step 1 (Direct) <span class="badge bg-primary ms-1 rounded-pill"><%= counts.l1 || 0 %></span>
                                 </button>
                                 <button type="button" class="level-filter-btn" data-level="2">
-                                    Level 2 <span class="badge bg-info ms-1 rounded-pill"><%= counts.l2 || 0 %></span>
+                                    Step 2 <span class="badge bg-info ms-1 rounded-pill"><%= counts.l2 || 0 %></span>
                                 </button>
                                 <button type="button" class="level-filter-btn" data-level="3">
-                                    Level 3 <span class="badge bg-warning ms-1 text-dark rounded-pill"><%= counts.l3 || 0 %></span>
+                                    Step 3 <span class="badge bg-warning ms-1 text-dark rounded-pill"><%= counts.l3 || 0 %></span>
                                 </button>
                                 <button type="button" class="level-filter-btn" data-level="4">
-                                    Level 4 <span class="badge bg-dark ms-1 rounded-pill"><%= counts.l4 || 0 %></span>
+                                    Step 4 <span class="badge bg-dark ms-1 rounded-pill"><%= counts.l4 || 0 %></span>
                                 </button>
                                 <button type="button" class="level-filter-btn" data-level="5">
-                                    Level 5 <span class="badge bg-secondary ms-1 rounded-pill"><%= counts.l5 || 0 %></span>
+                                    Step 5 <span class="badge bg-secondary ms-1 rounded-pill"><%= counts.l5 || 0 %></span>
                                 </button>
                             </div>
 
@@ -378,13 +376,13 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 50px;">#</th>
-                                        <th>Level</th>
+                                        <th>Step</th>
                                         <th class="text-start">User Name</th>
                                         <th>Position</th>
                                         <th class="text-start">Address & District</th>
                                         <th>Referred By</th>
                                         <th>Joining Date</th>
-                                        <th>Access Level</th>
+                                        <th>Access Step</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -396,16 +394,16 @@
                                                 <td>
                                                     <% if (member.level === 1) { %>
                                                         <span class="level-badge badge-level-1">
-                                                            <i class="fas fa-star text-warning"></i>Level 1 (Direct)
+                                                            <i class="fas fa-star text-warning"></i>Step 1 (Direct)
                                                         </span>
                                                     <% } else if (member.level === 2) { %>
-                                                        <span class="level-badge badge-level-2">Level 2</span>
+                                                        <span class="level-badge badge-level-2">Step 2</span>
                                                     <% } else if (member.level === 3) { %>
-                                                        <span class="level-badge badge-level-3">Level 3</span>
+                                                        <span class="level-badge badge-level-3">Step 3</span>
                                                     <% } else if (member.level === 4) { %>
-                                                        <span class="level-badge badge-level-4">Level 4</span>
+                                                        <span class="level-badge badge-level-4">Step 4</span>
                                                     <% } else { %>
-                                                        <span class="level-badge badge-level-5">Level 5</span>
+                                                        <span class="level-badge badge-level-5">Step 5</span>
                                                     <% } %>
                                                 </td>
                                                 <td class="text-start">
@@ -428,7 +426,7 @@
                                                         </div>
                                                         <small class="text-muted"><%= member.district %>, <%= member.state %> (<%= member.pinCode || 'N/A' %>)</small>
                                                     <% } else { %>
-                                                        <!-- Level 2-5: Only User Name, Address, Joining Date -->
+                                                        <!-- Step 2-5: Only User Name, Address, Joining Date -->
                                                         <div class="small fw-semibold text-dark">
                                                             <%= [member.village, member.block, member.district].filter(Boolean).join(', ') || member.fullAddress || member.district %>
                                                         </div>
@@ -474,7 +472,7 @@
                                             <td colspan="9" class="text-center py-5 text-muted">
                                                 <i class="fas fa-network-wired fa-3x mb-3 text-light d-block"></i>
                                                 <h6 class="fw-bold">No Network Members Found</h6>
-                                                <p class="small mb-0">Share your referral link/ID to build your 5-level user network.</p>
+                                                <p class="small mb-0">Share your referral link/ID to build your 5 Steps Economic Help.</p>
                                             </td>
                                         </tr>
                                     <% } %>
@@ -488,7 +486,7 @@
         </div>
     </div>
 
-    <!-- Member Details Modal (Dynamic for Level 1 full access vs Level 2-5 privacy protection) -->
+    <!-- Member Details Modal (Dynamic for Step 1 full access vs Step 2-5 privacy protection) -->
     <div class="modal fade" id="networkMemberModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow">
@@ -607,7 +605,7 @@
                         const isL1 = data.level === 1;
 
                         if (isL1) {
-                            // Full profile for Level 1 Direct
+                            // Full profile for Step 1 Direct
                             $('#networkMemberModalBody').html(`
                                 <div class="row g-3">
                                     <div class="col-md-12">
@@ -617,7 +615,7 @@
                                                 <small class="text-primary fw-semibold"><i class="fas fa-award me-1"></i>${u.position || 'Direct Member'} | ID: ${u.userId || 'N/A'}</small>
                                             </div>
                                             <span class="level-badge badge-level-1">
-                                                <i class="fas fa-star text-warning"></i>Level 1 (Direct Team)
+                                                <i class="fas fa-star text-warning"></i>Step 1 (Direct Team)
                                             </span>
                                         </div>
                                     </div>
@@ -660,7 +658,7 @@
                                 </div>
                             `);
                         } else {
-                            // Privacy protected view for Level 2-5: Only User Name, Address, Joining Date
+                            // Privacy protected view for Step 2-5: Only User Name, Address, Joining Date
                             $('#networkMemberModalBody').html(`
                                 <div class="row g-3">
                                     <div class="col-md-12">
@@ -678,7 +676,7 @@
                                     <div class="col-md-12">
                                         <div class="alert alert-info py-2 px-3 small mb-0">
                                             <i class="fas fa-shield-alt me-1"></i>
-                                            <strong>Privacy Policy Notice:</strong> For indirect downline network members (Level 2 to Level 5), contact numbers, emails, and identification documents are masked to protect member privacy.
+                                            <strong>Privacy Policy Notice:</strong> For indirect downline network members (Step 2 to Step 5), contact numbers, emails, and identification documents are masked to protect member privacy.
                                         </div>
                                     </div>
 

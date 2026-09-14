@@ -105,6 +105,7 @@
       font-size: 15px;
       margin: 0;
       padding: 0;
+      line-height: 1.1;
       position: relative;
       top: -10px;
     }
@@ -113,6 +114,10 @@
       color: #F10207 !important;
       font-size: 20px;
       text-transform: uppercase;
+    }
+
+    .name p:nth-child(2) {
+      margin-bottom: 15px;
     }
 
     .detail_main {
@@ -130,7 +135,7 @@
     }
 
     .detail p {
-      margin: 2px;
+      margin: 1px 0px;
       padding: 0;
       font-size: 13px;
     }
@@ -254,6 +259,13 @@
               <p>: </p>
               <p>
                 <%= user.bloodGroup %>
+              </p>
+            </div>
+            <div class="detail">
+              <p>City</p>
+              <p>: </p>
+              <p>
+                <%= user.district || user.city || 'N/A' %>
               </p>
             </div>
             <div class="detail">

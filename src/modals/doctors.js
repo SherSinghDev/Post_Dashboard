@@ -19,7 +19,7 @@ const doctorSchema = new Schema({
   },
   assignedForm: {
     type: String,
-    enum: ["form1", "form2", "form3", "form4", "form5", "form6"],
+    enum: ["all", "form1", "form2", "form3", "form4", "form5", "form6"],
     required: true,
   },
   createdAt: {

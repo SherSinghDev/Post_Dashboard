@@ -143,7 +143,7 @@ router.get('/', async (req, res) => {
         });
     }
     else {
-        res.redirect('/auth/login')
+        res.redirect('/home')
     }
 })
 

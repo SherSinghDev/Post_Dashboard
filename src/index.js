@@ -45,9 +45,9 @@ app.set('views', './src/views')
 
 
 // routes
-// app.get('/home', (req, res) => {
-//     res.render('home')
-// })
+app.get('/home', (req, res) => {
+    res.render('home')
+})
 app.use('/patients', patientRouter)
 app.use('/', dashboardRouter)
 app.use('/auth', authRouter)

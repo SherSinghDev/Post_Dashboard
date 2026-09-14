@@ -6,6 +6,7 @@ const multer = require('multer');
 let bcrypt = require("bcrypt")
 let crypto = require("crypto");
 let Payment = require('../../modals/payment')
+let Doctor = require('../../modals/doctors')
 
 // ===== MULTER CONFIGURATION =====
 const storage = multer.diskStorage({
@@ -586,7 +587,7 @@ router.get('/network', async (req, res) => {
 
         res.render('stockOrder/network', {
             user,
-            page: "5-Level Member Network",
+            page: "5 Steps Economic Help",
             allLevelUsers: networkData.allLevelUsers,
             networkByLevel: networkData.networkByLevel,
             counts: networkData.counts
@@ -619,9 +620,9 @@ router.get('/network/details/:id', async (req, res) => {
         const member = networkData.allLevelUsers.find(u => u._id.toString() === req.params.id);
 
         if (!member) {
-            return res.status(403).json({
-                success: false,
-                message: "You are not authorized to view this user. They are not in your 5-level network."
+            return res.status(403).json({ 
+                success: false, 
+                message: "You are not authorized to view this user. They are not in your 5 steps economic help network." 
             });
         }
 
@@ -661,5 +662,81 @@ router.get('/network/details/:id', async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 });
+
+// ================= DOCTOR MANAGEMENT ROUTES =================
+router.get('/doctors', async (req, res) => {
+    if (req.session.userId) {
+        try {
+            let user = await Users.findOne({ _id: req.session.userId })
+            if (user.role !== 'Admin') {
+                return res.redirect('/')
+            }
+            let doctors = await Doctor.find().sort({ createdAt: -1 })
+            res.render('doctors_admin', { users: doctors, user, page: "Doctors" })
+        } catch (error) {
+            console.log(error);
+            res.redirect('/')
+        }
+    } else {
+        res.redirect('/auth/login')
+    }
+})
+
+router.get('/doctor_one/:id', async (req, res) => {
+    try {
+        let doctor = await Doctor.findOne({ _id: req.params.id })
+        res.json({ success: true, data: doctor })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false })
+    }
+})
+
+router.post('/doctor_create', async (req, res) => {
+    try {
+        let { name, email, password, assignedForm } = req.body;
+        let existingUser = await Doctor.findOne({ email });
+        if (existingUser) return res.json({ created: false, message: "Email already exists" });
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await Doctor.create({
+            name,
+            email,
+            password: hashedPassword,
+            assignedForm
+        });
+        res.json({ created: true, message: "Doctor created successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ created: false, message: error.message });
+    }
+})
+
+router.post('/doctor_update/:id', async (req, res) => {
+    try {
+        let { name, email, password, assignedForm } = req.body;
+        let updateData = { name, email, assignedForm };
+
+        if (password && password.trim() !== '') {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+
+        await Doctor.findByIdAndUpdate(req.params.id, updateData);
+        res.json({ created: true, message: "Doctor updated successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ created: false, message: error.message });
+    }
+})
+
+router.delete('/doctor_delete/:id', async (req, res) => {
+    try {
+        await Doctor.findByIdAndDelete(req.params.id);
+        res.json({ deleted: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ deleted: false });
+    }
+})
 
 module.exports = router;

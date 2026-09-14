@@ -1,0 +1,286 @@
+<style>
+                                                /* Dashboard White Theme & Cards Styling */
+                                                .dash-filter-container {
+                                                    background: #ffffff;
+                                                    border-radius: 14px;
+                                                    padding: 16px 20px;
+                                                    border: 1px solid #e2e8f0;
+                                                    box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.04);
+                                                    margin-bottom: 24px;
+                                                }
+
+                                                .filter-pills {
+                                                    display: flex;
+                                                    flex-wrap: wrap;
+                                                    gap: 8px;
+                                                }
+
+                                                .filter-btn {
+                                                    background: #f8fafc;
+                                                    border: 1px solid #e2e8f0;
+                                                    color: #64748b;
+                                                    padding: 8px 16px;
+                                                    border-radius: 20px;
+                                                    font-size: 13.5px;
+                                                    font-weight: 600;
+                                                    cursor: pointer;
+                                                    transition: all 0.2s ease;
+                                                }
+
+                                                .filter-btn:hover {
+                                                    background: #f1f5f9;
+                                                    color: #0f172a;
+                                                }
+
+                                                .filter-btn.active {
+                                                    background: #0284c7;
+                                                    color: #ffffff;
+                                                    border-color: #0284c7;
+                                                    box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+                                                }
+
+                                                .dash-search-input {
+                                                    border-radius: 20px;
+                                                    border: 1px solid #e2e8f0;
+                                                    padding: 8px 16px 8px 38px;
+                                                    font-size: 13.5px;
+                                                    background-color: #f8fafc;
+                                                    transition: all 0.2s ease;
+                                                    width: 100%;
+                                                    max-width: 280px;
+                                                }
+
+                                                .dash-search-input:focus {
+                                                    background: #ffffff;
+                                                    border-color: #38bdf8;
+                                                    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+                                                    outline: none;
+                                                }
+
+                                                .search-icon-wrapper {
+                                                    position: absolute;
+                                                    left: 14px;
+                                                    top: 50%;
+                                                    transform: translateY(-50%);
+                                                    color: #94a3b8;
+                                                    pointer-events: none;
+                                                }
+
+                                                /* White Card Component */
+                                                .dash-card {
+                                                    background: #ffffff;
+                                                    border-radius: 14px;
+                                                    border: 1px solid #e2e8f0;
+                                                    padding: 22px;
+                                                    margin-bottom: 24px;
+                                                    box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+                                                    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                                                    position: relative;
+                                                    overflow: hidden;
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    justify-content: space-between;
+                                                    height: calc(100% - 24px);
+                                                }
+
+                                                .dash-card:hover {
+                                                    transform: translateY(-4px);
+                                                    box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.1);
+                                                    border-color: #cbd5e1;
+                                                }
+
+                                                .dash-card-icon {
+                                                    width: 48px;
+                                                    height: 48px;
+                                                    border-radius: 12px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    font-size: 20px;
+                                                    flex-shrink: 0;
+                                                }
+
+                                                .icon-blue {
+                                                    background: #e0f2fe;
+                                                    color: #0284c7;
+                                                }
+
+                                                .icon-amber {
+                                                    background: #fef3c7;
+                                                    color: #d97706;
+                                                }
+
+                                                .icon-emerald {
+                                                    background: #d1fae5;
+                                                    color: #059669;
+                                                }
+
+                                                .icon-rose {
+                                                    background: #ffe4e6;
+                                                    color: #e11d48;
+                                                }
+
+                                                .icon-purple {
+                                                    background: #ede9fe;
+                                                    color: #7c3aed;
+                                                }
+
+                                                .icon-indigo {
+                                                    background: #e0e7ff;
+                                                    color: #4338ca;
+                                                }
+
+                                                .icon-cyan {
+                                                    background: #cffafe;
+                                                    color: #0891b2;
+                                                }
+
+                                                .dash-card-title {
+                                                    font-size: 13.5px;
+                                                    font-weight: 600;
+                                                    color: #64748b;
+                                                    text-transform: uppercase;
+                                                    letter-spacing: 0.5px;
+                                                    margin-bottom: 4px;
+                                                }
+
+                                                .dash-card-value {
+                                                    font-size: 26px;
+                                                    font-weight: 700;
+                                                    color: #0f172a;
+                                                    margin-bottom: 0;
+                                                    line-height: 1.2;
+                                                }
+
+                                                .dash-card-action {
+                                                    display: inline-flex;
+                                                    align-items: center;
+                                                    gap: 6px;
+                                                    font-size: 13px;
+                                                    font-weight: 600;
+                                                    color: #0284c7;
+                                                    text-decoration: none;
+                                                    transition: all 0.15s ease;
+                                                    margin-top: 14px;
+                                                    padding-top: 12px;
+                                                    border-top: 1px solid #f1f5f9;
+                                                }
+
+                                                .dash-card-action:hover {
+                                                    color: #0369a1;
+                                                    transform: translateX(3px);
+                                                }
+
+                                                .coordinator-actions {
+                                                    background: #ffffff;
+                                                    border-radius: 12px;
+                                                    padding: 14px 18px;
+                                                    border: 1px solid #e2e8f0;
+                                                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+                                                    margin-bottom: 24px;
+                                                    display: flex;
+                                                    flex-wrap: wrap;
+                                                    gap: 10px;
+                                                    align-items: center;
+                                                }
+
+                                                /* Dark Mode Overrides for Dashboard */
+                                                [data-theme-version="dark"] .dash-filter-container {
+                                                    background: #0f172a !important;
+                                                    border-color: #1e293b !important;
+                                                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+                                                }
+
+                                                [data-theme-version="dark"] .filter-btn {
+                                                    background: #1e293b !important;
+                                                    border-color: #334155 !important;
+                                                    color: #94a3b8 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .filter-btn:hover {
+                                                    background: #334155 !important;
+                                                    color: #f8fafc !important;
+                                                }
+
+                                                [data-theme-version="dark"] .filter-btn.active {
+                                                    background: #0284c7 !important;
+                                                    color: #ffffff !important;
+                                                    border-color: #0284c7 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .dash-search-input {
+                                                    background-color: #1e293b !important;
+                                                    border-color: #334155 !important;
+                                                    color: #f8fafc !important;
+                                                }
+
+                                                [data-theme-version="dark"] .dash-search-input:focus {
+                                                    background-color: #1e293b !important;
+                                                    border-color: #38bdf8 !important;
+                                                    color: #ffffff !important;
+                                                }
+
+                                                [data-theme-version="dark"] .dash-card {
+                                                    background: #0f172a !important;
+                                                    border-color: #1e293b !important;
+                                                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+                                                }
+
+                                                [data-theme-version="dark"] .dash-card:hover {
+                                                    border-color: #38bdf8 !important;
+                                                    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+                                                }
+
+                                                [data-theme-version="dark"] .dash-card-title {
+                                                    color: #94a3b8 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .dash-card-value {
+                                                    color: #f8fafc !important;
+                                                }
+
+                                                [data-theme-version="dark"] .dash-card-action {
+                                                    border-top-color: #1e293b !important;
+                                                    color: #38bdf8 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .coordinator-actions {
+                                                    background: #0f172a !important;
+                                                    border-color: #1e293b !important;
+                                                }
+
+                                                [data-theme-version="dark"] .icon-blue {
+                                                    background: rgba(2, 132, 199, 0.2) !important;
+                                                    color: #38bdf8 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .icon-amber {
+                                                    background: rgba(217, 119, 6, 0.2) !important;
+                                                    color: #fbbf24 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .icon-emerald {
+                                                    background: rgba(5, 150, 105, 0.2) !important;
+                                                    color: #34d399 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .icon-rose {
+                                                    background: rgba(225, 29, 72, 0.2) !important;
+                                                    color: #fb7185 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .icon-purple {
+                                                    background: rgba(124, 58, 237, 0.2) !important;
+                                                    color: #a78bfa !important;
+                                                }
+
+                                                [data-theme-version="dark"] .icon-indigo {
+                                                    background: rgba(67, 56, 202, 0.2) !important;
+                                                    color: #818cf8 !important;
+                                                }
+
+                                                [data-theme-version="dark"] .icon-cyan {
+                                                    background: rgba(8, 145, 178, 0.2) !important;
+                                                    color: #22d3ee !important;
+                                                }
+                                            </style>

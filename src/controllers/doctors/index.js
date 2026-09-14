@@ -10,34 +10,19 @@ const patientForm = require('../../modals/patientForm')
 router.get('/dashboard', async (req, res) => {
   if (req.session.userId) {
     let user = await Doctor.findOne({ _id: req.session.userId })
-    console.log(user);
 
-    if (user.email.startsWith('doctor')) {
-      // let patients = (await patientForm.find({ formType: user.assignedForm })).length
+    if (user) {
+      let singleOrders = (await PatientForm.find({ 
+        ...(user.assignedForm === 'all' ? {} : { formType: user.assignedForm }),
+        type: { $ne: "stockorder" }
+      })).length;
+      
+      let stockOrders = (await PatientForm.find({ 
+        ...(user.assignedForm === 'all' ? {} : { formType: user.assignedForm }),
+        type: "stockorder"
+      })).length;
 
-      let unverifiedPatients = (await PatientForm.find({ formType: user.assignedForm, "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } })).length
-      let varifiedPatients = (await PatientForm.find({
-        formType: user.assignedForm,
-        "otherStatus.doctorStatus": { $nin: [null, ""] },
-        "otherStatus.trackingIdStatus": { $in: [null, ""] },
-        "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
-      })).length
-      let pendingpatients = (await PatientForm.find({
-        formType: user.assignedForm,
-        "otherStatus.doctorStatus": { $in: [null, ""] },
-        "otherStatus.supportStatus": { $nin: [null, ""] },
-        "otherStatus.trackingIdStatus": { $in: [null, ""] },
-        "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
-      })).length
-      let patientsOrders = (await PatientForm.find({
-        formType: user.assignedForm,
-        // "otherStatus.doctorStatus": { $nin: [null, ""] },
-        "otherStatus.trackingIdStatus": { $nin: [null, ""] },
-        "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
-      })).length
-
-      // console.log(patients);
-      res.render('doctorhome', { user, unverifiedPatients, varifiedPatients, pendingpatients, patientsOrders })
+      res.render('doctorhome', { user, singleOrders, stockOrders })
     }
     else {
       res.redirect('/')
@@ -45,46 +30,23 @@ router.get('/dashboard', async (req, res) => {
   }
   else {
     res.render('login')
-    // res.render('login')
   }
 })
-
 
 // GET all applications
 router.get('/patients/:type', async (req, res) => {
   if (req.session.userId) {
     try {
       let user = await Doctor.findOne({ _id: req.session.userId })
-      // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let type = req.params.type
 
-      let match = { formType: user.assignedForm, "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } }
+      let match = { ...(user.assignedForm === 'all' ? {} : { formType: user.assignedForm }) };
 
-      if (type == 'unverified') {
-        match = { formType: user.assignedForm, "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] } }
+      if (type == 'single') {
+        match.type = { $ne: "stockorder" };
       }
-      else if (type == 'verified') {
-        match = {
-          formType: user.assignedForm,
-          "otherStatus.doctorStatus": { $nin: [null, ""] },
-          "otherStatus.trackingIdStatus": { $in: [null, ""] },
-          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
-        }
-      }
-      else if (type == 'pending') {
-        match = {
-          formType: user.assignedForm,
-          "otherStatus.doctorStatus": { $in: [null, ""] },
-          "otherStatus.supportStatus": { $nin: [null, ""] },
-          "otherStatus.trackingIdStatus": { $in: [null, ""] },
-          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
-        }
-      }
-      else if (type == 'orders') {
-        match = {
-          formType: user.assignedForm,
-          "otherStatus.trackingIdStatus": { $nin: [null, ""] }
-        }
+      else if (type == 'stock') {
+        match.type = "stockorder";
       }
 
       const result = await PatientForm.aggregate([
@@ -92,65 +54,35 @@ router.get('/patients/:type', async (req, res) => {
           $sort: { createdAt: -1 } // latest first
         },
         {
-          $match: match // <-- filter by formType
+          $match: match // <-- filter by formType and type
         },
         {
           $lookup: {
             from: "users",                // users collection
             localField: "referredBy",     // referral code in PatientForm
-            foreignField: "referralCode", // referral code in User
-            as: "referrer"
+            foreignField: "userId",       // userId in users
+            as: "coordinatorDetails"      // output array field
           }
         },
         {
           $unwind: {
-            path: "$referrer",
-            preserveNullAndEmptyArrays: true // keep even if no referrer
-          }
-        },
-        {
-          $project: {
-            patientName: 1,
-            fatherOrHusbandName: 1,
-            gender: 1,
-            houseOrStreet: 1,
-            locality: 1,
-            cityOrDistrict: 1,
-            state: 1,
-            landmark: 1,
-            pinCode: 1,
-            mobileNumber: 1,
-            emergencyContact: 1,
-            referredBy: 1,
-            diseaseName: 1,
-            medicalReport: 1,
-            registerNo: 1,
-            otherStatus: 1,
-            createdAt: 1,
-            // only select _id and name from the referred user
-            "referrer._id": 1,
-            "referrer.name": 1
+            path: "$coordinatorDetails",
+            preserveNullAndEmptyArrays: true // keep patients even if no coordinator match
           }
         }
       ]);
-
-      // console.log(result);
-
-
+      
       res.render('forms', { applications: result, user, createOrder: false });
+
     } catch (error) {
       console.log(error);
-      res.redirect('/auth/login')
+      res.redirect('/')
     }
   }
   else {
-    res.redirect('/auth/login')
+    res.render('login')
   }
-});
-
-
-
-
+})
 
 // 👉 Route: Create Dummy Doctors
 router.get("/", async (req, res) => {
