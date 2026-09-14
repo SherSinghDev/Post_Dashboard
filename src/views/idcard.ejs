@@ -86,7 +86,7 @@
       box-sizing: border-box;
       padding: 20px;
     }
-    
+
     .column {
       flex-shrink: 0;
     }
@@ -117,7 +117,15 @@
     }
 
     .name p:nth-child(2) {
-      margin-bottom: 15px;
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+
+    .name p:nth-child(3) {
+      margin-bottom: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
     }
 
     .detail_main {
@@ -230,107 +238,110 @@
 <body>
   <div class="container">
     <div class="cards-scroll-wrapper">
-    <div class="row1" id="row">
-      <div class="column">
-        <div class="card" id="main">
-          <img src="/images/idcard/front.webp" class="card-bg" alt="front background">
-          <img src="<%= user.profilePicture %>" style="height: 145px; width: 120px;" id="profile">
-          <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="seal">
+      <div class="row1" id="row">
+        <div class="column">
+          <div class="card" id="main">
+            <img src="/images/idcard/front.webp" class="card-bg" alt="front background">
+            <img src="<%= user.profilePicture %>" style="height: 145px; width: 120px;" id="profile">
+            <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="seal">
 
-          <div class="name">
-            <p>
-              <%= user.name %>
-            </p>
-            <p>
-              <%= user.head %>
-            </p>
-          </div>
+            <div class="name">
+              <p>
+                <%= user.name %>
+              </p>
+              <p>
+                <%= user.position || user.head || 'N/A' %>
+              </p>
+              <p>
+                <%= [user.city, user.district].filter(Boolean).join(',') || 'N/A' %>
+              </p>
+            </div>
 
-          <div class="detail_main">
-            <div class="detail">
-              <p>ID No.</p>
-              <p>: </p>
-              <p>
-                <%= user.userId %>
-              </p>
-            </div>
-            <div class="detail">
-              <p>Blood Group</p>
-              <p>: </p>
-              <p>
-                <%= user.bloodGroup %>
-              </p>
-            </div>
-            <div class="detail">
-              <p>City</p>
-              <p>: </p>
-              <p>
-                <%= user.district || user.city || 'N/A' %>
-              </p>
-            </div>
-            <div class="detail">
-              <p>Mobile</p>
-              <p>: </p>
-              <p>
-                <%= user.mobile %>
-              </p>
-            </div>
-            <div class="detail">
-              <p>Valid From</p>
-              <p>: </p>
-              <p>
-                <%= user.validstart ? new Date(user.validstart).toLocaleDateString() : 'N/A' %>
-              </p>
-            </div>
-            <div class="detail">
-              <p>Valid To</p>
-              <p>: </p>
-              <p>
-                <%= user.validend ? new Date(user.validend).toLocaleDateString() : 'N/A' %>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="column">
-        <div class="back-side" id="main">
-          <!-- ✅ High-resolution background image -->
-          <img src="/images/idcard/bac.png" class="back-bg" alt="Back Background">
-
-          <div class="qrcode text-center">
-            <img class="ml-n3 mt-1" src="/images/idcard/qr.webp" id="img" height="110px" width="110px" alt="">
-          </div>
-
-          <div class="address_main">
-            <div class="address">
-              <p>
-                <%= user.relationType || 'S/O' %>
-              </p>
-              <p>:</p>
-              <p>
-                <%= user.relationWith || 'N/A' %>
-              </p>
-            </div>
-            <div class="address">
-              <p>DOB</p>
-              <p>:</p>
-              <p>
-                <%= user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'N/A' %>
-              </p>
-            </div>
-            <div class="address">
-              <p>Address</p>
-              <p>:</p>
-              <p>
-                <%= user.fullAddress || 'N/A' %>
-              </p>
+            <div class="detail_main">
+              <div class="detail">
+                <p>ID No.</p>
+                <p>: </p>
+                <p>
+                  <%= user.userId %>
+                </p>
+              </div>
+              <div class="detail">
+                <p>Blood Group</p>
+                <p>: </p>
+                <p>
+                  <%= user.bloodGroup %>
+                </p>
+              </div>
+              <div class="detail">
+                <p>City</p>
+                <p>: </p>
+                <p>
+                  <%= user.district || user.city || 'N/A' %>
+                </p>
+              </div>
+              <div class="detail">
+                <p>Mobile</p>
+                <p>: </p>
+                <p>
+                  <%= user.mobile %>
+                </p>
+              </div>
+              <div class="detail">
+                <p>Valid From</p>
+                <p>: </p>
+                <p>
+                  <%= user.validstart ? new Date(user.validstart).toLocaleDateString() : 'N/A' %>
+                </p>
+              </div>
+              <div class="detail">
+                <p>Valid To</p>
+                <p>: </p>
+                <p>
+                  <%= user.validend ? new Date(user.validend).toLocaleDateString() : 'N/A' %>
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-      </div>
-    </div><!-- end row1 -->
+        <div class="column">
+          <div class="back-side" id="main">
+            <!-- ✅ High-resolution background image -->
+            <img src="/images/idcard/bac.png" class="back-bg" alt="Back Background">
+
+            <div class="qrcode text-center">
+              <img class="ml-n3 mt-1" src="/images/idcard/qr.webp" id="img" height="110px" width="110px" alt="">
+            </div>
+
+            <div class="address_main">
+              <div class="address">
+                <p>
+                  <%= user.relationType || 'S/O' %>
+                </p>
+                <p>:</p>
+                <p>
+                  <%= user.relationWith || 'N/A' %>
+                </p>
+              </div>
+              <div class="address">
+                <p>DOB</p>
+                <p>:</p>
+                <p>
+                  <%= user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'N/A' %>
+                </p>
+              </div>
+              <div class="address">
+                <p>Address</p>
+                <p>:</p>
+                <p>
+                  <%= user.fullAddress || 'N/A' %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- end row1 -->
     </div><!-- end cards-scroll-wrapper -->
   </div><!-- end container -->
 
