@@ -253,7 +253,7 @@
                 <%= user.position || user.head || 'N/A' %>
               </p>
               <p>
-                <%= [user.city, user.district].filter(Boolean).join(',') || 'N/A' %>
+                <%= user.userId==111?"All India Head": [user.city, user.district].filter(Boolean).join(',') || 'N/A' %>
               </p>
             </div>
 

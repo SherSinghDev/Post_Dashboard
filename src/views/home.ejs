@@ -15,10 +15,12 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         /* Using Plus Jakarta Sans font for premium design */
-        html, body {
+        html,
+        body {
             width: 100%;
             min-height: 100vh;
             margin: 0;
@@ -37,107 +39,385 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.css">
     <style>
-        .quick-links { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; }
-        .quick-link-item { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; font-size: 15px; font-weight: 600; color: #334155; text-decoration: none; transition: all 0.2s; }
-        .quick-link-item i { color: #2563eb; font-size: 18px; }
-        .quick-link-item:hover { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; transform: translateY(-2px); }
-        
-        .promo-section { display: flex; flex-direction: column; gap: 24px; width: 100%; }
-        .promo-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; text-decoration: none; color: #1e293b; transition: all 0.2s; display: flex; flex-direction: column; }
-        .promo-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -4px rgba(0,0,0,0.1); border-color: #cbd5e1; }
-        .promo-image { width: 100%; height: auto; display: block; }
-        .promo-content { padding: 16px 20px; display: flex; align-items: center; gap: 16px; background: #ffffff; border-top: 1px solid #e2e8f0; }
-        .promo-icon { color: #25D366; font-size: 32px; flex-shrink: 0; }
-        .promo-text-wrapper { display: flex; flex-direction: column; overflow: hidden; width: 100%; }
-        .promo-title { font-size: 18px; font-weight: 700; color: #1e293b; }
-        .promo-link { font-size: 14px; color: #2563eb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; }
+        .quick-links {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .quick-link-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .quick-link-item i {
+            color: #2563eb;
+            font-size: 18px;
+        }
+
+        .quick-link-item:hover {
+            background: #eff6ff;
+            color: #2563eb;
+            border-color: #bfdbfe;
+            transform: translateY(-2px);
+        }
+
+        .promo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .promo-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .promo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+        }
+
+        .promo-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .promo-content {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .promo-icon {
+            color: #25D366;
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .promo-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .promo-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .promo-link {
+            font-size: 14px;
+            color: #2563eb;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 4px;
+        }
 
         @media (min-width: 480px) {
-            .quick-links { grid-template-columns: repeat(2, 1fr); }
-            .quick-link-item { padding: 16px 20px; font-size: 16px; }
+            .quick-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-link-item {
+                padding: 16px 20px;
+                font-size: 16px;
+            }
         }
+
         @media (min-width: 768px) {
-            .quick-links { grid-template-columns: repeat(3, 1fr); }
-            .promo-section { flex-direction: row; align-items: flex-start; }
-            .promo-card { flex: 1; }
+            .quick-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .promo-section {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .promo-card {
+                flex: 1;
+            }
         }
+
         @media (min-width: 1024px) {
-            .quick-links { grid-template-columns: repeat(5, 1fr); }
+            .quick-links {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         /* Login Form Styles */
-        .login-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 36px 32px; box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5); width: 100%; max-width: 460px; margin: 0 auto; }
-        @media (max-width: 480px) {
-            .login-card { padding: 26px 18px; border-radius: 16px; }
+        .login-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 36px 32px;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
         }
-        .form-group { margin-bottom: 18px; text-align: left; }
-        .form-label { display: block; font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 7px; }
-        .input-group { position: relative; display: flex; align-items: center; }
-        .input-icon { position: absolute; left: 14px; color: #94a3b8; font-size: 15px; pointer-events: none; transition: color 0.2s ease; }
-        .form-control { width: 100%; padding: 12px 16px 12px 42px; border-radius: 12px; border: 1.5px solid #e2e8f0; background: #f8fafc; font-size: 14px; color: #1e293b; outline: none; transition: all 0.2s ease; }
-        .form-control:focus { background: #ffffff; border-color: #2563eb; box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.12); }
-        .form-control:focus + .input-icon, .input-group:focus-within .input-icon { color: #2563eb; }
-        .toggle-password { position: absolute; right: 14px; background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 15px; padding: 4px; transition: color 0.2s ease; }
-        .toggle-password:hover { color: #1e293b; }
-        .btn-submit { width: 100%; padding: 12.5px; margin-top: 8px; background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%); border: none; border-radius: 12px; color: white; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 16px -3px rgba(37, 99, 235, 0.35); transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 12px 20px -3px rgba(37, 99, 235, 0.45); }
-        .btn-submit:active { transform: translateY(0); }
-        .btn-submit:disabled { opacity: 0.75; cursor: not-allowed; transform: none; }
-        .spinner { display: none; width: 18px; height: 18px; border: 2.5px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 26px 18px;
+                border-radius: 16px;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 7px;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            font-size: 15px;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 14px;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            background: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.12);
+        }
+
+        .form-control:focus+.input-icon,
+        .input-group:focus-within .input-icon {
+            color: #2563eb;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: #1e293b;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12.5px;
+            margin-top: 8px;
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 16px -3px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 20px -3px rgba(37, 99, 235, 0.45);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.75;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         /* Dark Mode Overrides */
-        .dark body { background-color: #0f172a; }
-        .dark .quick-link-item { background: #1e293b; border-color: #334155; color: #e2e8f0; }
-        .dark .quick-link-item:hover { background: #334155; border-color: #475569; }
-        .dark .promo-card { background: #1e293b; border-color: #334155; }
-        .dark .promo-content { background: #0f172a; border-top-color: #334155; }
-        .dark .promo-title { color: #f8fafc; }
-        .dark .login-card { background: #1e293b; border-color: #334155; box-shadow: 0 20px 45px -10px rgba(0,0,0,0.8); }
-        .dark .form-label { color: #e2e8f0; }
-        .dark .form-control { background: #0f172a; border-color: #334155; color: #e2e8f0; }
-        .dark .form-control:focus { background: #1e293b; }
-        .dark .toggle-password:hover { color: #e2e8f0; }
+        .dark body {
+            background-color: #0f172a;
+        }
+
+        .dark .quick-link-item {
+            background: #1e293b;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        .dark .quick-link-item:hover {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        .dark .promo-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .dark .promo-content {
+            background: #0f172a;
+            border-top-color: #334155;
+        }
+
+        .dark .promo-title {
+            color: #f8fafc;
+        }
+
+        .dark .login-card {
+            background: #1e293b;
+            border-color: #334155;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        .dark .form-label {
+            color: #e2e8f0;
+        }
+
+        .dark .form-control {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        .dark .form-control:focus {
+            background: #1e293b;
+        }
+
+        .dark .toggle-password:hover {
+            color: #e2e8f0;
+        }
     </style>
 </head>
 
 <body class="bg-gray-50 dark:bg-slate-900 transition-colors duration-300 overflow-x-hidden">
 
     <!-- Navbar Section -->
-    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 shadow-sm transition-all">
+    <nav
+        class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 shadow-sm transition-all">
         <div class="w-full px-2 sm:px-4">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo/Brand -->
                 <a href="/home" class="flex items-center gap-2 md:gap-3 flex-shrink-0 group">
-                    <img src="https://bsrfindia.com/images/logo/logo.png" alt="BSRF" class="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform">
-                    <span class="text-xl md:text-2xl font-extrabold text-indigo-700 tracking-tight">BSRF <span class="text-gray-900 dark:text-white font-medium hidden sm:inline">INDIA</span></span>
+                    <img src="https://bsrfindia.com/images/logo/logo.png" alt="BSRF"
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform">
+                    <span class="text-xl md:text-2xl font-extrabold text-indigo-700 tracking-tight">BSRF <span
+                            class="text-gray-900 dark:text-white font-medium hidden sm:inline">INDIA</span></span>
                 </a>
 
                 <div class="flex items-center gap-2 md:gap-4">
                     <!-- Desktop Menu -->
                     <div class="hidden lg:flex items-center space-x-1">
-                        <a href="/applications" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Member Form</a>
-                        <a href="/patientform/form1" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Patient Form</a>
-                        <a href="/applications/rojgaar" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Rojgaar</a>
-                        <a href="/teleconsult" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Teleconsult</a>
-                        <a href="/applications/type/stockorder" class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Stock Order</a>
-                        <a href="/auth/login" class="ml-2 bg-indigo-600 text-white hover:bg-indigo-700 px-5 py-2 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Login</a>
+                        <a href="/applications"
+                            class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Single
+                            Order Member Form</a>
+                        <a href="/applications/rojgaar"
+                            class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Rojgaar</a>
+                        <a href="/teleconsult"
+                            class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Teleconsult</a>
+                        <a href="/applications/type/stockorder"
+                            class="text-gray-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 px-3 py-2 rounded-xl text-sm font-semibold transition-all">Stock
+                            Order Member Form</a>
+                        <a href="/auth/login"
+                            class="ml-2 bg-indigo-600 text-white hover:bg-indigo-700 px-5 py-2 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">Login</a>
                     </div>
 
                     <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors" aria-label="Toggle Dark Mode">
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
+                        aria-label="Toggle Dark Mode">
                         <i class="fa-solid fa-moon text-lg hidden dark:block"></i>
                         <i class="fa-solid fa-sun text-lg block dark:hidden"></i>
                     </button>
 
                     <!-- Mobile Menu Button -->
                     <div class="flex lg:hidden items-center">
-                        <button id="mobile-menu-button" type="button" class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors" aria-controls="mobile-menu" aria-expanded="false">
+                        <button id="mobile-menu-button" type="button"
+                            class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
+                            aria-controls="mobile-menu" aria-expanded="false">
                             <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                             <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
@@ -146,66 +426,89 @@
         </div>
 
         <!-- Mobile Menu (Hidden by default) -->
-        <div class="lg:hidden hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 shadow-xl absolute w-full" id="mobile-menu">
+        <div class="lg:hidden hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 shadow-xl absolute w-full"
+            id="mobile-menu">
             <div class="px-4 pt-2 pb-4 space-y-2">
-                <a href="/applications" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Member Form</a>
-                <a href="/patientform/form1" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Patient Form</a>
-                <a href="/applications/rojgaar" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Rojgaar</a>
-                <a href="/teleconsult" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Teleconsult</a>
-                <a href="/applications/type/stockorder" class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Stock Order</a>
-                <a href="/auth/login" class="block bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-3 rounded-xl text-base font-bold transition-all text-center mt-4 shadow-md">Login to Dashboard</a>
+                <a href="/applications"
+                    class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Single
+                    Order Member Form</a>
+                <a href="/applications/rojgaar"
+                    class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Rojgaar</a>
+                <a href="/teleconsult"
+                    class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Teleconsult</a>
+                <a href="/applications/type/stockorder"
+                    class="block text-gray-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-700 px-4 py-3 rounded-xl text-base font-medium transition-all">Stock
+                    Order Member Form</a>
+                <a href="/auth/login"
+                    class="block bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-3 rounded-xl text-base font-bold transition-all text-center mt-4 shadow-md">Login
+                    to Dashboard</a>
             </div>
         </div>
     </nav>
 
     <main class="w-full py-8 md:py-12 flex flex-col gap-6 relative">
         <!-- Background decorative blob -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-100/50 dark:bg-indigo-900/20 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-100/50 dark:bg-indigo-900/20 rounded-full blur-[100px] -z-10 pointer-events-none">
+        </div>
 
         <!-- Welcome / Call to Action -->
         <section class="w-full flex flex-col items-center text-center mt-6 px-4">
             <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
-                Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 dark:from-indigo-400 dark:to-blue-400">BSRF INDIA</span>
+                Welcome to <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 dark:from-indigo-400 dark:to-blue-400">BSRF
+                    INDIA</span>
             </h1>
         </section>
 
         <!-- Promo Section -->
         <section class="w-full px-4">
             <div class="text-center mb-10">
-                <span class="inline-block py-1 px-3 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-bold tracking-wider uppercase text-xs mb-3">Stay Connected</span>
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-bold tracking-wider uppercase text-xs mb-3">Stay
+                    Connected</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Community Groups</h2>
             </div>
 
             <div class="promo-section">
-                <a href="https://chat.whatsapp.com/I469plVUcbhIDF9Z9Zt15T" target="_blank" class="promo-card hover:border-green-300">
+                <a href="https://chat.whatsapp.com/I469plVUcbhIDF9Z9Zt15T" target="_blank"
+                    class="promo-card hover:border-green-300">
                     <img src="/images/bsrf.jpeg" alt="BSRF Promo" class="promo-image">
                     <div class="promo-content">
                         <i class="fa-brands fa-whatsapp promo-icon"></i>
                         <div class="promo-text-wrapper">
                             <span class="promo-title">BSRF Official Group</span>
-                            <span class="promo-link"><span class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span> chat.whatsapp.com/I469plVUcbhIDF9Z9Zt15T</span>
+                            <span class="promo-link"><span
+                                    class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span>
+                                chat.whatsapp.com/I469plVUcbhIDF9Z9Zt15T</span>
                         </div>
                     </div>
                 </a>
-                
-                <a href="https://chat.whatsapp.com/IQ5loazxNenCgxv740E0b2" target="_blank" class="promo-card hover:border-green-300">
+
+                <a href="https://chat.whatsapp.com/IQ5loazxNenCgxv740E0b2" target="_blank"
+                    class="promo-card hover:border-green-300">
                     <img src="/images/dropshipping.jpeg" alt="Dropshipping Promo" class="promo-image">
                     <div class="promo-content">
                         <i class="fa-brands fa-whatsapp promo-icon"></i>
                         <div class="promo-text-wrapper">
                             <span class="promo-title">Dropshipping Services</span>
-                            <span class="promo-link"><span class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span> chat.whatsapp.com/IQ5loazxNenCgxv740E0b2</span>
+                            <span class="promo-link"><span
+                                    class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span>
+                                chat.whatsapp.com/IQ5loazxNenCgxv740E0b2</span>
                         </div>
                     </div>
                 </a>
 
-                <a href="https://chat.whatsapp.com/HQtMXKyQIox3MdWa5hjbCt?s=sh&p=a&mlu=0&ilr=4" target="_blank" class="promo-card hover:border-green-300">
+                <a href="https://chat.whatsapp.com/HQtMXKyQIox3MdWa5hjbCt?s=sh&p=a&mlu=0&ilr=4" target="_blank"
+                    class="promo-card hover:border-green-300">
                     <img src="/images/banking.jpeg" alt="Banking Promo" class="promo-image">
                     <div class="promo-content">
                         <i class="fa-brands fa-whatsapp promo-icon"></i>
                         <div class="promo-text-wrapper">
                             <span class="promo-title">Banking Services</span>
-                            <span class="promo-link"><span class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span> chat.whatsapp.com/HQtMXKyQIox...</span>
+                            <span class="promo-link"><span
+                                    class="text-gray-500 dark:text-slate-400 font-medium mr-1">Join group:</span>
+                                chat.whatsapp.com/HQtMXKyQIox...</span>
                         </div>
                     </div>
                 </a>
@@ -215,19 +518,18 @@
         <!-- Quick Portals Section -->
         <section class="w-full pb-12 pt-10 px-4">
             <div class="text-center mb-10">
-                <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 font-bold tracking-wider uppercase text-xs mb-3">Quick Access</span>
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 font-bold tracking-wider uppercase text-xs mb-3">Quick
+                    Access</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Important Portals</h2>
             </div>
-            
+
             <div class="quick-links">
                 <a href="/applications/type/singleorder" class="quick-link-item hover:shadow-md">
                     <i class="fa-solid fa-user-plus text-indigo-500"></i>
-                    <span>Member Form</span>
+                    <span>Single Order Member Form</span>
                 </a>
-                <a href="/patientform/admin" class="quick-link-item hover:shadow-md">
-                    <i class="fa-solid fa-file-medical text-indigo-500"></i>
-                    <span>Patient Form</span>
-                </a>
+
                 <a href="/applications/rojgaar" class="quick-link-item hover:shadow-md">
                     <i class="fa-solid fa-briefcase text-indigo-500"></i>
                     <span>Rojgaar</span>
@@ -238,7 +540,7 @@
                 </a>
                 <a href="/applications/type/stockorder" class="quick-link-item hover:shadow-md">
                     <i class="fa-solid fa-boxes-stacked text-indigo-500"></i>
-                    <span>Stock Order</span>
+                    <span>Stock Order Member Form</span>
                 </a>
             </div>
         </section>
@@ -246,15 +548,19 @@
         <!-- Login Section -->
         <section class="w-full pb-16 pt-8 px-4">
             <div class="text-center mb-10">
-                <span class="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-bold tracking-wider uppercase text-xs mb-3">Secure Access</span>
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-bold tracking-wider uppercase text-xs mb-3">Secure
+                    Access</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Login to Dashboard</h2>
             </div>
 
             <div class="login-card">
                 <div class="text-center mb-6">
-                    <img src="/images/logo/logo.png" alt="BSRF Logo" class="max-h-16 mx-auto mb-3 object-contain" onerror="this.src='https://bsrfindia.com/images/logo/logo.png'">
+                    <img src="/images/logo/logo.png" alt="BSRF Logo" class="max-h-16 mx-auto mb-3 object-contain"
+                        onerror="this.src='https://bsrfindia.com/images/logo/logo.png'">
                     <h3 class="text-xl md:text-2xl font-extrabold text-gray-900 dark:text-white">Welcome Back</h3>
-                    <p class="text-xs md:text-sm text-gray-500 dark:text-slate-400 mt-1 font-medium">Log in to your BSRF Management account</p>
+                    <p class="text-xs md:text-sm text-gray-500 dark:text-slate-400 mt-1 font-medium">Log in to your BSRF
+                        Management account</p>
                 </div>
 
                 <form id="login-form">
@@ -262,7 +568,8 @@
                         <label class="form-label" for="email">Email Address</label>
                         <div class="input-group">
                             <i class="fa-regular fa-envelope input-icon"></i>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required autocomplete="email">
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="name@example.com" required autocomplete="email">
                         </div>
                     </div>
 
@@ -270,8 +577,10 @@
                         <label class="form-label" for="password">Password</label>
                         <div class="input-group">
                             <i class="fa-solid fa-lock input-icon"></i>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
-                            <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                            <input type="password" id="password" name="password" class="form-control"
+                                placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="toggle-password" id="togglePasswordBtn"
+                                aria-label="Toggle password visibility">
                                 <i class="fa-regular fa-eye" id="togglePasswordIcon"></i>
                             </button>
                         </div>
@@ -293,7 +602,7 @@
     <script>
         // --- Theme Toggle Logic ---
         const themeToggleBtn = document.getElementById('theme-toggle');
-        
+
         // Check for saved theme preference or system preference
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -301,10 +610,10 @@
             document.documentElement.classList.remove('dark');
         }
 
-        themeToggleBtn.addEventListener('click', function() {
+        themeToggleBtn.addEventListener('click', function () {
             // Toggle the dark class on the html element
             document.documentElement.classList.toggle('dark');
-            
+
             // Save the preference
             if (document.documentElement.classList.contains('dark')) {
                 localStorage.setItem('color-theme', 'dark');

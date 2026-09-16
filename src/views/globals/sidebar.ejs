@@ -274,7 +274,7 @@
                     <span class="nav-icon-box">
                         <i class="fas fa-th-large"></i>
                     </span>
-                    <span class="nav-text">Dashboard</span>
+                    <span class="nav-text">Dashboard<%- (user.type=='stockorder') ? ' / डैशबोर्ड' : '' %></span>
                 </a>
             </li>
 
@@ -381,7 +381,7 @@
                                         <span class="nav-icon-box text-primary">
                                             <i class="fas fa-sitemap"></i>
                                         </span>
-                                        <span class="nav-text">5 Steps Economic Help</span>
+                                        <span class="nav-text">5 Steps Economic Help / 5 कदम आर्थिक मदद</span>
                                     </a>
                                 </li>
 
@@ -391,7 +391,7 @@
                                         <span class="nav-icon-box">
                                             <i class="fas fa-history"></i>
                                         </span>
-                                        <span class="nav-text">Commission History</span>
+                                        <span class="nav-text">Commission History / कमीशन का इतिहास</span>
                                     </a>
                                 </li>
                                 <% } %>
@@ -402,7 +402,7 @@
                                             <span class="nav-icon-box">
                                                 <i class="fas fa-hospital-user"></i>
                                             </span>
-                                            <span class="nav-text">Unverified Patients</span>
+                                            <span class="nav-text">Unverified Patients<%- (user.type=='stockorder') ? ' / असत्यापित मरीज़' : '' %></span>
                                         </a>
                                     </li>
 
@@ -412,7 +412,7 @@
                                             <span class="nav-icon-box">
                                                 <i class="fas fa-user-check"></i>
                                             </span>
-                                            <span class="nav-text">Verified Patients</span>
+                                            <span class="nav-text">Verified Patients<%- (user.type=='stockorder') ? ' / सत्यापित मरीज़' : '' %></span>
                                         </a>
                                     </li>
 
@@ -422,7 +422,7 @@
                                             <span class="nav-icon-box">
                                                 <i class="fas fa-hourglass-half"></i>
                                             </span>
-                                            <span class="nav-text">Pending Patients</span>
+                                            <span class="nav-text">Pending Patients<%- (user.type=='stockorder') ? ' / लंबित मरीज़' : '' %></span>
                                         </a>
                                     </li>
 
@@ -456,7 +456,7 @@
                                                         <span class="nav-icon-box">
                                                             <i class="fas fa-truck-loading"></i>
                                                         </span>
-                                                        <span class="nav-text">Delivered Orders</span>
+                                                        <span class="nav-text">Delivered Orders<%- (user.type=='stockorder') ? ' / वितरित ऑर्डर' : '' %></span>
                                                     </a>
                                                 </li>
 
@@ -478,7 +478,7 @@
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-boxes-stacked"></i>
                                                             </span>
-                                                            <span class="nav-text">Stock Transactions</span>
+                                                            <span class="nav-text">Stock Transactions<%- (user.type=='stockorder') ? ' / स्टॉक लेनदेन' : '' %></span>
                                                         </a>
                                                     </li>
 
@@ -500,7 +500,7 @@
                                                                 <span class="nav-icon-box">
                                                                     <i class="fas fa-id-badge"></i>
                                                                 </span>
-                                                                <span class="nav-text">Profile</span>
+                                                                <span class="nav-text">Profile<%- (user.type=='stockorder') ? ' / प्रोफ़ाइल' : '' %></span>
                                                             </a>
                                                         </li>
                                                         <% } %>
@@ -514,7 +514,7 @@
                                                                     <span class="nav-icon-box text-danger">
                                                                         <i class="fas fa-power-off"></i>
                                                                     </span>
-                                                                    <span class="nav-text">Log Out</span>
+                                                                    <span class="nav-text">Log Out<%- (user.type=='stockorder') ? ' / लॉग आउट' : '' %></span>
                                                                 </a>
                                                             </li>
 

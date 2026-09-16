@@ -94,6 +94,18 @@
                                         <% } %>
                                             <%- include('globals/dash_cards_style') %>
 
+                                            <!-- Quick Actions for Admin -->
+                                            <% if(user.role=="Admin" ){ %>
+                                                <div class="coordinator-actions mb-3">
+                                                    <span class="fw-bold text-dark me-2" style="font-size: 13.5px;">
+                                                        <i class="fas fa-bolt text-warning me-1"></i> Admin Actions:
+                                                    </span>
+                                                    <a href="/patientform/admin" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fa-solid fa-file-medical me-1"></i> Patient Form
+                                                    </a>
+                                                </div>
+                                            <% } %>
+
                                             <!-- Quick Actions for Coordinator -->
                                             <% if(user.role=="Coordinator" ){ %>
                                                 <div class="coordinator-actions">
@@ -101,8 +113,8 @@
                                                         <i class="fas fa-bolt text-warning me-1"></i> Quick Actions:
                                                     </span>
                                                     <a href="/patientform/<%= user.userId %>" target="_blank"
-                                                        class="btn btn-sm btn-outline-primary <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">
-                                                        <i class="fas fa-file-medical me-1"></i> Patient Form
+                                                        class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-file-medical me-1"></i> Create New Patient
                                                     </a>
                                                     <a href="/users/idcard/<%= user._id %>" target="_blank"
                                                         class="btn btn-sm btn-outline-info">
@@ -214,7 +226,7 @@
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
                                                                         <div class="dash-card-title">Direct Members
-                                                                            (Step 1)</div>
+                                                                            (Step 1) / सीधे सदस्य (चरण 1)</div>
                                                                         <h3 class="dash-card-value"
                                                                             style="color: #2563eb;">
                                                                             <%= (typeof networkCounts !== 'undefined' && networkCounts.l1) || 0 %>
@@ -240,7 +252,7 @@
                                                                 <div
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">5 Steps Economic Help
+                                                                        <div class="dash-card-title">5 Steps Economic Help / 5 कदम आर्थिक मदद
                                                                         </div>
                                                                         <h3 class="dash-card-value"
                                                                             style="color: #7c3aed;">
@@ -265,7 +277,7 @@
                                                             <div class="dash-card" style="border-left: 4px solid #059669;">
                                                                 <div class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">Platform Wallet</div>
+                                                                        <div class="dash-card-title">Platform Wallet / प्लेटफॉर्म वॉलेट</div>
                                                                         <h3 class="dash-card-value" style="color: #059669; font-size:22px;">
                                                                             &#8377;<%= (platformWalletAmount || 0).toLocaleString('en-IN') %>
                                                                         </h3>
@@ -290,7 +302,7 @@
                                                                 <div
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">Unverified Patients
+                                                                        <div class="dash-card-title">Unverified Patients<%- (user.type=='stockorder') ? ' / असत्यापित मरीज़' : '' %>
                                                                         </div>
                                                                         <h3 class="dash-card-value">
                                                                             <%= patients %>
@@ -315,7 +327,7 @@
                                                                 <div
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">Pending Patients
+                                                                        <div class="dash-card-title">Pending Patients<%- (user.type=='stockorder') ? ' / लंबित मरीज़' : '' %>
                                                                         </div>
                                                                         <h3 class="dash-card-value">
                                                                             <%= pendingpatients %>
@@ -340,7 +352,7 @@
                                                                 <div
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">Verified Patients
+                                                                        <div class="dash-card-title">Verified Patients<%- (user.type=='stockorder') ? ' / सत्यापित मरीज़' : '' %>
                                                                         </div>
                                                                         <h3 class="dash-card-value">
                                                                             <%= varifiedPatients %>
@@ -466,7 +478,7 @@
                                                                 <div
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">Stock Transactions
+                                                                        <div class="dash-card-title">Stock Transactions<%- (user.type=='stockorder') ? ' / स्टॉक लेनदेन' : '' %>
                                                                         </div>
                                                                         <h3 class="dash-card-value"
                                                                             style="font-size: 19px; color: #d97706; padding-top: 4px;">
@@ -516,7 +528,7 @@
                                                                 <div
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">My Account</div>
+                                                                        <div class="dash-card-title">My Account<%- (user.type=='stockorder') ? ' / मेरा खाता' : '' %></div>
                                                                         <h3 class="dash-card-value"
                                                                             style="font-size: 19px; color: #475569; padding-top: 4px;">
                                                                             <%= user.name || 'User Profile' %>
@@ -541,7 +553,7 @@
                                                                 <div
                                                                     class="d-flex align-items-start justify-content-between mb-3">
                                                                     <div>
-                                                                        <div class="dash-card-title">Helpdesk</div>
+                                                                        <div class="dash-card-title">Helpdesk<%- (user.type=='stockorder') ? ' / सहायता' : '' %></div>
                                                                         <h3 class="dash-card-value"
                                                                             style="font-size: 19px; color: #0284c7; padding-top: 4px;">
                                                                             24/7 Assistance</h3>

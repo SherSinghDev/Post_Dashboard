@@ -107,16 +107,16 @@
         <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="sign">
         <!--<img src="userimg/IMG_20250702_150912_10172025184354.jpg" style="height: 120px; width: 100px;" id="profile">-->
         <div class="date">
-
-            <p>Date - <%- new Date().toLocaleDateString() %></p>
+            <p id="date-en">Date - <%- new Date().toLocaleDateString() %></p>
+            <p id="date-hi" style="display:none;">दिनांक - <%- new Date().toLocaleDateString() %></p>
         </div>
         <div class="id">
-            <p>ID No. - <%= user.userId %></p>
+            <p id="id-en">ID No. - <%= user.userId %></p>
+            <p id="id-hi" style="display:none;">आईडी नं. - <%= user.userId %></p>
         </div>
 
         <div class="detail">
-            <p>
-
+            <p id="content-en">
                 <span><%= (user.name || '').toUpperCase() %></span> Address.<span><%= (user.fullAddress || '').toUpperCase() %></span> is appointment on the post of <span><%= (user.position || '').toUpperCase() %> </span>. in the N.G.O for social service in
                 region.
                 <br><br>
@@ -128,13 +128,52 @@
                 <br><br>
                 With best wishes
             </p>
+            <p id="content-hi" style="display:none;">
+                <span><%= (user.name || '').toUpperCase() %></span> पता <span><%= (user.fullAddress || '').toUpperCase() %></span> को <span><%= (user.position || '').toUpperCase() %></span> के पद पर नियुक्त किया गया है। क्षेत्र में समाज सेवा के लिए एन.जी.ओ. में।
+                <br><br>
+                (जिला/शहर/ब्लॉक/गाँव/कॉलोनी) <span><%= (user.position || '').toUpperCase() %></span> <span><%= (user.district || '').toUpperCase() %></span>.
+                <br>
+                <span><%= (user.state || '').toUpperCase() %></span> राज्य भारत।
+                <br><br>
+                आपके ज्वाइनिंग की तारीख के दो महीने के भीतर किए गए सर्वेक्षण के आधार पर वित्तीय सहायता प्रदान की जाएगी। यदि आप सर्वेक्षण में विफल रहते हैं, तो आपके पद से जुड़ी सभी सेवाएं समाप्त कर दी जाएंगी; हालांकि, आप अगले वर्ष के लिए संगठन के सम्मानित सदस्य बने रहेंगे।
+                <br><br>
+                शुभकामनाओं के साथ
+            </p>
         </div>
     </div>
-    <center><button type="button" class="btn btn-primary mt-5" id="print" onclick="screenshot()"
-            name="button">Download</button></center>
+    <center>
+        <button type="button" class="btn btn-secondary mt-5 me-3" id="langToggle" onclick="toggleLanguage()">Switch to Hindi</button>
+        <button type="button" class="btn btn-primary mt-5" id="print" onclick="screenshot()"
+            name="button">Download</button>
+    </center>
 
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
+        let isHindi = false;
+        function toggleLanguage() {
+            isHindi = !isHindi;
+            const btn = document.getElementById('langToggle');
+            if (isHindi) {
+                document.getElementById('date-en').style.display = 'none';
+                document.getElementById('id-en').style.display = 'none';
+                document.getElementById('content-en').style.display = 'none';
+                
+                document.getElementById('date-hi').style.display = 'block';
+                document.getElementById('id-hi').style.display = 'block';
+                document.getElementById('content-hi').style.display = 'block';
+                btn.innerText = 'Switch to English';
+            } else {
+                document.getElementById('date-hi').style.display = 'none';
+                document.getElementById('id-hi').style.display = 'none';
+                document.getElementById('content-hi').style.display = 'none';
+                
+                document.getElementById('date-en').style.display = 'block';
+                document.getElementById('id-en').style.display = 'block';
+                document.getElementById('content-en').style.display = 'block';
+                btn.innerText = 'Switch to Hindi';
+            }
+        }
+
         const elementToSave = document.querySelector("#row");
         // Download with right click
         let filename = '<%= user.name.toUpperCase() %>_Appointment_letter.png'
