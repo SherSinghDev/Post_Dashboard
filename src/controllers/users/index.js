@@ -258,7 +258,7 @@ router.get('/one/:id', async (req, res) => {
         parents.forEach((p) => {
             console.log(p.type);
             if (p.type && p._id != result[0]._id) {
-                options += `<option value="${p._id}">${p.name} (${p.position})</option>`
+                options += `<option value="${p._id}">${p.name} - ${p.city || p.district || 'N/A'} - (${p.position}) [ID: ${p.userId || 'N/A'}]</option>`
             }
         })
 
@@ -534,7 +534,7 @@ async function getFiveLevelNetwork(currentUser) {
                 u.level = level;
 
                 // Identify parent name & ID from previous level
-                let parentUserRef = prevLevelUsers.find(p => 
+                let parentUserRef = prevLevelUsers.find(p =>
                     (u.parentUser && p._id.toString() === u.parentUser.toString()) ||
                     (u.referredBy && (p.userId === u.referredBy || p.referralCode === u.referredBy))
                 );
@@ -620,9 +620,9 @@ router.get('/network/details/:id', async (req, res) => {
         const member = networkData.allLevelUsers.find(u => u._id.toString() === req.params.id);
 
         if (!member) {
-            return res.status(403).json({ 
-                success: false, 
-                message: "You are not authorized to view this user. They are not in your 5 steps economic help network." 
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to view this user. They are not in your 5 steps economic help network."
             });
         }
 

@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
@@ -656,7 +656,7 @@ router.get('/one/:id', async (req, res) => {
     parents.forEach((p) => {
       if (p.type) {
         let isSelected = (appData.parentUser && appData.parentUser.toString() === p._id.toString()) ? 'selected' : '';
-        options += `<option value="${p._id}" ${isSelected}>${p.name} (${p.position}) [ID: ${p.userId}]</option>`;
+        options += `<option value="${p._id}" ${isSelected}>${p.name} - ${p.district || 'N/A'} - (${p.position}) [ID: ${p.userId || 'N/A'}]</option>`;
       }
     });
 
@@ -700,9 +700,9 @@ router.get('/type/:type', async (req, res) => {
   let type = req.params.type;
   let users;
   if (type === 'stockorder') {
-    users = await Users.find({ type: 'stockorder' }).select('name userId position -_id');
+    users = await Users.find({ type: 'stockorder' }).select('name userId position city district -_id');
   } else {
-    users = await Users.find({ role: "Coordinator" }).select('name referralCode userId position -_id');
+    users = await Users.find({ role: "Coordinator" }).select('name referralCode userId city position district -_id');
   }
   let user = '';
   res.render('applicationform', { users, user, type });

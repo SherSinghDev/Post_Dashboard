@@ -64,524 +64,601 @@
                             <div class="content-body">
                                 <div class="container">
                                     <% if(user.role=="Coordinator" ){ %>
-                                        <div class="d-flex mb-4 ">
-                                            <!-- <div class="text-end">
-                                            <a href="/applications/<%= user.userId %>" target="_blank"
-                                                class="btn btn-success me-1 add-btn">Create User</a>
-                                        </div> -->
-                                            <div class="text-end">
-                                                <a href="/patientform/<%= user.userId %>" target="_blank"
-                                                    class="btn btn-secondary me-1 add-btn ms-2 <%- (user.type=='stockorder' && user.position!='Centre Head' )?'d-none':'' %>">Patient
-                                                    Form</a>
-                                            </div>
-                                            <div class="text-end">
-                                                <a href="/users/idcard/<%= user._id %>" target="_blank"
-                                                    class="btn btn-info me-1 add-btn ms-2">Download Id Card</a>
-                                            </div>
-                                            <div class="text-end">
-                                                <a href="/users/letter/<%= user._id %>" target="_blank"
-                                                    class="btn btn-warning me-1 add-btn ms-2">Download Appointment
-                                                    Letter</a>
-                                            </div>
+                                        <div class="d-grid gap-2 d-sm-flex  flex-wrap mb-4">
+                                            <a href="/patientform/<%= user.userId %>" target="_blank"
+                                                class="btn btn-primary shadow-sm fw-semibold px-3">
+                                                <i class="fas fa-file-medical me-1"></i> Patient Form
+                                            </a>
+
+
                                             <% if (user.type=='stockorder' ) { %>
-                                                <div class="text-end">
-                                                    <a href="/users/network"
-                                                        class="btn btn-primary me-1 add-btn ms-2"><i
-                                                            class="fas fa-sitemap me-1"></i>My 5 Steps Economic Help</a>
-                                                </div>
+                                                <a href="/users/network"
+                                                    class="btn btn-success flex-grow-1 flex-md-grow-0"><i
+                                                        class="fas fa-sitemap me-1"></i>My 5 Steps Economic Help</a>
+                                                <button type="button"
+                                                    class="btn btn-danger fw-bold flex-grow-1 flex-md-grow-0"
+                                                    data-bs-toggle="modal" data-bs-target="#stockOrderNoticeModal">
+                                                    <i class="fas fa-bullhorn me-1"></i>आवश्यक सूचना
+                                                </button>
                                                 <% } %>
                                         </div>
                                         <% } %>
                                             <%- include('globals/dash_cards_style') %>
 
-                                            <!-- Quick Actions for Admin -->
-                                            <% if(user.role=="Admin" ){ %>
-                                                <div class="coordinator-actions mb-3">
-                                                    <span class="fw-bold text-dark me-2" style="font-size: 13.5px;">
-                                                        <i class="fas fa-bolt text-warning me-1"></i> Admin Actions:
-                                                    </span>
-                                                    <a href="/patientform/admin" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fa-solid fa-file-medical me-1"></i> Patient Form
-                                                    </a>
-                                                </div>
-                                            <% } %>
-
-                                            <!-- Quick Actions for Coordinator -->
-                                            <% if(user.role=="Coordinator" ){ %>
-                                                <div class="coordinator-actions">
-                                                    <span class="fw-bold text-dark me-2" style="font-size: 13.5px;">
-                                                        <i class="fas fa-bolt text-warning me-1"></i> Quick Actions:
-                                                    </span>
-                                                    <a href="/patientform/<%= user.userId %>" target="_blank"
-                                                        class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-file-medical me-1"></i> Create New Patient
-                                                    </a>
-                                                    <a href="/users/idcard/<%= user._id %>" target="_blank"
-                                                        class="btn btn-sm btn-outline-info">
-                                                        <i class="fas fa-id-card me-1"></i> ID Card
-                                                    </a>
-                                                    <a href="/users/letter/<%= user._id %>" target="_blank"
-                                                        class="btn btn-sm btn-outline-warning">
-                                                        <i class="fas fa-file-alt me-1"></i> Appointment Letter
-                                                    </a>
-                                                    <a href="/users/donation/<%= user._id %>" target="_blank"
-                                                        class="btn btn-sm btn-outline-success">
-                                                        <i class="fas fa-receipt me-1"></i> Donation Receipt
-                                                    </a>
-                                                </div>
-                                                <% } %>
-
-                                                    <!-- Filter Bar with Search & Tabs -->
-                                                    <div class="dash-filter-container">
-                                                        <div
-                                                            class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                                                            <!-- Filter Category Pills -->
-                                                            <div class="filter-pills" id="dashboardFilterPills">
-                                                                <button type="button" class="filter-btn active"
-                                                                    data-filter="all">All Modules</button>
-                                                                <button type="button" class="filter-btn"
-                                                                    data-filter="users">Users</button>
-                                                                <button type="button" class="filter-btn"
-                                                                    data-filter="patients">Patients</button>
-                                                                <button type="button" class="filter-btn"
-                                                                    data-filter="orders">Orders & Courier</button>
-                                                                <button type="button" class="filter-btn"
-                                                                    data-filter="stock">Stock & Finance</button>
-                                                                <button type="button" class="filter-btn"
-                                                                    data-filter="support">Support</button>
-                                                            </div>
-
-                                                            <!-- Live Search Bar -->
-                                                            <div class="position-relative">
-                                                                <i class="fas fa-search search-icon-wrapper"></i>
-                                                                <input type="text" id="dashboardSearch"
-                                                                    class="form-control dash-search-input"
-                                                                    placeholder="Search cards...">
-                                                            </div>
-                                                        </div>
+                                                <!-- Quick Actions for Admin -->
+                                                <% if(user.role=="Admin" ){ %>
+                                                    <div class="coordinator-actions mb-3">
+                                                        <span class="fw-bold text-dark me-2" style="font-size: 13.5px;">
+                                                            <i class="fas fa-bolt text-warning me-1"></i> Admin Actions:
+                                                        </span>
+                                                        <a href="/patientform/admin"
+                                                            class="btn btn-sm btn-outline-primary">
+                                                            <i class="fa-solid fa-file-medical me-1"></i> Patient Form
+                                                        </a>
                                                     </div>
+                                                    <% } %>
 
-                                                    <!-- Cards Grid -->
-                                                    <div class="row" id="dashboardCardsContainer">
-
-                                                        <!-- Card: Verified Users -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
-                                                            data-category="users"
-                                                            data-title="verified users your users">
-                                                            <div class="dash-card">
+                                                        <!-- Quick Actions for Coordinator -->
+                                                        <% if(user.role=="Coordinator" ){ %>
+                                                            <div
+                                                                class="coordinator-actions mb-4 p-3 bg-white rounded shadow-sm border">
                                                                 <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">
-                                                                            <%= (user.role=='Admin') ? 'Verified Users' : 'Your Users' %>
+                                                                    class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
+                                                                    <span class="fw-bold text-dark text-center"
+                                                                        style="font-size: 15px; min-width: max-content;">
+                                                                        <i
+                                                                            class="fas fa-bolt text-warning fs-5 align-middle me-1"></i>
+                                                                        Quick Actions
+                                                                    </span>
+                                                                    <div
+                                                                        class="d-flex flex-wrap justify-content-center gap-2">
+
+                                                                        <a href="/users/idcard/<%= user._id %>"
+                                                                            target="_blank"
+                                                                            class="btn btn-info shadow-sm fw-semibold px-3 py-2 text-white">
+                                                                            <i class="fas fa-id-card me-1"></i> ID Card
+                                                                        </a>
+                                                                        <a href="/users/letter/<%= user._id %>"
+                                                                            target="_blank"
+                                                                            class="btn btn-warning shadow-sm fw-semibold px-3 py-2">
+                                                                            <i class="fas fa-file-alt me-1"></i>
+                                                                            Appointment Letter
+                                                                        </a>
+                                                                        <a href="/users/donation/<%= user._id %>"
+                                                                            target="_blank"
+                                                                            class="btn btn-primary shadow-sm fw-semibold px-3 py-2">
+                                                                            <i class="fas fa-receipt me-1"></i> Donation
+                                                                            Receipt
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <% } %>
+
+                                                                <!-- Filter Bar with Search & Tabs -->
+                                                                <div class="dash-filter-container">
+                                                                    <div
+                                                                        class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                                                                        <!-- Filter Category Pills -->
+                                                                        <div class="filter-pills"
+                                                                            id="dashboardFilterPills">
+                                                                            <button type="button"
+                                                                                class="filter-btn active"
+                                                                                data-filter="all">All Modules</button>
+                                                                            <button type="button" class="filter-btn"
+                                                                                data-filter="users">Users</button>
+                                                                            <button type="button" class="filter-btn"
+                                                                                data-filter="patients">Patients</button>
+                                                                            <button type="button" class="filter-btn"
+                                                                                data-filter="orders">Orders &
+                                                                                Courier</button>
+                                                                            <button type="button" class="filter-btn"
+                                                                                data-filter="stock">Stock &
+                                                                                Finance</button>
+                                                                            <button type="button" class="filter-btn"
+                                                                                data-filter="support">Support</button>
                                                                         </div>
-                                                                        <h3 class="dash-card-value">
-                                                                            <%= verified || 0 %>
-                                                                        </h3>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-blue">
-                                                                        <i class="fas fa-user-check"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/users" class="dash-card-action">
-                                                                    <span>View All Users</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Unverified Users -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
-                                                            data-category="users"
-                                                            data-title="unverified users pending applications">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Unverified Users
+                                                                        <!-- Live Search Bar -->
+                                                                        <div class="position-relative">
+                                                                            <i
+                                                                                class="fas fa-search search-icon-wrapper"></i>
+                                                                            <input type="text" id="dashboardSearch"
+                                                                                class="form-control dash-search-input"
+                                                                                placeholder="Search cards...">
                                                                         </div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="color: #d97706;">
-                                                                            <%= unverified || 0 %>
-                                                                        </h3>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-amber">
-                                                                        <i class="fas fa-user-clock"></i>
                                                                     </div>
                                                                 </div>
-                                                                <a href="/applications/applied"
-                                                                    class="dash-card-action">
-                                                                    <span>Verify Users</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Direct Members (Step 1) - Stock Order -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
-                                                            data-category="users"
-                                                            data-title="level 1 direct child members referrals network">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Direct Members
-                                                                            (Step 1) / सीधे सदस्य (चरण 1)</div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="color: #2563eb;">
-                                                                            <%= (typeof networkCounts !== 'undefined' && networkCounts.l1) || 0 %>
-                                                                        </h3>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-blue">
-                                                                        <i class="fas fa-user-friends"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/users/network?level=1"
-                                                                    class="dash-card-action">
-                                                                    <span>View Direct Team</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                                                <!-- Cards Grid -->
+                                                                <div class="row" id="dashboardCardsContainer">
 
-                                                        <!-- Card: 5 Steps Economic Help - Stock Order -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
-                                                            data-category="users"
-                                                            data-title="5 Steps Economic Help total team hierarchy downline">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">5 Steps Economic Help / 5 कदम आर्थिक मदद
+                                                                    <!-- Card: Verified Users -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="verified users your users">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        <%= (user.role=='Admin' )
+                                                                                            ? 'Verified Users'
+                                                                                            : 'Your Users' %>
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value">
+                                                                                        <%= verified || 0 %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-blue">
+                                                                                    <i class="fas fa-user-check"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/users" class="dash-card-action">
+                                                                                <span>View All Users</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="color: #7c3aed;">
-                                                                            <%= (typeof networkCounts !== 'undefined' && networkCounts.total) || 0 %>
-                                                                        </h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-purple">
-                                                                        <i class="fas fa-sitemap"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/users/network" class="dash-card-action">
-                                                                    <span>Explore 5 Steps</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Platform Wallet Amount - Stock Order -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
-                                                            data-category="stock"
-                                                            data-title="platform wallet amount commission earnings balance">
-                                                            <div class="dash-card" style="border-left: 4px solid #059669;">
-                                                                <div class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Platform Wallet / प्लेटफॉर्म वॉलेट</div>
-                                                                        <h3 class="dash-card-value" style="color: #059669; font-size:22px;">
-                                                                            &#8377;<%= (platformWalletAmount || 0).toLocaleString('en-IN') %>
-                                                                        </h3>
-                                                                        <div style="font-size:11.5px; color:#94a3b8; margin-top:2px;">Commission Earned</div>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-emerald">
-                                                                        <i class="fas fa-coins"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/stock/commissionhistory" class="dash-card-action" style="color:#059669;">
-                                                                    <span>View Commission History</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Card: Unverified Patients -->
-
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
-                                                            data-category="patients" data-title="unverified patients">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Unverified Patients<%- (user.type=='stockorder') ? ' / असत्यापित मरीज़' : '' %>
+                                                                    <!-- Card: Unverified Users -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="unverified users pending applications">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Unverified Users
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="color: #d97706;">
+                                                                                        <%= unverified || 0 %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-amber">
+                                                                                    <i class="fas fa-user-clock"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/applications/applied"
+                                                                                class="dash-card-action">
+                                                                                <span>Verify Users</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value">
-                                                                            <%= patients %>
-                                                                        </h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-cyan">
-                                                                        <i class="fas fa-hospital-user"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/patientform/patients"
-                                                                    class="dash-card-action">
-                                                                    <span>View Patients</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Pending Patients -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
-                                                            data-category="patients" data-title="pending patients">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Pending Patients<%- (user.type=='stockorder') ? ' / लंबित मरीज़' : '' %>
+                                                                    <!-- Card: Direct Members (Step 1) - Stock Order -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="level 1 direct child members referrals network">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Direct
+                                                                                        Members
+                                                                                        (Step 1) / सीधे सदस्य (चरण 1)
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="color: #2563eb;">
+                                                                                        <%= (typeof networkCounts
+                                                                                            !=='undefined' &&
+                                                                                            networkCounts.l1) || 0 %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-blue">
+                                                                                    <i class="fas fa-user-friends"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/users/network?level=1"
+                                                                                class="dash-card-action">
+                                                                                <span>View Direct Team</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value">
-                                                                            <%= pendingpatients %>
-                                                                        </h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-rose">
-                                                                        <i class="fas fa-clock"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/patientform/pendingpatients"
-                                                                    class="dash-card-action">
-                                                                    <span>Manage Pending</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Verified Patients -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
-                                                            data-category="patients" data-title="verified patients">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Verified Patients<%- (user.type=='stockorder') ? ' / सत्यापित मरीज़' : '' %>
+                                                                    <!-- Card: 5 Steps Economic Help - Stock Order -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="5 Steps Economic Help total team hierarchy downline">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">5 Steps
+                                                                                        Economic Help / 5 कदम आर्थिक मदद
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="color: #7c3aed;">
+                                                                                        <%= (typeof networkCounts
+                                                                                            !=='undefined' &&
+                                                                                            networkCounts.total) || 0 %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-purple">
+                                                                                    <i class="fas fa-sitemap"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/users/network"
+                                                                                class="dash-card-action">
+                                                                                <span>Explore 5 Steps</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value">
-                                                                            <%= varifiedPatients %>
-                                                                        </h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-emerald">
-                                                                        <i class="fas fa-check-double"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/patientform/varifiedpatients"
-                                                                    class="dash-card-action">
-                                                                    <span>View Verified</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Track Orders -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
-                                                            data-category="orders"
-                                                            data-title="track orders courier all orders">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Track Orders</div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="font-size: 19px; color: #0284c7; padding-top: 4px;">
-                                                                            Courier Portal</h3>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-indigo">
-                                                                        <i class="fas fa-shipping-fast"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/patientorder/allorders"
-                                                                    class="dash-card-action">
-                                                                    <span>Track Courier Orders</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Card: Patient Orders -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
-                                                            data-category="orders" data-title="patient orders">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Patient Orders
+                                                                    <!-- Card: Platform Wallet Amount - Stock Order -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
+                                                                        data-category="stock"
+                                                                        data-title="platform wallet amount commission earnings balance">
+                                                                        <div class="dash-card"
+                                                                            style="border-left: 4px solid #059669;">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Platform Wallet / प्लेटफॉर्म
+                                                                                        वॉलेट</div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="color: #059669; font-size:22px;">
+                                                                                        &#8377;<%= (platformWalletAmount
+                                                                                            ||
+                                                                                            0).toLocaleString('en-IN')
+                                                                                            %>
+                                                                                    </h3>
+                                                                                    <div
+                                                                                        style="font-size:11.5px; color:#94a3b8; margin-top:2px;">
+                                                                                        Commission Earned</div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="dash-card-icon icon-emerald">
+                                                                                    <i class="fas fa-coins"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/stock/commissionhistory"
+                                                                                class="dash-card-action"
+                                                                                style="color:#059669;">
+                                                                                <span>View Commission History</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value">
-                                                                            <%= patientsOrders %>
-                                                                        </h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-emerald">
-                                                                        <i class="fas fa-box"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/patientform/orders" class="dash-card-action">
-                                                                    <span>View Orders</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Delivered Orders -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder') ?'d-none':'' %>"
-                                                            data-category="orders" data-title="total delivered orders">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Delivered Orders
+                                                                    <!-- Card: Unverified Patients -->
+
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
+                                                                        data-category="patients"
+                                                                        data-title="unverified patients">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Unverified Patients<%-
+                                                                                            (user.type=='stockorder' )
+                                                                                            ? ' / असत्यापित मरीज़' : ''
+                                                                                            %>
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value">
+                                                                                        <%= patients %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-cyan">
+                                                                                    <i class="fas fa-hospital-user"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/patientform/patients"
+                                                                                class="dash-card-action">
+                                                                                <span>View Patients</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value">
-                                                                            <%= deliveredOrders %>
-                                                                        </h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-amber">
-                                                                        <i class="fas fa-truck-ramp-box"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/patientform/delivered"
-                                                                    class="dash-card-action">
-                                                                    <span>View Delivered</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Money Transactions -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item d-none"
-                                                            data-category="stock"
-                                                            data-title="money transactions payments finance">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Money Transactions
+                                                                    <!-- Card: Pending Patients -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
+                                                                        data-category="patients"
+                                                                        data-title="pending patients">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Pending
+                                                                                        Patients<%-
+                                                                                            (user.type=='stockorder' )
+                                                                                            ? ' / लंबित मरीज़' : '' %>
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value">
+                                                                                        <%= pendingpatients %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-rose">
+                                                                                    <i class="fas fa-clock"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/patientform/pendingpatients"
+                                                                                class="dash-card-action">
+                                                                                <span>Manage Pending</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="font-size: 19px; color: #059669; padding-top: 4px;">
-                                                                            Ledger & Flow</h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-emerald">
-                                                                        <i class="fas fa-money-bill-wave"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/stock/moneytransactions"
-                                                                    class="dash-card-action">
-                                                                    <span>View Transactions</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
 
-                                                        <!-- Card: Stock Transactions -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>"
-                                                            data-category="stock"
-                                                            data-title="stock transactions inventory logs">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Stock Transactions<%- (user.type=='stockorder') ? ' / स्टॉक लेनदेन' : '' %>
+                                                                    <!-- Card: Verified Patients -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
+                                                                        data-category="patients"
+                                                                        data-title="verified patients">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Verified Patients<%-
+                                                                                            (user.type=='stockorder' )
+                                                                                            ? ' / सत्यापित मरीज़' : ''
+                                                                                            %>
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value">
+                                                                                        <%= varifiedPatients %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="dash-card-icon icon-emerald">
+                                                                                    <i class="fas fa-check-double"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/patientform/varifiedpatients"
+                                                                                class="dash-card-action">
+                                                                                <span>View Verified</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
                                                                         </div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="font-size: 19px; color: #d97706; padding-top: 4px;">
-                                                                            Inventory Activity</h3>
                                                                     </div>
-                                                                    <div class="dash-card-icon icon-amber">
-                                                                        <i class="fas fa-boxes-stacked"></i>
+
+                                                                    <!-- Card: Track Orders -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                        data-category="orders"
+                                                                        data-title="track orders courier all orders">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Track
+                                                                                        Orders</div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="font-size: 19px; color: #0284c7; padding-top: 4px;">
+                                                                                        Courier Portal</h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-indigo">
+                                                                                    <i class="fas fa-shipping-fast"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/patientorder/allorders"
+                                                                                class="dash-card-action">
+                                                                                <span>Track Courier Orders</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Patient Orders -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                        data-category="orders"
+                                                                        data-title="patient orders">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Patient
+                                                                                        Orders
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value">
+                                                                                        <%= patientsOrders %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="dash-card-icon icon-emerald">
+                                                                                    <i class="fas fa-box"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/patientform/orders"
+                                                                                class="dash-card-action">
+                                                                                <span>View Orders</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Delivered Orders -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder') ?'d-none':'' %>"
+                                                                        data-category="orders"
+                                                                        data-title="total delivered orders">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Delivered Orders
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value">
+                                                                                        <%= deliveredOrders %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-amber">
+                                                                                    <i
+                                                                                        class="fas fa-truck-ramp-box"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/patientform/delivered"
+                                                                                class="dash-card-action">
+                                                                                <span>View Delivered</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Money Transactions -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item d-none"
+                                                                        data-category="stock"
+                                                                        data-title="money transactions payments finance">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Money
+                                                                                        Transactions
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="font-size: 19px; color: #059669; padding-top: 4px;">
+                                                                                        Ledger & Flow</h3>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="dash-card-icon icon-emerald">
+                                                                                    <i
+                                                                                        class="fas fa-money-bill-wave"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/stock/moneytransactions"
+                                                                                class="dash-card-action">
+                                                                                <span>View Transactions</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Stock Transactions -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type!='stockorder' && user.role!='Admin') ?'d-none':'' %>"
+                                                                        data-category="stock"
+                                                                        data-title="stock transactions inventory logs">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Stock
+                                                                                        Transactions<%-
+                                                                                            (user.type=='stockorder' )
+                                                                                            ? ' / स्टॉक लेनदेन' : '' %>
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="font-size: 19px; color: #d97706; padding-top: 4px;">
+                                                                                        Inventory Activity</h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-amber">
+                                                                                    <i class="fas fa-boxes-stacked"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/stock/stocktransactions"
+                                                                                class="dash-card-action">
+                                                                                <span>View Logs</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: My Stock -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role!='Admin') ?'d-none':'' %>"
+                                                                        data-category="stock"
+                                                                        data-title="my stock inventory available balance">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Stock
+                                                                                        Balance</div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="font-size: 19px; color: #0284c7; padding-top: 4px;">
+                                                                                        Available Items</h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-blue">
+                                                                                    <i class="fas fa-warehouse"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/stock/mystock"
+                                                                                class="dash-card-action">
+                                                                                <span>Inspect Stock</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Profile -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
+                                                                        data-category="support"
+                                                                        data-title="profile account my account">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">My
+                                                                                        Account<%-
+                                                                                            (user.type=='stockorder' )
+                                                                                            ? ' / मेरा खाता' : '' %>
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="font-size: 19px; color: #475569; padding-top: 4px;">
+                                                                                        <%= user.name || 'User Profile'
+                                                                                            %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-purple">
+                                                                                    <i class="fas fa-user-gear"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/users/profile"
+                                                                                class="dash-card-action">
+                                                                                <span>Manage Profile</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Need Help -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
+                                                                        data-category="support"
+                                                                        data-title="need help support ticket assistance">
+                                                                        <div class="dash-card">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Helpdesk<%-
+                                                                                            (user.type=='stockorder' )
+                                                                                            ? ' / सहायता' : '' %></div>
+                                                                                    <h3 class="dash-card-value"
+                                                                                        style="font-size: 19px; color: #0284c7; padding-top: 4px;">
+                                                                                        24/7 Assistance</h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-cyan">
+                                                                                    <i class="fas fa-headset"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/support/help"
+                                                                                class="dash-card-action">
+                                                                                <span>Get Help</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <!-- Empty state when search/filter returns nothing -->
+                                                                <div id="noCardsFound" class="text-center py-5 d-none">
+                                                                    <div
+                                                                        class="p-4 bg-white rounded-3 border d-inline-block shadow-sm">
+                                                                        <i
+                                                                            class="fas fa-search fa-2x text-muted mb-2"></i>
+                                                                        <h6 class="text-dark fw-bold mb-1">No matching
+                                                                            modules found
+                                                                        </h6>
+                                                                        <p class="text-muted small mb-0">Try adjusting
+                                                                            your search
+                                                                            or category filter.</p>
                                                                     </div>
                                                                 </div>
-                                                                <a href="/stock/stocktransactions"
-                                                                    class="dash-card-action">
-                                                                    <span>View Logs</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Card: My Stock -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role!='Admin') ?'d-none':'' %>"
-                                                            data-category="stock"
-                                                            data-title="my stock inventory available balance">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Stock Balance</div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="font-size: 19px; color: #0284c7; padding-top: 4px;">
-                                                                            Available Items</h3>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-blue">
-                                                                        <i class="fas fa-warehouse"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/stock/mystock" class="dash-card-action">
-                                                                    <span>Inspect Stock</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Card: Profile -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
-                                                            data-category="support"
-                                                            data-title="profile account my account">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">My Account<%- (user.type=='stockorder') ? ' / मेरा खाता' : '' %></div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="font-size: 19px; color: #475569; padding-top: 4px;">
-                                                                            <%= user.name || 'User Profile' %>
-                                                                        </h3>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-purple">
-                                                                        <i class="fas fa-user-gear"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/users/profile" class="dash-card-action">
-                                                                    <span>Manage Profile</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Card: Need Help -->
-                                                        <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
-                                                            data-category="support"
-                                                            data-title="need help support ticket assistance">
-                                                            <div class="dash-card">
-                                                                <div
-                                                                    class="d-flex align-items-start justify-content-between mb-3">
-                                                                    <div>
-                                                                        <div class="dash-card-title">Helpdesk<%- (user.type=='stockorder') ? ' / सहायता' : '' %></div>
-                                                                        <h3 class="dash-card-value"
-                                                                            style="font-size: 19px; color: #0284c7; padding-top: 4px;">
-                                                                            24/7 Assistance</h3>
-                                                                    </div>
-                                                                    <div class="dash-card-icon icon-cyan">
-                                                                        <i class="fas fa-headset"></i>
-                                                                    </div>
-                                                                </div>
-                                                                <a href="/support/help" class="dash-card-action">
-                                                                    <span>Get Help</span>
-                                                                    <i class="fas fa-arrow-right"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <!-- Empty state when search/filter returns nothing -->
-                                                    <div id="noCardsFound" class="text-center py-5 d-none">
-                                                        <div
-                                                            class="p-4 bg-white rounded-3 border d-inline-block shadow-sm">
-                                                            <i class="fas fa-search fa-2x text-muted mb-2"></i>
-                                                            <h6 class="text-dark fw-bold mb-1">No matching modules found
-                                                            </h6>
-                                                            <p class="text-muted small mb-0">Try adjusting your search
-                                                                or category filter.</p>
-                                                        </div>
-                                                    </div>
                                 </div>
 
                             </div>
@@ -790,6 +867,268 @@
             </script>
 
 
+            </script>
+
+            <% if (user && user.type==='stockorder' ) { %>
+                <!-- Stock Order Notice Modal -->
+                <style>
+                    .stock-notice-modal .modal-content {
+                        border-radius: 16px;
+                        overflow: hidden;
+                        border: none;
+                        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .stock-notice-modal .modal-header {
+                        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                        border-bottom: none;
+                        border-top: 4px solid #ff9933;
+                        padding: 1.5rem 1.5rem 1rem;
+                    }
+
+                    .stock-notice-modal .org-title {
+                        color: #ffffff;
+                        font-weight: 800;
+                        margin-bottom: 0.2rem;
+                        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                    }
+
+                    .stock-notice-modal .org-subtitle {
+                        color: #ffd700;
+                        font-style: italic;
+                        font-weight: 600;
+                        margin-bottom: 0;
+                    }
+
+                    .stock-notice-badge {
+                        background-color: #ff3333;
+                        color: white;
+                        padding: 4px 12px;
+                        border-radius: 20px;
+                        font-size: 0.85rem;
+                        font-weight: bold;
+                        display: inline-block;
+                        margin-top: 10px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .stock-notice-body {
+                        padding: 1.5rem;
+                        background-color: #ffffff;
+                    }
+
+                    .notice-list {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                    .notice-list-item {
+                        display: flex;
+                        align-items: flex-start;
+                        margin-bottom: 12px;
+                        padding: 12px;
+                        background: #f8fafc;
+                        border-radius: 8px;
+                        border: 1px solid #e2e8f0;
+                        transition: transform 0.2s;
+                    }
+
+                    .notice-list-item:hover {
+                        transform: translateX(4px);
+                        background: #f1f5f9;
+                    }
+
+                    .notice-number {
+                        background: #2a5298;
+                        color: white;
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        font-size: 0.9rem;
+                        margin-right: 12px;
+                        flex-shrink: 0;
+                    }
+
+                    .notice-text {
+                        color: #1e293b;
+                        font-size: 14.5px;
+                        line-height: 1.5;
+                        font-weight: 500;
+                        margin: 0;
+                        align-self: center;
+                    }
+
+                    .notice-warning .notice-number {
+                        background: #dc3545;
+                    }
+
+                    .notice-warning {
+                        border-color: #f5c2c7;
+                        background: #fff3f3;
+                    }
+
+                    .notice-success .notice-number {
+                        background: #198754;
+                    }
+
+                    .notice-success {
+                        border-color: #badbcc;
+                        background: #f3faf6;
+                    }
+
+                    .sign-box {
+                        margin-top: 20px;
+                        text-align: right;
+                        padding-top: 15px;
+                        border-top: 1px dashed #cbd5e1;
+                    }
+
+                    .sign-box p {
+                        margin: 0;
+                        line-height: 1.4;
+                        color: #334155;
+                    }
+
+                    /* Dark Mode Support */
+                    [data-theme-version="dark"] .stock-notice-body {
+                        background-color: #0f172a;
+                    }
+
+                    [data-theme-version="dark"] .notice-list-item {
+                        background: rgba(255, 255, 255, 0.03);
+                        border-color: #334155;
+                    }
+
+                    [data-theme-version="dark"] .notice-list-item:hover {
+                        background: rgba(255, 255, 255, 0.06);
+                    }
+
+                    [data-theme-version="dark"] .notice-text {
+                        color: #e2e8f0;
+                    }
+
+                    [data-theme-version="dark"] .notice-warning {
+                        background: rgba(220, 53, 69, 0.1);
+                        border-color: #7c2d36;
+                    }
+
+                    [data-theme-version="dark"] .notice-success {
+                        background: rgba(25, 135, 84, 0.1);
+                        border-color: #1e523a;
+                    }
+
+                    [data-theme-version="dark"] .sign-box p {
+                        color: #cbd5e1;
+                    }
+
+                    [data-theme-version="dark"] .sign-box {
+                        border-top-color: #334155;
+                    }
+
+                    [data-theme-version="dark"] .modal-footer {
+                        border-top-color: #334155;
+                    }
+                </style>
+
+                <div class="modal fade stock-notice-modal" id="stockOrderNoticeModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header flex-column align-items-center position-relative">
+                                <button type="button"
+                                    class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h3 class="org-title text-center">बिनुपुर सेवा रिसर्च फाऊंडेशन</h3>
+                                <h6 class="org-subtitle text-center">(सेवा ही पहचान)</h6>
+                                <div class="stock-notice-badge"><i class="fas fa-bullhorn me-1"></i> आवश्यक सूचना</div>
+                            </div>
+                            <div class="modal-body stock-notice-body">
+                                <ul class="notice-list">
+                                    <li class="notice-list-item">
+                                        <div class="notice-number">1</div>
+                                        <p class="notice-text">हमारी संस्था का मकसद देश को दवाइयों, बीमारियों और इलाज के
+                                            नाम पर होने वाली लूट से बचाना</p>
+                                    </li>
+                                    <li class="notice-list-item">
+                                        <div class="notice-number">2</div>
+                                        <p class="notice-text">घर-घर सर्वे होना</p>
+                                    </li>
+                                    <li class="notice-list-item">
+                                        <div class="notice-number">3</div>
+                                        <p class="notice-text">सभी तहसील और ब्लॉक का सर्वे होना अनिवार्य है</p>
+                                    </li>
+                                    <li class="notice-list-item">
+                                        <div class="notice-number">4</div>
+                                        <p class="notice-text">जिले का एक जिला प्रतिनिधित्व होगा</p>
+                                    </li>
+                                    <li class="notice-list-item">
+                                        <div class="notice-number">5</div>
+                                        <p class="notice-text">प्रतिनिधित्व को एक हफ्ते के अंदर अपनी टीम तैयार कर लेनी
+                                            है</p>
+                                    </li>
+                                    <li class="notice-list-item notice-warning">
+                                        <div class="notice-number">6</div>
+                                        <p class="notice-text">सर्वे का कार्य विलंब हुआ तो 60 दिन के बाद उसको निष्कासित
+                                            कर दिया जाएगा</p>
+                                    </li>
+                                    <li class="notice-list-item notice-success">
+                                        <div class="notice-number">7</div>
+                                        <p class="notice-text">100 सर्वे पर जिला प्रतिनिधित्व को उसके परिवार को आर्थिक
+                                            सहयोग संस्था के द्वारा मिलेगा</p>
+                                    </li>
+                                    <li class="notice-list-item">
+                                        <div class="notice-number">8</div>
+                                        <p class="notice-text">अगर आपके सर्वे का फोटो ग्रुप में नहीं आ रहा है उसे संस्था
+                                            यह मान लेगी कि आप कार्य नहीं कर रहे हैं और संस्था का समय खराब कर रहे हैं</p>
+                                    </li>
+                                    <li class="notice-list-item notice-warning">
+                                        <div class="notice-number">9</div>
+                                        <p class="notice-text">अगर सर्वे के दौरान यह पता चल गया कि दूसरे जिला का
+                                            प्रतिनिधित्व आपके जिले में आकर के काम कर रहा है तो उसे अपने पद से निष्कासित
+                                            कर दिया जाएगा</p>
+                                    </li>
+                                    <li class="notice-list-item notice-warning">
+                                        <div class="notice-number">10</div>
+                                        <p class="notice-text">संस्था के नियम का पालन नहीं करते हैं तो 2 महीने बाद आपको
+                                            हमारे सिस्टम से भी एप्लीकेशन से आपको हटा दिया जाएगा</p>
+                                    </li>
+                                </ul>
+
+                                <div class="sign-box">
+                                    <p class="fw-bold fs-5 mb-1">धन्यवाद</p>
+                                    <p class="fw-bolder text-primary">अभिषेक दास</p>
+                                    <p class="small">प्रोग्राम मैनेजर</p>
+                                    <p class="small">ऑल इंडिया हेड</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="background-color: var(--bs-body-bg);">
+                                <button type="button" class="btn btn-secondary px-4 fw-bold" data-bs-dismiss="modal"><i
+                                        class="fas fa-check-circle me-1"></i>समझ गया / बंद करें</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const serverNoticeFlag = "<%= (typeof showStockOrderNotice !== 'undefined' && showStockOrderNotice) ? 'true' : 'false' %>" === "true";
+                        const clientNoticeFlag = sessionStorage.getItem('stock_order_show_notice') === 'true';
+
+                        if (serverNoticeFlag || clientNoticeFlag) {
+                            sessionStorage.removeItem('stock_order_show_notice');
+                            var noticeModalEl = document.getElementById('stockOrderNoticeModal');
+                            if (noticeModalEl) {
+                                var myNoticeModal = new bootstrap.Modal(noticeModalEl);
+                                myNoticeModal.show();
+                            }
+                        }
+                    });
+                </script>
+                <% } %>
 
     </body>
 

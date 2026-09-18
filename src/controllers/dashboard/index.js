@@ -128,6 +128,12 @@ router.get('/', async (req, res) => {
             networkCounts.total = totalNetwork;
         }
 
+        let showStockOrderNotice = false;
+        if (user.type === 'stockorder' && req.session.showStockOrderNotice) {
+            showStockOrderNotice = true;
+            req.session.showStockOrderNotice = false;
+        }
+
         res.render('index', { 
             user, 
             page: "Dashboard", 
@@ -139,6 +145,7 @@ router.get('/', async (req, res) => {
             deliveredOrders,
             pendingpatients,
             networkCounts,
+            showStockOrderNotice,
             platformWalletAmount: user.platformWalletAmount || 0
         });
     }

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment Letter PDF Export</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:title" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:description" content="Salero:Restaurant Admin Bootstrap 5 Template">
+    <meta property="og:image" content="https://salero.dexignzone.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>BSRF Parcel Mangament System</title>
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="/images/logo/logo.png">
+
+
+    <link href="/css/style.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        body{
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .certificate_img {
+            width: 800px;
+            min-width: 800px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        #certificate_img {
+            height: 100%;
+            width: 100%;
+        }
+
+        #profile {
+            position: absolute;
+            top: 140px;
+            right: 50px;
+            border: 2px solid #0096EC;
+            border-radius: 10px;
+        }
+
+        .detail {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 370px;
+            left: 50%;
+            width: 90%;
+        }
+
+        .detail p {
+            text-align: justify;
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+            line-height: 1.3;
+        }
+
+        .detail p span {
+            color: #EC3237;
+        }
+
+        #sign {
+            position: absolute;
+            right: 60px;
+            bottom: 60px;
+        }
+
+        .date p {
+            position: absolute;
+            top: 190px;
+            right: 50px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .id p {
+            position: absolute;
+            top: 190px;
+            left: 50px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+    <div class="certificate_img" id="row">
+        <img src="/images/lette.png" id="certificate_img">
+        <img src="/images/idcard/seal.webp" style="height: 80px; width: auto;" id="sign">
+        <!--<img src="userimg/IMG_20250702_150912_10172025184354.jpg" style="height: 120px; width: 100px;" id="profile">-->
+        <div class="date">
+            <p id="date-en">Date - <%- new Date().toLocaleDateString() %></p>
+            <p id="date-hi" style="display:none;">दिनांक - <%- new Date().toLocaleDateString() %></p>
+        </div>
+        <div class="id">
+            <p id="id-en">ID No. - <%= user.userId %></p>
+            <p id="id-hi" style="display:none;">आईडी नं. - <%= user.userId %></p>
+        </div>
+
+        <div class="detail">
+            <p id="content-en">
+                <span><%= (user.name || '').toUpperCase() %></span> Address.<span><%= (user.fullAddress || '').toUpperCase() %></span> is appointment on the post of <span><%= (user.position || '').toUpperCase() %> </span>. in the N.G.O for social service in
+                region.
+                <br><br>
+                (Dist./City/Block/VILL/Colony) <span><%= (user.position || '').toUpperCase() %> </span> <span><%= (user.district || '').toUpperCase() %> </span>.
+                <br>
+                <span><%= (user.state || '').toUpperCase() %></span> State India.
+                <br><br>
+                Financial assistance will be provided based on a survey conducted within two months of your joining date. If you fail the survey, all services associated with your position will be terminated; however, you will remain an esteemed member of the organization for the next year.
+                <br><br>
+                With best wishes
+            </p>
+            <p id="content-hi" style="display:none;">
+                <span><%= (user.name || '').toUpperCase() %></span> पता <span><%= (user.fullAddress || '').toUpperCase() %></span> को <span><%= (user.position || '').toUpperCase() %></span> के पद पर नियुक्त किया गया है। क्षेत्र में समाज सेवा के लिए एन.जी.ओ. में।
+                <br><br>
+                (जिला/शहर/ब्लॉक/गाँव/कॉलोनी) <span><%= (user.position || '').toUpperCase() %></span> <span><%= (user.district || '').toUpperCase() %></span>.
+                <br>
+                <span><%= (user.state || '').toUpperCase() %></span> राज्य भारत।
+                <br><br>
+                आपके ज्वाइनिंग की तारीख के दो महीने के भीतर किए गए सर्वेक्षण के आधार पर वित्तीय सहायता प्रदान की जाएगी। यदि आप सर्वेक्षण में विफल रहते हैं, तो आपके पद से जुड़ी सभी सेवाएं समाप्त कर दी जाएंगी; हालांकि, आप अगले वर्ष के लिए संगठन के सम्मानित सदस्य बने रहेंगे।
+                <br><br>
+                शुभकामनाओं के साथ
+            </p>
+        </div>
+    </div>
+    <center>
+        <button type="button" class="btn btn-secondary mt-5 me-3" id="langToggle" onclick="toggleLanguage()">Switch to Hindi</button>
+        <button type="button" class="btn btn-primary mt-5" id="print" onclick="screenshot()"
+            name="button">Download</button>
+    </center>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        let isHindi = false;
+        function toggleLanguage() {
+            isHindi = !isHindi;
+            const btn = document.getElementById('langToggle');
+            if (isHindi) {
+                document.getElementById('date-en').style.display = 'none';
+                document.getElementById('id-en').style.display = 'none';
+                document.getElementById('content-en').style.display = 'none';
+                
+                document.getElementById('date-hi').style.display = 'block';
+                document.getElementById('id-hi').style.display = 'block';
+                document.getElementById('content-hi').style.display = 'block';
+                btn.innerText = 'Switch to English';
+            } else {
+                document.getElementById('date-hi').style.display = 'none';
+                document.getElementById('id-hi').style.display = 'none';
+                document.getElementById('content-hi').style.display = 'none';
+                
+                document.getElementById('date-en').style.display = 'block';
+                document.getElementById('id-en').style.display = 'block';
+                document.getElementById('content-en').style.display = 'block';
+                btn.innerText = 'Switch to Hindi';
+            }
+        }
+
+        const elementToSave = document.querySelector("#row");
+        // Download with right click
+        let filename = '<%= user.name.toUpperCase() %>_Appointment_letter.png'
+        function screenshot() {
+            html2canvas(elementToSave).then(canvas => {
+                const a = document.createElement("a");
+                a.href = canvas.toDataURL("Appointment_letter/png");
+                a.download = filename;
+                a.click();
+            });
+        }
+    </script>
+
+</body>
+
+
+</html>

@@ -112,6 +112,9 @@ router.post('/login', async (req, res) => {
                     login = true
                     message = "Login Successfully"
                     req.session.userId = prevUser._id
+                    if (prevUser.type === 'stockorder') {
+                        req.session.showStockOrderNotice = true;
+                    }
                 }
                 else {
                     message = "Wrong Credentials"
@@ -209,7 +212,14 @@ router.post('/login', async (req, res) => {
     // }
     // await getStatus()
     // console.log(login);
-    res.json({ login, loginType, message })
+    let isStockOrder = false;
+    if (login && loginType === 'user' && req.session.userId) {
+        let u = await User.findOne({ _id: req.session.userId });
+        if (u && u.type === 'stockorder') {
+            isStockOrder = true;
+        }
+    }
+    res.json({ login, loginType, isStockOrder, message })
 })
 
 
