@@ -77,6 +77,7 @@
                                                                                     <th>Duration</th>
                                                                                     <th>Type</th>
                                                                                     <th>Patient Of</th>
+                                                                                    <th>Parent Info</th>
                                                                                     <th>Desease Name</th>
                                                                                     <th>Report</th>
                                                                                     <th>Patient Status</th>
@@ -131,12 +132,18 @@
                                                                                                 <%= app.type || 'NA' %>
                                                                                             </td>
                                                                                             <td>
-                                                                                                <%= app.referrer?
-                                                                                                    app.referrer?.name
-                                                                                                    + ' ( ' + 'id : ' +
-                                                                                                    +
-                                                                                                    app.referrer.userId
-                                                                                                    + ' )' : 'NA' %>
+                                                                                                <%= (app.referrer && app.referrer.name) ? (app.referrer.name + ' (id: ' + app.referrer.userId + ')' + (app.referrer.position ? ' - ' + app.referrer.position : '')) : (app.referredBy || 'NA') %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <% if (app.allParents && app.allParents.length > 0) { %>
+                                                                                                    <% app.allParents.sort((a,b) => a.level - b.level).forEach(parent => { %>
+                                                                                                        <div style="white-space: nowrap; margin-bottom: 4px;">
+                                                                                                            <%= parent.name %> (id: <%= parent.userId %>)<%= parent.position ? ' - ' + parent.position : '' %>
+                                                                                                        </div>
+                                                                                                    <% }) %>
+                                                                                                <% } else { %>
+                                                                                                    <%= app.referredBy || 'NA' %>
+                                                                                                <% } %>
                                                                                             </td>
                                                                                             <td>
                                                                                                 <%= app.diseaseName %>

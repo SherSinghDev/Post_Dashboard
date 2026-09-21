@@ -61,13 +61,23 @@ router.get('/patients/:type', async (req, res) => {
             from: "users",                // users collection
             localField: "referredBy",     // referral code in PatientForm
             foreignField: "userId",       // userId in users
-            as: "coordinatorDetails"      // output array field
+            as: "referrer"      // output array field
           }
         },
         {
           $unwind: {
-            path: "$coordinatorDetails",
+            path: "$referrer",
             preserveNullAndEmptyArrays: true // keep patients even if no coordinator match
+          }
+        },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
           }
         }
       ]);

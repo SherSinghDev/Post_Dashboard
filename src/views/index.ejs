@@ -73,10 +73,10 @@
 
                                             <% if (user.type=='stockorder' ) { %>
                                                 <a href="/users/network"
-                                                    class="btn btn-success flex-grow-1 flex-md-grow-0"><i
+                                                    class="btn btn-danger flex-grow-1 flex-md-grow-0"><i
                                                         class="fas fa-sitemap me-1"></i>My 5 Steps Economic Help</a>
                                                 <button type="button"
-                                                    class="btn btn-danger fw-bold flex-grow-1 flex-md-grow-0"
+                                                    class="btn btn-warning fw-bold flex-grow-1 flex-md-grow-0"
                                                     data-bs-toggle="modal" data-bs-target="#stockOrderNoticeModal">
                                                     <i class="fas fa-bullhorn me-1"></i>आवश्यक सूचना
                                                 </button>
@@ -115,7 +115,7 @@
 
                                                                         <a href="/users/idcard/<%= user._id %>"
                                                                             target="_blank"
-                                                                            class="btn btn-info shadow-sm fw-semibold px-3 py-2 text-white">
+                                                                            class="btn btn-danger shadow-sm fw-semibold px-3 py-2 text-white">
                                                                             <i class="fas fa-id-card me-1"></i> ID Card
                                                                         </a>
                                                                         <a href="/users/letter/<%= user._id %>"
@@ -1039,28 +1039,35 @@
                         .stock-notice-modal .modal-header {
                             padding: 1.25rem 1rem 1rem;
                         }
+
                         .stock-notice-modal .org-title {
                             font-size: 1.2rem;
                         }
+
                         .stock-notice-modal .org-subtitle {
                             font-size: 0.85rem;
                         }
+
                         .stock-notice-body {
                             padding: 1rem;
                         }
+
                         .notice-list-item {
                             padding: 10px;
                             margin-bottom: 8px;
                         }
+
                         .notice-number {
                             width: 24px;
                             height: 24px;
                             font-size: 0.8rem;
                             margin-right: 10px;
                         }
+
                         .notice-text {
                             font-size: 13.5px;
                         }
+
                         .sign-box p.fs-5 {
                             font-size: 1.1rem !important;
                         }

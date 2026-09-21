@@ -230,6 +230,16 @@ router.get('/patients', async (req, res) => {
           }
         },
         {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
+        {
           $project: {
             patientName: 1,
             fatherOrHusbandName: 1,
@@ -251,10 +261,8 @@ router.get('/patients', async (req, res) => {
             duration: 1,
             type: 1,
             // only select _id and name from the referred user
-            "referrer._id": 1,
-            "referrer.name": 1,
-            "referrer.userId": 1
-          }
+            "referrer": 1,
+            "allParents": 1}
         }
       ]);
       console.log(result[0]);
@@ -323,6 +331,16 @@ router.get('/varifiedpatients', async (req, res) => {
           }
         },
         {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
+        {
           $project: {
             patientName: 1,
             fatherOrHusbandName: 1,
@@ -344,10 +362,8 @@ router.get('/varifiedpatients', async (req, res) => {
             duration: 1,
             type: 1,
             // only select _id and name from the referred user
-            "referrer._id": 1,
-            "referrer.name": 1,
-            "referrer.userId": 1
-          }
+            "referrer": 1,
+            "allParents": 1}
         }
       ]);
 
@@ -406,6 +422,16 @@ router.get('/notinterestedpatients', async (req, res) => {
           }
         },
         {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
+        {
           $project: {
             patientName: 1,
             fatherOrHusbandName: 1,
@@ -427,10 +453,8 @@ router.get('/notinterestedpatients', async (req, res) => {
             duration: 1,
             type: 1,
             // only select _id and name from the referred user
-            "referrer._id": 1,
-            "referrer.name": 1,
-            "referrer.userId": 1
-          }
+            "referrer": 1,
+            "allParents": 1}
         }
       ]);
 
@@ -486,6 +510,16 @@ router.get('/pendingpatients', async (req, res) => {
               preserveNullAndEmptyArrays: true // keep even if no referrer
             }
           },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
           {
             $project: {
               patientName: 1,
@@ -508,10 +542,8 @@ router.get('/pendingpatients', async (req, res) => {
               duration: 1,
               type: 1,
               // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+              "referrer": 1,
+            "allParents": 1}
           }
         ]);
       }
@@ -545,6 +577,16 @@ router.get('/pendingpatients', async (req, res) => {
               preserveNullAndEmptyArrays: true // keep even if no referrer
             }
           },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
           {
             $project: {
               patientName: 1,
@@ -567,10 +609,8 @@ router.get('/pendingpatients', async (req, res) => {
               duration: 1,
               type: 1,
               // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+              "referrer": 1,
+            "allParents": 1}
           }
         ]);
       }
@@ -624,6 +664,16 @@ router.get('/orders', async (req, res) => {
               preserveNullAndEmptyArrays: true // keep even if no referrer
             }
           },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
           {
             $project: {
               patientName: 1,
@@ -646,10 +696,8 @@ router.get('/orders', async (req, res) => {
               duration: 1,
               type: 1,
               // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+              "referrer": 1,
+            "allParents": 1}
           }
         ]);
       }
@@ -682,6 +730,16 @@ router.get('/orders', async (req, res) => {
               preserveNullAndEmptyArrays: true // keep even if no referrer
             }
           },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
           {
             $project: {
               patientName: 1,
@@ -704,10 +762,8 @@ router.get('/orders', async (req, res) => {
               duration: 1,
               type: 1,
               // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+              "referrer": 1,
+            "allParents": 1}
           }
         ]);
       }
@@ -760,6 +816,16 @@ router.get('/delivered', async (req, res) => {
               preserveNullAndEmptyArrays: true // keep even if no referrer
             }
           },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
           {
             $project: {
               patientName: 1,
@@ -782,10 +848,8 @@ router.get('/delivered', async (req, res) => {
               duration: 1,
               type: 1,
               // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+              "referrer": 1,
+            "allParents": 1}
           }
         ]);
       }
@@ -816,6 +880,16 @@ router.get('/delivered', async (req, res) => {
               preserveNullAndEmptyArrays: true // keep even if no referrer
             }
           },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
           {
             $project: {
               patientName: 1,
@@ -838,10 +912,8 @@ router.get('/delivered', async (req, res) => {
               duration: 1,
               type: 1,
               // only select _id and name from the referred user
-              "referrer._id": 1,
-              "referrer.name": 1,
-              "referrer.userId": 1
-            }
+              "referrer": 1,
+            "allParents": 1}
           }
         ]);
       }
