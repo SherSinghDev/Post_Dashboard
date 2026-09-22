@@ -1084,6 +1084,24 @@ router.get('/:formType', async (req, res) => {
 //   }
 // });
 
+// Update Doctor Status Only
+router.put('/update-doctor-status/:id', async (req, res) => {
+  try {
+    const { doctorStatus } = req.body;
+    await PatientForm.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          "otherStatus.doctorStatus": doctorStatus
+        }
+      }
+    );
+    res.json({ success: true, message: "Doctor status updated successfully" });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, message: err.message });
+  }
+});
 
 router.post(
   '/approve/:id',

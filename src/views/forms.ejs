@@ -33,17 +33,23 @@
                                                                 placeholder="Search by Reg No., name, city, or mobile"
                                                                 class="form-control search-input" style="width: 300px;">
                                                             <% if(user.assignedForm) { %>
-                                                                <div class="ms-3 d-flex gap-2 align-items-center"
+                                                                <div class="ms-3 d-flex gap-2 align-items-center flex-wrap"
                                                                     id="doctorStatusFilterButtons">
                                                                     <button type="button"
                                                                         class="btn btn-primary btn-sm doc-filter-btn"
                                                                         onclick="filterDoctorStatus('all', this)">All</button>
                                                                     <button type="button"
                                                                         class="btn btn-outline-primary btn-sm doc-filter-btn"
-                                                                        onclick="filterDoctorStatus('filled', this)">Filled</button>
+                                                                        onclick="filterDoctorStatus('done', this)">Done</button>
                                                                     <button type="button"
                                                                         class="btn btn-outline-primary btn-sm doc-filter-btn"
-                                                                        onclick="filterDoctorStatus('unfilled', this)">Unfilled</button>
+                                                                        onclick="filterDoctorStatus('pending', this)">Pending</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                        onclick="filterDoctorStatus('reschedule', this)">Reschedule</button>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                        onclick="filterDoctorStatus('not interested', this)">Not Interested</button>
                                                                 </div>
                                                                 <% } %>
                                                         </div>
@@ -99,7 +105,7 @@
                                                                                         index)=> { %>
                                                                                         <tr id="tr-<%= app._id %>"
                                                                                             class="patient-row"
-                                                                                            data-doctor-status="<%= (app.otherStatus && app.otherStatus.doctorStatus) ? 'filled' : 'unfilled' %>">
+                                                                                            data-doctor-status="<%= (app.otherStatus && app.otherStatus.doctorStatus) ? app.otherStatus.doctorStatus.toLowerCase() : 'unfilled' %>">
                                                                                             <td>
                                                                                                 <%= app.registerNo %>
                                                                                             </td>
@@ -211,6 +217,17 @@
                                                                                                         style="color:white;"></i>
                                                                                                 </a>
 
+                                                                                                <div class="dropdown d-inline-block">
+                                                                                                    <button class="btn btn-sm btn-info dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Update Doctor Status">
+                                                                                                        <i class="fa-solid fa-user-doctor"></i>
+                                                                                                    </button>
+                                                                                                    <ul class="dropdown-menu">
+                                                                                                        <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="done">Done</a></li>
+                                                                                                        <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="pending">Pending</a></li>
+                                                                                                        <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="reschedule">Reschedule</a></li>
+                                                                                                        <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="not interested">Not Interested</a></li>
+                                                                                                    </ul>
+                                                                                                </div>
                                                                                                 <a href="javascript:void(0)"
                                                                                                     data-id="<%= app._id %>"
                                                                                                     class="btn btn-sm btn-success approve-btn"><i
@@ -498,9 +515,13 @@
                                                                                 </div>
                                                                                 <div class="mb-3 col-md-6">
                                                                                     <label>Doctor Status </label>
-                                                                                    <input type="text"
-                                                                                        name="doctorStatus"
-                                                                                        class="form-control">
+                                                                                    <select name="doctorStatus" class="form-control">
+                                                                                        <option value="">Select Status</option>
+                                                                                        <option value="done">Done</option>
+                                                                                        <option value="pending">Pending</option>
+                                                                                        <option value="reschedule">Reschedule</option>
+                                                                                        <option value="not interested">Not Interested</option>
+                                                                                    </select>
                                                                                 </div>
                                                                                 <div class="mb-3 col-md-6">
                                                                                     <label>Support Status </label>
@@ -804,9 +825,13 @@
                                                                                 </div>
                                                                                 <div class="mb-3 col-md-6">
                                                                                     <label>Doctor Status </label>
-                                                                                    <input type="text"
-                                                                                        name="doctorStatus"
-                                                                                        class="form-control">
+                                                                                    <select name="doctorStatus" class="form-control">
+                                                                                        <option value="">Select Status</option>
+                                                                                        <option value="done">Done</option>
+                                                                                        <option value="pending">Pending</option>
+                                                                                        <option value="reschedule">Reschedule</option>
+                                                                                        <option value="not interested">Not Interested</option>
+                                                                                    </select>
                                                                                 </div>
                                                                                 <div class="mb-3 col-md-6">
                                                                                     <label>Support Status </label>
@@ -1456,6 +1481,28 @@
                         }
                     });
                 })
+
+                $(document).on('click', '.update-doc-status', function (e) {
+                    e.preventDefault();
+                    let id = $(this).data('id');
+                    let status = $(this).data('status');
+                    fetch(`/patientform/update-doctor-status/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ doctorStatus: status })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.success) {
+                            Swal.fire('Updated!', 'Doctor status has been updated.', 'success').then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire('Error', data.message, 'error');
+                        }
+                    })
+                    .catch(err => console.log(err));
+                });
 
                 // track btn
                 $(document).on('click', ".track-btn", function () {
