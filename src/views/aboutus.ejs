@@ -112,18 +112,26 @@
 <body>
     <%- include('./globals/preloader') %>
     <div id="main-wrapper">
+        <style>
+            /* Override sidebar gap for full width page */
+            .content-body {
+                margin-left: 0 !important;
+            }
+            .header {
+                padding-left: 0 !important;
+            }
+            .header .header-content {
+                padding-left: 30px !important;
+            }
+            .nav-control {
+                display: none !important;
+            }
+        </style>
+        
         <%- include('globals/navHeader') %>
         <%- include('globals/header') %>
-        
-        <% if(user && user.role) { %>
-            <!-- Normal user/coordinator -->
-            <%- include('./globals/sidebar') %>
-        <% } else if(user) { %>
-            <!-- Doctor -->
-            <%- include('./globals/doctor_sidebar') %>
-        <% } %>
 
-        <div class="content-body">
+        <div class="content-body" style="padding-top: 20px;">
             <div class="container-fluid">
                 <div class="row page-titles">
                     <ol class="breadcrumb">
