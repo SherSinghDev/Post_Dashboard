@@ -117,19 +117,19 @@
             .content-body {
                 margin-left: 0 !important;
             }
-            .header {
-                padding-left: 0 !important;
-            }
-            .header .header-content {
-                padding-left: 30px !important;
-            }
-            .nav-control {
-                display: none !important;
-            }
         </style>
         
-        <%- include('globals/navHeader') %>
-        <%- include('globals/header') %>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                corePlugins: {
+                    preflight: false,
+                },
+                darkMode: 'class'
+            }
+        </script>
+
+        <%- include('globals/public_navbar') %>
 
         <div class="content-body" style="padding-top: 20px;">
             <div class="container-fluid">
