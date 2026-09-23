@@ -102,6 +102,7 @@ router.post(
         duration,
         type,
         registerNo, // add the generated register number
+        otherStatus: { doctorStatus: 'pending' },
       });
 
       await newApplication.save();

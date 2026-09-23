@@ -22,7 +22,25 @@ router.get('/dashboard', async (req, res) => {
         type: "stockorder"
       })).length;
 
-      res.render('doctorhome', { user, singleOrders, stockOrders })
+      // Get today's counts
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const todayEnd = new Date();
+      todayEnd.setHours(23, 59, 59, 999);
+
+      let singleOrdersToday = (await PatientForm.find({ 
+        ...(user.assignedForm === 'all' ? {} : { formType: user.assignedForm }),
+        type: { $ne: "stockorder" },
+        createdAt: { $gte: todayStart, $lte: todayEnd }
+      })).length;
+      
+      let stockOrdersToday = (await PatientForm.find({ 
+        ...(user.assignedForm === 'all' ? {} : { formType: user.assignedForm }),
+        type: "stockorder",
+        createdAt: { $gte: todayStart, $lte: todayEnd }
+      })).length;
+
+      res.render('doctorhome', { user, singleOrders, stockOrders, singleOrdersToday, stockOrdersToday })
     }
     else {
       res.redirect('/')
@@ -48,6 +66,23 @@ router.get('/patients/:type', async (req, res) => {
       else if (type == 'stock') {
         match.type = "stockorder";
       }
+
+      // Add date filtering
+      let dateQuery = req.query.date;
+      if (!dateQuery) {
+        // default to current date
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        dateQuery = `${yyyy}-${mm}-${dd}`;
+      }
+
+      let startDate = new Date(dateQuery);
+      startDate.setHours(0, 0, 0, 0);
+      let endDate = new Date(dateQuery);
+      endDate.setHours(23, 59, 59, 999);
+      match.createdAt = { $gte: startDate, $lte: endDate };
 
       const result = await PatientForm.aggregate([
         {
@@ -82,7 +117,7 @@ router.get('/patients/:type', async (req, res) => {
         }
       ]);
       
-      res.render('forms', { applications: result, user, createOrder: false });
+      res.render('forms', { applications: result, user, createOrder: false, selectedDate: dateQuery, pageType: type });
 
     } catch (error) {
       console.log(error);

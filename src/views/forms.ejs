@@ -35,24 +35,89 @@
                                                             <% if(user.assignedForm) { %>
                                                                 <div class="ms-3 d-flex gap-2 align-items-center flex-wrap"
                                                                     id="doctorStatusFilterButtons">
-                                                                    <button type="button"
-                                                                        class="btn btn-primary btn-sm doc-filter-btn"
-                                                                        onclick="filterDoctorStatus('all', this)">All</button>
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
-                                                                        onclick="filterDoctorStatus('done', this)">Done</button>
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
-                                                                        onclick="filterDoctorStatus('pending', this)">Pending</button>
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
-                                                                        onclick="filterDoctorStatus('reschedule', this)">Reschedule</button>
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary btn-sm doc-filter-btn"
-                                                                        onclick="filterDoctorStatus('not interested', this)">Not Interested</button>
+                                                                    <% if (typeof pageType !== 'undefined' && (pageType === 'single' || pageType === 'stock')) { %>
+                                                                        <button type="button"
+                                                                            class="btn btn-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('all', this)">All</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('pending', this)">Pending</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('reschedule', this)">Reschedule</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('not interested', this)">Not Interested</button>
+                                                                    <% } else { %>
+                                                                        <button type="button"
+                                                                            class="btn btn-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('all', this)">All</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('done', this)">Done</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('pending', this)">Pending</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('reschedule', this)">Reschedule</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm doc-filter-btn"
+                                                                            onclick="filterDoctorStatus('not interested', this)">Not Interested</button>
+                                                                    <% } %>
                                                                 </div>
                                                                 <% } %>
                                                         </div>
+                                                        
+                                                        <% if (typeof selectedDate !== 'undefined') { %>
+                                                            <style>
+                                                                .patient-count-badge {
+                                                                    display: inline-flex;
+                                                                    align-items: center;
+                                                                    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                                                                    color: #ffffff;
+                                                                    padding: 0.4rem 1rem;
+                                                                    border-radius: 50px;
+                                                                    font-weight: 600;
+                                                                    box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
+                                                                    font-size: 0.95rem;
+                                                                    transition: all 0.3s ease;
+                                                                }
+                                                                .patient-count-badge:hover {
+                                                                    transform: translateY(-2px);
+                                                                    box-shadow: 0 6px 15px rgba(79, 172, 254, 0.4);
+                                                                }
+                                                                .patient-count-badge .badge-count {
+                                                                    background: rgba(255, 255, 255, 0.25);
+                                                                    padding: 0.15rem 0.6rem;
+                                                                    border-radius: 50px;
+                                                                    margin-left: 0.5rem;
+                                                                    font-size: 1.05rem;
+                                                                }
+                                                                [data-theme-version="dark"] .patient-count-badge, 
+                                                                body[data-theme="dark"] .patient-count-badge {
+                                                                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+                                                                    background: linear-gradient(135deg, #2A3F54 0%, #1A2732 100%);
+                                                                    border: 1px solid #4facfe;
+                                                                    color: #4facfe;
+                                                                }
+                                                                [data-theme-version="dark"] .patient-count-badge .badge-count,
+                                                                body[data-theme="dark"] .patient-count-badge .badge-count {
+                                                                    background: rgba(79, 172, 254, 0.15);
+                                                                }
+                                                            </style>
+                                                            <div class="d-flex align-items-center mb-2 mb-xxl-0 ms-auto me-3 gap-3">
+                                                                <div class="patient-count-badge text-nowrap">
+                                                                    <i class="fas fa-users me-2"></i> Total Patients
+                                                                    <span class="badge-count"><%= applications ? applications.length : 0 %></span>
+                                                                </div>
+                                                                <form action="" method="GET" id="dateFilterForm" class="d-flex align-items-center w-100">
+                                                                    <label for="dateFilter" class="me-2 fw-bold mb-0 text-nowrap">Date:</label>
+                                                                    <input type="date" id="dateFilter" name="date" class="form-control form-control-sm" value="<%= selectedDate %>" onchange="document.getElementById('dateFilterForm').submit()">
+                                                                </form>
+                                                            </div>
+                                                        <% } %>
+
                                                         <% if(!user.assignedForm) { %>
                                                             <div class="text-end">
                                                                 <a href="/patientform/<%= user.userId %>"
@@ -105,7 +170,7 @@
                                                                                         index)=> { %>
                                                                                         <tr id="tr-<%= app._id %>"
                                                                                             class="patient-row"
-                                                                                            data-doctor-status="<%= (app.otherStatus && app.otherStatus.doctorStatus) ? app.otherStatus.doctorStatus.toLowerCase() : 'unfilled' %>">
+                                                                                            data-doctor-status="<%= (app.otherStatus && app.otherStatus.doctorStatus) ? app.otherStatus.doctorStatus.toLowerCase() : 'pending' %>">
                                                                                             <td>
                                                                                                 <%= app.registerNo %>
                                                                                             </td>
@@ -166,7 +231,7 @@
                                                                                             </td>
                                                                                             <td>
                                                                                                 <%= app.otherStatus?.doctorStatus
-                                                                                                    || 'N/A' %>
+                                                                                                    || 'Pending' %>
                                                                                             </td>
                                                                                             <td>
                                                                                                 <%= app.otherStatus?.supportStatus
@@ -222,7 +287,9 @@
                                                                                                         <i class="fa-solid fa-user-doctor"></i>
                                                                                                     </button>
                                                                                                     <ul class="dropdown-menu">
-                                                                                                        <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="done">Done</a></li>
+                                                                                                        <% if (typeof pageType === 'undefined' || (pageType !== 'single' && pageType !== 'stock')) { %>
+                                                                                                            <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="done">Done</a></li>
+                                                                                                        <% } %>
                                                                                                         <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="pending">Pending</a></li>
                                                                                                         <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="reschedule">Reschedule</a></li>
                                                                                                         <li><a class="dropdown-item update-doc-status" href="javascript:void(0)" data-id="<%= app._id %>" data-status="not interested">Not Interested</a></li>
@@ -1549,6 +1616,13 @@
                         }
                     });
                 }
+
+                document.addEventListener("DOMContentLoaded", function() {
+                    var defaultBtn = document.querySelector('.doc-default-pending');
+                    if(defaultBtn) {
+                        filterDoctorStatus('pending', defaultBtn);
+                    }
+                });
             </script>
     </body>
 
