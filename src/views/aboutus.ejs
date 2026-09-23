@@ -258,10 +258,19 @@
                 </div>
             </div>
         </div>
-
-        <%- include('./globals/footer') %>
     </div>
     
-    <%- include('./globals/scripts') %>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var handleNavigation = function () {
+            $(".nav-control").on('click', function () {
+                $('#main-wrapper').toggleClass("menu-toggle");
+                $(".hamburger").toggleClass("is-active");
+            });
+        }
+        $(document).ready(function() {
+            handleNavigation();
+        });
+    </script>
 </body>
 </html>
