@@ -32,9 +32,15 @@ function getUrlParams(dParam)
         direction = 'ltr'; 
     } */
 	
+	var savedTheme = localStorage.getItem('color-theme');
+	if (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		savedTheme = 'dark';
+	}
+	var themeVersion = savedTheme === 'dark' ? 'dark' : 'light';
+	
 	dzSettingsOptions = {
 		typography: "poppins",
-		version: "light",
+		version: themeVersion,
 		layout: "vertical",
 		primary: "color_1",
 		headerBg: "color_1",

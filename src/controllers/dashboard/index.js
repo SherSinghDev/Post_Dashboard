@@ -134,14 +134,14 @@ router.get('/', async (req, res) => {
             req.session.showStockOrderNotice = false;
         }
 
-        res.render('index', { 
-            user, 
-            page: "Dashboard", 
-            verified, 
-            unverified, 
-            patients, 
-            varifiedPatients, 
-            patientsOrders, 
+        res.render('index', {
+            user,
+            page: "Dashboard",
+            verified,
+            unverified,
+            patients,
+            varifiedPatients,
+            patientsOrders,
             deliveredOrders,
             pendingpatients,
             networkCounts,

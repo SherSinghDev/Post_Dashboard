@@ -107,13 +107,15 @@
 
             if (themeToggleBtn) {
                 // Check for saved theme preference or system preference
-                const isDark = localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                const isDark = localStorage.getItem('color-theme') === 'dark' || localStorage.getItem('theme_version') === 'dark' || (!('color-theme' in localStorage) && !('theme_version' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
                 
                 if (isDark) {
                     document.documentElement.classList.add('dark');
+                    document.documentElement.setAttribute('data-theme-version', 'dark');
                     document.body.setAttribute('data-theme-version', 'dark');
                 } else {
                     document.documentElement.classList.remove('dark');
+                    document.documentElement.setAttribute('data-theme-version', 'light');
                     document.body.setAttribute('data-theme-version', 'light');
                 }
                 updateIcons(isDark);
@@ -123,12 +125,16 @@
                     
                     if (willBeDark) {
                         document.documentElement.classList.add('dark');
+                        document.documentElement.setAttribute('data-theme-version', 'dark');
                         document.body.setAttribute('data-theme-version', 'dark');
                         localStorage.setItem('color-theme', 'dark');
+                        localStorage.setItem('theme_version', 'dark');
                     } else {
                         document.documentElement.classList.remove('dark');
+                        document.documentElement.setAttribute('data-theme-version', 'light');
                         document.body.setAttribute('data-theme-version', 'light');
                         localStorage.setItem('color-theme', 'light');
+                        localStorage.setItem('theme_version', 'light');
                     }
                     updateIcons(willBeDark);
                 });
