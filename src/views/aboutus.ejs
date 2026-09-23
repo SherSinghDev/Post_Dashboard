@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./globals/head') %>
+<style>
+    .about-us-container {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        color: #333;
+        line-height: 1.6;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+    }
+    [data-theme-version="dark"] .about-us-container,
+    body[data-theme="dark"] .about-us-container {
+        background-color: #1A2732;
+        color: #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .about-header {
+        text-align: center;
+        margin-bottom: 40px;
+        border-bottom: 2px solid #00f2fe;
+        padding-bottom: 20px;
+    }
+    .about-header h2 {
+        color: #4facfe;
+        font-weight: 700;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+    .about-header h3 {
+        font-weight: 600;
+        font-size: 1.3rem;
+        color: #555;
+    }
+    [data-theme-version="dark"] .about-header h3 {
+        color: #bbb;
+    }
+    .about-section {
+        margin-bottom: 25px;
+    }
+    .about-section h4 {
+        color: #4facfe;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    .about-section p {
+        font-size: 1.05rem;
+        margin-bottom: 0;
+    }
+    .about-footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 1px solid #ddd;
+        text-align: center;
+    }
+    [data-theme-version="dark"] .about-footer {
+        border-top: 1px solid #333;
+    }
+    .about-footer h4 {
+        font-size: 1.5rem;
+        color: #4facfe;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    .about-footer p {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+    .founders-section {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+    .founder-card {
+        text-align: center;
+        max-width: 250px;
+    }
+    .founder-card img {
+        width: 200px;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+        border: 3px solid #4facfe;
+    }
+    .founder-name {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    [data-theme-version="dark"] .founder-name {
+        color: #fff;
+    }
+    .founder-title {
+        font-size: 0.95rem;
+        color: #666;
+        font-weight: 600;
+    }
+    [data-theme-version="dark"] .founder-title {
+        color: #bbb;
+    }
+</style>
+<body>
+    <%- include('./globals/preloader') %>
+    <div id="main-wrapper">
+        <%- include('globals/navHeader') %>
+        <%- include('globals/header') %>
+        
+        <% if(user && user.role) { %>
+            <!-- Normal user/coordinator -->
+            <%- include('./globals/sidebar') %>
+        <% } else if(user) { %>
+            <!-- Doctor -->
+            <%- include('./globals/doctor_sidebar') %>
+        <% } %>
+
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">About Us</a></li>
+                    </ol>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="about-us-container">
+                            <div class="about-header">
+                                <h2>बीएसआरएफ इंडिया</h2>
+                                <h3>(सेवा ही पहचान)</h3>
+                                <p class="mt-3 fw-bold">महत्वपूर्ण संगठनात्मक सूचना एवं कार्य दिशा-निर्देश</p>
+                                <p>समस्त जिला प्रतिनिधियों, पदाधिकारियों, अधिकारियों एवं सेवा सहयोगियों के लिए</p>
+                            </div>
+
+                            <div class="about-content">
+                                <p class="mb-4 text-center fw-bold" style="font-size: 1.15rem;">
+                                    बिनुपुर सेवा रिसर्च फाउंडेशन केवल एक संगठन या पद की व्यवस्था नहीं है, बल्कि समाज के प्रति सेवा, जिम्मेदारी और जनहित की भावना से जुड़ा एक अभियान है।<br><br>
+                                    हमारा प्रयास है कि स्वास्थ्य एवं जनसेवा से जुड़ी आवश्यक जानकारी समाज के अंतिम व्यक्ति तक पहुँचे और जरूरतमंद लोगों को उचित मार्गदर्शन एवं संस्था द्वारा संचालित सेवा परियोजनाओं का लाभ मिल सके।<br><br>
+                                    इसी उद्देश्य से संस्था की कार्यप्रणाली को व्यवस्थित, पारदर्शी और प्रभावी बनाने के लिए निम्न दिशा-निर्देश लागू किए जाते हैं:
+                                </p>
+
+                                <div class="about-section">
+                                    <h4>1. सेवा कार्य ही प्राथमिकता</h4>
+                                    <p>संस्था में किसी भी पद का उद्देश्य व्यक्तिगत लाभ या केवल पद का नाम नहीं है। प्रत्येक पदाधिकारी को अपने क्षेत्र में वास्तविक जनसेवा और संस्था के उद्देश्य के लिए सक्रिय भूमिका निभानी होगी।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>2. Free Health Project का जमीनी विस्तार</h4>
+                                    <p>संस्था की स्वास्थ्य सेवा परियोजना को केवल ऑनलाइन गतिविधि तक सीमित नहीं रखा जाएगा। आवश्यकता के अनुसार घर-घर संपर्क, जन-जागरूकता, सर्वे एवं जरूरतमंद परिवारों तक जानकारी पहुँचाने का कार्य किया जाएगा।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>3. प्रत्येक क्षेत्र की वास्तविक जानकारी</h4>
+                                    <p>जिला प्रतिनिधि अपने जिले के अंतर्गत आने वाले तहसील, ब्लॉक एवं स्थानीय क्षेत्रों की कार्य-स्थिति को समझते हुए चरणबद्ध तरीके से कार्य योजना तैयार करेगा।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>4. जिला प्रतिनिधि की जिम्मेदारी</h4>
+                                    <p>जिला प्रतिनिधि अपने जिले में संस्था का प्रमुख समन्वयक होगा। उसकी जिम्मेदारी केवल टीम बनाना नहीं, बल्कि टीम को कार्य देना, कार्य की निगरानी करना और उसकी रिपोर्ट संस्था तक पहुँचाना भी होगी।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>5. टीम व्यवस्था</h4>
+                                    <p>हर जिला प्रतिनिधि को अपने क्षेत्र की आवश्यकता के अनुसार सक्रिय एवं जिम्मेदार टीम तैयार करनी होगी। टीम में ऐसे लोगों को प्राथमिकता दी जाए जो समय, अनुशासन और सेवा भावना के साथ कार्य कर सकें।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>6. कार्य की रिपोर्टिंग अनिवार्य</h4>
+                                    <p>मैदानी कार्य का निर्धारित तरीके से फोटो, सर्वे रिपोर्ट, लाभार्थी/क्षेत्र संबंधी जानकारी और अन्य आवश्यक प्रमाण संस्था के आधिकारिक सिस्टम/ग्रुप में उपलब्ध कराना आवश्यक होगा।<br><br><b>सिर्फ पद पर बने रहना कार्य का प्रमाण नहीं माना जाएगा।</b></p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>7. कार्य की नियमित समीक्षा</h4>
+                                    <p>संस्था समय-समय पर प्रत्येक क्षेत्र की कार्य-प्रगति की समीक्षा करेगी। लगातार निष्क्रियता, गलत रिपोर्टिंग, कार्य में लापरवाही या संस्था के समय एवं संसाधनों का अनुचित उपयोग पाए जाने पर संबंधित पदाधिकारी के दायित्व की समीक्षा की जा सकती है।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>8. क्षेत्रीय अनुशासन</h4>
+                                    <p>प्रत्येक प्रतिनिधि को अपने निर्धारित क्षेत्र में संस्था की कार्यप्रणाली के अनुसार कार्य करना होगा। किसी दूसरे क्षेत्र में कार्य करने से पहले संबंधित जिम्मेदार पदाधिकारी से समन्वय करना आवश्यक होगा, ताकि एक ही क्षेत्र में अनावश्यक टकराव या दोहराव न हो।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>9. संस्था की पारदर्शिता</h4>
+                                    <p>संस्था से जुड़े किसी भी आर्थिक सहयोग, सेवा, सदस्यता, प्रोजेक्ट या अन्य गतिविधि में स्पष्ट जानकारी और निर्धारित प्रक्रिया का पालन किया जाएगा। किसी भी व्यक्ति को संस्था के नाम पर व्यक्तिगत रूप से गलत आश्वासन, भ्रामक दावा या अनधिकृत वसूली करने की अनुमति नहीं होगी।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>10. संस्था की पहचान और अनुशासन</h4>
+                                    <p>हर पदाधिकारी संस्था का प्रतिनिधि है। इसलिए उसके व्यवहार, भाषा, कार्यशैली और सार्वजनिक गतिविधियों का प्रभाव संस्था की छवि पर पड़ता है। सभी प्रतिनिधियों से सम्मानजनक व्यवहार, अनुशासन और जिम्मेदारी की अपेक्षा की जाती है।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>11. पद से अधिक महत्वपूर्ण है कार्य</h4>
+                                    <p>संस्था में पद किसी व्यक्ति का अधिकार नहीं, बल्कि सेवा की जिम्मेदारी है। यदि कोई व्यक्ति पद पर रहते हुए निर्धारित जिम्मेदारी का निर्वहन नहीं करता, तो संस्था को उसके पद एवं जिम्मेदारी में आवश्यक परिवर्तन करने का अधिकार रहेगा।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>12. निष्क्रियता पर कार्रवाई</h4>
+                                    <p>यदि किसी प्रतिनिधि द्वारा लगातार निर्धारित अवधि तक कोई वास्तविक कार्य नहीं किया जाता है, रिपोर्टिंग नहीं की जाती है अथवा संस्था के निर्देशों का पालन नहीं किया जाता है, तो संस्था द्वारा उचित समीक्षा के बाद उसका प्रतिनिधित्व समाप्त किया जा सकता है तथा संबंधित सिस्टम/एप्लीकेशन से उसकी भूमिका हटाई जा सकती है।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>13. अच्छे कार्य को प्रोत्साहन</h4>
+                                    <p>संस्था का उद्देश्य केवल कार्य की निगरानी करना नहीं, बल्कि अच्छा कार्य करने वाले सहयोगियों को प्रोत्साहित करना भी है। निर्धारित पात्रता एवं संस्था की नीतियों के अनुसार सक्रिय एवं सत्यापित सेवा कार्य करने वाले प्रतिनिधियों/टीमों को प्रोत्साहन एवं सहयोग दिया जा सकता है।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>14. गलत जानकारी पर शून्य सहनशीलता</h4>
+                                    <p>सर्वे, लाभार्थी, सेवा कार्य या संस्था की गतिविधियों से संबंधित फर्जी फोटो, गलत जानकारी, फर्जी रिपोर्ट अथवा किसी भी प्रकार की भ्रामक प्रस्तुति को गंभीर अनुशासनहीनता माना जाएगा और संस्था नियमानुसार कार्रवाई कर सकती है।</p>
+                                </div>
+
+                                <div class="about-section">
+                                    <h4>15. संस्था का मूल सिद्धांत</h4>
+                                    <p>हमारा लक्ष्य केवल अधिक से अधिक लोगों को जोड़ना नहीं है।<br><br>
+                                    <b>हमारा लक्ष्य है—</b><br>
+                                    सही व्यक्ति तक सही जानकारी पहुँचाना,<br>
+                                    जरूरतमंद तक सेवा पहुँचाना,<br>
+                                    जमीनी समस्याओं को समझना<br>
+                                    और समाज में जिम्मेदारी के साथ सकारात्मक कार्य करना।</p>
+                                </div>
+                            </div>
+
+                            <div class="about-footer">
+                                <h4>सभी प्रतिनिधियों के लिए संदेश</h4>
+                                <p>याद रखें—पद आपको पहचान नहीं देता, आपका कार्य पद को पहचान देता है।</p>
+                                <p style="font-size: 1rem; font-weight: 500;">जो व्यक्ति संस्था के उद्देश्य को समझकर ईमानदारी और निरंतरता से कार्य करेगा, संस्था उसके कार्य को सम्मान और आवश्यक सहयोग देने का प्रयास करेगी।</p>
+                                
+                                <h2 class="mt-5 mb-2" style="color: #4facfe; font-weight: 800;">बिनुपुर सेवा रिसर्च फाउंडेशन</h2>
+                                <h4 class="mb-5">“सेवा ही पहचान”</h4>
+
+                                <div class="founders-section">
+                                    <div class="founder-card">
+                                        <img src="/images/abhishek_das.jpg" alt="Abhishek Das Srivastava" onerror="this.src='/images/user.jpg'">
+                                        <div class="founder-name">अभिषेक दास श्रीवास्तव</div>
+                                        <div class="founder-title">प्रोग्राम मैनेजर | ऑल इंडिया हेड<br>बिनुपुर सेवा रिसर्च फाउंडेशन</div>
+                                    </div>
+
+                                    <div class="founder-card">
+                                        <img src="/images/ravi_kant_kaushal.jpg" alt="Ravi Kant Kaushal" onerror="this.src='/images/user.jpg'">
+                                        <div class="founder-name">रवि कान्त कौशल</div>
+                                        <div class="founder-title">(डायरेक्टर)<br>बीएसआरएफ इंडिया</div>
+                                    </div>
+                                </div>
+                                <p class="mt-5 fw-bold text-muted">धन्यवाद।</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('./globals/footer') %>
+    </div>
+    
+    <%- include('./globals/scripts') %>
+</body>
+</html>

@@ -154,5 +154,20 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/aboutus', async (req, res) => {
+    if (req.session.userId) {
+        let user = await Users.findOne({ _id: req.session.userId });
+        if (!user) {
+            const Doctor = require('../../modals/doctors');
+            user = await Doctor.findOne({ _id: req.session.userId });
+        }
+        if (!user) return res.redirect('/home');
+        res.render('aboutus', { user, page: "About Us" });
+    }
+    else {
+        res.redirect('/home')
+    }
+})
+
 
 module.exports = router
