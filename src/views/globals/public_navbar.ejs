@@ -1,3 +1,6 @@
+    <!-- FontAwesome for Navbar Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <!-- Navbar Section -->
     <nav
         class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 shadow-sm transition-all">
@@ -80,17 +83,44 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu Script -->
+    <!-- Navbar Scripts (Mobile Menu & Theme Toggle) -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // --- Theme Toggle Logic ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            if (themeToggleBtn) {
+                // Check for saved theme preference or system preference
+                if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+
+                themeToggleBtn.addEventListener('click', function () {
+                    document.documentElement.classList.toggle('dark');
+                    if (document.documentElement.classList.contains('dark')) {
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                });
+            }
+
+            // --- Mobile Menu Toggle Logic ---
             const menuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             if (menuButton && mobileMenu) {
-                const svgs = menuButton.querySelectorAll('svg');
                 menuButton.addEventListener('click', () => {
+                    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+                    menuButton.setAttribute('aria-expanded', !isExpanded);
                     mobileMenu.classList.toggle('hidden');
-                    svgs[0].classList.toggle('hidden');
-                    svgs[1].classList.toggle('hidden');
+
+                    // Toggle icon
+                    const svgs = menuButton.querySelectorAll('svg');
+                    if(svgs.length >= 2) {
+                        svgs[0].classList.toggle('hidden');
+                        svgs[1].classList.toggle('hidden');
+                    }
                 });
             }
         });

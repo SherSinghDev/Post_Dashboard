@@ -523,48 +523,7 @@
     </main>
 
     <!-- JavaScript for Mobile Menu Toggle -->
-    <!-- Theme & Menu Scripts -->
-    <script>
-        // --- Theme Toggle Logic ---
-        const themeToggleBtn = document.getElementById('theme-toggle');
-
-        // Check for saved theme preference or system preference
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-
-        themeToggleBtn.addEventListener('click', function () {
-            // Toggle the dark class on the html element
-            document.documentElement.classList.toggle('dark');
-
-            // Save the preference
-            if (document.documentElement.classList.contains('dark')) {
-                localStorage.setItem('color-theme', 'dark');
-            } else {
-                localStorage.setItem('color-theme', 'light');
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Mobile Menu Toggle Logic ---
-            const menuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            menuButton.addEventListener('click', () => {
-                const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
-                menuButton.setAttribute('aria-expanded', !isExpanded);
-                mobileMenu.classList.toggle('hidden');
-
-                // Toggle icon
-                const iconOpen = menuButton.querySelector('svg:first-child');
-                const iconClosed = menuButton.querySelector('svg:last-child');
-                iconOpen.classList.toggle('hidden');
-                iconClosed.classList.toggle('hidden');
-            });
-        });
-    </script>
+    <!-- Theme & Menu Scripts have been moved to globals/public_navbar.ejs -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
