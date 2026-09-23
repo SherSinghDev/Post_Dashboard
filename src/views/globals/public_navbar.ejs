@@ -37,8 +37,8 @@
                     <button id="theme-toggle"
                         class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
                         aria-label="Toggle Dark Mode">
-                        <i class="fa-solid fa-moon text-lg hidden dark:block"></i>
-                        <i class="fa-solid fa-sun text-lg block dark:hidden"></i>
+                        <i id="moon-icon" class="fa-solid fa-moon text-lg" style="display: none;"></i>
+                        <i id="sun-icon" class="fa-solid fa-sun text-lg" style="display: none;"></i>
                     </button>
 
                     <!-- Mobile Menu Button -->
@@ -88,6 +88,21 @@
         document.addEventListener('DOMContentLoaded', function () {
             // --- Theme Toggle Logic ---
             const themeToggleBtn = document.getElementById('theme-toggle');
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            function updateIcons(isDark) {
+                if (moonIcon && sunIcon) {
+                    if (isDark) {
+                        moonIcon.style.display = 'none';
+                        sunIcon.style.display = 'block';
+                    } else {
+                        moonIcon.style.display = 'block';
+                        sunIcon.style.display = 'none';
+                    }
+                }
+            }
+
             if (themeToggleBtn) {
                 // Check for saved theme preference or system preference
                 const isDark = localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -99,6 +114,7 @@
                     document.documentElement.classList.remove('dark');
                     document.body.setAttribute('data-theme-version', 'light');
                 }
+                updateIcons(isDark);
 
                 themeToggleBtn.addEventListener('click', function () {
                     const willBeDark = !document.documentElement.classList.contains('dark');
@@ -112,6 +128,7 @@
                         document.body.setAttribute('data-theme-version', 'light');
                         localStorage.setItem('color-theme', 'light');
                     }
+                    updateIcons(willBeDark);
                 });
             }
 
