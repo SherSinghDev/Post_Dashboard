@@ -43,6 +43,14 @@ router.get('/', async (req, res) => {
         })).length
 
         let user = await Users.findOne({ _id: req.session.userId })
+        if (!user) {
+            let Doctor = require('../../modals/doctors');
+            let isDoctor = await Doctor.findOne({ _id: req.session.userId });
+            if (isDoctor) {
+                return res.redirect('/doctors/dashboard');
+            }
+            return res.redirect('/auth/login');
+        }
 
         if (user.role == 'Coordinator') {
             verified = (await Users.find({ referredBy: user.userId })).length
@@ -167,5 +175,27 @@ router.get('/aboutus', async (req, res) => {
     res.render('aboutus', { user, page: "About Us" });
 })
 
+
+router.get('/legal', async (req, res) => {
+    let user = null;
+    if (req.session.userId) {
+        const Users = require('../../modals/users');
+        user = await Users.findOne({ _id: req.session.userId });
+        if (!user) {
+            const Doctor = require('../../modals/doctors');
+            user = await Doctor.findOne({ _id: req.session.userId });
+        }
+    }
+    const fs = require('fs');
+    const path = require('path');
+    let images = [];
+    try {
+        const legalPath = path.join(__dirname, '../../assets/images/legal');
+        images = fs.readdirSync(legalPath).filter(file => file.match(/\.(jpg|jpeg|png|gif)$/i));
+    } catch(err) {
+        console.log("Error reading legal images:", err);
+    }
+    res.render('legal', { user, page: "Legal Documents", images });
+})
 
 module.exports = router

@@ -13,6 +13,10 @@ const patientForm = require('../../modals/patientForm')
 // login
 router.get('/login', async (req, res) => {
     if (req.session.userId) {
+        let isDoctor = await Doctor.findOne({ _id: req.session.userId });
+        if (isDoctor) {
+            return res.redirect('/doctors/dashboard');
+        }
         res.redirect('/')
     }
     else {
@@ -103,11 +107,22 @@ router.post('/login', async (req, res) => {
         else {
             let prevUser = await User.findOne({ email })
             if (prevUser) {
-                // console.log(password, prevUser.password);
+                // Suspension logic for stockorder users
+                if (prevUser.type === 'stockorder') {
+                    if (prevUser.isSuspended) {
+                        return res.json({ login: false, message: "Your account is suspended as 60days of inactivity or other reasons please contact admin for more information" });
+                    }
+
+                    let lastLoginTime = prevUser.lastLogin || prevUser.createdAt;
+                    let daysSinceLastLogin = (Date.now() - new Date(lastLoginTime).getTime()) / (1000 * 60 * 60 * 24);
+                    if (daysSinceLastLogin > 60) {
+                        prevUser.isSuspended = true;
+                        await prevUser.save();
+                        return res.json({ login: false, message: "Your account is suspended as 60days of inactivity or other reasons please contact admin for more information" });
+                    }
+                }
 
                 let pass = await bcrypt.compare(password, prevUser.password)
-                // console.log(pass);
-                // let pass = true
                 if (pass) {
                     login = true
                     message = "Login Successfully"
@@ -115,6 +130,8 @@ router.post('/login', async (req, res) => {
                     if (prevUser.type === 'stockorder') {
                         req.session.showStockOrderNotice = true;
                     }
+                    prevUser.lastLogin = Date.now();
+                    await prevUser.save();
                 }
                 else {
                     message = "Wrong Credentials"
@@ -193,7 +210,7 @@ router.post('/login', async (req, res) => {
     //         })
 
     //     }
-        
+
     //     await Promise.all(
     //         changeArray.map(async (or) => {
     //             // console.log(or.patientId,or.orderStatus);

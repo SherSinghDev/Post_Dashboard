@@ -105,9 +105,21 @@
                 }
             }
 
+            function getThemeCookie() {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; version=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+
+            function setThemeCookie(val) {
+                document.cookie = `version=${val}; path=/; max-age=31536000`;
+            }
+
             if (themeToggleBtn) {
                 // Check for saved theme preference or system preference
-                const isDark = localStorage.getItem('color-theme') === 'dark' || localStorage.getItem('theme_version') === 'dark' || (!('color-theme' in localStorage) && !('theme_version' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                let savedTheme = getThemeCookie() || localStorage.getItem('theme_version') || localStorage.getItem('color-theme');
+                const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
                 
                 if (isDark) {
                     document.documentElement.classList.add('dark');
@@ -129,12 +141,14 @@
                         document.body.setAttribute('data-theme-version', 'dark');
                         localStorage.setItem('color-theme', 'dark');
                         localStorage.setItem('theme_version', 'dark');
+                        setThemeCookie('dark');
                     } else {
                         document.documentElement.classList.remove('dark');
                         document.documentElement.setAttribute('data-theme-version', 'light');
                         document.body.setAttribute('data-theme-version', 'light');
                         localStorage.setItem('color-theme', 'light');
                         localStorage.setItem('theme_version', 'light');
+                        setThemeCookie('light');
                     }
                     updateIcons(willBeDark);
                 });

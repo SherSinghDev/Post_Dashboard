@@ -61,6 +61,50 @@ router.get('/', async (req, res) => {
     }
 })
 
+// suspended users
+router.get('/suspended', async (req, res) => {
+    if (req.session.userId) {
+        try {
+            let user = await Users.findOne({ _id: req.session.userId })
+            if (user.role === 'Admin') {
+                let users = await Users.find({ isSuspended: true }).sort({ createdAt: -1 }).populate('parentUser');
+                res.render('users', { users, user, page: "Suspended Users" })
+            } else {
+                res.redirect('/')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        res.redirect('/auth/login')
+    }
+})
+
+// toggle suspension
+router.post('/suspend/:id', async (req, res) => {
+    if (req.session.userId) {
+        try {
+            let adminUser = await Users.findOne({ _id: req.session.userId })
+            if (adminUser.role === 'Admin') {
+                let targetUser = await Users.findOne({ _id: req.params.id })
+                if (targetUser) {
+                    await Users.updateOne({ _id: req.params.id }, { $set: { isSuspended: req.body.suspend } });
+                    res.json({ success: true })
+                } else {
+                    res.json({ success: false, message: "User not found" })
+                }
+            } else {
+                res.json({ success: false, message: "Unauthorized" })
+            }
+        } catch (error) {
+            console.log(error);
+            res.json({ success: false, message: error.message })
+        }
+    } else {
+        res.json({ success: false, message: "Unauthenticated" })
+    }
+})
+
 
 // admins
 router.get('/admins', async (req, res) => {

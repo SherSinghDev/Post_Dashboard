@@ -220,6 +220,8 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    lastLogin: { type: Date, default: Date.now },
+    isSuspended: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
 });
 

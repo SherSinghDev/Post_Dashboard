@@ -127,7 +127,7 @@
 </style>
 
 <div class="nav-header">
-    <a href="/" class="brand-logo">
+    <a href="<%= (typeof user !== 'undefined' && user && user.assignedForm) ? '/doctors/dashboard' : '/' %>" class="brand-logo">
         <img src="/images/logo/logo.png" alt="BSRF Logo">
         <span class="brand-title">BSRF</span>
     </a>

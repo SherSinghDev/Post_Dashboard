@@ -372,6 +372,17 @@
                                 </span>
                             </a>
                         </li>
+                        <% if(user.role=='Admin' ) { %>
+                        <!-- Suspended Users -->
+                        <li>
+                            <a href="/users/suspended" aria-expanded="false">
+                                <span class="nav-icon-box">
+                                    <i class="fas fa-user-slash"></i>
+                                </span>
+                                <span class="nav-text">Suspended Users</span>
+                            </a>
+                        </li>
+                        <% } %>
                         <% } %>
 
                             <% if(user.type=='stockorder' ) { %>

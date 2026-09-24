@@ -177,6 +177,10 @@
 																							class="fa-solid fa-print"></i>
 																					</a>
 
+																					<a href="javascript:void(0)" onclick="toggleSuspension('<%= app._id %>', <%= app.isSuspended ? 'true' : 'false' %>)" class="btn btn-sm <%= app.isSuspended ? 'btn-warning' : 'btn-outline-warning' %>" title="<%= app.isSuspended ? 'Unsuspend' : 'Suspend' %>">
+																						<i class="fa-solid fa-ban"></i>
+																					</a>
+
 																					<a href="javascript:void(0)"
 																						data-id="<%= app._id %>"
 																						class="btn btn-sm btn-success edit-btn"><i
@@ -1160,6 +1164,24 @@
 				}
 
 				handleNavigation()
+			</script>
+			<script>
+				function toggleSuspension(userId, currentStatus) {
+					if(confirm("Are you sure you want to " + (currentStatus ? "unsuspend" : "suspend") + " this user?")) {
+						fetch(`/users/suspend/${userId}`, {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ suspend: !currentStatus })
+						}).then(res => res.json())
+						.then(data => {
+							if(data.success) {
+								location.reload();
+							} else {
+								alert("Error: " + data.message);
+							}
+						});
+					}
+				}
 			</script>
 	</body>
 
