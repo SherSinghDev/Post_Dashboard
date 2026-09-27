@@ -81,6 +81,22 @@ router.get('/', async (req, res) => {
             unverified = (await UserApplication.find({ approveStatus: "Pending", referredBy: user.userId })).length
         }
 
+        if (user.role == 'stock_operator') {
+            patients = (await PatientForm.find({ "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] },  })).length
+            varifiedPatients = (await PatientForm.find({
+                "otherStatus.doctorStatus": { $nin: [null, ""] },
+                "otherStatus.trackingIdStatus": { $in: [null, ""] },
+                "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+                
+            })).length
+            pendingpatients = (await PatientForm.find({
+                "otherStatus.doctorStatus": { $in: [null, ""] },
+                "otherStatus.supportStatus": { $nin: [null, ""] },
+                "otherStatus.trackingIdStatus": { $in: [null, ""] },
+                "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+            })).length
+        }
+
         let networkCounts = { total: 0, l1: 0 };
         if (user.type === 'stockorder') {
             const l1Conditions = [{ parentUser: user._id }];

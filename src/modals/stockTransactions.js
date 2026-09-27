@@ -115,6 +115,21 @@ const stockTransactionSchema = new Schema({
     paymentReceipt: {
         type: String,
     },
+    paymentMethod: {
+        type: String,
+    },
+    trackingId: {
+        type: String,
+        default: ""
+    },
+    stockOperatorApproval: {
+        type: String,
+        default: "No"
+    },
+    adminApproval: {
+        type: String,
+        default: "No"
+    },
     commissionDistributed: {
         type: Boolean,
         default: false,

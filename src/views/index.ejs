@@ -174,7 +174,7 @@
                                                                 <div class="row" id="dashboardCardsContainer">
 
                                                                     <!-- Card: Verified Users -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator')?'d-none':'' %>"
                                                                         data-category="users"
                                                                         data-title="verified users your users">
                                                                         <div class="dash-card">
@@ -202,7 +202,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Unverified Users -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator')?'d-none':'' %>"
                                                                         data-category="users"
                                                                         data-title="unverified users pending applications">
                                                                         <div class="dash-card">
@@ -419,7 +419,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Track Orders -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator')?'d-none':'' %>"
                                                                         data-category="orders"
                                                                         data-title="track orders courier all orders">
                                                                         <div class="dash-card">
@@ -445,7 +445,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Patient Orders -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder')?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator')?'d-none':'' %>"
                                                                         data-category="orders"
                                                                         data-title="patient orders">
                                                                         <div class="dash-card">
@@ -473,7 +473,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Delivered Orders -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder') ?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator')?'d-none':'' %>"
                                                                         data-category="orders"
                                                                         data-title="total delivered orders">
                                                                         <div class="dash-card">

@@ -2,330 +2,411 @@
 <html lang="en">
 <%- include('./globals/head') %>
 
-<body>
-    <%- include('./globals/preloader') %>
+    <body>
+        <%- include('./globals/preloader') %>
 
-    <div id="main-wrapper">
-        <%- include('globals/navHeader') %>
-        <%- include('globals/header') %>
-
-        <!--**********************************
-            Sidebar start
-        ***********************************-->
-        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" ){%>
-            <%- include('./globals/sidebar') %>
-                <%} else{ %>
-                    <div class="deznav">
-                        <div class="deznav-scroll">
-                            <ul class="metismenu" id="menu">
-                                <li class="menu-title">YOUR COMPANY</li>
-                                <li>
-                                    <a href="/doctors/dashboard" aria-expanded="false">
-                                        <div class="menu-icon">
-                                            <svg width="24" height="24" viewbox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M9.13478 20.7733V17.7156C9.13478 16.9351 9.77217 16.3023 10.5584 16.3023H13.4326C13.8102 16.3023 14.1723 16.4512 14.4393 16.7163C14.7063 16.9813 14.8563 17.3408 14.8563 17.7156V20.7733C14.8539 21.0978 14.9821 21.4099 15.2124 21.6402C15.4427 21.8705 15.756 22 16.0829 22H18.0438C18.9596 22.0024 19.8388 21.6428 20.4872 21.0008C21.1356 20.3588 21.5 19.487 21.5 18.5778V9.86686C21.5 9.13246 21.1721 8.43584 20.6046 7.96467L13.934 2.67587C12.7737 1.74856 11.1111 1.7785 9.98539 2.74698L3.46701 7.96467C2.87274 8.42195 2.51755 9.12064 2.5 9.86686V18.5689C2.5 20.4639 4.04738 22 5.95617 22H7.87229C8.55123 22 9.103 21.4562 9.10792 20.7822L9.13478 20.7733Z"
-                                                    fill="#90959F"></path>
-                                            </svg>
-                                        </div>
-                                        <span class="nav-text">Dashboard</span>
-                                    </a>
-
-                                </li>
-
-                                <li>
-                                    <a href="/doctors/patients" aria-expanded="false">
-                                        <div class="menu-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.5"
-                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
-                                                    fill="#90959F" />
-                                                <path
-                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
-                                                    fill="#90959F" />
-                                                <path opacity="0.4"
-                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
-                                                    fill="#90959F" />
-                                            </svg>
-                                        </div>
-                                        <span class="nav-text">Patients</span>
-                                    </a>
-
-                                </li>
-
-                                <li>
-                                    <a href="/patientform/<%=user.assignedForm%>" target="_blank" aria-expanded="false">
-                                        <div class="menu-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.5"
-                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
-                                                    fill="#90959F" />
-                                                <path
-                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
-                                                    fill="#90959F" />
-                                                <path opacity="0.4"
-                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
-                                                    fill="#90959F" />
-                                            </svg>
-                                        </div>
-                                        <span class="nav-text">Patient Form</span>
-                                    </a>
-
-                                </li>
-
-                                <hr>
-
-                                <li>
-                                    <a href="javascript:void(0);" class="logout-btn" aria-expanded="false">
-                                        <div class="menu-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <path class="no-color" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4">
-                                                </path>
-                                                <polyline points="16 17 21 12 16 7"></polyline>
-                                                <line x1="21" y1="12" x2="9" y2="12"></line>
-                                            </svg>
-                                        </div>
-                                        <span class="nav-text">Log Out</span>
-                                    </a>
-
-                                </li>
-
-
-                            </ul>
-
-                        </div>
-                    </div>
-                    <%}%>
+            <div id="main-wrapper">
+                <%- include('globals/navHeader') %>
+                    <%- include('globals/header') %>
 
                         <!--**********************************
+            Sidebar start
+        ***********************************-->
+                        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" ||
+                            user.role=="stock_operator" ){%>
+                            <%- include('./globals/sidebar') %>
+                                <%} else{ %>
+                                    <div class="deznav">
+                                        <div class="deznav-scroll">
+                                            <ul class="metismenu" id="menu">
+                                                <li class="menu-title">YOUR COMPANY</li>
+                                                <li>
+                                                    <a href="/doctors/dashboard" aria-expanded="false">
+                                                        <div class="menu-icon">
+                                                            <svg width="24" height="24" viewbox="0 0 24 24" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M9.13478 20.7733V17.7156C9.13478 16.9351 9.77217 16.3023 10.5584 16.3023H13.4326C13.8102 16.3023 14.1723 16.4512 14.4393 16.7163C14.7063 16.9813 14.8563 17.3408 14.8563 17.7156V20.7733C14.8539 21.0978 14.9821 21.4099 15.2124 21.6402C15.4427 21.8705 15.756 22 16.0829 22H18.0438C18.9596 22.0024 19.8388 21.6428 20.4872 21.0008C21.1356 20.3588 21.5 19.487 21.5 18.5778V9.86686C21.5 9.13246 21.1721 8.43584 20.6046 7.96467L13.934 2.67587C12.7737 1.74856 11.1111 1.7785 9.98539 2.74698L3.46701 7.96467C2.87274 8.42195 2.51755 9.12064 2.5 9.86686V18.5689C2.5 20.4639 4.04738 22 5.95617 22H7.87229C8.55123 22 9.103 21.4562 9.10792 20.7822L9.13478 20.7733Z"
+                                                                    fill="#90959F"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <span class="nav-text">Dashboard</span>
+                                                    </a>
+
+                                                </li>
+
+                                                <li>
+                                                    <a href="/doctors/patients" aria-expanded="false">
+                                                        <div class="menu-icon">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path opacity="0.5"
+                                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
+                                                                    fill="#90959F" />
+                                                                <path
+                                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
+                                                                    fill="#90959F" />
+                                                                <path opacity="0.4"
+                                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
+                                                                    fill="#90959F" />
+                                                            </svg>
+                                                        </div>
+                                                        <span class="nav-text">Patients</span>
+                                                    </a>
+
+                                                </li>
+
+                                                <li>
+                                                    <a href="/patientform/<%=user.assignedForm%>" target="_blank"
+                                                        aria-expanded="false">
+                                                        <div class="menu-icon">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path opacity="0.5"
+                                                                    d="M21.101 9.58786H19.8979V8.41162C19.8979 7.90945 19.4952 7.5 18.999 7.5C18.5038 7.5 18.1 7.90945 18.1 8.41162V9.58786H16.899C16.4027 9.58786 16 9.99731 16 10.4995C16 11.0016 16.4027 11.4111 16.899 11.4111H18.1V12.5884C18.1 13.0906 18.5038 13.5 18.999 13.5C19.4952 13.5 19.8979 13.0906 19.8979 12.5884V11.4111H21.101C21.5962 11.4111 22 11.0016 22 10.4995C22 9.99731 21.5962 9.58786 21.101 9.58786Z"
+                                                                    fill="#90959F" />
+                                                                <path
+                                                                    d="M9.5 15.0155C5.45422 15.0155 2 15.6623 2 18.2466C2 20.8299 5.4332 21.5 9.5 21.5C13.5448 21.5 17 20.8532 17 18.2689C17 15.6846 13.5668 15.0155 9.5 15.0155Z"
+                                                                    fill="#90959F" />
+                                                                <path opacity="0.4"
+                                                                    d="M9.49999 12.5542C12.2546 12.5542 14.4626 10.3177 14.4626 7.52761C14.4626 4.73754 12.2546 2.5 9.49999 2.5C6.74541 2.5 4.53735 4.73754 4.53735 7.52761C4.53735 10.3177 6.74541 12.5542 9.49999 12.5542Z"
+                                                                    fill="#90959F" />
+                                                            </svg>
+                                                        </div>
+                                                        <span class="nav-text">Patient Form</span>
+                                                    </a>
+
+                                                </li>
+
+                                                <hr>
+
+                                                <li>
+                                                    <a href="javascript:void(0);" class="logout-btn"
+                                                        aria-expanded="false">
+                                                        <div class="menu-icon">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="var(--primary)" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path class="no-color"
+                                                                    d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4">
+                                                                </path>
+                                                                <polyline points="16 17 21 12 16 7"></polyline>
+                                                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                                                            </svg>
+                                                        </div>
+                                                        <span class="nav-text">Log Out</span>
+                                                    </a>
+
+                                                </li>
+
+
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                    <%}%>
+
+                                        <!--**********************************
             Sidebar end
         ***********************************-->
 
-                        <!--**********************************
+                                        <!--**********************************
           Content body start
     ***********************************-->
-                        <div class="content-body">
-                            <div class="container">
-                                <div class="d-flex justify-content-between mb-4 flex-wrap">
-                                    <div class="input-group w-auto mb-2 mb-xxl-0">
-                                        <input type="text" placeholder="Search by any field .."
-                                            class="form-control search-input" style="width: 300px;">
-                                    </div>
-                                    <div class="text-end">
-                                        <a href="javascript:void(0);"
-                                            class="btn btn-primary me-1 create-btn <%- user.role !== 'Admin' ? 'd-none' : '' %>">+
-                                            New
-                                            Transaction</a>
-                                    </div>
-                                </div>
+                                        <div class="content-body">
+                                            <div class="container">
+                                                <div class="d-flex justify-content-between mb-4 flex-wrap">
+                                                    <div class="input-group w-auto mb-2 mb-xxl-0">
+                                                        <input type="text" placeholder="Search by any field .."
+                                                            class="form-control search-input" style="width: 300px;">
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <a href="javascript:void(0);"
+                                                            class="btn btn-primary me-1 create-btn <%- (user.role !== 'Admin' && user.role !== 'stock_operator' && user.type !== 'stockorder') ? 'd-none' : '' %>">+
+                                                            New
+                                                            Transaction</a>
+                                                    </div>
+                                                </div>
 
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="card mt-2">
-                                            <div class="card-body">
-                                                <div class="table-responsive text-center">
-                                                    <table class="table table-striped align-middle main-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Tr. Id</th>
-                                                                <th>Receiver Name</th>
-                                                                <th>Receiver Position</th>
-                                                                <th>OrthoCare</th>
-                                                                <th>DetoxCare</th>
-                                                                <th>ParentsWellnessCare</th>
-                                                                <th>ImmunityBoosterCare</th>
-                                                                <th>DiabetesCare</th>
-                                                                <th>HeartCare</th>
-                                                                <th>DigestiveCare</th>
-                                                                <th>EyeCare</th>
-                                                                <th>WeightLossCare</th>
-                                                                <th>EnergyAndWeaknessCare</th>
-                                                                <th>HairCare</th>
-                                                                <th>SkinCare</th>
-                                                                <th>ThyroidCare</th>
-                                                                <th>LiverAndKidneyCare</th>
-                                                                <th>LadiesWellnessCare</th>
-                                                                <th>InfinityMaleWellness</th>
-                                                                <th>InfinityFemaleWellness</th>
-                                                                <th>PilesCare</th>
-                                                                <th>AsthmaCare</th>
-                                                                <th>NeuroCare</th>
-                                                                <th>BloodPurifierCare</th>
-                                                                <th>BrainAndMemoryCare</th>
-                                                                <th>PowerWellnessCare</th>
-                                                                <th>TotalWellnessCare</th>
-                                                                <th>totalStock</th>
-                                                                <th>Total Amount</th>
-                                                                <th>Payment Status</th>
-                                                                <th>Created At</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% if (applications.length> 0) { %>
-                                                                <% applications.forEach((app, index)=> { %>
-                                                                    <tr id="tr-<%= app._id %>">
-                                                                        <td>
-                                                                            <%= app._id %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.receiverName %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.receiverPosition %>
-                                                                        </td>
-                                                                       
-                                                                        <td>
-                                                                            <%= app.OrthoCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.DetoxCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.ParentsWellnessCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.ImmunityBoosterCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.DiabetesCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.HeartCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.DigestiveCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.EyeCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.WeightLossCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.EnergyAndWeaknessCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.HairCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.SkinCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.ThyroidCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.LiverAndKidneyCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.LadiesWellnessCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.InfinityMaleWellness %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.InfinityFemaleWellness %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.PilesCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.AsthmaCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.NeuroCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.BloodPurifierCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.BrainAndMemoryCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.PowerWellnessCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.TotalWellnessCare %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.totalStock %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= app.totalAmount ? '₹' + app.totalAmount : '-' %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <span class="badge badge-<%= app.paymentStatus === 'Paid' ? 'success' : 'warning' %>">
-                                                                                <%= app.paymentStatus || 'Unpaid' %>
-                                                                            </span>
-                                                                            <% if (app.paymentReceipt) { %>
-                                                                                <br>
-                                                                                <a href="<%= app.paymentReceipt %>" target="_blank" class="text-primary mt-1 d-inline-block" title="View Receipt">
-                                                                                    <i class="fas fa-file-invoice"></i> View Receipt
-                                                                                </a>
-                                                                            <% } %>
-                                                                        </td>
-
-
-
-                                                                        <td>
-                                                                            <%= new Date(app.createdAt).toLocaleDateString() %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <% if (app.paymentStatus !== 'Paid') { %>
-                                                                                <button class="btn btn-sm btn-primary edit-btn <%- user.role != 'Admin' ? 'd-none' : '' %>" data-id="<%= app._id %>" data-app="<%- encodeURIComponent(JSON.stringify(app)) %>"><i class="fas fa-edit"></i> Edit</button>
-                                                                            <% } else { %>
-                                                                                <span class="text-muted">-</span>
-                                                                            <% } %>
-                                                                        </td>
-
-
-                                                                    </tr>
-                                                                    <% }) %>
-                                                                        <% } else { %>
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div class="card mt-2">
+                                                            <div class="card-body">
+                                                                <div class="table-responsive text-center">
+                                                                    <table
+                                                                        class="table table-striped align-middle main-table">
+                                                                        <thead>
                                                                             <tr>
-                                                                                <td colspan="10"
-                                                                                    class="text-center text-muted">
-                                                                                    No Data found</td>
+                                                                                <th>Tr. Id</th>
+                                                                                <th>Tracking ID</th>
+                                                                                <th>Receiver Name</th>
+                                                                                <th>Receiver Position</th>
+                                                                                <th>OrthoCare</th>
+                                                                                <th>DetoxCare</th>
+                                                                                <th>ParentsWellnessCare</th>
+                                                                                <th>ImmunityBoosterCare</th>
+                                                                                <th>DiabetesCare</th>
+                                                                                <th>HeartCare</th>
+                                                                                <th>DigestiveCare</th>
+                                                                                <th>EyeCare</th>
+                                                                                <th>WeightLossCare</th>
+                                                                                <th>EnergyAndWeaknessCare</th>
+                                                                                <th>HairCare</th>
+                                                                                <th>SkinCare</th>
+                                                                                <th>ThyroidCare</th>
+                                                                                <th>LiverAndKidneyCare</th>
+                                                                                <th>LadiesWellnessCare</th>
+                                                                                <th>InfinityMaleWellness</th>
+                                                                                <th>InfinityFemaleWellness</th>
+                                                                                <th>PilesCare</th>
+                                                                                <th>AsthmaCare</th>
+                                                                                <th>NeuroCare</th>
+                                                                                <th>BloodPurifierCare</th>
+                                                                                <th>BrainAndMemoryCare</th>
+                                                                                <th>PowerWellnessCare</th>
+                                                                                <th>TotalWellnessCare</th>
+                                                                                <th>totalStock</th>
+                                                                                <th>Total Amount</th>
+                                                                                <th>Payment Status</th>
+                                                                                <th>Payment Method</th>
+                                                                                <th>Created At</th>
+                                                                                <th>Stock Operator Approval</th>
+                                                                                <th>Admin Approval</th>
+                                                                                <th>Actions</th>
                                                                             </tr>
-                                                                            <% } %>
-                                                        </tbody>
-                                                    </table>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <% if (applications.length> 0) { %>
+                                                                                <% applications.forEach((app, index)=> {
+                                                                                    %>
+                                                                                    <tr id="tr-<%= app._id %>">
+                                                                                        <td>
+                                                                                            <%= app._id %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.trackingId || '-' %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.receiverName %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.receiverPosition %>
+                                                                                        </td>
+
+                                                                                        <td>
+                                                                                            <%= app.OrthoCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.DetoxCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.ParentsWellnessCare
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.ImmunityBoosterCare
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.DiabetesCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.HeartCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.DigestiveCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.EyeCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.WeightLossCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.EnergyAndWeaknessCare
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.HairCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.SkinCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.ThyroidCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.LiverAndKidneyCare
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.LadiesWellnessCare
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.InfinityMaleWellness
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.InfinityFemaleWellness
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.PilesCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.AsthmaCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.NeuroCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.BloodPurifierCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.BrainAndMemoryCare
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.PowerWellnessCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.TotalWellnessCare %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.totalStock %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.totalAmount ? '₹' +
+                                                                                                app.totalAmount : '-' %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span
+                                                                                                class="badge badge-<%= app.paymentStatus === 'Paid' ? 'success' : 'warning' %>">
+                                                                                                <%= app.paymentStatus
+                                                                                                    || 'Unpaid' %>
+                                                                                            </span>
+                                                                                            <% if (app.paymentReceipt) {
+                                                                                                %>
+                                                                                                <br>
+                                                                                                <a href="<%= app.paymentReceipt %>"
+                                                                                                    target="_blank"
+                                                                                                    class="text-primary mt-1 d-inline-block"
+                                                                                                    title="View Receipt">
+                                                                                                    <i
+                                                                                                        class="fas fa-file-invoice"></i>
+                                                                                                    View Receipt
+                                                                                                </a>
+                                                                                                <% } %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= app.paymentMethod || '-'
+                                                                                                %>
+                                                                                        </td>
+
+
+
+                                                                                        <td>
+                                                                                            <%= new
+                                                                                                Date(app.createdAt).toLocaleDateString()
+                                                                                                %>
+                                                                                        </td>
+                                                                                        <td>
+
+                                                                                            <span
+                                                                                                class="badge badge-<%= app.stockOperatorApproval === 'Yes' ? 'success' : 'warning' %>">
+                                                                                                <%= app.stockOperatorApproval
+                                                                                                    || 'No' %>
+                                                                                            </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span
+                                                                                                class="badge badge-<%= app.adminApproval === 'Yes' ? 'success' : 'warning' %>">
+                                                                                                <%= app.adminApproval
+                                                                                                    || 'No' %>
+                                                                                            </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <% if
+                                                                                                (user.role==='stock_operator'
+                                                                                                ) { %>
+                                                                                                <button
+                                                                                                    class="btn btn-sm <%= app.stockOperatorApproval === 'Yes' ? 'btn-danger' : 'btn-success' %> toggle-approval-btn"
+                                                                                                    data-id="<%= app._id %>"
+                                                                                                    data-type="stockOperator">
+                                                                                                    <%= app.stockOperatorApproval==='Yes'
+                                                                                                        ? 'Revoke Approval'
+                                                                                                        : 'Approve' %>
+                                                                                                </button>
+                                                                                                <% } %>
+                                                                                                    <% if
+                                                                                                        (user.role==='Admin'
+                                                                                                        ) { %>
+                                                                                                        <button
+                                                                                                            class="btn btn-sm <%= app.adminApproval === 'Yes' ? 'btn-danger' : 'btn-success' %> toggle-approval-btn"
+                                                                                                            data-id="<%= app._id %>"
+                                                                                                            data-type="admin">
+                                                                                                            <%= app.adminApproval==='Yes'
+                                                                                                                ? 'Revoke Admin Approval'
+                                                                                                                : 'Admin Approve'
+                                                                                                                %>
+                                                                                                        </button>
+                                                                                                        <% } %>
+                                                                                                            <button
+                                                                                                                class="btn btn-sm btn-primary edit-btn <%- (user.role != 'Admin' && user.role != 'stock_operator' && user.type != 'stockorder') ? 'd-none' : '' %>"
+                                                                                                                data-id="<%= app._id %>"
+                                                                                                                data-app="<%- encodeURIComponent(JSON.stringify(app)) %>"><i
+                                                                                                                    class="fas fa-edit"></i>
+                                                                                                                Edit</button>
+                                                                                                            <button class="btn btn-sm btn-danger delete-stock-btn <%- (user.role != 'Admin' && user.role != 'stock_operator' && user.type != 'stockorder') ? 'd-none' : '' %>" data-id="<%= app._id %>"><i class="fas fa-trash"></i> Delete</button>
+                                                                                        </td>
+
+
+                                                                                    </tr>
+                                                                                    <% }) %>
+                                                                                        <% } else { %>
+                                                                                            <tr>
+                                                                                                <td colspan="10"
+                                                                                                    class="text-center text-muted">
+                                                                                                    No Data found</td>
+                                                                                            </tr>
+                                                                                            <% } %>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--**********************************
+                                        <!--**********************************
           Content body end
     ***********************************-->
 
-                        <!-- View Modal -->
-                        <div class="modal fade view-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Medical Report</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="view-details" class="p-2">
+                                        <!-- View Modal -->
+                                        <div class="modal fade view-modal bd-example-modal-xl" tabindex="-1"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Medical Report</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div id="view-details" class="p-2">
 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
-                        <!-- Approve Modal -->
-                        <!-- <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
+                                        <!-- Approve Modal -->
+                                        <!-- <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -344,1013 +425,1224 @@
                         </div> -->
 
 
-                        <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Edit Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="approve-details">
-                                            <div class="basic-form">
-                                                <form action="/submit-patient-form" method="POST" id="approve-form"
-                                                    enctype="multipart/form-data">
+                                        <div class="modal fade approve-modal bd-example-modal-xl" tabindex="-1"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Details</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div id="approve-details">
+                                                            <div class="basic-form">
+                                                                <form action="/submit-patient-form" method="POST"
+                                                                    id="approve-form" enctype="multipart/form-data">
 
-                                                    <!-- Basic Info -->
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Receiver *</label>
-                                                            <select name="receiverId" style="padding-block: 11px;"
-                                                                class="form-select selectpicker" data-live-search="true" required>
-                                                                <option value="">Select Receiver</option>
+                                                                    <!-- Basic Info -->
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">Receiver *</label>
+                                                                            <select name="receiverId"
+                                                                                style="padding-block: 11px;"
+                                                                                class="form-select selectpicker"
+                                                                                data-live-search="true" required>
+                                                                                <option value="">Select Receiver
+                                                                                </option>
 
-                                                                <% let child=[]; %>
-                                                                    <% if(user.position=='District Head' ){ %>
-                                                                        <% child=blocktHeads %>
-                                                                            <% } else
-                                                                                if(user.position=='Block Head' || user.position=='City Head'
-                                                                                ){ %>
-                                                                                <% child=centreHeads %>
-                                                                                    <% } else if(user.role=='Admin' ){
-                                                                                        %>
-                                                                                        <% child=stockOrderUsers %>
-                                                                                            <% } %>
-
-                                                                                                <% child.forEach((c)=>{
-                                                                                                    %>
-                                                                                                    <option
-                                                                                                        value="<%- c.userId || c._id %>">
-                                                                                                        <%- `${c.name}
-                                                                                                            (${c.position})`
+                                                                                <% let child=[]; %>
+                                                                                    <% if(user.position=='District Head'
+                                                                                        ){ %>
+                                                                                        <% child=blocktHeads %>
+                                                                                            <% } else
+                                                                                                if(user.position=='Block Head'
+                                                                                                ||
+                                                                                                user.position=='City Head'
+                                                                                                ){ %>
+                                                                                                <% child=centreHeads %>
+                                                                                                    <% } else
+                                                                                                        if(user.role=='Admin'
+                                                                                                        ){ %>
+                                                                                                        <% child=stockOrderUsers
                                                                                                             %>
-                                                                                                    </option>
-                                                                                                    <% }) %>
+                                                                                                            <% } %>
+
+                                                                                                                <%
+                                                                                                                    child.forEach((c)=>
+                                                                                                                    {
+                                                                                                                    %>
+                                                                                                                    <option
+                                                                                                                        value="<%- c.userId || c._id %>">
+                                                                                                                        <%- `${c.name}
+                                                                                                                            (${c.position})`
+                                                                                                                            %>
+                                                                                                                    </option>
+                                                                                                                    <% })
+                                                                                                                        %>
 
 
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
 
 
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">OrthoCare</label>
-                                                            <input type="text" name="OrthoCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">DetoxCare</label>
-                                                            <input type="text" name="DetoxCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">OrthoCare</label>
+                                                                            <input type="text" name="OrthoCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">DetoxCare</label>
+                                                                            <input type="text" name="DetoxCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
 
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">ParentsWellnessCare</label>
-                                                            <input type="text" name="ParentsWellnessCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">ImmunityBoosterCare</label>
-                                                            <input type="text" name="ImmunityBoosterCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">DiabetesCare</label>
-                                                            <input type="text" name="DiabetesCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">HeartCare</label>
-                                                            <input type="text" name="HeartCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">DigestiveCare</label>
-                                                            <input type="text" name="DigestiveCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">EyeCare</label>
-                                                            <input type="text" name="EyeCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">WeightLossCare</label>
-                                                            <input type="text" name="WeightLossCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">EnergyAndWeaknessCare</label>
-                                                            <input type="text" name="EnergyAndWeaknessCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">HairCare</label>
-                                                            <input type="text" name="HairCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">SkinCare</label>
-                                                            <input type="text" name="SkinCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">ThyroidCare</label>
-                                                            <input type="text" name="ThyroidCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">LiverAndKidneyCare</label>
-                                                            <input type="text" name="LiverAndKidneyCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">LadiesWellnessCare</label>
-                                                            <input type="text" name="LadiesWellnessCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">InfinityMaleWellness</label>
-                                                            <input type="text" name="InfinityMaleWellness"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">InfinityFemaleWellness</label>
-                                                            <input type="text" name="InfinityFemaleWellness"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">PilesCare</label>
-                                                            <input type="text" name="PilesCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">AsthmaCare</label>
-                                                            <input type="text" name="AsthmaCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">NeuroCare</label>
-                                                            <input type="text" name="NeuroCare" class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">BloodPurifierCare</label>
-                                                            <input type="text" name="BloodPurifierCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">BrainAndMemoryCare</label>
-                                                            <input type="text" name="BrainAndMemoryCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">PowerWellnessCare</label>
-                                                            <input type="text" name="PowerWellnessCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">TotalWellnessCare</label>
-                                                            <input type="text" name="TotalWellnessCare"
-                                                                class="form-control" placeholder="Enter quantity" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">totalStock *</label>
-                                                            <input type="text" name="totalStock" class="form-control" placeholder="Enter quantity" required />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Total Amount *</label>
-                                                            <input type="number" name="totalAmount" class="form-control" placeholder="Enter Amount" required />
-                                                        </div>
-                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">ParentsWellnessCare</label>
+                                                                            <input type="text"
+                                                                                name="ParentsWellnessCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">ImmunityBoosterCare</label>
+                                                                            <input type="text"
+                                                                                name="ImmunityBoosterCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">DiabetesCare</label>
+                                                                            <input type="text" name="DiabetesCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">HeartCare</label>
+                                                                            <input type="text" name="HeartCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">DigestiveCare</label>
+                                                                            <input type="text" name="DigestiveCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">EyeCare</label>
+                                                                            <input type="text" name="EyeCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">WeightLossCare</label>
+                                                                            <input type="text" name="WeightLossCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">EnergyAndWeaknessCare</label>
+                                                                            <input type="text"
+                                                                                name="EnergyAndWeaknessCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">HairCare</label>
+                                                                            <input type="text" name="HairCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">SkinCare</label>
+                                                                            <input type="text" name="SkinCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">ThyroidCare</label>
+                                                                            <input type="text" name="ThyroidCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">LiverAndKidneyCare</label>
+                                                                            <input type="text" name="LiverAndKidneyCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">LadiesWellnessCare</label>
+                                                                            <input type="text" name="LadiesWellnessCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">InfinityMaleWellness</label>
+                                                                            <input type="text"
+                                                                                name="InfinityMaleWellness"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">InfinityFemaleWellness</label>
+                                                                            <input type="text"
+                                                                                name="InfinityFemaleWellness"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">PilesCare</label>
+                                                                            <input type="text" name="PilesCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">AsthmaCare</label>
+                                                                            <input type="text" name="AsthmaCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">NeuroCare</label>
+                                                                            <input type="text" name="NeuroCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">BloodPurifierCare</label>
+                                                                            <input type="text" name="BloodPurifierCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">BrainAndMemoryCare</label>
+                                                                            <input type="text" name="BrainAndMemoryCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">PowerWellnessCare</label>
+                                                                            <input type="text" name="PowerWellnessCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label
+                                                                                class="form-label">TotalWellnessCare</label>
+                                                                            <input type="text" name="TotalWellnessCare"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">totalStock
+                                                                                *</label>
+                                                                            <input type="text" name="totalStock"
+                                                                                class="form-control"
+                                                                                placeholder="Enter quantity" required />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">Total Amount
+                                                                                *</label>
+                                                                            <input type="number" name="totalAmount"
+                                                                                class="form-control"
+                                                                                placeholder="Enter Amount" required />
+                                                                        </div>
+                                                                    </div>
 
-                                                    <div class="row mb-3">
-                                                        <div class="col-lg-6">
-                                                            <label class="form-label">Payment Status *</label>
-                                                            <select name="paymentStatus" id="paymentStatusSelect" class="form-select" style="padding-block: 11px;" required>
-                                                                <option value="Unpaid">Unpaid</option>
-                                                                <option value="Paid">Paid</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-lg-6" id="paymentReceiptContainer" style="display: none;">
-                                                            <label class="form-label">Payment Receipt</label>
-                                                            <input type="file" name="paymentReceipt" id="paymentReceipt" class="form-control" accept="image/*,.pdf" style="padding-block: 8px;" />
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">Payment Status
+                                                                                *</label>
+                                                                            <select name="paymentStatus"
+                                                                                id="paymentStatusSelect"
+                                                                                class="form-select"
+                                                                                style="padding-block: 11px;" required>
+                                                                                <option value="Unpaid">Unpaid</option>
+                                                                                <option value="Paid">Paid</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-lg-6 mt-3 mt-lg-0"
+                                                                            id="paymentMethodContainer"
+                                                                            style="display: none;">
+                                                                            <label class="form-label">Payment Method
+                                                                                *</label>
+                                                                            <select name="paymentMethod"
+                                                                                id="paymentMethodSelect"
+                                                                                class="form-select"
+                                                                                style="padding-block: 11px;">
+                                                                                <option value="Online">Online</option>
+                                                                                <option value="Cash on Delivery">Cash on
+                                                                                    Delivery</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-lg-6"
+                                                                            id="paymentReceiptContainer"
+                                                                            style="display: none;">
+                                                                            <label class="form-label">Payment
+                                                                                Receipt</label>
+                                                                            <input type="file" name="paymentReceipt"
+                                                                                id="paymentReceipt" class="form-control"
+                                                                                accept="image/*,.pdf"
+                                                                                style="padding-block: 8px;" />
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <label class="form-label">Tracking
+                                                                                ID</label>
+                                                                            <input type="text" name="trackingId"
+                                                                                class="form-control"
+                                                                                placeholder="Enter Tracking ID (Optional)" />
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="text-center mt-4">
+                                                                        <button type="submit"
+                                                                            class="btn btn-success px-5 py-2">Submit</button>
+
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-
-
-                                                    <div class="text-center mt-4">
-                                                        <button type="submit"
-                                                            class="btn btn-success px-5 py-2">Submit</button>
-
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
 
-                        <!--**********************************
+                                        <!--**********************************
           Footer start
     ***********************************-->
 
-                        <!--**********************************
+                                        <!--**********************************
           Footer end
     ***********************************-->
 
-    </div>
+            </div>
 
-    <!--**********************************
+            <!--**********************************
         Scripts
   ***********************************-->
-    <script src="/vendor/global/global.min.js"></script>
-    <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
-    <!-- Dashboard 1 -->
-    <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="/js/plugins-init/datatables.init.js"></script>
-    <script src="/js/custom.js"></script>
-    <script src="/js/deznav-init.js"></script>
-    <script src="/js/demo.js"></script>
-    <script src="/js/styleSwitcher.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
-    <script src="/js/pages/patients.js"></script>
+            <!-- Dashboard 1 -->
+            <script src="/vendor/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="/js/plugins-init/datatables.init.js"></script>
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
+            <script src="/js/pages/patients.js"></script>
 
-    <script>
-        // 🔍 Search filter
-        $(document).on('keyup', '.search-input', function () {
-            const value = $(this).val().toLowerCase();
-            $('tbody tr').filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            });
-        });
-
-
-        $(document).on('click', '.create-btn', function () {
-            $('.approve-modal').modal('show');
-            const id = $(this).data('id');
-            $('#approve-form').attr('data-url', '/stock/newstocktransaction')
-            $('#approve-form').attr('data-type', 'create')
-            $('.modal-title').text('Create Stock Transaction')
-            $('#approve-form')[0].reset();
-            $('#paymentStatusSelect').trigger('change');
-            
-            // Refresh selectpicker for Receiver
-            const $rec = $('select[name="receiverId"]');
-            $rec.val('');
-            $rec.find('option').prop('selected', false);
-            if (typeof $rec.selectpicker === 'function') {
-                try {
-                    $rec.selectpicker('val', '');
-                    $rec.selectpicker('refresh');
-                } catch (e) {}
-            }
-            const $btn = $rec.closest('.bootstrap-select').find('button.dropdown-toggle');
-            if ($btn.length) {
-                $btn.attr('title', 'Select Receiver');
-                $btn.find('.filter-option-inner-inner').text('Select Receiver');
-            }
-        });
-
-        function populateEditForm(data) {
-            if (!data) return;
-            const form = document.getElementById('approve-form');
-            if (!form) return;
-
-            const allFieldNames = [
-                'receiverId', 'totalStock', 'totalAmount', 'paymentStatus',
-                'OrthoCare', 'DetoxCare', 'ParentsWellnessCare', 'ImmunityBoosterCare',
-                'DiabetesCare', 'HeartCare', 'DigestiveCare', 'EyeCare', 'WeightLossCare',
-                'EnergyAndWeaknessCare', 'HairCare', 'SkinCare', 'ThyroidCare',
-                'LiverAndKidneyCare', 'LadiesWellnessCare', 'InfinityMaleWellness',
-                'InfinityFemaleWellness', 'PilesCare', 'AsthmaCare', 'NeuroCare',
-                'BloodPurifierCare', 'BrainAndMemoryCare', 'PowerWellnessCare', 'TotalWellnessCare'
-            ];
-
-            allFieldNames.forEach(name => {
-                const field = form.querySelector(`[name="${name}"]`);
-                if (!field) return;
-
-                const val = (data[name] !== undefined && data[name] !== null) ? data[name] : '';
-
-                if (name === 'receiverId') {
-                    let targetVal = String(val).trim();
-                    const $select = $(field);
-
-                    // If receiverId is empty, try finding by receiverName
-                    let option = $select.find(`option[value="${targetVal}"]`);
-                    if ((!option.length || !targetVal) && data.receiverName) {
-                        $select.find('option').each(function () {
-                            if ($(this).text().toLowerCase().includes(data.receiverName.toLowerCase())) {
-                                targetVal = $(this).val();
-                                option = $(this);
-                                return false;
-                            }
-                        });
-                    }
-
-                    // If still not found in select options, append option dynamically
-                    if (!option.length && targetVal) {
-                        const optText = data.receiverName ? `${data.receiverName} (${data.receiverPosition || ''})` : targetVal;
-                        $select.append(new Option(optText, targetVal, true, true));
-                        option = $select.find(`option[value="${targetVal}"]`);
-                    }
-
-                    // 1. Select the option in native select
-                    $select.find('option').prop('selected', false);
-                    if (option.length) {
-                        option.prop('selected', true);
-                    }
-                    field.value = targetVal;
-                    $select.val(targetVal);
-
-                    // 2. Refresh Bootstrap selectpicker plugin
-                    if (typeof $select.selectpicker === 'function') {
-                        try {
-                            $select.selectpicker('val', targetVal);
-                            $select.selectpicker('refresh');
-                        } catch (err) {
-                            console.warn('Selectpicker error:', err);
-                        }
-                    }
-
-                    // 3. Directly update visible Bootstrap Selectpicker button display text as fail-safe
-                    const selectedText = (option.length ? option.text() : (data.receiverName || targetVal)).trim();
-                    const $btn = $select.closest('.bootstrap-select').find('button.dropdown-toggle');
-                    if ($btn.length && selectedText) {
-                        $btn.attr('title', selectedText);
-                        $btn.find('.filter-option-inner-inner').text(selectedText);
-                    }
-                } else if (field.tagName === 'SELECT') {
-                    field.value = val;
-                    $(field).val(val);
-                } else {
-                    field.value = val;
-                }
-            });
-
-            $('#paymentStatusSelect').trigger('change');
-        }
-
-        $(document).on('click', '.edit-btn', function () {
-            const btn = $(this).closest('.edit-btn');
-            const id = btn.attr('data-id');
-            let rawData = btn.attr('data-app') || btn.data('app');
-            let appData = null;
-
-            if (rawData) {
-                try {
-                    appData = typeof rawData === 'string' ? JSON.parse(decodeURIComponent(rawData)) : rawData;
-                } catch (e) {
-                    try {
-                        appData = typeof rawData === 'string' ? JSON.parse(rawData) : rawData;
-                    } catch (err) {
-                        console.error('Error parsing data-app:', err);
-                    }
-                }
-            }
-
-            $('.approve-modal').modal('show');
-            const txId = (appData && appData._id) ? appData._id : id;
-            $('#approve-form').attr('data-url', `/stock/editstocktransaction/${txId}`);
-            $('#approve-form').attr('data-type', 'edit');
-            $('.modal-title').text('Edit Stock Transaction');
-
-            const form = document.getElementById('approve-form');
-            if (form) form.reset();
-
-            // 1. Instantly populate from data-app
-            if (appData) {
-                populateEditForm(appData);
-            }
-
-            // 2. Fetch fresh details from server to guarantee 100% complete field population
-            if (txId) {
-                fetch(`/stock/transaction/${txId}`)
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res.success && res.data) {
-                            populateEditForm(res.data);
-                        }
-                    })
-                    .catch(err => console.error('Fetch transaction error:', err));
-            }
-        });
-
-        // 🧮 Live sum calculation for totalStock when care inputs change
-        const careFieldNames = [
-            'OrthoCare', 'DetoxCare', 'ParentsWellnessCare', 'ImmunityBoosterCare',
-            'DiabetesCare', 'HeartCare', 'DigestiveCare', 'EyeCare', 'WeightLossCare',
-            'EnergyAndWeaknessCare', 'HairCare', 'SkinCare', 'ThyroidCare',
-            'LiverAndKidneyCare', 'LadiesWellnessCare', 'InfinityMaleWellness',
-            'InfinityFemaleWellness', 'PilesCare', 'AsthmaCare', 'NeuroCare',
-            'BloodPurifierCare', 'BrainAndMemoryCare', 'PowerWellnessCare', 'TotalWellnessCare'
-        ];
-
-        $(document).on('input', '#approve-form input', function () {
-            const fieldName = $(this).attr('name');
-            if (careFieldNames.includes(fieldName)) {
-                let total = 0;
-                careFieldNames.forEach(name => {
-                    const val = parseFloat($('#approve-form input[name="' + name + '"]').val()) || 0;
-                    total += val;
+            <script>
+                // 🔍 Search filter
+                $(document).on('keyup', '.search-input', function () {
+                    const value = $(this).val().toLowerCase();
+                    $('tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                    });
                 });
-                $('#approve-form input[name="totalStock"]').val(total);
-            }
-        });
 
 
 
-        $(document).on('click', '.approve-btn', function () {
-            $('.approve-modal').modal('show');
-            const id = $(this).data('id');
-            $('#approve-form').attr('data-id', id)
-            $('.create-order').attr('data-id', id)
-            $('#create-order-form').attr('data-id', id)
-
-            fetch(`/patientform/details/${id}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        let app = data.data;
-                        console.log(app);
-
-                        let statuss = app.otherStatus
-                        app = { ...app, ...statuss }
-                        const form = document.getElementById('approve-form');
-
-                        // 🧩 Function to fill form and show previews
-                        const fillForm = (dataObj, prefix = '') => {
-                            Object.keys(dataObj).forEach(key => {
-                                let fieldName = prefix
-                                    ? `${prefix}${key.charAt(0).toUpperCase() + key.slice(1)}`
-                                    : key;
-
-                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
-                                // if (key === 'receiptUrl') fieldName = 'receiptUrl';
-                                const field = form.querySelector(`[name="${fieldName}"]`);
-                                let value = dataObj[key];
-                                if (!field) return;
-                                if (key === 'referredBy') value = `${app.referralUser.name}(${app.referredBy})`
-
-                                // 🖼 Handle all file/document/image fields
-                                if (
-                                    field.type === 'file' ||
-                                    key.toLowerCase().includes('file') ||
-                                    key.toLowerCase().includes('document') ||
-                                    key.toLowerCase().includes('image') ||
-                                    key.toLowerCase().includes('url')
-                                ) {
-                                    const previewContainerId = `${fieldName}-preview-container`;
-                                    let container = document.getElementById(previewContainerId);
-
-                                    if (!container) {
-                                        container = document.createElement('div');
-                                        container.id = previewContainerId;
-                                        container.style.marginTop = '10px';
-                                        field.insertAdjacentElement('afterend', container);
-                                    }
-
-                                    container.innerHTML = '';
-
-                                    if (value && typeof value === 'string' && (value.startsWith('http') || value.startsWith('/'))) {
-                                        const base = window.location.origin;
-                                        const url = value.startsWith('http') ? value : `${base}${value}`;
-
-                                        // 🧩 Create thumbnail image
-                                        const thumb = document.createElement('img');
-                                        thumb.src = url;
-                                        thumb.style.width = '120px';
-                                        thumb.style.height = '120px';
-                                        thumb.style.objectFit = 'cover';
-                                        thumb.style.border = '1px solid #ddd';
-                                        thumb.style.borderRadius = '6px';
-                                        thumb.style.cursor = 'pointer';
-                                        thumb.style.transition = 'transform 0.2s ease';
-                                        thumb.addEventListener('mouseenter', () => thumb.style.transform = 'scale(1.05)');
-                                        thumb.addEventListener('mouseleave', () => thumb.style.transform = 'scale(1)');
-
-                                        // Click → open full preview
-                                        thumb.addEventListener('click', () => openFullPreview(url));
-
-                                        container.appendChild(thumb);
-                                    }
-
-                                    return;
-                                }
-
-                                // 🗓 Date fields
-                                if (field.type === 'date' && value) {
-                                    field.value = new Date(value).toISOString().split('T')[0];
-                                    return;
-                                }
-
-                                // 🔘 Others
-                                if (field.tagName === 'SELECT') {
-                                    field.value = value || '';
-                                } else if (field.type === 'radio' || field.type === 'checkbox') {
-                                    form.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
-                                        el.checked = el.value === value;
-                                    });
-                                } else {
-                                    field.value = value || '';
-                                }
-                            });
-                        };
-
-                        // 🧩 Fill top-level and nested data
-                        fillForm(app);
-                        if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
-                        if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
-
-                        // $('.view-modal').modal('show');
+                var isStockOrder = "<%= user.type === 'stockorder' ? 'true' : 'false' %>" === "true";
+                $(document).on('input', 'input[name="totalStock"]', function () {
+                    if (isStockOrder) {
+                        var total = parseFloat($(this).val()) || 0;
+                        $('input[name="totalAmount"]').val(total * 148);
                     }
-                })
-                .catch(err => console.error(err));
-        });
+                });
+
+                $(document).on('click', '.create-btn', function () {
+                    $('.approve-modal').modal('show');
+                    const id = $(this).data('id');
+                    $('#approve-form').attr('data-url', '/stock/newstocktransaction')
+                    $('#approve-form').attr('data-type', 'create')
+                    $('.modal-title').text('Create Stock Transaction')
+                    $('#approve-form')[0].reset();
+                    $('#paymentStatusSelect').trigger('change'); $('#paymentMethodSelect').trigger('change'); updatePaymentFields();
+
+                    // Refresh selectpicker for Receiver
+                    const $rec = $('select[name="receiverId"]');
+                    $rec.val('');
+                    $rec.find('option').prop('selected', false);
+            
+            <% if (user.type === 'stockorder') { %>
+                if ($rec.find('option[value="<%- user._id %>"]').length === 0) {
+                            $rec.append('<option value="<%- user._id %>"><%- user.name %></option>');
+                        }
+                        $rec.val('<%- user._id %>');
+                        $rec.find('option[value="<%- user._id %>"]').prop('selected', true);
+
+                        // Add hidden input because disabled select won't submit
+                        if ($('input[name="receiverIdHidden"]').length === 0) {
+                            $('<input>').attr({
+                                type: 'hidden',
+                                name: 'receiverId',
+                                class: 'receiverIdHidden',
+                                value: '<%- user._id %>'
+                            }).appendTo('#approve-form');
+                        }
+                        $rec.prop('disabled', true);
+            <% } %>
+            if (typeof $rec.selectpicker === 'function') {
+                        try {
+                            $rec.selectpicker('val', '<%- user.type === 'stockorder' ? user._id : '' %>');
+                            $rec.selectpicker('refresh');
+                        } catch (e) { }
+                    }
+                    const $btn = $rec.closest('.bootstrap-select').find('button.dropdown-toggle');
+                    if ($btn.length) {
+                        $btn.attr('title', 'Select Receiver');
+                        $btn.find('.filter-option-inner-inner').text('Select Receiver');
+                    }
+                });
+
+                function populateEditForm(data) {
+                    if (!data) return;
+                    const form = document.getElementById('approve-form');
+                    if (!form) return;
+
+                    const allFieldNames = [
+                        'receiverId', 'totalStock', 'totalAmount', 'paymentStatus', 'paymentMethod', 'trackingId',
+                        'OrthoCare', 'DetoxCare', 'ParentsWellnessCare', 'ImmunityBoosterCare',
+                        'DiabetesCare', 'HeartCare', 'DigestiveCare', 'EyeCare', 'WeightLossCare',
+                        'EnergyAndWeaknessCare', 'HairCare', 'SkinCare', 'ThyroidCare',
+                        'LiverAndKidneyCare', 'LadiesWellnessCare', 'InfinityMaleWellness',
+                        'InfinityFemaleWellness', 'PilesCare', 'AsthmaCare', 'NeuroCare',
+                        'BloodPurifierCare', 'BrainAndMemoryCare', 'PowerWellnessCare', 'TotalWellnessCare'
+                    ];
+
+                    allFieldNames.forEach(name => {
+                        const field = form.querySelector(`[name="${name}"]`);
+                        if (!field) return;
+
+                        const val = (data[name] !== undefined && data[name] !== null) ? data[name] : '';
+
+                        if (name === 'receiverId') {
+                            let targetVal = String(val).trim();
+                            const $select = $(field);
+
+                            // If receiverId is empty, try finding by receiverName
+                            let option = $select.find(`option[value="${targetVal}"]`);
+                            if ((!option.length || !targetVal) && data.receiverName) {
+                                $select.find('option').each(function () {
+                                    if ($(this).text().toLowerCase().includes(data.receiverName.toLowerCase())) {
+                                        targetVal = $(this).val();
+                                        option = $(this);
+                                        return false;
+                                    }
+                                });
+                            }
+
+                            // If still not found in select options, append option dynamically
+                            if (!option.length && targetVal) {
+                                const optText = data.receiverName ? `${data.receiverName} (${data.receiverPosition || ''})` : targetVal;
+                                $select.append(new Option(optText, targetVal, true, true));
+                                option = $select.find(`option[value="${targetVal}"]`);
+                            }
+
+                            // 1. Select the option in native select
+                            $select.find('option').prop('selected', false);
+                            if (option.length) {
+                                option.prop('selected', true);
+                            }
+                            field.value = targetVal;
+                            $select.val(targetVal);
+
+                            // 2. Refresh Bootstrap selectpicker plugin
+                            if (typeof $select.selectpicker === 'function') {
+                                try {
+                                    $select.selectpicker('val', targetVal);
+                                    $select.selectpicker('refresh');
+                                } catch (err) {
+                                    console.warn('Selectpicker error:', err);
+                                }
+                            }
+
+                            // 3. Directly update visible Bootstrap Selectpicker button display text as fail-safe
+                            const selectedText = (option.length ? option.text() : (data.receiverName || targetVal)).trim();
+                            const $btn = $select.closest('.bootstrap-select').find('button.dropdown-toggle');
+                            if ($btn.length && selectedText) {
+                                $btn.attr('title', selectedText);
+                                $btn.find('.filter-option-inner-inner').text(selectedText);
+                            }
+                        } else if (field.tagName === 'SELECT') {
+                            field.value = val;
+                            $(field).val(val);
+                        } else {
+                            field.value = val;
+                        }
+                    });
+
+                    $('#paymentStatusSelect').trigger('change'); $('#paymentMethodSelect').trigger('change'); updatePaymentFields();
+                }
+
+                $(document).on('click', '.edit-btn', function () {
+                    const btn = $(this).closest('.edit-btn');
+                    const id = btn.attr('data-id');
+                    let rawData = btn.attr('data-app') || btn.data('app');
+                    let appData = null;
+
+                    if (rawData) {
+                        try {
+                            appData = typeof rawData === 'string' ? JSON.parse(decodeURIComponent(rawData)) : rawData;
+                        } catch (e) {
+                            try {
+                                appData = typeof rawData === 'string' ? JSON.parse(rawData) : rawData;
+                            } catch (err) {
+                                console.error('Error parsing data-app:', err);
+                            }
+                        }
+                    }
+
+                    $('.approve-modal').modal('show');
+                    const txId = (appData && appData._id) ? appData._id : id;
+                    $('#approve-form').attr('data-url', `/stock/editstocktransaction/${txId}`);
+                    $('#approve-form').attr('data-type', 'edit');
+                    $('.modal-title').text('Edit Stock Transaction');
+
+                    const form = document.getElementById('approve-form');
+                    if (form) form.reset();
+
+                    // 1. Instantly populate from data-app
+                    if (appData) {
+                        populateEditForm(appData);
+                    }
+
+                    // 2. Fetch fresh details from server to guarantee 100% complete field population
+                    if (txId) {
+                        fetch(`/stock/transaction/${txId}`)
+                            .then(res => res.json())
+                            .then(res => {
+                                if (res.success && res.data) {
+                                    populateEditForm(res.data);
+                                }
+                            })
+                            .catch(err => console.error('Fetch transaction error:', err));
+                    }
+                });
+
+                // 🧮 Live sum calculation for totalStock when care inputs change
+                const careFieldNames = [
+                    'OrthoCare', 'DetoxCare', 'ParentsWellnessCare', 'ImmunityBoosterCare',
+                    'DiabetesCare', 'HeartCare', 'DigestiveCare', 'EyeCare', 'WeightLossCare',
+                    'EnergyAndWeaknessCare', 'HairCare', 'SkinCare', 'ThyroidCare',
+                    'LiverAndKidneyCare', 'LadiesWellnessCare', 'InfinityMaleWellness',
+                    'InfinityFemaleWellness', 'PilesCare', 'AsthmaCare', 'NeuroCare',
+                    'BloodPurifierCare', 'BrainAndMemoryCare', 'PowerWellnessCare', 'TotalWellnessCare'
+                ];
+
+                $(document).on('input', '#approve-form input', function () {
+                    const fieldName = $(this).attr('name');
+                    if (careFieldNames.includes(fieldName)) {
+                        let total = 0;
+                        careFieldNames.forEach(name => {
+                            const val = parseFloat($('#approve-form input[name="' + name + '"]').val()) || 0;
+                            total += val;
+                        });
+                        $('#approve-form input[name=\"totalStock\"]').val(total).trigger('input');
+                    }
+                });
 
 
-        // 🧩 Function to open fullscreen preview popup
-        function openFullPreview(url) {
-            let overlay = document.getElementById('fullscreen-preview');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.id = 'fullscreen-preview';
-                overlay.style.position = 'fixed';
-                overlay.style.top = 0;
-                overlay.style.left = 0;
-                overlay.style.width = '100vw';
-                overlay.style.height = '100vh';
-                overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
-                overlay.style.display = 'flex';
-                overlay.style.alignItems = 'center';
-                overlay.style.justifyContent = 'center';
-                overlay.style.zIndex = 2000;
 
-                // close button
-                const closeBtn = document.createElement('span');
-                closeBtn.innerHTML = '&times;';
-                closeBtn.style.position = 'absolute';
-                closeBtn.style.top = '20px';
-                closeBtn.style.right = '30px';
-                closeBtn.style.fontSize = '40px';
-                closeBtn.style.color = '#fff';
-                closeBtn.style.cursor = 'pointer';
-                closeBtn.addEventListener('click', () => overlay.remove());
-                overlay.appendChild(closeBtn);
+                $(document).on('click', '.approve-btn', function () {
+                    $('.approve-modal').modal('show');
+                    const id = $(this).data('id');
+                    $('#approve-form').attr('data-id', id)
+                    $('.create-order').attr('data-id', id)
+                    $('#create-order-form').attr('data-id', id)
 
-                // content
-                const content = document.createElement('div');
-                content.id = 'preview-content';
-                content.style.maxWidth = '90vw';
-                content.style.maxHeight = '85vh';
-                content.style.overflow = 'auto';
-                overlay.appendChild(content);
-
-                document.body.appendChild(overlay);
-            }
-
-            const content = document.getElementById('preview-content');
-            content.innerHTML = '';
-
-            // 🖼 If image
-            if (url.match(/\.(jpeg|jpg|png|gif|webp)$/i)) {
-                const img = document.createElement('img');
-                img.src = url;
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '85vh';
-                img.style.borderRadius = '10px';
-                img.style.boxShadow = '0 0 15px rgba(255,255,255,0.2)';
-                content.appendChild(img);
-            }
-            // 📄 If PDF
-            else if (url.endsWith('.pdf')) {
-                const iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.style.width = '90vw';
-                iframe.style.height = '85vh';
-                iframe.style.border = 'none';
-                iframe.style.borderRadius = '10px';
-                content.appendChild(iframe);
-            }
-            // 🔗 Else just show link
-            else {
-                const link = document.createElement('a');
-                link.href = url;
-                link.textContent = 'View Document';
-                link.target = '_blank';
-                link.style.color = '#fff';
-                link.style.fontSize = '20px';
-                content.appendChild(link);
-            }
-        }
-
-
-        // 
-
-
-        // 🗑 Delete
-        $(document).on('click', '.delete-btn', function () {
-            const id = $(this).data('id');
-            Swal.fire({
-                title: "Are you sure?",
-                text: "This will permanently delete the record.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-            }).then(result => {
-                if (result.isConfirmed) {
-                    fetch(`/patientform/delete/${id}`, { method: "DELETE" })
+                    fetch(`/patientform/details/${id}`)
                         .then(res => res.json())
                         .then(data => {
                             if (data.success) {
-                                $(`#tr-${id}`).fadeOut(800);
-                                Swal.fire("Deleted!", "Patient Form deleted successfully.", "success");
+                                let app = data.data;
+                                console.log(app);
+
+                                let statuss = app.otherStatus
+                                app = { ...app, ...statuss }
+                                const form = document.getElementById('approve-form');
+
+                                // 🧩 Function to fill form and show previews
+                                const fillForm = (dataObj, prefix = '') => {
+                                    Object.keys(dataObj).forEach(key => {
+                                        let fieldName = prefix
+                                            ? `${prefix}${key.charAt(0).toUpperCase() + key.slice(1)}`
+                                            : key;
+
+                                        // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        // if (key === 'receiptUrl') fieldName = 'receiptUrl';
+                                        const field = form.querySelector(`[name="${fieldName}"]`);
+                                        let value = dataObj[key];
+                                        if (!field) return;
+                                        if (key === 'referredBy') value = `${app.referralUser.name}(${app.referredBy})`
+
+                                        // 🖼 Handle all file/document/image fields
+                                        if (
+                                            field.type === 'file' ||
+                                            key.toLowerCase().includes('file') ||
+                                            key.toLowerCase().includes('document') ||
+                                            key.toLowerCase().includes('image') ||
+                                            key.toLowerCase().includes('url')
+                                        ) {
+                                            const previewContainerId = `${fieldName}-preview-container`;
+                                            let container = document.getElementById(previewContainerId);
+
+                                            if (!container) {
+                                                container = document.createElement('div');
+                                                container.id = previewContainerId;
+                                                container.style.marginTop = '10px';
+                                                field.insertAdjacentElement('afterend', container);
+                                            }
+
+                                            container.innerHTML = '';
+
+                                            if (value && typeof value === 'string' && (value.startsWith('http') || value.startsWith('/'))) {
+                                                const base = window.location.origin;
+                                                const url = value.startsWith('http') ? value : `${base}${value}`;
+
+                                                // 🧩 Create thumbnail image
+                                                const thumb = document.createElement('img');
+                                                thumb.src = url;
+                                                thumb.style.width = '120px';
+                                                thumb.style.height = '120px';
+                                                thumb.style.objectFit = 'cover';
+                                                thumb.style.border = '1px solid #ddd';
+                                                thumb.style.borderRadius = '6px';
+                                                thumb.style.cursor = 'pointer';
+                                                thumb.style.transition = 'transform 0.2s ease';
+                                                thumb.addEventListener('mouseenter', () => thumb.style.transform = 'scale(1.05)');
+                                                thumb.addEventListener('mouseleave', () => thumb.style.transform = 'scale(1)');
+
+                                                // Click → open full preview
+                                                thumb.addEventListener('click', () => openFullPreview(url));
+
+                                                container.appendChild(thumb);
+                                            }
+
+                                            return;
+                                        }
+
+                                        // 🗓 Date fields
+                                        if (field.type === 'date' && value) {
+                                            field.value = new Date(value).toISOString().split('T')[0];
+                                            return;
+                                        }
+
+                                        // 🔘 Others
+                                        if (field.tagName === 'SELECT') {
+                                            field.value = value || '';
+                                        } else if (field.type === 'radio' || field.type === 'checkbox') {
+                                            form.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
+                                                el.checked = el.value === value;
+                                            });
+                                        } else {
+                                            field.value = value || '';
+                                        }
+                                    });
+                                };
+
+                                // 🧩 Fill top-level and nested data
+                                fillForm(app);
+                                if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
+                                if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
+
+                                // $('.view-modal').modal('show');
                             }
                         })
                         .catch(err => console.error(err));
-                }
-            });
-        });
-
-        // approve
-        $(document).on('submit', '#approve-form', function (e) {
-            e.preventDefault()
-            const id = $(this).data('id');
-            const type = $(this).data('type');
-            const url = $(this).data('url');
-            console.log(url);
-            let form = this
-            let {
-                receiverId,
-                OrthoCare,
-                DetoxCare,
-                ParentsWellnessCare,
-                ImmunityBoosterCare,
-                DiabetesCare,
-                HeartCare,
-                DigestiveCare,
-                EyeCare,
-                WeightLossCare,
-                EnergyAndWeaknessCare,
-                HairCare,
-                SkinCare,
-                ThyroidCare,
-                LiverAndKidneyCare,
-                LadiesWellnessCare,
-                InfinityMaleWellness,
-                InfinityFemaleWellness,
-                PilesCare,
-                AsthmaCare,
-                NeuroCare,
-                BloodPurifierCare,
-                BrainAndMemoryCare,
-                PowerWellnessCare,
-                TotalWellnessCare,
-                totalStock,
-            } = form
-
-            let inputs = {
-                receiverId,
-                OrthoCare,
-                DetoxCare,
-                ParentsWellnessCare,
-                ImmunityBoosterCare,
-                DiabetesCare,
-                HeartCare,
-                DigestiveCare,
-                EyeCare,
-                WeightLossCare,
-                EnergyAndWeaknessCare,
-                HairCare,
-                SkinCare,
-                ThyroidCare,
-                LiverAndKidneyCare,
-                LadiesWellnessCare,
-                InfinityMaleWellness,
-                InfinityFemaleWellness,
-                PilesCare,
-                AsthmaCare,
-                NeuroCare,
-                BloodPurifierCare,
-                BrainAndMemoryCare,
-                PowerWellnessCare,
-                TotalWellnessCare,
-                totalStock,
-            }
-
-
-            let err = []
-
-            // for (let key in inputs) {
-            //     if (!inputs[key].value) {
-            //         let text = inputs[key].previousElementSibling?.innerText
-            //         err.push(text)
-            //     }
-            // }
-
-            if (err.length > 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    html: err.join('<br>'),
                 });
-                return
-            }
-            if (type === 'create' || type === 'edit') {
-                // If creating or editing stock transaction, use FormData
-                fetch(url, {
-                    method: "POST",
-                    body: new FormData(e.target),
-                })
-                    .then((data) => {
-                        return data.json()
-                    })
-                    .then((result) => {
-                        console.log(result);
-                        if (result.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: type === 'edit' ? "Stock Transaction Updated Successfully!" : "Stock Transfer Successfully!",
-                                timer: 2000
 
-                            });
-                            e.target.reset()
-                            $('.approve-modal').modal('hide');
-                            window.location.reload()
-                        }
-                        else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: result.error || result.message,
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            }
-            else {
-                let data = {}
-                for (let key in inputs) {
-                    data = { ...data, [key]: inputs[key].value }
+
+                // 🧩 Function to open fullscreen preview popup
+                function openFullPreview(url) {
+                    let overlay = document.getElementById('fullscreen-preview');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.id = 'fullscreen-preview';
+                        overlay.style.position = 'fixed';
+                        overlay.style.top = 0;
+                        overlay.style.left = 0;
+                        overlay.style.width = '100vw';
+                        overlay.style.height = '100vh';
+                        overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+                        overlay.style.display = 'flex';
+                        overlay.style.alignItems = 'center';
+                        overlay.style.justifyContent = 'center';
+                        overlay.style.zIndex = 2000;
+
+                        // close button
+                        const closeBtn = document.createElement('span');
+                        closeBtn.innerHTML = '&times;';
+                        closeBtn.style.position = 'absolute';
+                        closeBtn.style.top = '20px';
+                        closeBtn.style.right = '30px';
+                        closeBtn.style.fontSize = '40px';
+                        closeBtn.style.color = '#fff';
+                        closeBtn.style.cursor = 'pointer';
+                        closeBtn.addEventListener('click', () => overlay.remove());
+                        overlay.appendChild(closeBtn);
+
+                        // content
+                        const content = document.createElement('div');
+                        content.id = 'preview-content';
+                        content.style.maxWidth = '90vw';
+                        content.style.maxHeight = '85vh';
+                        content.style.overflow = 'auto';
+                        overlay.appendChild(content);
+
+                        document.body.appendChild(overlay);
+                    }
+
+                    const content = document.getElementById('preview-content');
+                    content.innerHTML = '';
+
+                    // 🖼 If image
+                    if (url.match(/\.(jpeg|jpg|png|gif|webp)$/i)) {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.style.maxWidth = '100%';
+                        img.style.maxHeight = '85vh';
+                        img.style.borderRadius = '10px';
+                        img.style.boxShadow = '0 0 15px rgba(255,255,255,0.2)';
+                        content.appendChild(img);
+                    }
+                    // 📄 If PDF
+                    else if (url.endsWith('.pdf')) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = url;
+                        iframe.style.width = '90vw';
+                        iframe.style.height = '85vh';
+                        iframe.style.border = 'none';
+                        iframe.style.borderRadius = '10px';
+                        content.appendChild(iframe);
+                    }
+                    // 🔗 Else just show link
+                    else {
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.textContent = 'View Document';
+                        link.target = '_blank';
+                        link.style.color = '#fff';
+                        link.style.fontSize = '20px';
+                        content.appendChild(link);
+                    }
                 }
-                console.log(data);
-                fetch(`/patientform/approve/${id}`, {
-                    method: "POST",
-                    // body: JSON.stringify(data),
-                    body: new FormData(e.target),
-                    // headers: {
-                    //     "Content-Type": "application/json"
-                    // },
-                })
-                    .then((data) => {
-                        return data.json()
-                    })
-                    .then((result) => {
-                        // console.log(result);
-                        if (result.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: "Patient Form is Approved!",
-                                timer: 2000
 
-                            });
-                            e.target.reset()
-                            $('.approve-modal').modal('hide');
-                            window.location.reload()
+
+                // 
+
+
+                // 🗑 Delete
+                $(document).on('click', '.delete-btn', function () {
+                    const id = $(this).data('id');
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This will permanently delete the record.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, delete it!",
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            fetch(`/patientform/delete/${id}`, { method: "DELETE" })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        $(`#tr-${id}`).fadeOut(800);
+                                        Swal.fire("Deleted!", "Patient Form deleted successfully.", "success");
+                                    }
+                                })
+                                .catch(err => console.error(err));
                         }
-                        else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Error in Server",
-                                timer: 1000
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            }
-        });
-
-        // 📝 Toggle Payment Receipt input visibility based on Payment Status
-        $(document).on('change', '#paymentStatusSelect', function () {
-            if ($(this).val() === 'Paid') {
-                $('#paymentReceiptContainer').show();
-                $('#paymentReceipt').attr('required', 'required');
-            } else {
-                $('#paymentReceiptContainer').hide();
-                $('#paymentReceipt').val(''); // Clear the file input if Unpaid
-                $('#paymentReceipt').removeAttr('required');
-            }
-        });
-
-        $(document).on('submit', '#create-order-form', function (e) {
-            e.preventDefault()
-            const id = $(this).data('id');
-            console.log(id);
-            let form = this
-            let {
-                patientName,
-                mobileNumber,
-                houseOrStreet,
-                cityOrDistrict,
-                state,
-                pinCode,
-                pickupLocation,
-                paymentMode,
-                skuId,
-                invoiceValue,
-                productName,
-                productQuantity,
-                unitPrice,
-                weight,
-                length,
-                breadth,
-                height,
-                channel
-            } = form
-
-            let inputs = {
-                patientName,
-                mobileNumber,
-                houseOrStreet,
-                cityOrDistrict,
-                state,
-                pinCode,
-                pickupLocation,
-                paymentMode,
-                skuId,
-                invoiceValue,
-                productName,
-                productQuantity,
-                unitPrice,
-                weight,
-                length,
-                breadth,
-                height,
-                channel
-            }
-
-
-            let err = []
-
-            for (let key in inputs) {
-                if (!inputs[key].value) {
-                    let text = inputs[key].previousElementSibling?.innerText
-                    err.push(text)
-                }
-            }
-
-            if (err.length > 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    html: err.join('<br>'),
+                    });
                 });
-            }
-            else {
-                let data = {}
-                for (let key in inputs) {
-                    data = { ...data, [key]: inputs[key].value }
+
+                // approve
+                $(document).on('submit', '#approve-form', function (e) {
+                    e.preventDefault()
+                    const id = $(this).data('id');
+                    const type = $(this).data('type');
+                    const url = $(this).data('url');
+                    console.log(url);
+                    let form = this
+                    let {
+                        receiverId,
+                        OrthoCare,
+                        DetoxCare,
+                        ParentsWellnessCare,
+                        ImmunityBoosterCare,
+                        DiabetesCare,
+                        HeartCare,
+                        DigestiveCare,
+                        EyeCare,
+                        WeightLossCare,
+                        EnergyAndWeaknessCare,
+                        HairCare,
+                        SkinCare,
+                        ThyroidCare,
+                        LiverAndKidneyCare,
+                        LadiesWellnessCare,
+                        InfinityMaleWellness,
+                        InfinityFemaleWellness,
+                        PilesCare,
+                        AsthmaCare,
+                        NeuroCare,
+                        BloodPurifierCare,
+                        BrainAndMemoryCare,
+                        PowerWellnessCare,
+                        TotalWellnessCare,
+                        totalStock,
+                    } = form
+
+                    let inputs = {
+                        receiverId,
+                        OrthoCare,
+                        DetoxCare,
+                        ParentsWellnessCare,
+                        ImmunityBoosterCare,
+                        DiabetesCare,
+                        HeartCare,
+                        DigestiveCare,
+                        EyeCare,
+                        WeightLossCare,
+                        EnergyAndWeaknessCare,
+                        HairCare,
+                        SkinCare,
+                        ThyroidCare,
+                        LiverAndKidneyCare,
+                        LadiesWellnessCare,
+                        InfinityMaleWellness,
+                        InfinityFemaleWellness,
+                        PilesCare,
+                        AsthmaCare,
+                        NeuroCare,
+                        BloodPurifierCare,
+                        BrainAndMemoryCare,
+                        PowerWellnessCare,
+                        TotalWellnessCare,
+                        totalStock,
+                    }
+
+
+                    let err = []
+
+                    // for (let key in inputs) {
+                    //     if (!inputs[key].value) {
+                    //         let text = inputs[key].previousElementSibling?.innerText
+                    //         err.push(text)
+                    //     }
+                    // }
+
+                    if (err.length > 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            html: err.join('<br>'),
+                        });
+                        return
+                    }
+                    if (type === 'create' || type === 'edit') {
+                        // If creating or editing stock transaction, use FormData
+                        fetch(url, {
+                            method: "POST",
+                            body: new FormData(e.target),
+                        })
+                            .then((data) => {
+                                return data.json()
+                            })
+                            .then((result) => {
+                                console.log(result);
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: "Success!",
+                                        icon: "success",
+                                        text: type === 'edit' ? "Stock Transaction Updated Successfully!" : "Stock Transfer Successfully!",
+                                        timer: 2000
+
+                                    });
+                                    e.target.reset()
+                                    $('.approve-modal').modal('hide');
+                                    window.location.reload()
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: result.error || result.message,
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
+                    }
+                    else {
+                        let data = {}
+                        for (let key in inputs) {
+                            data = { ...data, [key]: inputs[key].value }
+                        }
+                        console.log(data);
+                        fetch(`/patientform/approve/${id}`, {
+                            method: "POST",
+                            // body: JSON.stringify(data),
+                            body: new FormData(e.target),
+                            // headers: {
+                            //     "Content-Type": "application/json"
+                            // },
+                        })
+                            .then((data) => {
+                                return data.json()
+                            })
+                            .then((result) => {
+                                // console.log(result);
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: "Success!",
+                                        icon: "success",
+                                        text: "Patient Form is Approved!",
+                                        timer: 2000
+
+                                    });
+                                    e.target.reset()
+                                    $('.approve-modal').modal('hide');
+                                    window.location.reload()
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "Error in Server",
+                                        timer: 1000
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
+                    }
+                });
+
+                // 📝 Toggle Payment Receipt and Method based on Status and Method
+                function updatePaymentFields() {
+                    var status = $('#paymentStatusSelect').val();
+                    var method = $('#paymentMethodSelect').val();
+
+                    if (status === 'Paid') {
+                        $('#paymentMethodContainer').show();
+                        $('#paymentMethodSelect').attr('required', 'required');
+
+                        if (method === 'Cash on Delivery') {
+                            $('#paymentReceiptContainer').hide();
+                            $('#paymentReceipt').removeAttr('required');
+                            $('#paymentReceipt').val('');
+                        } else {
+                            $('#paymentReceiptContainer').show();
+                            $('#paymentReceipt').attr('required', 'required');
+                        }
+                    } else {
+                        $('#paymentMethodContainer').hide();
+                        $('#paymentMethodSelect').removeAttr('required');
+                        $('#paymentReceiptContainer').hide();
+                        $('#paymentReceipt').removeAttr('required');
+                        $('#paymentReceipt').val('');
+                    }
                 }
 
-                data = { ...data, id }
-                // console.log(data);
-                fetch(`/patientorder/create-order`, {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    // body: new FormData(e.target),
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                $(document).on('change', '#paymentStatusSelect, #paymentMethodSelect', function () {
+                    updatePaymentFields();
+                });
+
+                $(document).on('submit', '#create-order-form', function (e) {
+                    e.preventDefault()
+                    const id = $(this).data('id');
+                    console.log(id);
+                    let form = this
+                    let {
+                        patientName,
+                        mobileNumber,
+                        houseOrStreet,
+                        cityOrDistrict,
+                        state,
+                        pinCode,
+                        pickupLocation,
+                        paymentMode,
+                        skuId,
+                        invoiceValue,
+                        productName,
+                        productQuantity,
+                        unitPrice,
+                        weight,
+                        length,
+                        breadth,
+                        height,
+                        channel
+                    } = form
+
+                    let inputs = {
+                        patientName,
+                        mobileNumber,
+                        houseOrStreet,
+                        cityOrDistrict,
+                        state,
+                        pinCode,
+                        pickupLocation,
+                        paymentMode,
+                        skuId,
+                        invoiceValue,
+                        productName,
+                        productQuantity,
+                        unitPrice,
+                        weight,
+                        length,
+                        breadth,
+                        height,
+                        channel
+                    }
+
+
+                    let err = []
+
+                    for (let key in inputs) {
+                        if (!inputs[key].value) {
+                            let text = inputs[key].previousElementSibling?.innerText
+                            err.push(text)
+                        }
+                    }
+
+                    if (err.length > 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            html: err.join('<br>'),
+                        });
+                    }
+                    else {
+                        let data = {}
+                        for (let key in inputs) {
+                            data = { ...data, [key]: inputs[key].value }
+                        }
+
+                        data = { ...data, id }
+                        // console.log(data);
+                        fetch(`/patientorder/create-order`, {
+                            method: "POST",
+                            body: JSON.stringify(data),
+                            // body: new FormData(e.target),
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                        })
+                            .then((data) => {
+                                return data.json()
+                            })
+                            .then((result) => {
+                                console.log(result);
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: "Success!",
+                                        icon: "success",
+                                        text: "New Order Created!",
+                                        timer: 2000
+
+                                    });
+                                    e.target.reset()
+                                    $('.create-order-modal').modal('hide');
+                                    window.location.reload()
+                                }
+                                else {
+
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: result.error || result.message,
+                                        // timer: 1000
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
+                    }
+                });
+
+
+
+
+
+
+
+
+                $(document).on('click', '.logout-btn', function (e) {
+                    Swal.fire({
+                        title: "Do you want to Logout?",
+                        showDenyButton: true,
+                        // showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: `Cancel`
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: `/auth/logout`,
+                                method: "POST",
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.logout) {
+                                        window.location.href = '/'
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Oops...",
+                                            text: "Something Went Wrong",
+                                            timer: 1500
+                                        });
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    });
                 })
-                    .then((data) => {
-                        return data.json()
-                    })
-                    .then((result) => {
-                        console.log(result);
-                        if (result.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: "New Order Created!",
-                                timer: 2000
 
-                            });
-                            e.target.reset()
-                            $('.create-order-modal').modal('hide');
-                            window.location.reload()
-                        }
-                        else {
-
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: result.error || result.message,
-                                // timer: 1000
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-            }
-        });
-
-
-
-
-
-
-
-
-        $(document).on('click', '.logout-btn', function (e) {
-            Swal.fire({
-                title: "Do you want to Logout?",
-                showDenyButton: true,
-                // showCancelButton: true,
-                confirmButtonText: "Yes",
-                denyButtonText: `Cancel`
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        url: `/auth/logout`,
-                        method: "POST",
-                        success: function (data) {
-                            console.log(data);
-                            if (data.logout) {
-                                window.location.href = '/'
-                            }
-                            else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: "Something Went Wrong",
-                                    timer: 1500
-                                });
-                            }
-                        },
-                        error: function (err) {
+                // track btn
+                $(document).on('click', ".track-btn", function () {
+                    let id = $(this).attr('data-id')
+                    console.log(id);
+                    navigator.clipboard.writeText(id)
+                        .then(() => {
+                            console.log("Copied to clipboard");
+                            window.open('https://www.indiapost.gov.in/home', "_blank")
+                        })
+                        .catch((err) => {
                             console.log(err);
+                        })
+                })
+
+                var handleNavigation = function () {
+                    $(".nav-control").on('click', function () {
+
+                        $('#main-wrapper').toggleClass("menu-toggle");
+
+                        $(".hamburger").toggleClass("is-active");
+                    });
+                }
+                
+                $(document).on('click', '.toggle-approval-btn', function () {
+                    const id = $(this).data('id');
+                    const type = $(this).data('type');
+                    
+                    fetch('/stock/toggleapproval', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id, type })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if(res.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                icon: "success",
+                                text: res.message,
+                                timer: 1500
+                            });
+                            setTimeout(() => window.location.reload(), 1500);
+                        } else {
+                            Swal.fire({ icon: "error", title: "Oops...", text: res.message });
                         }
                     })
-                }
-            });
-        })
+                    .catch(err => {
+                        console.error(err);
+                        Swal.fire({ icon: "error", title: "Error", text: "Something went wrong" });
+                    });
+                });
 
-        // track btn
-        $(document).on('click', ".track-btn", function () {
-            let id = $(this).attr('data-id')
-            console.log(id);
-            navigator.clipboard.writeText(id)
-                .then(() => {
-                    console.log("Copied to clipboard");
-                    window.open('https://www.indiapost.gov.in/home', "_blank")
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        })
+                handleNavigation()
+            
+                $(document).on('click', '.delete-stock-btn', function () {
+                    const id = $(this).data('id');
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this transaction deletion!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch(`/stock/deletestocktransaction/${id}`, { method: 'DELETE' })
+                                .then(res => res.json())
+                                .then(res => {
+                                    if (res.success) {
+                                        Swal.fire('Deleted!', res.message, 'success');
+                                        $(`#tr-${id}`).fadeOut(800, function() { $(this).remove(); });
+                                    } else {
+                                        Swal.fire('Error!', res.message, 'error');
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                    Swal.fire('Error!', 'Something went wrong.', 'error');
+                                });
+                        }
+                    });
+                });
 
-        var handleNavigation = function () {
-            $(".nav-control").on('click', function () {
-
-                $('#main-wrapper').toggleClass("menu-toggle");
-
-                $(".hamburger").toggleClass("is-active");
-            });
-        }
-
-        handleNavigation()
-    </script>
-</body>
+</script>
+    </body>
 
 </html>

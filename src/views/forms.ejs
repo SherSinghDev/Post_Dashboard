@@ -12,7 +12,7 @@
                         <!--**********************************
             Sidebar start
         ***********************************-->
-                        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" ){%>
+                        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" || user.role=="stock_operator"){%>
                             <%- include('./globals/sidebar') %>
                                 <%} else{ %>
                                     <%- include('./globals/doctor_sidebar') %>
@@ -113,7 +113,8 @@
                                                                 </div>
                                                                 <form action="" method="GET" id="dateFilterForm" class="d-flex align-items-center w-100">
                                                                     <label for="dateFilter" class="me-2 fw-bold mb-0 text-nowrap">Date:</label>
-                                                                    <input type="date" id="dateFilter" name="date" class="form-control form-control-sm" value="<%= selectedDate %>" onchange="document.getElementById('dateFilterForm').submit()">
+                                                                    <input type="date" id="dateFilter" name="date" class="form-control form-control-sm" value="<%= selectedDate !== 'all' ? selectedDate : '' %>" onchange="document.getElementById('dateFilterForm').submit()">
+                                                                    <a href="?date=all" class="btn btn-sm btn-outline-info ms-2 text-nowrap <%= selectedDate === 'all' ? 'active' : '' %>">View All</a>
                                                                 </form>
                                                             </div>
                                                         <% } %>
@@ -269,6 +270,7 @@
                                                                                             </td>
 
                                                                                             <td>
+                                                                                                <% if (user.role !== 'stock_operator') { %>
                                                                                                 <a href="https://wa.me/+91<%= app.mobileNumber %>"
                                                                                                     class=" btn btn-sm btn-success">
                                                                                                     <i class="fa-brands fa-whatsapp"
@@ -323,6 +325,7 @@
                                                                                                                     style="color:white;"></i>
                                                                                                             </a>
                                                                                                             <% } %>
+                                                                                                <% } %>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <% }) %>

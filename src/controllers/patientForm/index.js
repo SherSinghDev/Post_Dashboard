@@ -188,17 +188,23 @@ router.get('/patients', async (req, res) => {
       let user = await Users.findOne({ _id: req.session.userId })
 
       let dateQuery = req.query.date;
-      if (!dateQuery) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateQuery = `${yyyy}-${mm}-${dd}`;
+      let dateMatch = {};
+      if (dateQuery !== 'all') {
+        if (!dateQuery) {
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const dd = String(today.getDate()).padStart(2, '0');
+          dateQuery = `${yyyy}-${mm}-${dd}`;
+        }
+        let startDate = new Date(dateQuery);
+        startDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(dateQuery);
+        endDate.setHours(23, 59, 59, 999);
+        dateMatch = { createdAt: { $gte: startDate, $lte: endDate } };
+      } else {
+        dateQuery = 'all';
       }
-      let startDate = new Date(dateQuery);
-      startDate.setHours(0, 0, 0, 0);
-      let endDate = new Date(dateQuery);
-      endDate.setHours(23, 59, 59, 999);
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = false
@@ -214,6 +220,12 @@ router.get('/patients', async (req, res) => {
           "otherStatus.doctorStatus": { $in: [null, ""] },
           "otherStatus.supportStatus": { $in: [null, "", undefined] }
         };
+      } else if (user.role == "stock_operator") {
+        matchQuery = {
+          "otherStatus.doctorStatus": { $in: [null, ""] },
+          "otherStatus.supportStatus": { $in: [null, "", undefined] },
+          
+        };
       } else {
         matchQuery = {
           "otherStatus.doctorStatus": { $in: [null, ""] },
@@ -228,7 +240,7 @@ router.get('/patients', async (req, res) => {
       result = await PatientForm.aggregate([
         {
           $match: {
-              createdAt: { $gte: startDate, $lte: endDate }, ...matchQuery, createdAt: { $gte: startDate, $lte: endDate } }
+              ...dateMatch, ...matchQuery }
         },
         {
           $sort: { createdAt: -1 } // latest first
@@ -304,17 +316,23 @@ router.get('/varifiedpatients', async (req, res) => {
       let user = await Users.findOne({ _id: req.session.userId })
 
       let dateQuery = req.query.date;
-      if (!dateQuery) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateQuery = `${yyyy}-${mm}-${dd}`;
+      let dateMatch = {};
+      if (dateQuery !== 'all') {
+        if (!dateQuery) {
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const dd = String(today.getDate()).padStart(2, '0');
+          dateQuery = `${yyyy}-${mm}-${dd}`;
+        }
+        let startDate = new Date(dateQuery);
+        startDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(dateQuery);
+        endDate.setHours(23, 59, 59, 999);
+        dateMatch = { createdAt: { $gte: startDate, $lte: endDate } };
+      } else {
+        dateQuery = 'all';
       }
-      let startDate = new Date(dateQuery);
-      startDate.setHours(0, 0, 0, 0);
-      let endDate = new Date(dateQuery);
-      endDate.setHours(23, 59, 59, 999);
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = true
@@ -331,6 +349,13 @@ router.get('/varifiedpatients', async (req, res) => {
           "otherStatus.trackingIdStatus": { $in: [null, ""] },
           "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
         };
+      } else if (user.role == "stock_operator") {
+        matchQuery = {
+          "otherStatus.doctorStatus": { $nin: [null, ""] },
+          "otherStatus.trackingIdStatus": { $in: [null, ""] },
+          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+          
+        };
       } else {
         matchQuery = {
           "otherStatus.doctorStatus": { $nin: [null, ""] },
@@ -346,7 +371,7 @@ router.get('/varifiedpatients', async (req, res) => {
       result = await PatientForm.aggregate([
         {
           $match: {
-              createdAt: { $gte: startDate, $lte: endDate }, ...matchQuery, createdAt: { $gte: startDate, $lte: endDate } }
+              ...dateMatch, ...matchQuery }
         },
         {
           $sort: { createdAt: -1 } // latest first
@@ -424,17 +449,23 @@ router.get('/notinterestedpatients', async (req, res) => {
       let user = await Users.findOne({ _id: req.session.userId })
 
       let dateQuery = req.query.date;
-      if (!dateQuery) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateQuery = `${yyyy}-${mm}-${dd}`;
+      let dateMatch = {};
+      if (dateQuery !== 'all') {
+        if (!dateQuery) {
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const dd = String(today.getDate()).padStart(2, '0');
+          dateQuery = `${yyyy}-${mm}-${dd}`;
+        }
+        let startDate = new Date(dateQuery);
+        startDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(dateQuery);
+        endDate.setHours(23, 59, 59, 999);
+        dateMatch = { createdAt: { $gte: startDate, $lte: endDate } };
+      } else {
+        dateQuery = 'all';
       }
-      let startDate = new Date(dateQuery);
-      startDate.setHours(0, 0, 0, 0);
-      let endDate = new Date(dateQuery);
-      endDate.setHours(23, 59, 59, 999);
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = false
@@ -445,7 +476,7 @@ router.get('/notinterestedpatients', async (req, res) => {
       result = await PatientForm.aggregate([
         {
           $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
             "otherStatus.patientStatus": "not interested",
             "otherStatus.supportStatus": "not interested",
             "otherStatus.officeStatus": "not interested",
@@ -532,17 +563,23 @@ router.get('/pendingpatients', async (req, res) => {
       let user = await Users.findOne({ _id: req.session.userId })
 
       let dateQuery = req.query.date;
-      if (!dateQuery) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateQuery = `${yyyy}-${mm}-${dd}`;
+      let dateMatch = {};
+      if (dateQuery !== 'all') {
+        if (!dateQuery) {
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const dd = String(today.getDate()).padStart(2, '0');
+          dateQuery = `${yyyy}-${mm}-${dd}`;
+        }
+        let startDate = new Date(dateQuery);
+        startDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(dateQuery);
+        endDate.setHours(23, 59, 59, 999);
+        dateMatch = { createdAt: { $gte: startDate, $lte: endDate } };
+      } else {
+        dateQuery = 'all';
       }
-      let startDate = new Date(dateQuery);
-      startDate.setHours(0, 0, 0, 0);
-      let endDate = new Date(dateQuery);
-      endDate.setHours(23, 59, 59, 999);
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = true
@@ -550,7 +587,7 @@ router.get('/pendingpatients', async (req, res) => {
         result = await PatientForm.aggregate([
           {
             $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
               referredBy: user.userId,
               "otherStatus.trackingIdStatus": { $nin: [null, ""] },
               "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
@@ -589,7 +626,7 @@ router.get('/pendingpatients', async (req, res) => {
       result = await PatientForm.aggregate([
           {
             $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
               referredBy: user.userId,
               "otherStatus.doctorStatus": { $in: [null, ""] },
               "otherStatus.supportStatus": { $nin: [null, ""] },
@@ -651,8 +688,73 @@ router.get('/pendingpatients', async (req, res) => {
             "allParents": 1}
           }
         ]);
-      }
-      else {
+      } else if (user.role == "stock_operator") {
+      result = await PatientForm.aggregate([
+          {
+            $match: {
+              ...dateMatch,
+              "otherStatus.doctorStatus": { $in: [null, ""] },
+              "otherStatus.supportStatus": { $nin: [null, ""] },
+              "otherStatus.trackingIdStatus": { $in: [null, ""] },
+              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+              
+            }
+          }
+          ,
+          {
+            $sort: { createdAt: -1 } // latest first
+          },
+          {
+            $lookup: {
+              from: "users",                // users collection
+              localField: "referredBy",     // referral code in PatientForm
+              foreignField: "userId", // referral code in User
+              as: "referrer"
+            }
+          },
+          {
+            $unwind: {
+              path: "$referrer",
+              preserveNullAndEmptyArrays: true // keep even if no referrer
+            }
+          },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
+          {
+            $project: {
+              patientName: 1,
+              fatherOrHusbandName: 1,
+              gender: 1,
+              houseOrStreet: 1,
+              locality: 1,
+              cityOrDistrict: 1,
+              state: 1,
+              landmark: 1,
+              pinCode: 1,
+              mobileNumber: 1,
+              emergencyContact: 1,
+              referredBy: 1,
+              diseaseName: 1,
+              medicalReport: 1,
+              otherStatus: 1,
+              registerNo: 1,
+              createdAt: 1,
+              duration: 1,
+              type: 1,
+              // only select _id and name from the referred user
+              "referrer": 1,
+            "allParents": 1}
+          }
+        ]);
+      } else {
 
         
 
@@ -660,7 +762,7 @@ router.get('/pendingpatients', async (req, res) => {
       result = await PatientForm.aggregate([
           {
             $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
               "otherStatus.doctorStatus": { $in: [null, ""] },
               "otherStatus.supportStatus": { $nin: [null, ""] },
               "otherStatus.trackingIdStatus": { $in: [null, ""] },
@@ -744,17 +846,23 @@ router.get('/orders', async (req, res) => {
       let user = await Users.findOne({ _id: req.session.userId })
 
       let dateQuery = req.query.date;
-      if (!dateQuery) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateQuery = `${yyyy}-${mm}-${dd}`;
+      let dateMatch = {};
+      if (dateQuery !== 'all') {
+        if (!dateQuery) {
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const dd = String(today.getDate()).padStart(2, '0');
+          dateQuery = `${yyyy}-${mm}-${dd}`;
+        }
+        let startDate = new Date(dateQuery);
+        startDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(dateQuery);
+        endDate.setHours(23, 59, 59, 999);
+        dateMatch = { createdAt: { $gte: startDate, $lte: endDate } };
+      } else {
+        dateQuery = 'all';
       }
-      let startDate = new Date(dateQuery);
-      startDate.setHours(0, 0, 0, 0);
-      let endDate = new Date(dateQuery);
-      endDate.setHours(23, 59, 59, 999);
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = false
@@ -765,7 +873,7 @@ router.get('/orders', async (req, res) => {
       result = await PatientForm.aggregate([
           {
             $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
               referredBy: user.userId,
               // "otherStatus.doctorStatus": { $nin: [null, ""] },
               "otherStatus.trackingIdStatus": { $nin: [null, ""] },
@@ -835,7 +943,7 @@ router.get('/orders', async (req, res) => {
       result = await PatientForm.aggregate([
           {
             $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
               // "otherStatus.doctorStatus": { $nin: [null, ""] },
               "otherStatus.trackingIdStatus": { $nin: [null, ""] },
               // "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
@@ -919,17 +1027,23 @@ router.get('/delivered', async (req, res) => {
       let user = await Users.findOne({ _id: req.session.userId })
 
       let dateQuery = req.query.date;
-      if (!dateQuery) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateQuery = `${yyyy}-${mm}-${dd}`;
+      let dateMatch = {};
+      if (dateQuery !== 'all') {
+        if (!dateQuery) {
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const dd = String(today.getDate()).padStart(2, '0');
+          dateQuery = `${yyyy}-${mm}-${dd}`;
+        }
+        let startDate = new Date(dateQuery);
+        startDate.setHours(0, 0, 0, 0);
+        let endDate = new Date(dateQuery);
+        endDate.setHours(23, 59, 59, 999);
+        dateMatch = { createdAt: { $gte: startDate, $lte: endDate } };
+      } else {
+        dateQuery = 'all';
       }
-      let startDate = new Date(dateQuery);
-      startDate.setHours(0, 0, 0, 0);
-      let endDate = new Date(dateQuery);
-      endDate.setHours(23, 59, 59, 999);
       // const applications = await PatientForm.find().sort({ createdAt: -1 });
       let result
       let createOrder = false
@@ -940,7 +1054,7 @@ router.get('/delivered', async (req, res) => {
       result = await PatientForm.aggregate([
           {
             $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
               referredBy: user.userId,
               "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] }
             }
@@ -1008,7 +1122,7 @@ router.get('/delivered', async (req, res) => {
       result = await PatientForm.aggregate([
           {
             $match: {
-              createdAt: { $gte: startDate, $lte: endDate },
+              ...dateMatch,
               "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] },
               type: { $ne: "stockorder" }
             }

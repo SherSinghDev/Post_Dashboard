@@ -116,7 +116,7 @@ router.get('/admins', async (req, res) => {
                 res.redirect('/')
             }
             else {
-                let users = await Users.find({ role: 'Admin' }).sort({ createdAt: -1 })
+                let users = await Users.find({ role: { $in: ['Admin', 'stock_operator'] } }).sort({ createdAt: -1 })
                 let refusers = await Users.find({ role: "Coordinator" }).select('name referralCode userId -_id');
                 // console.log(users);
                 res.render('admins', { users, user, refusers, page: "Users", })

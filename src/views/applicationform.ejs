@@ -622,6 +622,39 @@
             $('#referrerNameInput').val(refName);
         });
 
+        async function checkDistrictHead() {
+            const district = $('input[name="district"]').val()?.trim();
+            const position = $('select[name="position"]').val();
+            const type = $('input[name="type"]').val();
+            
+            if (type === 'stockorder' && position === 'District Head' && district) {
+                try {
+                    const response = await fetch('/applications/check-district-head', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ district })
+                    });
+                    const result = await response.json();
+                    
+                    if (result && !result.available) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Position Taken",
+                            text: result.message
+                        });
+                        $('select[name="position"]').val('');
+                    }
+                } catch (err) {
+                    console.error("Error checking district head availability", err);
+                }
+            }
+        }
+
+        $('input[name="district"]').on('blur', checkDistrictHead);
+        $('select[name="position"]').on('change', checkDistrictHead);
+
         $('#payNow').click(async function () {
 
             let isValid = true;

@@ -360,7 +360,7 @@
                 </li>
                 <% } %>
 
-                    <% if(user.role!='doc' && user.type!='stockorder' ) { %>
+                    <% if(user.role!='doc' && user.type!='stockorder' && user.role!='stock_operator' ) { %>
                         <!-- Verified Users / Your Users -->
                         <li>
                             <a href="/users" aria-expanded="false">
@@ -439,7 +439,7 @@
 
                                     <% if(user.role!='doc' ) { %>
                                         <!-- Patient Orders -->
-                                        <li class="<%- user.type=='stockorder' ? 'd-none' : '' %>">
+                                        <li class="<%- (user.type=='stockorder' || user.role=='stock_operator') ? 'd-none' : '' %>">
                                             <a href="/patientform/orders" aria-expanded="false">
                                                 <span class="nav-icon-box">
                                                     <i class="fas fa-box-open"></i>
@@ -462,7 +462,7 @@
 
                                                 <!-- Delivered Orders -->
                                                 <li
-                                                    class="<%- (user.type=='stockorder' && user.position!='Centre Head') ? 'd-none' : '' %>">
+                                                    class="<%- ( (user.type=='stockorder' && user.position!='Centre Head') || user.role=='stock_operator' ) ? 'd-none' : '' %>">
                                                     <a href="/patientform/delivered" aria-expanded="false">
                                                         <span class="nav-icon-box">
                                                             <i class="fas fa-truck-loading"></i>
@@ -474,7 +474,7 @@
                                                 <% if(user.role!='doc' && user.type!='singleorder' ) { %>
                                                     <!-- Money Transactions -->
                                                     <li
-                                                        class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
+                                                        class="<%- (user.role=='Admin' || user.type=='stockorder' || user.role=='stock_operator') ? 'd-none' : '' %>">
                                                         <a href="/stock/moneytransactions" aria-expanded="false">
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-money-bill-transfer"></i>
@@ -484,7 +484,7 @@
                                                     </li>
 
                                                     <!-- Stock Transactions -->
-                                                    <li>
+                                                    <li class="">
                                                         <a href="/stock/stocktransactions" aria-expanded="false">
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-boxes-stacked"></i>
@@ -495,7 +495,7 @@
 
                                                     <!-- My Stock -->
                                                     <li
-                                                        class="<%- (user.role=='Admin' || user.type=='stockorder') ? 'd-none' : '' %>">
+                                                        class="<%- (user.role=='Admin' || user.type=='stockorder' || user.role=='stock_operator') ? 'd-none' : '' %>">
                                                         <a href="/stock/mystock" aria-expanded="false">
                                                             <span class="nav-icon-box">
                                                                 <i class="fas fa-warehouse"></i>

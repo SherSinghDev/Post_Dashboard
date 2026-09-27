@@ -294,6 +294,44 @@ router.get('/all', async (req, res) => {
   res.json(data)
 })
 
+router.post('/check-district-head', async (req, res) => {
+  try {
+    const { district } = req.body;
+    if (!district) {
+      return res.status(400).json({ success: false, message: 'District is required' });
+    }
+    
+    // Check in users first
+    const existingUser = await Users.findOne({ 
+      type: 'stockorder', 
+      position: 'District Head',
+      district: { $regex: new RegExp(`^${district}$`, 'i') } 
+    });
+
+    if (existingUser) {
+      return res.json({ available: false, message: 'District head position is already taken for this district.' });
+    }
+
+    // Optionally, check if there is an approved or pending application as well
+    const existingApp = await UserApplication.findOne({
+      type: 'stockorder',
+      position: 'District Head',
+      district: { $regex: new RegExp(`^${district}$`, 'i') },
+      approveStatus: { $ne: 'Rejected' }
+    });
+
+    if (existingApp) {
+      return res.json({ available: false, message: 'District head position is already taken or under review for this district.' });
+    }
+
+    return res.json({ available: true });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: 'Server error' });
+  }
+});
+
 // GET all applications
 router.get('/applied', async (req, res) => {
   if (req.session.userId) {

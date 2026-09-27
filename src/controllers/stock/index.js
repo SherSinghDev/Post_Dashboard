@@ -35,14 +35,21 @@ router.get('/stocktransactions', async (req, res) => {
         try {
             let user = await users.findOne({ _id: req.session.userId })
             // const applications = await PatientForm.find().sort({ createdAt: -1 });
-            let result = await stockTransactions.find({
-                $or: [
-                    { receiverId: user.userId },
-                    { senderId: user.userId },
-                    { receiverId: user._id.toString() },
-                    { senderId: user._id.toString() }
-                ]
-            }).sort({ createdAt: -1 });
+            let result = [];
+            if (user.role === 'Admin') {
+                result = await stockTransactions.find({ stockOperatorApproval: 'Yes' }).sort({ createdAt: -1 });
+            } else if (user.role === 'stock_operator') {
+                result = await stockTransactions.find({}).sort({ createdAt: -1 });
+            } else {
+                result = await stockTransactions.find({
+                    $or: [
+                        { receiverId: user.userId },
+                        { senderId: user.userId },
+                        { receiverId: user._id.toString() },
+                        { senderId: user._id.toString() }
+                    ]
+                }).sort({ createdAt: -1 });
+            }
 
             let districtHeads = await users.find({ position: 'District Head' })
             let blocktHeads = await users.find({ position: 'Block Head/City Head' })
@@ -136,6 +143,7 @@ router.post('/newstocktransaction', upload.single('paymentReceipt'), async (req,
             receiverId,
             totalAmount,
             paymentStatus,
+            paymentMethod,
             OrthoCare = 0,
             DetoxCare = 0,
             ParentsWellnessCare = 0,
@@ -164,6 +172,11 @@ router.post('/newstocktransaction', upload.single('paymentReceipt'), async (req,
         } = req.body;
 
         console.log(req.body);
+
+        if (Array.isArray(receiverId)) {
+            receiverId = receiverId[0];
+        }
+
 
 
         // ✅ Convert everything safely
@@ -200,9 +213,9 @@ router.post('/newstocktransaction', upload.single('paymentReceipt'), async (req,
         } catch (e) {
             senderQuery = { userId: req.session.userId };
         }
-        let sender = await users.findOne(senderQuery);
-        if (!sender) {
-            sender = await users.findOne({ userId: String(req.session.userId) });
+        let loggedInUser = await users.findOne(senderQuery);
+        if (!loggedInUser) {
+            loggedInUser = await users.findOne({ userId: String(req.session.userId) });
         }
 
         let receiverQuery = { userId: String(receiverId).trim() };
@@ -210,6 +223,19 @@ router.post('/newstocktransaction', upload.single('paymentReceipt'), async (req,
             receiverQuery = { $or: [{ userId: String(receiverId).trim() }, { _id: receiverId }] };
         }
         let receiver = await users.findOne(receiverQuery);
+
+        let sender = loggedInUser;
+        let skipSenderStockDecrease = false;
+
+        if (loggedInUser && loggedInUser.type === 'stockorder') {
+            skipSenderStockDecrease = true;
+            let adminUser = await users.findOne({ role: 'Admin' });
+            if (adminUser) {
+                sender = adminUser;
+            }
+        } else if (sender && receiver && sender._id.toString() === receiver._id.toString()) {
+            skipSenderStockDecrease = true;
+        }
 
         console.log('Sender:', sender ? sender.name : 'NULL', '| Receiver:', receiver ? receiver.name : 'NULL', '| receiverId sent:', receiverId);
 
@@ -237,39 +263,41 @@ router.post('/newstocktransaction', upload.single('paymentReceipt'), async (req,
         // }
 
         // 🔻 Decrease sender stock
-        await stock.updateOne(
-            { userId: sender._id },
-            {
-                $inc: {
-                    totalStock: -totalStock,
-                    OrthoCare: -OrthoCare,
-                    DetoxCare: -DetoxCare,
-                    ParentsWellnessCare: -ParentsWellnessCare,
-                    ImmunityBoosterCare: -ImmunityBoosterCare,
-                    DiabetesCare: -DiabetesCare,
-                    HeartCare: -HeartCare,
-                    DigestiveCare: -DigestiveCare,
-                    EyeCare: -EyeCare,
-                    WeightLossCare: -WeightLossCare,
-                    EnergyAndWeaknessCare: -EnergyAndWeaknessCare,
-                    HairCare: -HairCare,
-                    SkinCare: -SkinCare,
-                    ThyroidCare: -ThyroidCare,
-                    LiverAndKidneyCare: -LiverAndKidneyCare,
-                    LadiesWellnessCare: -LadiesWellnessCare,
-                    InfinityMaleWellness: -InfinityMaleWellness,
-                    InfinityFemaleWellness: -InfinityFemaleWellness,
-                    PilesCare: -PilesCare,
-                    AsthmaCare: -AsthmaCare,
-                    NeuroCare: -NeuroCare,
-                    BloodPurifierCare: -BloodPurifierCare,
-                    BrainAndMemoryCare: -BrainAndMemoryCare,
-                    PowerWellnessCare: -PowerWellnessCare,
-                    TotalWellnessCare: -TotalWellnessCare,
-                }
-            },
+        if (!skipSenderStockDecrease) {
+            await stock.updateOne(
+                { userId: sender._id },
+                {
+                    $inc: {
+                        totalStock: -totalStock,
+                        OrthoCare: -OrthoCare,
+                        DetoxCare: -DetoxCare,
+                        ParentsWellnessCare: -ParentsWellnessCare,
+                        ImmunityBoosterCare: -ImmunityBoosterCare,
+                        DiabetesCare: -DiabetesCare,
+                        HeartCare: -HeartCare,
+                        DigestiveCare: -DigestiveCare,
+                        EyeCare: -EyeCare,
+                        WeightLossCare: -WeightLossCare,
+                        EnergyAndWeaknessCare: -EnergyAndWeaknessCare,
+                        HairCare: -HairCare,
+                        SkinCare: -SkinCare,
+                        ThyroidCare: -ThyroidCare,
+                        LiverAndKidneyCare: -LiverAndKidneyCare,
+                        LadiesWellnessCare: -LadiesWellnessCare,
+                        InfinityMaleWellness: -InfinityMaleWellness,
+                        InfinityFemaleWellness: -InfinityFemaleWellness,
+                        PilesCare: -PilesCare,
+                        AsthmaCare: -AsthmaCare,
+                        NeuroCare: -NeuroCare,
+                        BloodPurifierCare: -BloodPurifierCare,
+                        BrainAndMemoryCare: -BrainAndMemoryCare,
+                        PowerWellnessCare: -PowerWellnessCare,
+                        TotalWellnessCare: -TotalWellnessCare,
+                    }
+                },
 
-        );
+            );
+        }
 
         // 🔺 Increase receiver stock
         await stock.updateOne(
@@ -319,6 +347,7 @@ router.post('/newstocktransaction', upload.single('paymentReceipt'), async (req,
             totalStock,
             totalAmount,
             paymentStatus,
+            paymentMethod,
             paymentReceipt,
             OrthoCare,
             DetoxCare,
@@ -394,10 +423,7 @@ router.post('/editstocktransaction/:id', upload.single('paymentReceipt'), async 
             return res.status(404).json({ success: false, message: "Transaction not found" });
         }
 
-        // Only allow edit if payment status is NOT Paid
-        if (existingTransaction.paymentStatus === 'Paid') {
-            return res.status(400).json({ success: false, message: "Paid transactions cannot be edited" });
-        }
+
 
         // If a new receipt was uploaded, update the path
         if (req.file) {
@@ -495,15 +521,6 @@ router.post('/editstocktransaction/:id', upload.single('paymentReceipt'), async 
             }
 
             await stock.updateOne({ userId: sender._id }, { $inc: senderInc });
-        }
-
-        // Trigger commission distribution if transitioning to Paid
-        if (existingTransaction.paymentStatus !== 'Paid' && updateData.paymentStatus === 'Paid' && !existingTransaction.commissionDistributed) {
-            let finalTotalStock = updateData.totalStock !== undefined ? updateData.totalStock : (existingTransaction.totalStock || 0);
-            if (finalTotalStock > 0 && receiver) {
-                await distributeLevelCommissions(receiver, finalTotalStock, existingTransaction._id);
-                updateData.commissionDistributed = true;
-            }
         }
 
         const updatedTransaction = await stockTransactions.findByIdAndUpdate(id, updateData, { new: true });
@@ -740,6 +757,11 @@ router.post('/newmoneytransaction', upload.single('reciept'), async (req, res) =
 
         console.log(req.body);
 
+        if (Array.isArray(receiverId)) {
+            receiverId = receiverId[0];
+        }
+
+
         // extract file paths safely
         const receiptUrl = req.file ? `/uploads/receipt/${req.file.filename}` : null;
 
@@ -842,4 +864,93 @@ router.post('/newmoneytransaction', upload.single('reciept'), async (req, res) =
 
 
 
-module.exports = router
+
+router.post('/toggleapproval', async (req, res) => {
+    try {
+        const { id, type } = req.body;
+        const transaction = await stockTransactions.findById(id);
+        if (!transaction) return res.status(404).json({ success: false, message: "Transaction not found" });
+
+        if (type === 'stockOperator') {
+            const newStatus = transaction.stockOperatorApproval === 'Yes' ? 'No' : 'Yes';
+            await stockTransactions.findByIdAndUpdate(id, { stockOperatorApproval: newStatus });
+            return res.json({ success: true, message: "Stock Operator Approval updated to " + newStatus });
+        } else if (type === 'admin') {
+            const newStatus = transaction.adminApproval === 'Yes' ? 'No' : 'Yes';
+            let updates = { adminApproval: newStatus };
+            
+            console.log("=== ADMIN APPROVAL DEBUG ===");
+            console.log("Transaction ID:", id);
+            console.log("New Admin Status:", newStatus);
+            console.log("Receiver ID from transaction:", transaction.receiverId);
+            console.log("Total Stock:", transaction.totalStock);
+            console.log("Commission Already Distributed:", transaction.commissionDistributed);
+            
+            // Distribute commission when admin approves
+            if (newStatus === 'Yes') {
+                // Reset commissionDistributed to allow re-distribution if needed
+                let receiverQuery = [];
+                if (transaction.receiverId) {
+                    if (mongoose.Types.ObjectId.isValid(transaction.receiverId)) {
+                        receiverQuery.push({ _id: transaction.receiverId });
+                    }
+                    receiverQuery.push({ userId: transaction.receiverId });
+                }
+                
+                console.log("Receiver Query:", JSON.stringify(receiverQuery));
+                
+                if (receiverQuery.length === 0) {
+                    console.log("ERROR: No receiver query could be built - receiverId is empty");
+                } else {
+                    const receiver = await users.findOne({ $or: receiverQuery });
+                    console.log("Receiver Found:", receiver ? receiver.name : "NOT FOUND");
+                    
+                    if (receiver) {
+                        console.log("Receiver parentUser:", receiver.parentUser);
+                        console.log("Receiver referredBy:", receiver.referredBy);
+                    }
+                    
+                    if (transaction.totalStock > 0 && receiver) {
+                        try {
+                            console.log("Calling distributeLevelCommissions...");
+                            await distributeLevelCommissions(receiver, transaction.totalStock, transaction._id);
+                            updates.commissionDistributed = true;
+                            console.log("Commission distributed successfully!");
+                        } catch (commErr) {
+                            console.error("Commission Distribution Error:", commErr.message);
+                            console.error("Full Error:", commErr);
+                        }
+                    } else {
+                        console.log("Skipping commission: totalStock =", transaction.totalStock, "receiver =", !!receiver);
+                    }
+                }
+            }
+            
+            console.log("Updates to save:", JSON.stringify(updates));
+            console.log("=== END DEBUG ===");
+            
+            await stockTransactions.findByIdAndUpdate(id, updates);
+            return res.json({ success: true, message: "Admin Approval updated to " + newStatus });
+        } else {
+            return res.status(400).json({ success: false, message: "Invalid approval type" });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+
+router.delete('/deletestocktransaction/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const transaction = await stockTransactions.findByIdAndDelete(id);
+        if (!transaction) {
+            return res.status(404).json({ success: false, message: "Transaction not found" });
+        }
+        res.json({ success: true, message: "Transaction deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+module.exports = router;

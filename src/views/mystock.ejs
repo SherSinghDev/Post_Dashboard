@@ -12,7 +12,7 @@
         <!--**********************************
             Sidebar start
         ***********************************-->
-        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" ){%>
+        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" || user.role=="stock_operator"){%>
             <%- include('./globals/sidebar') %>
                 <%} else{ %>
                     <div class="deznav">
@@ -455,6 +455,14 @@
             });
         });
 
+
+        
+        $(document).on('input', 'input[name="totalStock"]', function() {
+            <% if (user.type === 'stockorder') { %>
+                var total = parseFloat($(this).val()) || 0;
+                $('input[name="totalAmount"]').val(total * 148);
+            <% } %>
+        });
 
         $(document).on('click', '.create-btn', function () {
             $('.approve-modal').modal('show');
@@ -1033,7 +1041,37 @@
         }
 
         handleNavigation()
-    </script>
+    
+        $(document).on('click', '.toggle-approval-btn', function () {
+            const id = $(this).data('id');
+            const type = $(this).data('type');
+            
+            fetch('/stock/toggleapproval', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, type })
+            })
+            .then(res => res.json())
+            .then(res => {
+                if(res.success) {
+                    Swal.fire({
+                        title: "Success!",
+                        icon: "success",
+                        text: res.message,
+                        timer: 1500
+                    });
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    Swal.fire({ icon: "error", title: "Oops...", text: res.message });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({ icon: "error", title: "Error", text: "Something went wrong" });
+            });
+        });
+    
+</script>
 </body>
 
 </html>
