@@ -781,6 +781,68 @@ router.delete('/doctor_delete/:id', async (req, res) => {
         console.log(error);
         res.json({ deleted: false });
     }
-})
+});
+
+// ===== KYC ROUTES =====
+router.get('/payment-kyc', async (req, res) => {
+    if (req.session.userId) {
+        let user = await Users.findOne({ _id: req.session.userId });
+        res.render('userKyc', { user, page: "Payment KYC" });
+    } else {
+        res.redirect('/auth/login');
+    }
+});
+
+router.post('/payment-kyc/submit', upload.single('qrCodeImage'), async (req, res) => {
+    if (req.session.userId) {
+        const { accountHolderName, bankName, bankAccountNumber, ifscCode, upiId } = req.body;
+        let updateData = {
+            'kycDetails.accountHolderName': accountHolderName,
+            'kycDetails.bankName': bankName,
+            'kycDetails.bankAccountNumber': bankAccountNumber,
+            'kycDetails.ifscCode': ifscCode,
+            'kycDetails.upiId': upiId,
+            'kycStatus': 'Pending'
+        };
+
+        if (req.file) {
+            updateData['kycDetails.qrCodeImage'] = '/uploads/documents/' + req.file.filename;
+        }
+
+        await Users.findByIdAndUpdate(req.session.userId, { $set: updateData });
+        res.redirect('/users/payment-kyc');
+    } else {
+        res.redirect('/auth/login');
+    }
+});
+
+router.get('/admin/kyc-approvals', async (req, res) => {
+    if (req.session.userId) {
+        let user = await Users.findOne({ _id: req.session.userId });
+        if (user.role === 'Admin') {
+            let kycUsers = await Users.find({ 'kycStatus': { $in: ['Pending', 'Approved', 'Rejected'] } }).sort({ 'kycStatus': -1 });
+            res.render('adminKycApprovals', { user, kycUsers, page: "KYC Approvals" });
+        } else {
+            res.redirect('/');
+        }
+    } else {
+        res.redirect('/auth/login');
+    }
+});
+
+router.post('/admin/kyc-approvals/:id', async (req, res) => {
+    if (req.session.userId) {
+        let user = await Users.findOne({ _id: req.session.userId });
+        if (user.role === 'Admin') {
+            const { status } = req.body;
+            await Users.findByIdAndUpdate(req.params.id, { kycStatus: status });
+            res.redirect('/users/admin/kyc-approvals');
+        } else {
+            res.redirect('/');
+        }
+    } else {
+        res.redirect('/auth/login');
+    }
+});
 
 module.exports = router;

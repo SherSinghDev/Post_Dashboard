@@ -458,6 +458,16 @@
                                                     <span class="nav-text">Total Work</span>
                                                 </a>
                                             </li>
+                                            
+                                            <!-- Admin KYC Approvals -->
+                                            <li>
+                                                <a href="/users/admin/kyc-approvals" aria-expanded="false">
+                                                    <span class="nav-icon-box">
+                                                        <i class="fas fa-file-signature"></i>
+                                                    </span>
+                                                    <span class="nav-text">KYC Approvals</span>
+                                                </a>
+                                            </li>
                                             <% } %>
 
                                                 <!-- Delivered Orders -->
@@ -504,6 +514,16 @@
                                                         </a>
                                                     </li>
                                                     <% } %>
+
+                                                        <!-- Payment KYC -->
+                                                        <li class="<%- (user.type !== 'stockorder') ? 'd-none' : '' %>">
+                                                            <a href="/users/payment-kyc" aria-expanded="false">
+                                                                <span class="nav-icon-box text-success">
+                                                                    <i class="fas fa-bank"></i>
+                                                                </span>
+                                                                <span class="nav-text">Payment KYC / भुगतान केवाईसी</span>
+                                                            </a>
+                                                        </li>
 
                                                         <!-- Profile -->
                                                         <li>

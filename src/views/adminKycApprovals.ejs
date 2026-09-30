@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./globals/head') %>
+
+    <style>
+        .admin-kyc-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: none;
+            overflow: hidden;
+        }
+
+        .admin-kyc-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge.bg-success {
+            color: #fff !important;
+            background-color: #28a745 !important;
+        }
+
+        .status-badge.bg-warning {
+            color: #212529 !important;
+            background-color: #ffc107 !important;
+        }
+
+        .status-badge.bg-danger {
+            color: #fff !important;
+            background-color: #dc3545 !important;
+        }
+
+        .table thead th {
+            border-top: none;
+            border-bottom: 2px solid #f1f3f5;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f3f5;
+            color: #555;
+        }
+        
+        .table thead th:first-child,
+        .table tbody td:first-child {
+            padding-left: 35px !important;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s;
+        }
+
+        .btn-review {
+            border-radius: 8px;
+            padding: 6px 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-review:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 25px;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .kyc-detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+
+        .kyc-detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .kyc-detail-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .kyc-detail-value {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .qr-image-wrapper {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .qr-image-wrapper img {
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark Mode Adjustments */
+        [data-theme-version="dark"] .admin-kyc-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid #334155;
+        }
+
+        [data-theme-version="dark"] .admin-kyc-header .card-title {
+            color: #f8fafc !important;
+        }
+
+        [data-theme-version="dark"] .table thead th {
+            color: #cbd5e1;
+            border-bottom-color: #334155;
+        }
+
+        [data-theme-version="dark"] .table tbody td {
+            color: #e2e8f0;
+            border-bottom-color: #334155;
+        }
+
+        [data-theme-version="dark"] .table tbody tr:hover {
+            background-color: #1e293b;
+        }
+
+        [data-theme-version="dark"] .modal-content {
+            background-color: #1e293b;
+        }
+
+        [data-theme-version="dark"] .modal-header {
+            background-color: #0f172a;
+            border-bottom-color: #334155;
+        }
+
+        [data-theme-version="dark"] .modal-title {
+            color: #f8fafc;
+        }
+
+        [data-theme-version="dark"] .kyc-detail-item {
+            border-bottom-color: #334155;
+        }
+
+        [data-theme-version="dark"] .kyc-detail-label {
+            color: #94a3b8;
+        }
+
+        [data-theme-version="dark"] .kyc-detail-value {
+            color: #f8fafc;
+        }
+
+        [data-theme-version="dark"] .qr-image-wrapper {
+            background-color: #0f172a;
+            border-color: #334155;
+        }
+
+        [data-theme-version="dark"] .modal-footer {
+            border-top: 1px solid #334155;
+        }
+
+        .custom-close-btn {
+            background: #f1f3f5;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #495057;
+            transition: all 0.3s ease;
+            opacity: 1;
+            outline: none;
+            padding: 0;
+        }
+
+        [data-theme-version="dark"] .custom-close-btn {
+            background: #1e293b;
+            color: #94a3b8;
+        }
+
+        [data-theme-version="dark"] .custom-close-btn:hover {
+            background: #334155;
+            color: #ef4444;
+        }
+
+        [data-theme-version="dark"] .alert-secondary {
+            background-color: #334155;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+
+        @media (max-width: 768px) {
+            .page-titles {
+                margin-top: 25px !important;
+            }
+        }
+    </style>
+
+    <body>
+        <%- include('./globals/preloader') %>
+
+            <div id="main-wrapper">
+                <%- include('globals/navHeader') %>
+                    <%- include('globals/header') %>
+                        <%- include('./globals/sidebar') %>
+
+                            <div class="content-body">
+                                <div class="container-fluid">
+                                    <div class="row page-titles mx-0 mb-4">
+                                        <div class="col-sm-6 p-md-0">
+                                            <div class="welcome-text">
+                                                <h4>Admin KYC Approvals</h4>
+                                                <span class="ml-1">Review and manage stockorder user KYC
+                                                    submissions</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card admin-kyc-card">
+                                                <div class="admin-kyc-header">
+                                                    <h4 class="card-title mb-0"><i
+                                                            class="fas fa-clipboard-list text-primary mr-2"></i> User
+                                                        KYC Requests</h4>
+                                                </div>
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table class="table mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col" class="pl-4">User Info</th>
+                                                                    <th scope="col">Status</th>
+                                                                    <th scope="col">Bank Name</th>
+                                                                    <th scope="col">A/C Number</th>
+                                                                    <th scope="col">UPI ID</th>
+                                                                    <th scope="col" class="text-right pr-4">Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% if(kycUsers && kycUsers.length> 0) { %>
+                                                                    <% kycUsers.forEach(function(kUser) { %>
+                                                                        <tr>
+                                                                            <td class="pl-4">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <% if(kUser.profilePicture) { %>
+                                                                                        <img src="<%= kUser.profilePicture %>"
+                                                                                            class="rounded-circle"
+                                                                                            style="width: 40px; height: 40px; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-right: 15px;"
+                                                                                            alt="User Image">
+                                                                                        <% } else { %>
+                                                                                            <div class="rounded-circle bg-light d-flex justify-content-center align-items-center"
+                                                                                                style="width: 40px; height: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-right: 15px;">
+                                                                                                <i
+                                                                                                    class="fas fa-user text-secondary"></i>
+                                                                                            </div>
+                                                                                            <% } %>
+                                                                                                <div>
+                                                                                                    <h6
+                                                                                                        class="mb-0 font-weight-bold">
+                                                                                                        <%= kUser.name
+                                                                                                            ||
+                                                                                                            kUser.email
+                                                                                                            %>
+                                                                                                    </h6>
+                                                                                                    <small
+                                                                                                        class="text-muted">
+                                                                                                        <%= kUser.type
+                                                                                                            %>
+                                                                                                    </small>
+                                                                                                </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <% if(kUser.kycStatus==='Pending' ) { %>
+                                                                                    <span
+                                                                                        class="status-badge bg-warning"><i
+                                                                                            class="fas fa-clock"></i>
+                                                                                        Pending</span>
+                                                                                    <% } else
+                                                                                        if(kUser.kycStatus==='Approved'
+                                                                                        ) { %>
+                                                                                        <span
+                                                                                            class="status-badge bg-success"><i
+                                                                                                class="fas fa-check-circle"></i>
+                                                                                            Approved</span>
+                                                                                        <% } else
+                                                                                            if(kUser.kycStatus==='Rejected'
+                                                                                            ) { %>
+                                                                                            <span
+                                                                                                class="status-badge bg-danger"><i
+                                                                                                    class="fas fa-times-circle"></i>
+                                                                                                Rejected</span>
+                                                                                            <% } else { %>
+                                                                                                <span
+                                                                                                    class="status-badge bg-secondary"><i
+                                                                                                        class="fas fa-minus-circle"></i>
+                                                                                                    Unverified</span>
+                                                                                                <% } %>
+                                                                            </td>
+                                                                            <td><span class="font-weight-500">
+                                                                                    <%= kUser.kycDetails?.bankName
+                                                                                        || '-' %>
+                                                                                </span></td>
+                                                                            <td>
+                                                                                <%= kUser.kycDetails?.bankAccountNumber
+                                                                                    || '-' %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= kUser.kycDetails?.upiId || '-' %>
+                                                                            </td>
+                                                                            <td class="text-right pr-4">
+                                                                                <button type="button"
+                                                                                    class="btn btn-primary btn-review"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#kycModal<%= kUser._id %>">
+                                                                                    <i class="fas fa-search mr-1"></i>
+                                                                                    Review
+                                                                                </button>
+
+                                                                                <!-- Modal for this specific user -->
+                                                                                <div class="modal fade"
+                                                                                    id="kycModal<%= kUser._id %>"
+                                                                                    tabindex="-1" role="dialog"
+                                                                                    aria-hidden="true">
+                                                                                    <div class="modal-dialog modal-dialog-centered modal-lg"
+                                                                                        role="document">
+                                                                                        <div
+                                                                                            class="modal-content text-left">
+                                                                                            <div
+                                                                                                class="modal-header align-items-center">
+                                                                                                <h5
+                                                                                                    class="modal-title mb-0">
+                                                                                                    <i
+                                                                                                        class="fas fa-user-check text-primary mr-2"></i>
+                                                                                                    Review KYC: <%=
+                                                                                                        kUser.name %>
+                                                                                                </h5>
+                                                                                                <button type="button"
+                                                                                                    class="custom-close-btn"
+                                                                                                    data-bs-dismiss="modal"><i
+                                                                                                        class="fas fa-times"></i></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <div class="row">
+                                                                                                    <div
+                                                                                                        class="col-md-6">
+                                                                                                        <h6
+                                                                                                            class="text-primary mb-3">
+                                                                                                            <i
+                                                                                                                class="fas fa-university mr-2"></i>
+                                                                                                            Bank Details
+                                                                                                        </h6>
+                                                                                                        <div
+                                                                                                            class="kyc-detail-item">
+                                                                                                            <div
+                                                                                                                class="kyc-detail-label">
+                                                                                                                Account
+                                                                                                                Holder
+                                                                                                                Name
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="kyc-detail-value">
+                                                                                                                <%= kUser.kycDetails?.accountHolderName
+                                                                                                                    || 'N/A'
+                                                                                                                    %>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                            class="kyc-detail-item">
+                                                                                                            <div
+                                                                                                                class="kyc-detail-label">
+                                                                                                                Bank
+                                                                                                                Name
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="kyc-detail-value">
+                                                                                                                <%= kUser.kycDetails?.bankName
+                                                                                                                    || 'N/A'
+                                                                                                                    %>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                            class="kyc-detail-item">
+                                                                                                            <div
+                                                                                                                class="kyc-detail-label">
+                                                                                                                Account
+                                                                                                                Number
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="kyc-detail-value">
+                                                                                                                <%= kUser.kycDetails?.bankAccountNumber
+                                                                                                                    || 'N/A'
+                                                                                                                    %>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                            class="kyc-detail-item">
+                                                                                                            <div
+                                                                                                                class="kyc-detail-label">
+                                                                                                                IFSC
+                                                                                                                Code
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="kyc-detail-value">
+                                                                                                                <%= kUser.kycDetails?.ifscCode
+                                                                                                                    || 'N/A'
+                                                                                                                    %>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="col-md-6 mt-4 mt-md-0 border-left">
+                                                                                                        <h6
+                                                                                                            class="text-success mb-3">
+                                                                                                            <i
+                                                                                                                class="fas fa-qrcode mr-2"></i>
+                                                                                                            UPI Details
+                                                                                                        </h6>
+                                                                                                        <div
+                                                                                                            class="kyc-detail-item">
+                                                                                                            <div
+                                                                                                                class="kyc-detail-label">
+                                                                                                                UPI ID
+                                                                                                                (VPA)
+                                                                                                            </div>
+                                                                                                            <div
+                                                                                                                class="kyc-detail-value">
+                                                                                                                <%= kUser.kycDetails?.upiId
+                                                                                                                    || 'N/A'
+                                                                                                                    %>
+                                                                                                            </div>
+                                                                                                        </div>
+
+                                                                                                        <div
+                                                                                                            class="kyc-detail-item">
+                                                                                                            <div
+                                                                                                                class="kyc-detail-label mb-2">
+                                                                                                                QR Code
+                                                                                                                Image
+                                                                                                            </div>
+                                                                                                            <% if(kUser.kycDetails?.qrCodeImage)
+                                                                                                                { %>
+                                                                                                                <div
+                                                                                                                    class="qr-image-wrapper">
+                                                                                                                    <img src="<%= kUser.kycDetails.qrCodeImage %>"
+                                                                                                                        alt="QR Code"
+                                                                                                                        class="img-fluid">
+                                                                                                                    <div
+                                                                                                                        class="mt-2">
+                                                                                                                        <a href="<%= kUser.kycDetails.qrCodeImage %>"
+                                                                                                                            target="_blank"
+                                                                                                                            class="btn btn-sm btn-outline-primary"><i
+                                                                                                                                class="fas fa-external-link-alt"></i>
+                                                                                                                            View
+                                                                                                                            Full</a>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <% } else
+                                                                                                                    { %>
+                                                                                                                    <div
+                                                                                                                        class="alert alert-secondary mt-2">
+                                                                                                                        <i
+                                                                                                                            class="fas fa-info-circle"></i>
+                                                                                                                        No
+                                                                                                                        QR
+                                                                                                                        Code
+                                                                                                                        uploaded.
+                                                                                                                    </div>
+                                                                                                                    <% }
+                                                                                                                        %>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-outline-secondary"
+                                                                                                    data-bs-dismiss="modal">Close</button>
+
+                                                                                                <% if(kUser.kycStatus
+                                                                                                    !=='Approved' ) { %>
+                                                                                                    <form
+                                                                                                        action="/users/admin/kyc-approvals/<%= kUser._id %>"
+                                                                                                        method="POST"
+                                                                                                        style="display:inline-block;"
+                                                                                                        class="ml-2">
+                                                                                                        <input
+                                                                                                            type="hidden"
+                                                                                                            name="status"
+                                                                                                            value="Approved">
+                                                                                                        <button
+                                                                                                            type="submit"
+                                                                                                            class="btn btn-success"><i
+                                                                                                                class="fas fa-check mr-1"></i>
+                                                                                                            Approve
+                                                                                                            KYC</button>
+                                                                                                    </form>
+                                                                                                    <% } %>
+
+                                                                                                        <% if(kUser.kycStatus
+                                                                                                            !=='Rejected'
+                                                                                                            ) { %>
+                                                                                                            <form
+                                                                                                                action="/users/admin/kyc-approvals/<%= kUser._id %>"
+                                                                                                                method="POST"
+                                                                                                                style="display:inline-block;"
+                                                                                                                class="ml-2">
+                                                                                                                <input
+                                                                                                                    type="hidden"
+                                                                                                                    name="status"
+                                                                                                                    value="Rejected">
+                                                                                                                <button
+                                                                                                                    type="submit"
+                                                                                                                    class="btn btn-danger"><i
+                                                                                                                        class="fas fa-times mr-1"></i>
+                                                                                                                    Reject</button>
+                                                                                                            </form>
+                                                                                                            <% } %>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!-- End Modal -->
+
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% }); %>
+                                                                            <% } else { %>
+                                                                                <tr>
+                                                                                    <td colspan="6"
+                                                                                        class="text-center py-5">
+                                                                                        <div class="text-muted">
+                                                                                            <i
+                                                                                                class="fas fa-folder-open fa-3x mb-3 text-light"></i>
+                                                                                            <h5>No KYC Requests Found
+                                                                                            </h5>
+                                                                                            <p>There are currently no
+                                                                                                users waiting for KYC
+                                                                                                approval.</p>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <% } %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            </div>
+
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+    </body>
+
+</html>

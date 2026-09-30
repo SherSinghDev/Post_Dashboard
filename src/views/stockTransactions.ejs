@@ -359,7 +359,11 @@
                                                                                                                 data-app="<%- encodeURIComponent(JSON.stringify(app)) %>"><i
                                                                                                                     class="fas fa-edit"></i>
                                                                                                                 Edit</button>
-                                                                                                            <button class="btn btn-sm btn-danger delete-stock-btn <%- (user.role != 'Admin' && user.role != 'stock_operator' && user.type != 'stockorder') ? 'd-none' : '' %>" data-id="<%= app._id %>"><i class="fas fa-trash"></i> Delete</button>
+                                                                                                            <button
+                                                                                                                class="btn btn-sm btn-danger delete-stock-btn <%- (user.role != 'Admin' && user.role != 'stock_operator' && user.type != 'stockorder') ? 'd-none' : '' %>"
+                                                                                                                data-id="<%= app._id %>"><i
+                                                                                                                    class="fas fa-trash"></i>
+                                                                                                                Delete</button>
                                                                                         </td>
 
 
@@ -835,7 +839,7 @@
             <% } %>
             if (typeof $rec.selectpicker === 'function') {
                         try {
-                            $rec.selectpicker('val', '<%- user.type === 'stockorder' ? user._id : '' %>');
+                            $rec.selectpicker('val', "<%- user.type === 'stockorder' ? user._id : '' %>");
                             $rec.selectpicker('refresh');
                         } catch (e) { }
                     }
@@ -1580,38 +1584,38 @@
                         $(".hamburger").toggleClass("is-active");
                     });
                 }
-                
+
                 $(document).on('click', '.toggle-approval-btn', function () {
                     const id = $(this).data('id');
                     const type = $(this).data('type');
-                    
+
                     fetch('/stock/toggleapproval', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id, type })
                     })
-                    .then(res => res.json())
-                    .then(res => {
-                        if(res.success) {
-                            Swal.fire({
-                                title: "Success!",
-                                icon: "success",
-                                text: res.message,
-                                timer: 1500
-                            });
-                            setTimeout(() => window.location.reload(), 1500);
-                        } else {
-                            Swal.fire({ icon: "error", title: "Oops...", text: res.message });
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        Swal.fire({ icon: "error", title: "Error", text: "Something went wrong" });
-                    });
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                Swal.fire({
+                                    title: "Success!",
+                                    icon: "success",
+                                    text: res.message,
+                                    timer: 1500
+                                });
+                                setTimeout(() => window.location.reload(), 1500);
+                            } else {
+                                Swal.fire({ icon: "error", title: "Oops...", text: res.message });
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            Swal.fire({ icon: "error", title: "Error", text: "Something went wrong" });
+                        });
                 });
 
                 handleNavigation()
-            
+
                 $(document).on('click', '.delete-stock-btn', function () {
                     const id = $(this).data('id');
                     Swal.fire({
@@ -1629,7 +1633,7 @@
                                 .then(res => {
                                     if (res.success) {
                                         Swal.fire('Deleted!', res.message, 'success');
-                                        $(`#tr-${id}`).fadeOut(800, function() { $(this).remove(); });
+                                        $(`#tr-${id}`).fadeOut(800, function () { $(this).remove(); });
                                     } else {
                                         Swal.fire('Error!', res.message, 'error');
                                     }
@@ -1642,7 +1646,7 @@
                     });
                 });
 
-</script>
+            </script>
     </body>
 
 </html>

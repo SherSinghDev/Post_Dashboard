@@ -222,6 +222,19 @@ const userSchema = new mongoose.Schema({
     },
     lastLogin: { type: Date, default: Date.now },
     isSuspended: { type: Boolean, default: false },
+    kycDetails: {
+        bankAccountNumber: { type: String, default: '' },
+        ifscCode: { type: String, default: '' },
+        bankName: { type: String, default: '' },
+        accountHolderName: { type: String, default: '' },
+        upiId: { type: String, default: '' },
+        qrCodeImage: { type: String, default: '' } // URL path to the uploaded image
+    },
+    kycStatus: {
+        type: String,
+        enum: ['Pending', 'Approved', 'Rejected', 'Unverified'],
+        default: 'Unverified'
+    },
     createdAt: { type: Date, default: Date.now },
 });
 

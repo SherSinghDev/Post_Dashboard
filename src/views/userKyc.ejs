@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./globals/head') %>
+
+    <style>
+        .kyc-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: none;
+            overflow: hidden;
+        }
+
+        .kyc-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge.bg-success,
+        .status-badge.bg-danger,
+        .status-badge.bg-secondary {
+            color: #ffffff !important;
+        }
+
+        .status-badge.bg-warning {
+            color: #212529 !important;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f3f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #495057;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            background-color: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        .qr-upload-box {
+            border: 2px dashed #ced4da;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background-color: #f8f9fa;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .qr-upload-box:hover {
+            border-color: #007bff;
+            background-color: #f1f8ff;
+        }
+
+        .qr-preview {
+            max-width: 150px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+        }
+
+        .btn-submit {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .custom-file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Dark Mode Adjustments */
+        [data-theme-version="dark"] .kyc-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid #334155;
+        }
+
+        [data-theme-version="dark"] .kyc-header .card-title {
+            color: #f8fafc !important;
+        }
+
+        [data-theme-version="dark"] .section-title {
+            color: #e2e8f0;
+            border-bottom: 2px solid #334155;
+        }
+
+        [data-theme-version="dark"] .form-group label {
+            color: #cbd5e1;
+        }
+
+        [data-theme-version="dark"] .form-control {
+            background-color: #1e293b;
+            border-color: #334155;
+            color: #f8fafc;
+        }
+
+        [data-theme-version="dark"] .form-control:focus {
+            background-color: #0f172a;
+            border-color: #38bdf8;
+        }
+
+        [data-theme-version="dark"] .qr-upload-box {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+
+        [data-theme-version="dark"] .qr-upload-box:hover {
+            border-color: #38bdf8;
+            background-color: #0f172a;
+        }
+
+        [data-theme-version="dark"] .qr-upload-box h6,
+        [data-theme-version="dark"] .qr-upload-box p {
+            color: #cbd5e1 !important;
+        }
+
+        .alert-dismissible {
+            padding-right: 60px !important;
+        }
+
+        /* Custom Alert Close Button */
+        .custom-alert-close {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #856404;
+            transition: all 0.2s ease;
+            opacity: 0.9;
+            outline: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .custom-alert-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #d39e00;
+            opacity: 1;
+        }
+
+        [data-theme-version="dark"] .custom-alert-close {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fbbf24;
+        }
+
+        [data-theme-version="dark"] .custom-alert-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #f59e0b;
+        }
+
+        @media (max-width: 768px) {
+            .page-titles {
+                margin-top: 25px !important;
+            }
+        }
+    </style>
+
+    <body>
+        <%- include('./globals/preloader') %>
+
+            <div id="main-wrapper">
+                <%- include('globals/navHeader') %>
+                    <%- include('globals/header') %>
+                        <%- include('./globals/sidebar') %>
+
+                            <div class="content-body">
+                                <div class="container-fluid">
+                                    <div class="row page-titles mx-0 mb-4">
+                                        <div class="col-sm-6 p-md-0">
+                                            <div class="welcome-text">
+                                                <h4>Payment KYC Dashboard</h4>
+                                                <span class="ml-1">Securely manage your banking and UPI details for
+                                                    seamless transactions</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-xl-9 col-lg-12">
+                                            <div class="card kyc-card">
+                                                <div class="kyc-header">
+                                                    <h4 class="card-title mb-0"><i
+                                                            class="fas fa-shield-alt text-primary mr-2"></i> KYC
+                                                        Verification</h4>
+
+                                                    <% if(user.kycStatus==='Approved' ) { %>
+                                                        <span class="status-badge bg-success text-white"><i
+                                                                class="fas fa-check-circle"></i> Verified &
+                                                            Approved</span>
+                                                        <% } else if(user.kycStatus==='Pending' ) { %>
+                                                            <span class="status-badge bg-warning text-dark"><i
+                                                                    class="fas fa-clock"></i> Pending Review</span>
+                                                            <% } else if(user.kycStatus==='Rejected' ) { %>
+                                                                <span class="status-badge bg-danger text-white"><i
+                                                                        class="fas fa-times-circle"></i> Rejected -
+                                                                    Please Update</span>
+                                                                <% } else { %>
+                                                                    <span
+                                                                        class="status-badge bg-secondary text-white"><i
+                                                                            class="fas fa-exclamation-circle"></i>
+                                                                        Unverified</span>
+                                                                    <% } %>
+                                                </div>
+
+                                                <div class="card-body p-4">
+                                                    <% if(user.kycStatus==='Approved' ) { %>
+                                                        <div class="alert alert-warning alert-dismissible fade show"
+                                                            role="alert">
+                                                            <strong><i class="fas fa-exclamation-triangle"></i>
+                                                                Notice:</strong> Your KYC is approved. Editing any
+                                                            details will reset your status to Pending and require Admin
+                                                            verification again.
+                                                            <button type="button" class="custom-alert-close"
+                                                                data-bs-dismiss="alert" aria-label="Close">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                        <% } %>
+
+                                                            <form action="/users/payment-kyc/submit" method="POST"
+                                                                enctype="multipart/form-data">
+
+                                                                <!-- Bank Details Section -->
+                                                                <div class="mt-2 mb-4">
+                                                                    <h5 class="section-title"><i
+                                                                            class="fas fa-university text-info"></i>
+                                                                        Bank Account Details</h5>
+                                                                    <div class="row">
+                                                                        <div class="form-group col-md-6 col-12 mb-4">
+                                                                            <label>Account Holder Name</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="accountHolderName"
+                                                                                value="<%= user.kycDetails?.accountHolderName || '' %>"
+                                                                                placeholder="As per bank records"
+                                                                                required>
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-12 mb-4">
+                                                                            <label>Bank Name</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="bankName"
+                                                                                value="<%= user.kycDetails?.bankName || '' %>"
+                                                                                placeholder="e.g. State Bank of India"
+                                                                                required>
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-12 mb-4">
+                                                                            <label>Account Number</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="bankAccountNumber"
+                                                                                value="<%= user.kycDetails?.bankAccountNumber || '' %>"
+                                                                                placeholder="Enter account number"
+                                                                                required>
+                                                                        </div>
+                                                                        <div class="form-group col-md-6 col-12 mb-4">
+                                                                            <label>IFSC Code</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="ifscCode"
+                                                                                value="<%= user.kycDetails?.ifscCode || '' %>"
+                                                                                placeholder="e.g. SBIN0001234" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- UPI Details Section -->
+                                                                <div class="mb-4">
+                                                                    <h5 class="section-title"><i
+                                                                            class="fas fa-qrcode text-success"></i> UPI
+                                                                        & QR Code</h5>
+                                                                    <div class="row align-items-center">
+                                                                        <div class="form-group col-md-6 col-12">
+                                                                            <label>UPI ID</label>
+                                                                            <input type="text" class="form-control"
+                                                                                name="upiId"
+                                                                                value="<%= user.kycDetails?.upiId || '' %>"
+                                                                                placeholder="e.g. username@upi"
+                                                                                required>
+                                                                            <!-- <small class="text-muted mt-2 d-block">Ensure this UPI ID is linked to the bank account above.</small> -->
+                                                                        </div>
+
+                                                                        <div
+                                                                            class="form-group col-md-6 col-12 mt-3 mt-md-0">
+                                                                            <label>Upload QR Code</label>
+                                                                            <div class="qr-upload-box">
+                                                                                <input type="file"
+                                                                                    class="custom-file-input"
+                                                                                    name="qrCodeImage" accept="image/*"
+                                                                                    id="qrInput"
+                                                                                    <%=user.kycDetails?.qrCodeImage ? ''
+                                                                                    : 'required' %>>
+
+                                                                                <div id="qrPlaceholder"
+                                                                                    style="<%= user.kycDetails?.qrCodeImage ? 'display:none;' : 'display:block;' %>">
+                                                                                    <i
+                                                                                        class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                                                                    <h6 class="mb-1">Click to upload QR
+                                                                                        Code</h6>
+                                                                                    <p class="text-muted small mb-0">
+                                                                                        PNG, JPG, JPEG up to 2MB</p>
+                                                                                </div>
+
+                                                                                <div id="qrPreviewContainer"
+                                                                                    style="<%= user.kycDetails?.qrCodeImage ? 'display:block;' : 'display:none;' %>">
+                                                                                    <h6 class="text-success mb-2"><i
+                                                                                            class="fas fa-check"></i> QR
+                                                                                        Code Uploaded</h6>
+                                                                                    <img src="<%= user.kycDetails?.qrCodeImage || '' %>"
+                                                                                        alt="QR Code" id="qrPreviewImg"
+                                                                                        class="qr-preview">
+                                                                                    <p
+                                                                                        class="text-primary small mt-2 mb-0">
+                                                                                        Click here to change image</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="text-center mt-5">
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary btn-submit btn-lg px-5">
+                                                                        <i class="fas fa-paper-plane mr-2"></i> Submit
+                                                                        KYC Details
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+            </div>
+            <script src="/vendor/global/global.min.js"></script>
+            <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+            <script src="/js/custom.js"></script>
+            <script src="/js/deznav-init.js"></script>
+            <script src="/js/demo.js"></script>
+            <script src="/js/styleSwitcher.js"></script>
+
+            <script>
+                // Image preview logic
+                document.getElementById('qrInput').addEventListener('change', function (e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById('qrPlaceholder').style.display = 'none';
+                            document.getElementById('qrPreviewContainer').style.display = 'block';
+                            document.getElementById('qrPreviewImg').src = e.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            </script>
+    </body>
+
+</html>

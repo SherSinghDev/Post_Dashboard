@@ -457,11 +457,12 @@
 
 
         
+        var isStockOrder = "<%= user.type === 'stockorder' ? 'true' : 'false' %>" === "true";
         $(document).on('input', 'input[name="totalStock"]', function() {
-            <% if (user.type === 'stockorder') { %>
+            if (isStockOrder) {
                 var total = parseFloat($(this).val()) || 0;
                 $('input[name="totalAmount"]').val(total * 148);
-            <% } %>
+            }
         });
 
         $(document).on('click', '.create-btn', function () {
