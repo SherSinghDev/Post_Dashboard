@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../globals/head') %>
+
+<body>
+    <%- include('../globals/preloader') %>
+
+    <div id="main-wrapper">
+        <%- include('../globals/navHeader') %>
+        <%- include('../globals/header') %>
+        <%- include('../globals/sidebar') %>
+
+        <div class="content-body">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="mb-1 fw-bold text-primary">My Payouts</h4>
+                                <p class="mb-0 text-muted">Request payouts of your monthly earnings.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Summary -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">Platform Wallet Balance</h5>
+                                <h2>₹<%= (user.platformWalletAmount || 0).toLocaleString('en-IN') %></h2>
+                                <p class="mb-0 text-white-50">Total amount available.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- KYC Status Alert -->
+                    <div class="col-md-8 mb-4">
+                        <% if (user.kycStatus === 'Approved') { %>
+                            <div class="alert alert-success h-100 d-flex flex-column justify-content-center">
+                                <h5><i class="fas fa-check-circle me-2"></i> KYC Approved</h5>
+                                <p class="mb-0">Your payment KYC is approved. You can request payouts.</p>
+                            </div>
+                        <% } else { %>
+                            <div class="alert alert-warning h-100 d-flex flex-column justify-content-center">
+                                <h5><i class="fas fa-exclamation-triangle me-2"></i> KYC <%= user.kycStatus %></h5>
+                                <p class="mb-0">Your payment KYC is not approved. Please get it approved by the admin to request payouts.</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Monthly Earnings -->
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header border-0 pb-0">
+                                <h4 class="card-title">Earnings By Month</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Month</th>
+                                                <th>Total Earned</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% Object.keys(earningsByMonth).sort().reverse().forEach(month => { %>
+                                                <tr>
+                                                    <td><strong><%= month %></strong></td>
+                                                    <td><strong class="text-success">₹<%= earningsByMonth[month] %></strong></td>
+                                                    <td>
+                                                        <% 
+                                                            let existingRequest = payoutRequests.find(req => req.month === month);
+                                                            if (existingRequest) {
+                                                        %>
+                                                            <span class="badge badge-secondary">Requested (<%= existingRequest.status %>)</span>
+                                                        <% } else if (earningsByMonth[month] > 0) { %>
+                                                            <button class="btn btn-sm btn-primary request-payout-btn" data-month="<%= month %>" data-amount="<%= earningsByMonth[month] %>" <%= user.kycStatus !== 'Approved' ? 'disabled' : '' %>>
+                                                                Request Payout
+                                                            </button>
+                                                        <% } else { %>
+                                                            <span class="text-muted">No earnings</span>
+                                                        <% } %>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                            <% if (Object.keys(earningsByMonth).length === 0) { %>
+                                                <tr><td colspan="3" class="text-center text-muted">No earnings found.</td></tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payout Requests History -->
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-header border-0 pb-0">
+                                <h4 class="card-title">Payout Requests</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Month</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Receipt</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% payoutRequests.forEach(req => { %>
+                                                <tr>
+                                                    <td><%= new Date(req.createdAt).toLocaleDateString() %></td>
+                                                    <td><%= req.month %></td>
+                                                    <td><strong>₹<%= req.amount %></strong></td>
+                                                    <td>
+                                                        <% if (req.status === 'Completed') { %>
+                                                            <span class="badge badge-success"><%= req.status %></span>
+                                                        <% } else if (req.status === 'Rejected') { %>
+                                                            <span class="badge badge-danger"><%= req.status %></span>
+                                                        <% } else if (req.status === 'Approved') { %>
+                                                            <span class="badge badge-info"><%= req.status %></span>
+                                                        <% } else { %>
+                                                            <span class="badge badge-warning"><%= req.status %></span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (req.status === 'Completed' && req.paymentReceipt) { %>
+                                                            <a href="<%= req.paymentReceipt.startsWith('/') ? req.paymentReceipt : '/' + req.paymentReceipt %>" target="_blank" class="btn btn-sm btn-outline-info">
+                                                                <i class="fas fa-file-invoice"></i> View
+                                                            </a>
+                                                        <% } else { %>
+                                                            <span class="text-muted">-</span>
+                                                        <% } %>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                            <% if (payoutRequests.length === 0) { %>
+                                                <tr><td colspan="5" class="text-center text-muted">No payout requests found.</td></tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="/vendor/global/global.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/deznav-init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelectorAll('.request-payout-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const month = this.getAttribute('data-month');
+                const maxAmount = parseFloat(this.getAttribute('data-amount'));
+
+                Swal.fire({
+                    title: `Request Payout for ${month}`,
+                    html: `
+                        <p>Total earned in this month: <strong>₹${maxAmount}</strong></p>
+                        <p class="text-info" style="font-size: 0.9em;">Max daily limit is ₹5,000.</p>
+                        <div class="form-group text-start">
+                            <label>Amount to request (Max ₹${maxAmount})</label>
+                            <input type="number" id="payout-amount" class="form-control" value="${maxAmount}" max="${maxAmount}">
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Request',
+                    preConfirm: () => {
+                        const amount = document.getElementById('payout-amount').value;
+                        if (!amount || amount <= 0) {
+                            Swal.showValidationMessage('Please enter a valid amount');
+                        } else if (amount > maxAmount) {
+                            Swal.showValidationMessage(`Amount cannot exceed ₹${maxAmount}`);
+                        }
+                        return { month, amount };
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = result.value;
+
+                        fetch('/stock/request-payout', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        })
+                        .then(res => res.json())
+                        .then(response => {
+                            if (response.success) {
+                                Swal.fire('Success', response.message, 'success').then(() => location.reload());
+                            } else {
+                                Swal.fire('Error', response.message, 'error');
+                            }
+                        })
+                        .catch(err => {
+                            Swal.fire('Error', 'An error occurred while requesting payout.', 'error');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

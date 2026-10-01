@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('globals/head') %>
+
+<body>
+    <%- include('globals/preloader') %>
+
+    <div id="main-wrapper">
+        <%- include('globals/navHeader') %>
+        <%- include('globals/header') %>
+        <%- include('globals/sidebar') %>
+
+        <div class="content-body">
+            <div class="container-fluid">
+                <!-- Page Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="mb-1 fw-bold text-primary">Review Payouts</h4>
+                                <p class="mb-0 text-muted">Manage stock order user payout requests</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Payout Requests</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped" id="payoutsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Date</th>
+                                                <th>User</th>
+                                                <th>Payout Month</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>KYC Details</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% payoutRequests.forEach(req => { %>
+                                                <tr>
+                                                    <td><%= new Date(req.createdAt).toLocaleString() %></td>
+                                                    <td>
+                                                        <strong><%= req.userId ? req.userId.name : 'Unknown' %></strong><br>
+                                                        <small class="text-muted"><%= req.userId ? req.userId.userId : '' %></small>
+                                                    </td>
+                                                    <td><%= req.month %></td>
+                                                    <td><strong>₹<%= req.amount %></strong></td>
+                                                    <td>
+                                                        <% if (req.status === 'Completed') { %>
+                                                            <span class="badge badge-success"><%= req.status %></span>
+                                                        <% } else if (req.status === 'Rejected') { %>
+                                                            <span class="badge badge-danger"><%= req.status %></span>
+                                                        <% } else if (req.status === 'Approved') { %>
+                                                            <span class="badge badge-info"><%= req.status %></span>
+                                                        <% } else { %>
+                                                            <span class="badge badge-warning"><%= req.status %></span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (req.userId && req.userId.kycDetails) { %>
+                                                            <button class="btn btn-sm btn-outline-info view-kyc-btn" 
+                                                                data-bank-acc="<%= req.userId.kycDetails.bankAccountNumber %>"
+                                                                data-ifsc="<%= req.userId.kycDetails.ifscCode %>"
+                                                                data-bank-name="<%= req.userId.kycDetails.bankName %>"
+                                                                data-acc-name="<%= req.userId.kycDetails.accountHolderName %>"
+                                                                data-upi="<%= req.userId.kycDetails.upiId %>"
+                                                                data-qr="<%= req.userId.kycDetails.qrCodeImage %>">
+                                                                View Details
+                                                            </button>
+                                                        <% } else { %>
+                                                            <span class="text-muted">No KYC Data</span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (req.status === 'Pending') { %>
+                                                            <button class="btn btn-sm btn-success update-status-btn" data-id="<%= req._id %>" data-status="Approved">Approve</button>
+                                                            <button class="btn btn-sm btn-danger update-status-btn" data-id="<%= req._id %>" data-status="Rejected">Reject</button>
+                                                        <% } else if (req.status === 'Approved') { %>
+                                                            <button class="btn btn-sm btn-primary complete-payout-btn" data-id="<%= req._id %>">Mark Completed</button>
+                                                            <button class="btn btn-sm btn-danger update-status-btn" data-id="<%= req._id %>" data-status="Rejected">Reject</button>
+                                                        <% } else if (req.status === 'Completed') { %>
+                                                            <% if (req.paymentReceipt) { %>
+                                                                <a href="<%= req.paymentReceipt %>" target="_blank" class="btn btn-sm btn-outline-success">View Receipt</a>
+                                                            <% } else { %>
+                                                                <span class="text-success"><i class="fas fa-check"></i> Completed</span>
+                                                            <% } %>
+                                                        <% } else { %>
+                                                            <span class="text-danger"><i class="fas fa-times"></i> Rejected</span>
+                                                        <% } %>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                            <% if (payoutRequests.length === 0) { %>
+                                                <tr><td colspan="7" class="text-center">No payout requests found.</td></tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="kycModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tr><th>Bank Name</th><td id="m-bank-name"></td></tr>
+                        <tr><th>Account Holder</th><td id="m-acc-name"></td></tr>
+                        <tr><th>Account Number</th><td id="m-bank-acc"></td></tr>
+                        <tr><th>IFSC Code</th><td id="m-ifsc"></td></tr>
+                        <tr><th>UPI ID</th><td id="m-upi"></td></tr>
+                    </table>
+                    <div id="m-qr-container" style="display:none;" class="text-center mt-3">
+                        <h6>QR Code</h6>
+                        <img id="m-qr-img" src="" style="max-width:200px; max-height:200px; border:1px solid #ddd; padding:5px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="completeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="completeForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Complete Payout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="c-req-id" name="id">
+                        <input type="hidden" name="status" value="Completed">
+                        <div class="form-group mb-3">
+                            <label>Upload Payment Receipt (Optional)</label>
+                            <input type="file" name="paymentReceipt" class="form-control" accept="image/*,.pdf">
+                        </div>
+                        <p class="text-muted"><small>Marking this as completed will deduct the amount from the user's platform wallet balance.</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Complete Payout</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/vendor/global/global.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/deznav-init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Include Bootstrap JS for Modals -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // View KYC
+        document.querySelectorAll('.view-kyc-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('m-bank-acc').textContent = this.getAttribute('data-bank-acc') || 'N/A';
+                document.getElementById('m-ifsc').textContent = this.getAttribute('data-ifsc') || 'N/A';
+                document.getElementById('m-bank-name').textContent = this.getAttribute('data-bank-name') || 'N/A';
+                document.getElementById('m-acc-name').textContent = this.getAttribute('data-acc-name') || 'N/A';
+                document.getElementById('m-upi').textContent = this.getAttribute('data-upi') || 'N/A';
+                
+                const qr = this.getAttribute('data-qr');
+                if (qr && qr !== 'null' && qr !== '') {
+                    document.getElementById('m-qr-img').src = qr.startsWith('/') ? qr : '/' + qr;
+                    document.getElementById('m-qr-container').style.display = 'block';
+                } else {
+                    document.getElementById('m-qr-container').style.display = 'none';
+                }
+                
+                new bootstrap.Modal(document.getElementById('kycModal')).show();
+            });
+        });
+
+        // Update Status
+        document.querySelectorAll('.update-status-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const status = this.getAttribute('data-status');
+                
+                Swal.fire({
+                    title: `Are you sure you want to mark this as ${status}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, proceed'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData();
+                        formData.append('status', status);
+
+                        fetch(`/stock/admin/payouts/${id}`, {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(res => res.json())
+                        .then(response => {
+                            if (response.success) {
+                                Swal.fire('Success', response.message, 'success').then(() => location.reload());
+                            } else {
+                                Swal.fire('Error', response.message, 'error');
+                            }
+                        })
+                        .catch(err => Swal.fire('Error', 'An error occurred.', 'error'));
+                    }
+                });
+            });
+        });
+
+        // Mark Completed
+        document.querySelectorAll('.complete-payout-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('c-req-id').value = this.getAttribute('data-id');
+                new bootstrap.Modal(document.getElementById('completeModal')).show();
+            });
+        });
+
+        document.getElementById('completeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('c-req-id').value;
+            const formData = new FormData(this);
+
+            fetch(`/stock/admin/payouts/${id}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    Swal.fire('Success', response.message, 'success').then(() => location.reload());
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
+            })
+            .catch(err => Swal.fire('Error', 'An error occurred.', 'error'));
+        });
+    </script>
+</body>
+</html>

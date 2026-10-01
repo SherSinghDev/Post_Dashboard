@@ -73,6 +73,7 @@ const mongoose = require('mongoose');
 const stock = require('../../modals/stock')
 const moneyTransaction = require('../../modals/moneyTransaction')
 const CommissionHistory = require('../../modals/commissionHistory');
+const PayoutRequest = require('../../modals/payoutRequest');
 
 // Helper to distribute 5-level commission when a stock transaction is Paid
 async function distributeLevelCommissions(receiverUser, totalStock, transactionId) {
@@ -949,6 +950,178 @@ router.delete('/deletestocktransaction/:id', async (req, res) => {
         }
         res.json({ success: true, message: "Transaction deleted successfully" });
     } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+
+// --- PAYOUT ROUTES ---
+
+// GET user payouts page
+router.get('/payouts', async (req, res) => {
+    if (!req.session.userId) return res.redirect('/auth/login');
+    
+    try {
+        const user = await users.findById(req.session.userId);
+        if (!user) return res.redirect('/auth/login');
+
+        // Fetch user's commission history
+        const commissions = await CommissionHistory.find({ recipientId: user._id });
+
+        // Group earnings by month (e.g. '2026-01')
+        const currentDate = new Date();
+        const currentMonthString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+        const earningsByMonth = {
+            [currentMonthString]: 0
+        };
+        
+        commissions.forEach(c => {
+            const date = new Date(c.createdAt);
+            const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            if (!earningsByMonth[month]) earningsByMonth[month] = 0;
+            earningsByMonth[month] += (c.commissionAmount || 0);
+        });
+
+        // Fetch user's payout requests
+        const payoutRequests = await PayoutRequest.find({ userId: user._id }).sort({ createdAt: -1 });
+
+        res.render('stockOrder/payouts', {
+            page: 'Payouts',
+            user,
+            earningsByMonth,
+            payoutRequests
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error loading payouts.");
+    }
+});
+
+// POST request payout
+router.post('/request-payout', async (req, res) => {
+    if (!req.session.userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+    try {
+        const { month, amount } = req.body;
+        const requestedAmount = Number(amount);
+
+        if (!month || isNaN(requestedAmount) || requestedAmount <= 0) {
+            return res.status(400).json({ success: false, message: 'Invalid request parameters.' });
+        }
+
+        const user = await users.findById(req.session.userId);
+        if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+
+        if (user.kycStatus !== 'Approved') {
+            return res.status(403).json({ success: false, message: 'Your payment KYC is not approved by admin.' });
+        }
+
+        // Check if a payout for this month has already been requested
+        const existingRequestForMonth = await PayoutRequest.findOne({ userId: user._id, month });
+        if (existingRequestForMonth) {
+            return res.status(400).json({ success: false, message: 'Payout for this month has already been requested.' });
+        }
+
+        // Check daily limit
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const todayRequests = await PayoutRequest.find({
+            userId: user._id,
+            requestedAt: { $gte: startOfDay, $lte: endOfDay }
+        });
+
+        const todayTotalRequested = todayRequests.reduce((sum, req) => sum + req.amount, 0);
+        if (todayTotalRequested + requestedAmount > 5000) {
+            return res.status(400).json({ success: false, message: `Daily payout request limit is 5000 rupees. You have already requested ${todayTotalRequested} rupees today.` });
+        }
+
+        // Verify the amount does not exceed earnings for that month
+        const commissions = await CommissionHistory.find({ recipientId: user._id });
+        let monthEarnings = 0;
+        commissions.forEach(c => {
+            const date = new Date(c.createdAt);
+            const m = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            if (m === month) {
+                monthEarnings += (c.commissionAmount || 0);
+            }
+        });
+
+        if (requestedAmount > monthEarnings) {
+            return res.status(400).json({ success: false, message: 'Requested amount exceeds earnings for the selected month.' });
+        }
+
+        const newRequest = new PayoutRequest({
+            userId: user._id,
+            amount: requestedAmount,
+            month
+        });
+        await newRequest.save();
+
+        res.json({ success: true, message: 'Payout requested successfully.' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// GET Admin payouts page
+router.get('/admin/payouts', async (req, res) => {
+    if (!req.session.userId) return res.redirect('/auth/login');
+    
+    try {
+        const user = await users.findById(req.session.userId);
+        if (!user || user.role !== 'Admin') return res.redirect('/auth/login');
+
+        const payoutRequests = await PayoutRequest.find()
+            .populate('userId')
+            .sort({ createdAt: -1 });
+
+        res.render('adminPayouts', {
+            page: 'Review Payouts',
+            user,
+            payoutRequests
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error loading admin payouts.");
+    }
+});
+
+// POST Admin update payout status
+router.post('/admin/payouts/:id', upload.single('paymentReceipt'), async (req, res) => {
+    if (!req.session.userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+    try {
+        const user = await users.findById(req.session.userId);
+        if (!user || user.role !== 'Admin') return res.status(403).json({ success: false, message: 'Forbidden' });
+
+        const { status } = req.body;
+        const updateData = { status };
+
+        if (status === 'Completed') {
+            updateData.completedAt = new Date();
+            if (req.file) {
+                updateData.paymentReceipt = `/uploads/receipt/${req.file.filename}`;
+            }
+            // Subtract from user's platformWalletAmount
+            const payoutRequest = await PayoutRequest.findById(req.params.id);
+            if (payoutRequest && payoutRequest.status !== 'Completed') {
+                await users.findByIdAndUpdate(payoutRequest.userId, {
+                    $inc: { platformWalletAmount: -payoutRequest.amount }
+                });
+            }
+        }
+
+        await PayoutRequest.findByIdAndUpdate(req.params.id, updateData);
+
+        res.json({ success: true, message: 'Payout status updated.' });
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ success: false, message: error.message });
     }
 });
