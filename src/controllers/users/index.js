@@ -364,7 +364,8 @@ router.post(
                 validstart,
                 validend,
                 panNumber,
-                amount
+                amount,
+                assignedDistrict
             } = req.body;
 
             let appUser = await Users.findOne({ _id: req.params.id }).select('-_id -__v -createdAt')
@@ -411,6 +412,7 @@ router.post(
                 amount,
                 type,
                 position,
+                assignedDistrict,
                 parentUser,
                 role: "Coordinator",
                 payment: {

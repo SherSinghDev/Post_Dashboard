@@ -112,6 +112,10 @@ const userApplySchema = new Schema({
   position: {
     type: String,
   },
+  assignedDistrict: {
+    type: String,
+    trim: true,
+  },
   referrerName: {
     type: String,
   },

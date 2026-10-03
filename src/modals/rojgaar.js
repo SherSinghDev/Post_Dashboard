@@ -1,102 +1,47 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const experienceSchema = new Schema({
+    companyName: String,
+    duration: String,
+    designation: String
+});
+
 const userApplySchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true,
     },
-    gender: {
-        type: String,
-        enum: ["Male", "Female", "Other"],
-        required: true,
-    },
-    dateOfBirth: {
-        type: Date,
-        required: true,
-    },
-    relationType: {
-        // S/O, D/O, W/O etc.
-        type: String,
-        trim: true,
-    },
-    relationWith: {
-        type: String,
-        trim: true,
-    },
-    profession: {
-        type: String,
-        enum: [
-            "Government Job",
-            "Private Job",
-            "Police",
-            "Army",
-            "Farmer",
-            "Self Business",
-            "Student",
-            "Social Worker",
-            "House Wife",
-        ],
-    },
-    bloodGroup: {
-        type: String,
-        enum: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
-        required: true,
-    },
-    state: {
+    address: {
         type: String,
         required: true,
     },
-    district: {
+    mob: {
         type: String,
         required: true,
     },
-    mobile: {
+    selfPhoto: {
+        type: String,
+    },
+    qualification: {
         type: String,
         required: true,
     },
-    role: {
+    isExperienced: {
+        type: Boolean,
+        default: false
+    },
+    experiences: [experienceSchema],
+    idProof: {
         type: String,
+    },
+    age: {
+        type: Number,
         required: true,
     },
-    aadharNo: {
-        type: String,
-        required: true,
-    },
-    block: {
-        type: String,
-    },
-    village: {
-        type: String,
-    },
-    fullAddress: {
-        type: String,
-        required: true,
-    },
-    pinCode: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        lowercase: true,
-        trim: true,
-    },
-    profilePicture: {
-        type: String,
-    },
-    idType: {
-        type: String,
-        enum: [
-            "Aadhar Card",
-            "PAN Card",
-            "Voter Card",
-            "Driving Licence",
-            "Rashan Card",
-            "Class 10th Marksheet",
-        ],
-    },
+    
+    // Internal/Admin fields
     approveStatus: {
         type: String,
         enum: [
@@ -106,52 +51,10 @@ const userApplySchema = new Schema({
         ],
         default: "Pending",
     },
-    idDocument: {
-        type: String,
-    },
-    position: {
-        type: String,
-    },
-    referrerName: {
-        type: String,
-    },
-    otherDocument: {
-        type: String,
-    },
-    membershipType: {
-        type: String,
-        enum: [
-            "₹1 Per Day  Donation - Annual Contribution ₹365",
-            "District Level Membership - ₹2365",
-            "Block Level Membership - ₹1365",
-            "Centre Level Membership - ₹865"
-        ],
-        required: true,
-    },
     type: String,
-    referredBy: { type: String, default: null, trim: true }, // Team Leader referral code
+    referredBy: { type: String, default: null, trim: true },
     referralCode: { type: String, trim: true },
     teamLeaderId: { type: mongoose.Schema.Types.ObjectId, ref: "User", trim: true },
-    payment: {
-        mode: {
-            type: String,
-            enum: [
-                "Bank Transfer Slip",
-                "Paytm",
-                "Google Pay",
-                "Phonepe",
-                "Amazon Pay",
-                "Cheque",
-                "Cash",
-                "Other"
-            ],
-            // required: true,
-        },
-        receiptUrl: {
-            type: String,
-        },
-
-    },
     parentUser: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

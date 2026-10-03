@@ -83,6 +83,7 @@
 																	<th>Membership</th>
 																	<th>Type</th>
 																	<th>Position</th>
+																	<th>Assigned District</th>
 																	<th>Parent User</th>
 																	<!-- <th>Membership Type</th>
                                                                     <th>Referral</th> -->
@@ -122,6 +123,9 @@
 																				</td>
 																				<td>
 																					<%= app.position || 'NA' %>
+																				</td>
+																				<td>
+																					<%= app.assignedDistrict || 'NA' %>
 																				</td>
 																				<td>
 																					<%- app.parentUser?
@@ -459,16 +463,21 @@
 									</div>
 									<div class="col-md-6">
 										<label class="mb-1"><strong>Parent User</strong></label>
-										<select name="parentUser" class="form-control" id="parentUser"></select>
+										<select name="parentUser" class="form-control selectpicker" data-live-search="true" id="parentUser"></select>
 
 									</div>
 								</div>
 								<div class="row mb-3">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<label class="mb-1"><strong>Position</strong></label>
-										<select name="position" id="position-select" class="form-control" id="position-select"></select>
+										<select name="position" id="position-select" class="form-control"></select>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-4">
+										<label class="mb-1"><strong>Assigned District</strong></label>
+										<input type="text" name="assignedDistrict" class="form-control"
+											placeholder="Assigned District">
+									</div>
+									<div class="col-md-4">
 										<label class="mb-1"><strong>Type</strong></label>
 										<input type="text" name="type" class="form-control"
 											placeholder="Enter Your Form Type">
@@ -534,8 +543,7 @@
 			<script src="/js/deznav-init.js"></script>
 			<script src="/js/demo.js"></script>
 			<script src="/js/styleSwitcher.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
 			<script src="/js/pages/patients.js"></script>
 			<script>
@@ -667,6 +675,13 @@
 								const app = data.data;
 								let options = data.options
 								$('#parentUser').html(options)
+								try {
+									if (typeof $.fn.selectpicker === 'function') {
+										$('#parentUser').selectpicker('refresh');
+									}
+								} catch (e) {
+									console.error('Selectpicker error:', e);
+								}
 								const form = document.getElementById('edit-form');
 
 								// RESET FORM STATE BEFORE FILLING

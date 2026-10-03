@@ -34,227 +34,73 @@
                                         enctype="multipart/form-data">
                                         <h3 class="mb-3 text-center">Rojgaar Samadhan Form</h3>
 
-                                        <!-- Row 1: Name & Gender -->
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Full Name*</strong></label>
-                                                <input type="text" name="name" class="form-control"
-                                                    placeholder="Enter your full name">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Gender*</strong></label>
-                                                <select name="gender" style="padding-block: 11px;" class="form-select">
-                                                    <option value="">Select Gender</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Row 2: DOB & Relation Type -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Date of Birth*</strong></label>
-                                                <input type="date" name="dateOfBirth" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Relation Type*</strong></label>
-                                                <div class="d-flex gap-2">
-                                                    <label class="mb-1 d-none"><strong>Relation Type</strong></label>
-                                                    <select name="relationType" id="relationType"
-                                                        style="padding-block: 11px; width: 100px;" class="form-select">
-                                                        <option value="s/o">S/O</option>
-                                                        <option value="d/o">D/O</option>
-                                                        <option value="w/o">W/O</option>
-                                                    </select>
-                                                    <label class="mb-1 d-none"><strong>Relation With</strong></label>
-                                                    <input type="text" id="relationOption" name="relationWith"
-                                                        class="form-control" placeholder="Son of">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Row 3: Profession & Blood Group -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Profession*</strong></label>
-                                                <select name="profession" style="padding-block: 11px;"
-                                                    class="form-select">
-                                                    <option value="">Select Profession</option>
-                                                    <option value="Government Job">Government Job</option>
-                                                    <option value="Private Job">Private Job</option>
-                                                    <option value="Police">Police</option>
-                                                    <option value="Army">Army</option>
-                                                    <option value="Farmer">Farmer</option>
-                                                    <option value="Self Business">Self Business</option>
-                                                    <option value="Student">Student</option>
-                                                    <option value="Social Worker">Social Worker</option>
-                                                    <option value="House Wife">House Wife</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Blood Group*</strong></label>
-                                                <select name="bloodGroup" style="padding-block: 11px;"
-                                                    class="form-select">
-                                                    <option value="">Select Blood Group</option>
-                                                    <option value="A+">A+</option>
-                                                    <option value="A-">A-</option>
-                                                    <option value="B+">B+</option>
-                                                    <option value="B-">B-</option>
-                                                    <option value="O+">O+</option>
-                                                    <option value="O-">O-</option>
-                                                    <option value="AB+">AB+</option>
-                                                    <option value="AB-">AB-</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Row 4: State & District -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>State*</strong></label>
-                                                <input type="text" name="state" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>District*</strong></label>
-                                                <input type="text" name="district" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <!-- Row 5: Block & Village -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Block*</strong></label>
-                                                <input type="text" name="block" class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Village*</strong></label>
-                                                <input type="text" name="village" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <!-- Full Address -->
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Full Address*</strong></label>
-                                            <textarea name="fullAddress" class="form-control"
-                                                placeholder="Enter full address"></textarea>
-                                        </div>
-
-                                        <!-- Row 6: Pin Code & Mobile -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Pin Code*</strong></label>
-                                                <input type="text" name="pinCode" class="form-control">
+                                                <input type="text" name="name" class="form-control" placeholder="Enter your full name" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="mb-1"><strong>Mobile Number*</strong></label>
-                                                <input type="text" name="mobile" class="form-control"
-                                                    placeholder="Enter mobile number">
-                                            </div>
-                                        </div>
-
-                                        <!-- Row 7: Email & Aadhar -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Email*</strong></label>
-                                                <input type="email" name="email" class="form-control"
-                                                    placeholder="hello@example.com">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Aadhar Number*</strong></label>
-                                                <input type="text" name="aadharNo" class="form-control"
-                                                    placeholder="Enter Aadhar Number">
-                                            </div>
-                                        </div>
-
-                                        <!-- Documents Upload -->
-
-                                        <div class="row mb-3">
-                                            <div class="col-12">
-                                                <label class="mb-1"><strong>Profile Picture*</strong></label>
-                                                <input type="file" name="profilePicture" class="form-control">
-                                            </div>
-                                            <!-- <div class="col-md-6">
-                                                <label class="mb-1"><strong>Role</strong></label>
-                                                <select name="role" style="padding-block: 11px;" class="form-select">
-                                                    <option value="Team Leader">Team Leader</option>
-                                                    <option value="Coordinator">Coordinator</option>
-                                                </select>
-                                            </div>  -->
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>ID Type*</strong></label>
-                                                <select name="idType" style="padding-block: 11px;" class="form-select">
-                                                    <option value="">Select ID Type</option>
-                                                    <option value="Aadhar Card">Aadhar Card</option>
-                                                    <option value="PAN Card">PAN Card</option>
-                                                    <option value="Voter Card">Voter Card</option>
-                                                    <option value="Driving Licence">Driving Licence</option>
-                                                    <option value="Rashan Card">Rashan Card</option>
-                                                    <option value="Class 10th Marksheet">Class 10th Marksheet</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="mb-1"><strong>Upload ID Document*</strong></label>
-                                                <input type="file" name="idDocument" class="form-control">
+                                                <input type="text" name="mob" class="form-control" placeholder="Enter 10-digit mobile number" required>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label class="mb-1"><strong>Upload Other Document*</strong></label>
-                                                <input type="file" name="otherDocument" class="form-control">
+                                                <label class="mb-1"><strong>Age*</strong></label>
+                                                <input type="number" name="age" class="form-control" placeholder="Enter your age" required>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="mb-1"><strong>Membership Type*</strong></label>
-                                                <select name="membershipType" id="membershipType" class="form-select"
-                                                    style="padding-block: 11px;">
-                                                    <option value="">Select Membership</option>
-                                                    <option value="₹1 Per Day  Donation - Annual Contribution ₹365">₹1 Per Day  Donation - Annual Contribution ₹365</option>
-                                                    <option value="District Level Membership - ₹2365">District Level Membership - ₹2365</option>
-                                                    <option value="Block Level Membership - ₹1365">Block Level Membership - ₹1365</option>
-                                                    <option value="Centre Level Membership - ₹865">Centre Level Membership - ₹865</option>
-                                                </select>
-                                                <input type="text" id="amount" class="form-control mt-2" readonly
-                                                    placeholder="Amount">
+                                                <label class="mb-1"><strong>Qualification*</strong></label>
+                                                <input type="text" name="qualification" class="form-control" placeholder="Enter highest qualification" required>
                                             </div>
-
                                         </div>
 
-                                        <!-- Row 8: Membership & Referred By -->
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Address*</strong></label>
+                                            <textarea name="address" class="form-control" placeholder="Enter full address" required></textarea>
+                                        </div>
+
                                         <div class="row mb-3">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="mb-1"><strong>Member Position*</strong></label>
-                                                <select name="position" style="padding-block: 11px;"
-                                                    class="form-select">
-                                                    <option value="">Select Position</option>
-                                                    <% if(type=='singleorder' ){ %>
-                                                        <option value="Team Captain">Team Captain</option>
-                                                        <option value="District Advisor">District Advisor</option>
-                                                        <option value="Assistant District Advisor">Assistant District
-                                                            Advisor</option>
-                                                        <option value="Block Advisor">Block Advisor</option>
-                                                        <option value="City Advisor">City Advisor</option>
-                                                        <option value="Centre Advisor">Centre Advisor</option>
-                                                        </option>
-                                                        <% } else { %>
-                                                            <option value="Program Manager">Program Manager</option>
-                                                            <option value="District Head">District Head</option>
-                                                            <option value="Assistant District Head">Assistant District
-                                                                Head</option>
-                                                            <option value="Block Head">Block Head</option>
-                                                            <option value="City Head">City Head</option>
-                                                            <option value="Centre Head">Centre Head</option>
-                                                            <% } %>
-
-                                                </select>
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>Self Photo*</strong></label>
+                                                <input type="file" name="selfPhoto" class="form-control" accept="image/*" required>
                                             </div>
-
-                                            <input type="text" name="type" class="d-none" value="<%=type%>">
+                                            <div class="col-md-6">
+                                                <label class="mb-1"><strong>ID Proof Image*</strong></label>
+                                                <input type="file" name="idProof" class="form-control" accept="image/*" required>
+                                            </div>
                                         </div>
+
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Experience / Fresher*</strong></label>
+                                            <select name="isExperienced" id="isExperienced" class="form-select" style="padding-block: 11px;" required>
+                                                <option value="">Select Status</option>
+                                                <option value="false">Fresher</option>
+                                                <option value="true">Experienced</option>
+                                            </select>
+                                        </div>
+
+                                        <div id="experienceSection" class="mb-3" style="display: none;">
+                                            <label class="mb-1"><strong>Experiences</strong></label>
+                                            <div id="experienceList">
+                                                <div class="experience-item row mb-2">
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control exp-company" placeholder="Company Name">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control exp-duration" placeholder="Duration (e.g. 2 years)">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control exp-designation" placeholder="Designation">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" id="addExperienceBtn" class="btn btn-sm btn-primary mt-2">Add More Experience</button>
+                                        </div>
+
+                                        <!-- Hidden input to store experiences JSON -->
+                                        <input type="hidden" name="experiences" id="experiencesHidden">
                                         <button type="button" id="payNow" class="btn btn-success mt-3">
                                             Register
                                         </button>
@@ -271,66 +117,105 @@
     <!--**********************************
 	Scripts
 ***********************************-->
-    <!-- Required vendors -->
-    <!-- <script src="/vendor/global/global.min.js"></script> -->
-    <!-- <script src="/js/custom.js"></script> -->
-    <!-- <script src="/js/deznav-init.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.min.js"></script>
 
 
     <script>
-        // $('.pay-option').css('display', 'none')
-        $('.pay-option').hide()
-
-        $('.pay-btn').click(function () {
-            // $('.pay-option').css('display', 'block')
-            $('.pay-option').show()
-        })
-
-        $(document).on('change', '#relationType', function () {
-            let val = $(this).val()
-            // console.log(val);
-            let placeVal = ''
-
-            if (val == 's/o') {
-                placeVal = 'Son of'
+        $('#isExperienced').change(function() {
+            if ($(this).val() === 'true') {
+                $('#experienceSection').show();
+            } else {
+                $('#experienceSection').hide();
             }
-            if (val == 'd/o') {
-                placeVal = 'Daughter of'
-            }
-            if (val == 'w/o') {
-                placeVal = 'Wife of'
-            }
+        });
 
-            $('#relationOption').attr('placeholder', placeVal)
-        })
+        $('#addExperienceBtn').click(function() {
+            const expItem = `
+                <div class="experience-item row mb-2 mt-2 pt-2 border-top">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control exp-company" placeholder="Company Name">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control exp-duration" placeholder="Duration (e.g. 2 years)">
+                    </div>
+                    <div class="col-md-4 d-flex gap-2">
+                        <input type="text" class="form-control exp-designation" placeholder="Designation">
+                        <button type="button" class="btn btn-danger btn-sm remove-exp"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            $('#experienceList').append(expItem);
+        });
 
-        $(document).on('submit', '#register-form', async function (e) {
-            e.preventDefault();
-            const form = e.target;
-            const formData = new FormData(form);
+        $(document).on('click', '.remove-exp', function() {
+            $(this).closest('.experience-item').remove();
+        });
 
-            // Your validation logic...
-            let err = [];
-            const mobile = form.mobile.value.trim();
-            if (mobile.length !== 10) {
-                err.push("Mobile Number Should Be Of 10 Digits!");
-            }
+        $('#payNow').click(async function () {
+            let isValid = true;
+            let firstEmptyField = null;
 
-            if (err.length > 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    html: err.join('<br>'),
-                });
+            // Validate standard required fields
+            $('#register-form').find('input[required], select[required], textarea[required]').each(function () {
+                const value = $(this).val()?.trim();
+                if (!value) {
+                    isValid = false;
+                    firstEmptyField = $(this);
+                    return false;
+                }
+            });
+
+            if (!isValid) {
+                Swal.fire("Please fill all required fields");
+                firstEmptyField.focus();
                 return;
             }
 
+            // Extra validations
+            const mobile = $('input[name="mob"]').val().trim();
+            if (!/^[6-9]\d{9}$/.test(mobile)) {
+                Swal.fire("Please enter a valid 10-digit mobile number");
+                $('input[name="mob"]').focus();
+                return;
+            }
+
+            // Parse experiences
+            if ($('#isExperienced').val() === 'true') {
+                let exps = [];
+                let expValid = true;
+                $('.experience-item').each(function() {
+                    const comp = $(this).find('.exp-company').val().trim();
+                    const dur = $(this).find('.exp-duration').val().trim();
+                    const desig = $(this).find('.exp-designation').val().trim();
+                    if(comp || dur || desig) {
+                        if(!comp || !dur || !desig) {
+                            expValid = false;
+                        } else {
+                            exps.push({ companyName: comp, duration: dur, designation: desig });
+                        }
+                    }
+                });
+
+                if(!expValid) {
+                    Swal.fire("Please fill all fields for added experiences, or remove them if not needed.");
+                    return;
+                }
+                if(exps.length === 0) {
+                    Swal.fire("Please add at least one experience or select Fresher.");
+                    return;
+                }
+                $('#experiencesHidden').val(JSON.stringify(exps));
+            } else {
+                $('#experiencesHidden').val('[]');
+            }
+
+            // Submit form
+            const form = document.getElementById('register-form');
             try {
                 const res = await fetch('/applications/rojgaar/apply', {
                     method: "POST",
-                    body: new FormData(e.target),
+                    body: new FormData(form),
                 });
                 const result = await res.json();
 
@@ -361,90 +246,7 @@
                 });
             }
         });
-
-
-        $(document).on('change', '#select-role', function (e) {
-
-            if (e.target.value == 'Coordinator') {
-                $('.referred').removeClass('d-none')
-            }
-            else {
-                $('.referred').addClass('d-none')
-            }
-        })
-
-        const plans = {
-            "₹1 Per Day  Donation - Annual Contribution ₹365": 365,
-            "District Level Membership - ₹2365": 2365,
-            "Block Level Membership - ₹1365": 1365,
-            "Centre Level Membership - ₹865": 865,
-        };
-
-        let selectedAmount = 0;
-
-        $('#membershipType').change(function () {
-            selectedAmount = plans[this.value] || 0;
-            $('#amount').val("₹ " + selectedAmount);
-        });
-
-
-
-        $('#payNow').click(async function () {
-
-            let isValid = true;
-            let firstEmptyField = null;
-
-            // 🔹 Validate ALL inputs, selects & textareas inside the form
-            $('#register-form')
-                .find('input, select, textarea')
-                .each(function () {
-                    const value = $(this).val()?.trim();
-                    const type = $(this).attr('type');
-
-                    // Ignore buttons & hidden fields
-                    if (type === 'button' || type === 'submit' || type === 'hidden' || type === 'hidden') return;
-                    console.log(this.previousElementSibling.innerText);
-                    // if (this.previousElementSibling.innerText == 'Referrer Name' || this.previousElementSibling.innerText == 'Referrer Id') return;
-
-
-                    if (!value) {
-                        isValid = false;
-                        firstEmptyField = $(this);
-                        return false; // break loop
-                    }
-                });
-
-            if (!isValid) {
-                Swal.fire("Please fill all required fields");
-                firstEmptyField.focus();
-                return;
-            }
-
-            // 🔹 Extra validations
-            const email = $('input[name="email"]').val().trim();
-            const mobile = $('input[name="mobile"]').val().trim();
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                Swal.fire("Please enter a valid email");
-                $('input[name="email"]').focus();
-                return;
-            }
-
-            if (!/^[6-9]\d{9}$/.test(mobile)) {
-                Swal.fire("Please enter a valid 10-digit mobile number");
-                $('input[name="mobile"]').focus();
-                return;
-            }
-
-            // 🔹 Membership validation
-            if (!selectedAmount || !$('#membershipType').val()) {
-                Swal.fire("Please select a membership");
-                return;
-            }
-
-            $('#register-form').submit();
-        });
+    </script>
 
 
     </script>

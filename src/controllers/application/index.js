@@ -71,7 +71,8 @@ router.post(
         paymentMode,
         referrerName,
         type,
-        position
+        position,
+        assignedDistrict
       } = req.body;
 
       // ✅ Check if email already exists in Users collection
@@ -129,6 +130,7 @@ router.post(
         referrerName: referrerName || (parentUserDoc ? parentUserDoc.name : null),
         type,
         position,
+        assignedDistrict,
         payment: {
           mode: paymentMode,
           receiptUrl
@@ -158,92 +160,50 @@ router.post(
 router.post(
   '/rojgaar/apply',
   upload.fields([
-    { name: 'profilePicture', maxCount: 1 },
-    { name: 'idDocument', maxCount: 1 },
-    { name: 'otherDocument', maxCount: 1 },
-    { name: 'receiptUrl', maxCount: 1 }
+    { name: 'selfPhoto', maxCount: 1 },
+    { name: 'idProof', maxCount: 1 }
   ]),
   async (req, res) => {
     try {
-      // console.log(req.body);
-
       let {
         name,
-        gender,
-        dateOfBirth,
-        relationType,
-        relationWith,
-        profession,
-        bloodGroup,
-        state,
-        district,
-        mobile,
-        aadharNo,
-        block,
-        village,
-        fullAddress,
-        pinCode,
-        // role,
-        email,
-        idType,
-        membershipType,
-        referredBy,
-        paymentMode,
-        referrerName,
-        type,
-        position
+        address,
+        mob,
+        qualification,
+        isExperienced,
+        experiences,
+        age
       } = req.body;
 
-      // ✅ Check if email already exists in Users collection
-      const existingUser = await rojgaar.findOne({ email: email.toLowerCase().trim() });
-      if (existingUser) {
-        return res.status(400).json({
-          created: false,
-          message: 'This email is already registered in a Form. Please use a different email or contact support.'
-        });
+      // Extract file paths safely
+      const selfPhotoUrl = req.files['selfPhoto'] ? `/uploads/documents/${req.files['selfPhoto'][0].filename}` : null;
+      const idProofUrl = req.files['idProof'] ? `/uploads/documents/${req.files['idProof'][0].filename}` : null;
+
+      // Ensure experiences is parsed properly if sent as string or array
+      let parsedExperiences = [];
+      if (isExperienced === 'true' || isExperienced === true) {
+          if (typeof experiences === 'string') {
+              try {
+                  parsedExperiences = JSON.parse(experiences);
+              } catch (e) {
+                  console.error('Error parsing experiences:', e);
+              }
+          } else if (Array.isArray(experiences)) {
+              parsedExperiences = experiences;
+          }
       }
 
-      // extract file paths safely
-      const profilePicture = req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : null;
-      const idDocument = req.files['idDocument'] ? `/uploads/documents/${req.files['idDocument'][0].filename}` : null;
-      const otherDocument = req.files['otherDocument'] ? `/uploads/documents/${req.files['otherDocument'][0].filename}` : null;
-      const receiptUrl = req.files['receiptUrl'] ? `/uploads/documents/${req.files['receiptUrl'][0].filename}` : null;
-
-      let referralCode = "TL-" + nanoid(6).toUpperCase()
-
-      // create a new application document
+      // Create a new application document
       let newApplication = new rojgaar({
         name,
-        gender,
-        dateOfBirth,
-        relationType,
-        relationWith,
-        profession,
-        bloodGroup,
-        state,
-        district,
-        mobile,
-        aadharNo,
-        block,
-        village,
-        fullAddress,
-        pinCode,
-        email,
-        profilePicture,
-        idType,
-        idDocument,
-        otherDocument,
-        membershipType,
-        referredBy,
-        referralCode,
-        role: "Coordinator",
-        referrerName,
-        type,
-        position,
-        payment: {
-          mode: paymentMode,
-          receiptUrl
-        }
+        address,
+        mob,
+        qualification,
+        isExperienced: isExperienced === 'true' || isExperienced === true,
+        experiences: parsedExperiences,
+        age,
+        selfPhoto: selfPhotoUrl,
+        idProof: idProofUrl,
       });
 
       await newApplication.save();
@@ -252,19 +212,18 @@ router.post(
       const nameParts = (name || '').trim().split(/\s+/);
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
-      const addressText = [fullAddress, village, block, district, state, pinCode].filter(Boolean).join(', ');
 
       const superfonePayload = {
         first_name: firstName,
         last_name: lastName,
-        email: email ? [email.trim()] : [],
-        additional_info: `Gender: ${gender || 'N/A'}, Profession: ${profession || 'N/A'}, Blood Group: ${bloodGroup || 'N/A'}, Membership: ${membershipType || 'N/A'}, Referral Code: ${referralCode || 'N/A'}, Referred By: ${referredBy || 'N/A'}, Aadhar: ${aadharNo || 'N/A'}`,
-        customer_phone: mobile ? String(mobile).trim() : '',
+        email: [],
+        additional_info: `Qualification: ${qualification || 'N/A'}, Age: ${age || 'N/A'}, Experienced: ${isExperienced || 'N/A'}`,
+        customer_phone: mob ? String(mob).trim() : '',
         source: "Rojgaar Form",
         leadgroupid: 123,
         source_type: "rojgaar_form",
         address: {
-          text: addressText || `${district || ''}, ${state || ''}`.trim()
+          text: address || ''
         }
       };
 
@@ -281,7 +240,6 @@ router.post(
       console.error('Error saving user application:', error);
       res.status(500).json({
         created: false,
-        // message: 'Server error while submitting application.',
         message: error.message,
         error: "Error in Server"
       });
@@ -296,16 +254,17 @@ router.get('/all', async (req, res) => {
 
 router.post('/check-district-head', async (req, res) => {
   try {
-    const { district } = req.body;
-    if (!district) {
-      return res.status(400).json({ success: false, message: 'District is required' });
+    const { assignedDistrict } = req.body;
+    if (!assignedDistrict) {
+      return res.status(400).json({ success: false, message: 'Assigned district is required' });
     }
     
     // Check in users first
     const existingUser = await Users.findOne({ 
       type: 'stockorder', 
       position: 'District Head',
-      district: { $regex: new RegExp(`^${district}$`, 'i') } 
+      assignedDistrict: { $regex: new RegExp(`^${assignedDistrict}$`, 'i') },
+      isSuspended: { $ne: true }
     });
 
     if (existingUser) {
@@ -316,7 +275,7 @@ router.post('/check-district-head', async (req, res) => {
     const existingApp = await UserApplication.findOne({
       type: 'stockorder',
       position: 'District Head',
-      district: { $regex: new RegExp(`^${district}$`, 'i') },
+      assignedDistrict: { $regex: new RegExp(`^${assignedDistrict}$`, 'i') },
       approveStatus: { $ne: 'Rejected' }
     });
 
@@ -391,6 +350,7 @@ router.get('/applied', async (req, res) => {
               referrerName: 1,
               type: 1,
               position: 1,
+              assignedDistrict: 1,
               payment: 1,
               createdAt: 1,
               // only specific fields from referral user
@@ -452,6 +412,7 @@ router.get('/applied', async (req, res) => {
               referrerName: 1,
               type: 1,
               position: 1,
+              assignedDistrict: 1,
               payment: 1,
               createdAt: 1,
               // only specific fields from referral user
@@ -511,33 +472,19 @@ router.get('/rojgaar/applied', async (req, res) => {
             $project: {
               // keep all original fields
               name: 1,
-              gender: 1,
-              dateOfBirth: 1,
-              relationType: 1,
-              relationWith: 1,
-              profession: 1,
-              bloodGroup: 1,
-              state: 1,
-              district: 1,
-              mobile: 1,
-              role: 1,
-              aadharNo: 1,
-              block: 1,
-              village: 1,
-              fullAddress: 1,
-              pinCode: 1,
-              email: 1,
-              profilePicture: 1,
-              idType: 1,
+              address: 1,
+              mob: 1,
+              qualification: 1,
+              isExperienced: 1,
+              experiences: 1,
+              age: 1,
+              selfPhoto: 1,
+              idProof: 1,
               approveStatus: 1,
-              idDocument: 1,
-              otherDocument: 1,
-              membershipType: 1,
               referredBy: 1,
               referrerName: 1,
               type: 1,
               position: 1,
-              payment: 1,
               createdAt: 1,
               // only specific fields from referral user
               'referrer._id': 1,
@@ -572,33 +519,19 @@ router.get('/rojgaar/applied', async (req, res) => {
             $project: {
               // keep all original fields
               name: 1,
-              gender: 1,
-              dateOfBirth: 1,
-              relationType: 1,
-              relationWith: 1,
-              profession: 1,
-              bloodGroup: 1,
-              state: 1,
-              district: 1,
-              mobile: 1,
-              role: 1,
-              aadharNo: 1,
-              block: 1,
-              village: 1,
-              fullAddress: 1,
-              pinCode: 1,
-              email: 1,
-              profilePicture: 1,
-              idType: 1,
+              address: 1,
+              mob: 1,
+              qualification: 1,
+              isExperienced: 1,
+              experiences: 1,
+              age: 1,
+              selfPhoto: 1,
+              idProof: 1,
               approveStatus: 1,
-              idDocument: 1,
-              otherDocument: 1,
-              membershipType: 1,
               referredBy: 1,
               referrerName: 1,
               type: 1,
               position: 1,
-              payment: 1,
               createdAt: 1,
               // only specific fields from referral user
               'referrer._id': 1,
@@ -678,6 +611,7 @@ router.get('/one/:id', async (req, res) => {
           parentUser: 1,
           type: 1,
           position: 1,
+          assignedDistrict: 1,
           payment: 1,
           createdAt: 1,
 
@@ -705,6 +639,62 @@ router.get('/one/:id', async (req, res) => {
     }
 
     res.json({ success: true, data: result[0], options });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// GET single rojgaar application
+router.get('/rojgaar/one/:id', async (req, res) => {
+  try {
+    const result = await rojgaar.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(req.params.id) }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'referredBy',
+          foreignField: 'userId',
+          as: 'referralUser'
+        }
+      },
+      {
+        $unwind: {
+          path: '$referralUser',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          address: 1,
+          mob: 1,
+          qualification: 1,
+          isExperienced: 1,
+          experiences: 1,
+          age: 1,
+          selfPhoto: 1,
+          idProof: 1,
+          approveStatus: 1,
+          referredBy: 1,
+          referrerName: 1,
+          createdAt: 1,
+          // only name and id for referral user
+          'referralUser._id': 1,
+          'referralUser.name': 1,
+        }
+      }
+    ]);
+
+    if (!result.length) {
+      return res.status(404).json({ success: false, message: "Application not found" });
+    }
+
+    res.json({ success: true, data: result[0] });
 
   } catch (err) {
     console.error(err);
@@ -804,6 +794,7 @@ router.post(
         type,
         position,
         parentuser,
+        assignedDistrict,
       } = req.body;
 
       console.log(req.body);
@@ -850,6 +841,7 @@ router.post(
         bloodGroup,
         state,
         district,
+        assignedDistrict,
         mobile,
         aadharNo,
         block,

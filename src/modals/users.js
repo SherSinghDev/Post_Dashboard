@@ -167,6 +167,10 @@ const userSchema = new mongoose.Schema({
     position: {
         type: String,
     },
+    assignedDistrict: {
+        type: String,
+        trim: true,
+    },
     otherDocument: {
         type: String,
     },
