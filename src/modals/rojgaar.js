@@ -40,6 +40,10 @@ const userApplySchema = new Schema({
         type: Number,
         required: true,
     },
+    post: {
+        type: String,
+        required: true,
+    },
     
     // Internal/Admin fields
     approveStatus: {

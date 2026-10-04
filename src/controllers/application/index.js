@@ -172,7 +172,8 @@ router.post(
         qualification,
         isExperienced,
         experiences,
-        age
+        age,
+        post
       } = req.body;
 
       // Extract file paths safely
@@ -202,6 +203,7 @@ router.post(
         isExperienced: isExperienced === 'true' || isExperienced === true,
         experiences: parsedExperiences,
         age,
+        post,
         selfPhoto: selfPhotoUrl,
         idProof: idProofUrl,
       });
@@ -217,7 +219,7 @@ router.post(
         first_name: firstName,
         last_name: lastName,
         email: [],
-        additional_info: `Qualification: ${qualification || 'N/A'}, Age: ${age || 'N/A'}, Experienced: ${isExperienced || 'N/A'}`,
+        additional_info: `Qualification: ${qualification || 'N/A'}, Age: ${age || 'N/A'}, Experienced: ${isExperienced || 'N/A'}, Post: ${post || 'N/A'}`,
         customer_phone: mob ? String(mob).trim() : '',
         source: "Rojgaar Form",
         leadgroupid: 123,
@@ -480,6 +482,7 @@ router.get('/rojgaar/applied', async (req, res) => {
               age: 1,
               selfPhoto: 1,
               idProof: 1,
+              post: 1,
               approveStatus: 1,
               referredBy: 1,
               referrerName: 1,
@@ -527,6 +530,7 @@ router.get('/rojgaar/applied', async (req, res) => {
               age: 1,
               selfPhoto: 1,
               idProof: 1,
+              post: 1,
               approveStatus: 1,
               referredBy: 1,
               referrerName: 1,
@@ -679,6 +683,7 @@ router.get('/rojgaar/one/:id', async (req, res) => {
           age: 1,
           selfPhoto: 1,
           idProof: 1,
+          post: 1,
           approveStatus: 1,
           referredBy: 1,
           referrerName: 1,
