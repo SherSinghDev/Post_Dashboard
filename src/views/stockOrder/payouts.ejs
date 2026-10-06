@@ -114,7 +114,9 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Month</th>
-                                                <th>Amount</th>
+                                                <th>Req. Amount</th>
+                                                <th>NGO Donation</th>
+                                                <th>Net Payout</th>
                                                 <th>Status</th>
                                                 <th>Receipt</th>
                                             </tr>
@@ -124,7 +126,9 @@
                                                 <tr>
                                                     <td><%= new Date(req.createdAt).toLocaleDateString() %></td>
                                                     <td><%= req.month %></td>
-                                                    <td><strong>₹<%= req.amount %></strong></td>
+                                                    <td><strong>₹<%= req.amount + 101 %></strong></td>
+                                                    <td class="text-danger"><strong>-₹101</strong></td>
+                                                    <td class="text-success"><strong>₹<%= req.amount %></strong></td>
                                                     <td>
                                                         <% if (req.status === 'Completed') { %>
                                                             <span class="badge badge-success"><%= req.status %></span>
@@ -148,7 +152,7 @@
                                                 </tr>
                                             <% }) %>
                                             <% if (payoutRequests.length === 0) { %>
-                                                <tr><td colspan="5" class="text-center text-muted">No payout requests found.</td></tr>
+                                                <tr><td colspan="7" class="text-center text-muted">No payout requests found.</td></tr>
                                             <% } %>
                                         </tbody>
                                     </table>
@@ -182,17 +186,34 @@
                             <label>Amount to request (Max ₹${maxAmount})</label>
                             <input type="number" id="payout-amount" class="form-control" value="${maxAmount}" max="${maxAmount}">
                         </div>
+                        <div id="donation-info" style="font-size: 0.9em; margin-top: 10px;"></div>
                     `,
                     showCancelButton: true,
                     confirmButtonText: 'Request',
+                    didOpen: () => {
+                        const amountInput = document.getElementById('payout-amount');
+                        const infoDiv = document.getElementById('donation-info');
+                        const updateInfo = () => {
+                            let amount = parseFloat(amountInput.value) || 0;
+                            if (amount > 101) {
+                                let net = amount - 101;
+                                infoDiv.innerHTML = `<span class="text-success fw-bold">NGO Donation / NGO दान: ₹101</span><br><span class="text-success fw-bold">You will receive / आपको प्राप्त होगा: ₹${net}</span>`;
+                            } else {
+                                infoDiv.innerHTML = `<span class="text-danger fw-bold">Amount must be greater than ₹101 to process donation. / दान की प्रक्रिया के लिए राशि ₹101 से अधिक होनी चाहिए।</span>`;
+                            }
+                        };
+                        amountInput.addEventListener('input', updateInfo);
+                        updateInfo();
+                    },
                     preConfirm: () => {
                         const amount = document.getElementById('payout-amount').value;
-                        if (!amount || amount <= 0) {
-                            Swal.showValidationMessage('Please enter a valid amount');
+                        if (!amount || amount <= 101) {
+                            Swal.showValidationMessage('Amount must be greater than ₹101 to cover the NGO donation.');
                         } else if (amount > maxAmount) {
                             Swal.showValidationMessage(`Amount cannot exceed ₹${maxAmount}`);
                         }
-                        return { month, amount };
+                        // Send amount - 101 as the final amount to admin
+                        return { month, amount: parseFloat(amount) - 101, originalAmount: parseFloat(amount) };
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {

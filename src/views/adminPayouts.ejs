@@ -39,7 +39,9 @@
                                                 <th>Request Date</th>
                                                 <th>User</th>
                                                 <th>Payout Month</th>
-                                                <th>Amount</th>
+                                                <th>Req. Amount</th>
+                                                <th>NGO Donation</th>
+                                                <th>Net Payout</th>
                                                 <th>Status</th>
                                                 <th>KYC Details</th>
                                                 <th>Actions</th>
@@ -54,7 +56,9 @@
                                                         <small class="text-muted"><%= req.userId ? req.userId.userId : '' %></small>
                                                     </td>
                                                     <td><%= req.month %></td>
-                                                    <td><strong>₹<%= req.amount %></strong></td>
+                                                    <td><strong>₹<%= req.amount + 101 %></strong></td>
+                                                    <td class="text-danger"><strong>-₹101</strong></td>
+                                                    <td class="text-success"><strong>₹<%= req.amount %></strong></td>
                                                     <td>
                                                         <% if (req.status === 'Completed') { %>
                                                             <span class="badge badge-success"><%= req.status %></span>
@@ -101,7 +105,7 @@
                                                 </tr>
                                             <% }) %>
                                             <% if (payoutRequests.length === 0) { %>
-                                                <tr><td colspan="7" class="text-center">No payout requests found.</td></tr>
+                                                <tr><td colspan="9" class="text-center">No payout requests found.</td></tr>
                                             <% } %>
                                         </tbody>
                                     </table>
@@ -171,7 +175,6 @@
     <script src="/js/deznav-init.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Include Bootstrap JS for Modals -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         // View KYC
@@ -191,7 +194,7 @@
                     document.getElementById('m-qr-container').style.display = 'none';
                 }
                 
-                new bootstrap.Modal(document.getElementById('kycModal')).show();
+                $('#kycModal').modal('show');
             });
         });
 
@@ -233,7 +236,7 @@
         document.querySelectorAll('.complete-payout-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.getElementById('c-req-id').value = this.getAttribute('data-id');
-                new bootstrap.Modal(document.getElementById('completeModal')).show();
+                $('#completeModal').modal('show');
             });
         });
 

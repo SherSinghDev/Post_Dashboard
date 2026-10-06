@@ -161,7 +161,8 @@ router.post(
   '/rojgaar/apply',
   upload.fields([
     { name: 'selfPhoto', maxCount: 1 },
-    { name: 'idProof', maxCount: 1 }
+    { name: 'idProofFront', maxCount: 1 },
+    { name: 'idProofBack', maxCount: 1 }
   ]),
   async (req, res) => {
     try {
@@ -178,7 +179,8 @@ router.post(
 
       // Extract file paths safely
       const selfPhotoUrl = req.files['selfPhoto'] ? `/uploads/documents/${req.files['selfPhoto'][0].filename}` : null;
-      const idProofUrl = req.files['idProof'] ? `/uploads/documents/${req.files['idProof'][0].filename}` : null;
+      const idProofFrontUrl = req.files['idProofFront'] ? `/uploads/documents/${req.files['idProofFront'][0].filename}` : null;
+      const idProofBackUrl = req.files['idProofBack'] ? `/uploads/documents/${req.files['idProofBack'][0].filename}` : null;
 
       // Ensure experiences is parsed properly if sent as string or array
       let parsedExperiences = [];
@@ -205,7 +207,8 @@ router.post(
         age,
         post,
         selfPhoto: selfPhotoUrl,
-        idProof: idProofUrl,
+        idProofFront: idProofFrontUrl,
+        idProofBack: idProofBackUrl,
       });
 
       await newApplication.save();
@@ -481,7 +484,8 @@ router.get('/rojgaar/applied', async (req, res) => {
               experiences: 1,
               age: 1,
               selfPhoto: 1,
-              idProof: 1,
+              idProofFront: 1,
+              idProofBack: 1,
               post: 1,
               approveStatus: 1,
               referredBy: 1,
@@ -529,7 +533,8 @@ router.get('/rojgaar/applied', async (req, res) => {
               experiences: 1,
               age: 1,
               selfPhoto: 1,
-              idProof: 1,
+              idProofFront: 1,
+              idProofBack: 1,
               post: 1,
               approveStatus: 1,
               referredBy: 1,
@@ -682,7 +687,8 @@ router.get('/rojgaar/one/:id', async (req, res) => {
           experiences: 1,
           age: 1,
           selfPhoto: 1,
-          idProof: 1,
+          idProofFront: 1,
+          idProofBack: 1,
           post: 1,
           approveStatus: 1,
           referredBy: 1,

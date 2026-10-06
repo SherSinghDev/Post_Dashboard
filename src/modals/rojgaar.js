@@ -33,7 +33,10 @@ const userApplySchema = new Schema({
         default: false
     },
     experiences: [experienceSchema],
-    idProof: {
+    idProofFront: {
+        type: String,
+    },
+    idProofBack: {
         type: String,
     },
     age: {

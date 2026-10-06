@@ -377,10 +377,6 @@ router.post('/newstocktransaction', upload.single('paymentReceipt'), async (req,
         });
 
         let commissionDistributed = false;
-        if (paymentStatus === 'Paid' && totalStock > 0) {
-            await distributeLevelCommissions(receiver, totalStock, newTransaction._id);
-            commissionDistributed = true;
-        }
         newTransaction.commissionDistributed = commissionDistributed;
 
         await newTransaction.save();
@@ -888,8 +884,7 @@ router.post('/toggleapproval', async (req, res) => {
             console.log("Commission Already Distributed:", transaction.commissionDistributed);
             
             // Distribute commission when admin approves
-            if (newStatus === 'Yes') {
-                // Reset commissionDistributed to allow re-distribution if needed
+            if (newStatus === 'Yes' && !transaction.commissionDistributed) {
                 let receiverQuery = [];
                 if (transaction.receiverId) {
                     if (mongoose.Types.ObjectId.isValid(transaction.receiverId)) {
@@ -1112,7 +1107,7 @@ router.post('/admin/payouts/:id', upload.single('paymentReceipt'), async (req, r
             const payoutRequest = await PayoutRequest.findById(req.params.id);
             if (payoutRequest && payoutRequest.status !== 'Completed') {
                 await users.findByIdAndUpdate(payoutRequest.userId, {
-                    $inc: { platformWalletAmount: -payoutRequest.amount }
+                    $inc: { platformWalletAmount: -(payoutRequest.amount + 101) }
                 });
             }
         }

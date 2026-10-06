@@ -354,7 +354,7 @@
                                                                                                         </button>
                                                                                                         <% } %>
                                                                                                             <button
-                                                                                                                class="btn btn-sm btn-primary edit-btn <%- (user.role != 'Admin' && user.role != 'stock_operator' && user.type != 'stockorder') ? 'd-none' : '' %>"
+                                                                                                                class="btn btn-sm btn-primary edit-btn <%- (app.adminApproval === 'Yes' || (user.role != 'Admin' && user.role != 'stock_operator' && user.type != 'stockorder')) ? 'd-none' : '' %>"
                                                                                                                 data-id="<%= app._id %>"
                                                                                                                 data-app="<%- encodeURIComponent(JSON.stringify(app)) %>"><i
                                                                                                                     class="fas fa-edit"></i>
@@ -799,10 +799,8 @@
 
                 var isStockOrder = "<%= user.type === 'stockorder' ? 'true' : 'false' %>" === "true";
                 $(document).on('input', 'input[name="totalStock"]', function () {
-                    if (isStockOrder) {
-                        var total = parseFloat($(this).val()) || 0;
-                        $('input[name="totalAmount"]').val(total * 148);
-                    }
+                    var total = parseFloat($(this).val()) || 0;
+                    $('input[name="totalAmount"]').val(total * 148);
                 });
 
                 $(document).on('click', '.create-btn', function () {
