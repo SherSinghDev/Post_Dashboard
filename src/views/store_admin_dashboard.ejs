@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./globals/head') %>
+
+<body>
+    <%- include('./globals/preloader') %>
+
+    <div id="main-wrapper">
+        <%- include('globals/navHeader') %>
+        <%- include('globals/header') %>
+        <%- include('globals/store_admin_sidebar') %>
+
+        <div class="content-body">
+            <div class="container-fluid pt-4">
+
+
+                <%- include('globals/dash_cards_style') %>
+                
+                <div class="row">
+                    <!-- Products Card -->
+                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item">
+                        <div class="dash-card" style="border-left: 4px solid #059669;">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div>
+                                    <div class="dash-card-title">Total Products</div>
+                                    <h3 class="dash-card-value" style="color: #059669;"><%= products.length %></h3>
+                                </div>
+                                <div class="dash-card-icon icon-emerald">
+                                    <i class="fa-solid fa-box-open"></i>
+                                </div>
+                            </div>
+                            <a href="/store/admin/products" class="dash-card-action">
+                                <span>Manage Products</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Orders Card -->
+                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item">
+                        <div class="dash-card" style="border-left: 4px solid #38bdf8;">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div>
+                                    <div class="dash-card-title">Total Orders</div>
+                                    <h3 class="dash-card-value" style="color: #0284c7;">128</h3>
+                                </div>
+                                <div class="dash-card-icon icon-blue">
+                                    <i class="fa-solid fa-cart-arrow-down"></i>
+                                </div>
+                            </div>
+                            <a href="/store/admin/orders" class="dash-card-action">
+                                <span>View Orders</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Users Card -->
+                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item">
+                        <div class="dash-card" style="border-left: 4px solid #fbbf24;">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div>
+                                    <div class="dash-card-title">Active Users</div>
+                                    <h3 class="dash-card-value" style="color: #d97706;">1,492</h3>
+                                </div>
+                                <div class="dash-card-icon icon-amber">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                            </div>
+                            <a href="/store/admin/users" class="dash-card-action">
+                                <span>Manage Users Activity</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sales Card -->
+                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item">
+                        <div class="dash-card" style="border-left: 4px solid #818cf8;">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div>
+                                    <div class="dash-card-title">Total Sales</div>
+                                    <h3 class="dash-card-value" style="color: #6366f1;">₹45,231</h3>
+                                </div>
+                                <div class="dash-card-icon icon-indigo">
+                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                </div>
+                            </div>
+                            <a href="/store/admin/orders" class="dash-card-action">
+                                <span>View Sales Report</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- Required Scripts for Admin Theme -->
+    <script src="/vendor/global/global.min.js"></script>
+    <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/deznav-init.js"></script>
+    <script src="/js/demo.js"></script>
+    <script src="/js/styleSwitcher.js"></script>
+</body>
+</html>

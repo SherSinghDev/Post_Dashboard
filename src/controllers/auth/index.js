@@ -1,5 +1,6 @@
 let express = require('express')
 let router = express.Router()
+const mongoose = require('mongoose')
 let User = require('../../modals/users')
 let bcrypt = require("bcrypt")
 let Users = require('../../modals/users')
@@ -13,9 +14,16 @@ const patientForm = require('../../modals/patientForm')
 // login
 router.get('/login', async (req, res) => {
     if (req.session.userId) {
-        let isDoctor = await Doctor.findOne({ _id: req.session.userId });
-        if (isDoctor) {
-            return res.redirect('/doctors/dashboard');
+        if (req.session.userId === 'store_admin_123') {
+            return res.redirect('/store/admin');
+        }
+        
+        // Ensure it's a valid ObjectId before querying to prevent CastError
+        if (mongoose.Types.ObjectId.isValid(req.session.userId)) {
+            let isDoctor = await Doctor.findOne({ _id: req.session.userId });
+            if (isDoctor) {
+                return res.redirect('/doctors/dashboard');
+            }
         }
         res.redirect('/')
     }
@@ -78,6 +86,16 @@ router.post('/login', async (req, res) => {
             }
             else {
                 message = "User Does'nt Exists"
+            }
+        }
+        else if (email === 'admin@store.com') {
+            if (password === 'admin123') {
+                login = true
+                message = "Store Admin Login Successfully"
+                loginType = 'store_admin'
+                req.session.userId = 'store_admin_123'
+            } else {
+                message = "Wrong Credentials"
             }
         }
         else if (email.startsWith('support')) {

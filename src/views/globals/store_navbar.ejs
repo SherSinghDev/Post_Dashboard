@@ -1,0 +1,311 @@
+<!-- Store Navbar Section -->
+<nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 shadow-sm transition-all">
+    <div class="w-full px-4 md:px-8">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo/Brand -->
+            <a href="/store" class="flex items-center gap-2 md:gap-3 flex-shrink-0 group">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-shop text-xl"></i>
+                </div>
+                <span class="text-xl md:text-2xl font-extrabold text-indigo-700 dark:text-indigo-400 tracking-tight" style="font-family: inherit;">BSRF <span
+                        class="text-gray-900 dark:text-white font-medium hidden sm:inline">Store</span></span>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-xl mx-8">
+                <div class="relative w-full">
+                    <input type="text" placeholder="Search for products, categories..." class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-full py-2.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
+                    <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Theme Toggle -->
+                <button id="theme-toggle"
+                    class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
+                    aria-label="Toggle Dark Mode"
+                    style="background-color: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                    <i id="moon-icon" class="fa-solid fa-moon text-lg" style="display: none;"></i>
+                    <i id="sun-icon" class="fa-solid fa-sun text-lg" style="display: none;"></i>
+                </button>
+
+                <!-- Favourites -->
+                <button onclick="toggleFavDropdown()" class="relative p-2 text-gray-600 dark:text-slate-300 hover:text-red-500 transition-colors">
+                    <i class="fa-regular fa-heart text-xl"></i>
+                    <span id="fav-badge" class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-red-500 rounded-full hidden">0</span>
+                </button>
+
+                <!-- Cart -->
+                <button onclick="toggleCartDropdown()" class="relative p-2 text-gray-600 dark:text-slate-300 hover:text-indigo-600 transition-colors">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-indigo-600 rounded-full hidden">0</span>
+                </button>
+
+                <a href="/home" class="hidden sm:inline-flex items-center justify-center bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 px-4 py-2 rounded-full text-sm font-bold shadow-md transition-all">
+                    Main Portal
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Cart Sidebar/Dropdown (Hidden by default) -->
+<div id="cart-dropdown" class="fixed right-0 top-20 w-80 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-2xl rounded-bl-2xl rounded-br-2xl p-4 transform transition-transform translate-x-full z-50 flex flex-col max-h-[80vh]">
+    <div class="flex justify-between items-center mb-4 border-b border-gray-100 dark:border-slate-800 pb-2">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Your Cart</h3>
+        <button onclick="toggleCartDropdown()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+            <i class="fa-solid fa-times"></i>
+        </button>
+    </div>
+    <div id="cart-items" class="flex-1 overflow-y-auto space-y-3 mb-4">
+        <!-- Cart items will be injected here via JS -->
+        <div class="text-center text-gray-500 text-sm py-4">Your cart is empty.</div>
+    </div>
+    <div class="border-t border-gray-100 dark:border-slate-800 pt-4 mt-auto">
+        <div class="flex justify-between items-center mb-4">
+            <span class="font-semibold text-gray-600 dark:text-gray-400">Total:</span>
+            <span id="cart-total" class="font-extrabold text-xl text-gray-900 dark:text-white">₹0</span>
+        </div>
+        <a href="/store/checkout" class="block text-center w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all">
+            Checkout
+        </a>
+    </div>
+</div>
+
+<!-- Favourites Dropdown (Hidden by default) -->
+<div id="fav-dropdown" class="fixed right-0 top-20 w-80 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 shadow-2xl rounded-bl-2xl rounded-br-2xl p-4 transform transition-transform translate-x-full z-50 flex flex-col max-h-[80vh]">
+    <div class="flex justify-between items-center mb-4 border-b border-gray-100 dark:border-slate-800 pb-2">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Favourites</h3>
+        <button onclick="toggleFavDropdown()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+            <i class="fa-solid fa-times"></i>
+        </button>
+    </div>
+    <div id="fav-items" class="flex-1 overflow-y-auto space-y-3">
+        <!-- Fav items will be injected here via JS -->
+        <div class="text-center text-gray-500 text-sm py-4">No favourites yet.</div>
+    </div>
+</div>
+
+<!-- Store Scripts for Cart, Fav and Theme -->
+<script>
+    // State management
+    let cart = JSON.parse(localStorage.getItem('bsrf_cart')) || [];
+    let favourites = JSON.parse(localStorage.getItem('bsrf_favs')) || [];
+
+    // Initialize UI on load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCartUI();
+        updateFavUI();
+        initTheme();
+    });
+
+    // Theme Toggle Logic
+    function initTheme() {
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const moonIcon = document.getElementById('moon-icon');
+        const sunIcon = document.getElementById('sun-icon');
+        
+        function updateIcons(isDark) {
+            if (moonIcon && sunIcon) {
+                if (isDark) {
+                    moonIcon.style.display = 'none';
+                    sunIcon.style.display = 'block';
+                } else {
+                    moonIcon.style.display = 'block';
+                    sunIcon.style.display = 'none';
+                }
+            }
+        }
+
+        function getThemeCookie() {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; version=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function setThemeCookie(val) {
+            document.cookie = `version=${val}; path=/; max-age=31536000`;
+        }
+
+        if (themeToggleBtn) {
+            let savedTheme = getThemeCookie() || localStorage.getItem('theme_version') || localStorage.getItem('color-theme');
+            const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            updateIcons(isDark);
+
+            themeToggleBtn.addEventListener('click', function () {
+                const willBeDark = !document.documentElement.classList.contains('dark');
+                if (willBeDark) {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                    setThemeCookie('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                    setThemeCookie('light');
+                }
+                updateIcons(willBeDark);
+            });
+        }
+    }
+
+    // Toggle Dropdowns
+    function toggleCartDropdown() {
+        const dd = document.getElementById('cart-dropdown');
+        const favDd = document.getElementById('fav-dropdown');
+        if(!favDd.classList.contains('translate-x-full')) favDd.classList.add('translate-x-full');
+        dd.classList.toggle('translate-x-full');
+    }
+    
+    function toggleFavDropdown() {
+        const dd = document.getElementById('fav-dropdown');
+        const cartDd = document.getElementById('cart-dropdown');
+        if(!cartDd.classList.contains('translate-x-full')) cartDd.classList.add('translate-x-full');
+        dd.classList.toggle('translate-x-full');
+    }
+
+    // Cart Logic
+    function addToCart(id, name, price, image, qty = 1) {
+        const existing = cart.find(item => item.id === id);
+        if (existing) {
+            existing.qty += qty;
+        } else {
+            cart.push({ id, name, price, image, qty });
+        }
+        saveCart();
+        updateCartUI();
+        
+        // Show subtle notification
+        Swal.fire({
+            toast: true, position: 'top-end', showConfirmButton: false, timer: 2000,
+            icon: 'success', title: 'Added to cart!'
+        });
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(item => item.id !== id);
+        saveCart();
+        updateCartUI();
+    }
+
+    function saveCart() {
+        localStorage.setItem('bsrf_cart', JSON.stringify(cart));
+    }
+
+    function updateCartUI() {
+        const badge = document.getElementById('cart-badge');
+        const container = document.getElementById('cart-items');
+        const totalEl = document.getElementById('cart-total');
+        
+        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        
+        if(totalItems > 0) {
+            badge.textContent = totalItems;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+        
+        totalEl.textContent = `₹${totalPrice}`;
+        
+        if (cart.length === 0) {
+            container.innerHTML = '<div class="text-center text-gray-500 text-sm py-4">Your cart is empty.</div>';
+            return;
+        }
+        
+        container.innerHTML = cart.map(item => `
+            <div class="flex items-center gap-3 bg-gray-50 dark:bg-slate-800 p-2 rounded-lg">
+                <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md">
+                <div class="flex-1">
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">${item.name}</h4>
+                    <div class="text-xs text-gray-500 dark:text-gray-400">₹${item.price} x ${item.qty}</div>
+                </div>
+                <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 p-1">
+                    <i class="fa-solid fa-trash-can text-sm"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    // Favourites Logic
+    function toggleFavourite(id, name, price, image) {
+        const existingIdx = favourites.findIndex(item => item.id === id);
+        if (existingIdx >= 0) {
+            favourites.splice(existingIdx, 1);
+            Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 1500, icon: 'info', title: 'Removed from favourites' });
+        } else {
+            favourites.push({ id, name, price, image });
+            Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 1500, icon: 'success', title: 'Added to favourites!' });
+        }
+        saveFavs();
+        updateFavUI();
+        
+        // Update heart icons on page if they exist
+        updateHeartIconsOnPage();
+    }
+
+    function removeFavourite(id) {
+        favourites = favourites.filter(item => item.id !== id);
+        saveFavs();
+        updateFavUI();
+        updateHeartIconsOnPage();
+    }
+
+    function saveFavs() {
+        localStorage.setItem('bsrf_favs', JSON.stringify(favourites));
+    }
+
+    function updateFavUI() {
+        const badge = document.getElementById('fav-badge');
+        const container = document.getElementById('fav-items');
+        
+        if(favourites.length > 0) {
+            badge.textContent = favourites.length;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+        
+        if (favourites.length === 0) {
+            container.innerHTML = '<div class="text-center text-gray-500 text-sm py-4">No favourites yet.</div>';
+            return;
+        }
+        
+        container.innerHTML = favourites.map(item => `
+            <div class="flex items-center gap-3 bg-gray-50 dark:bg-slate-800 p-2 rounded-lg">
+                <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md">
+                <div class="flex-1">
+                    <a href="/store/products/${item.id}"><h4 class="text-sm font-bold text-gray-900 dark:text-white line-clamp-1 hover:text-indigo-500">${item.name}</h4></a>
+                    <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400">₹${item.price}</div>
+                </div>
+                <button onclick="removeFavourite(${item.id})" class="text-red-500 hover:text-red-700 p-1">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    function updateHeartIconsOnPage() {
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            const id = parseInt(btn.dataset.id);
+            const icon = btn.querySelector('i');
+            if(favourites.some(f => f.id === id)) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'text-red-500');
+            } else {
+                icon.classList.remove('fa-solid', 'text-red-500');
+                icon.classList.add('fa-regular');
+            }
+        });
+    }
+    
+    // Call this to initialize page hearts after dom load
+    document.addEventListener('DOMContentLoaded', updateHeartIconsOnPage);
+</script>
