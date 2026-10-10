@@ -1,83 +1,40 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const Product = require('../../modals/product');
 
-// Mock products data
-const products = [
-    {
-        id: 1,
-        name: "Ayurvedic Herbal Tea",
-        category: "ayurveda",
-        price: 299,
-        image: "https://picsum.photos/seed/bsrf_tea/800/800",
-        description: "A soothing blend of traditional herbs to boost immunity and calm the mind.",
-        rating: 4.8,
-        reviews: 124
+// Setup multer for product image uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './src/assets/uploads/products');
     },
-    {
-        id: 2,
-        name: "Kids Brain Builder Puzzle",
-        category: "kids",
-        price: 499,
-        image: "https://picsum.photos/seed/bsrf_puzzle/800/800",
-        description: "Educational puzzle designed to enhance cognitive skills in young children.",
-        rating: 4.5,
-        reviews: 89
-    },
-    {
-        id: 3,
-        name: "Ashwagandha Extract",
-        category: "ayurveda",
-        price: 599,
-        image: "https://picsum.photos/seed/bsrf_extract/800/800",
-        description: "Pure Ashwagandha root extract for stress relief and vitality.",
-        rating: 4.9,
-        reviews: 312
-    },
-    {
-        id: 4,
-        name: "Organic Baby Lotion",
-        category: "kids",
-        price: 349,
-        image: "https://picsum.photos/seed/bsrf_lotion/800/800",
-        description: "Gentle, organic lotion safe for baby's sensitive skin.",
-        rating: 4.7,
-        reviews: 201
-    },
-    {
-        id: 5,
-        name: "Triphala Churna",
-        category: "ayurveda",
-        price: 199,
-        image: "https://picsum.photos/seed/bsrf_churna/800/800",
-        description: "Classic Ayurvedic formulation for digestive health.",
-        rating: 4.6,
-        reviews: 156
-    },
-    {
-        id: 6,
-        name: "Children's Story Book Set",
-        category: "kids",
-        price: 799,
-        image: "https://picsum.photos/seed/bsrf_books/800/800",
-        description: "A collection of 5 beautifully illustrated bedtime stories.",
-        rating: 4.9,
-        reviews: 420
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
     }
-];
+});
+const upload = multer({ storage: storage });
 
 // E-commerce Home Page
-router.get('/', (req, res) => {
-    let filterCategory = req.query.category || 'all';
-    let displayProducts = products;
-    
-    if (filterCategory !== 'all') {
-        displayProducts = products.filter(p => p.category === filterCategory);
+router.get('/', async (req, res) => {
+    try {
+        let filterCategory = req.query.category || 'all';
+        let query = {};
+        if (filterCategory !== 'all') {
+            query.category = filterCategory;
+        }
+        
+        const products = await Product.find(query);
+        
+        res.render('store_home', { 
+            products: products,
+            currentCategory: filterCategory
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
     }
-    
-    res.render('store_home', { 
-        products: displayProducts,
-        currentCategory: filterCategory
-    });
 });
 
 // Product Show Page (List of all products, could be same as home or paginated, using home for now)
@@ -101,12 +58,65 @@ const isAdmin = (req, res, next) => {
     }
 };
 
-router.get('/admin', isAdmin, (req, res) => {
+router.get('/admin', isAdmin, async (req, res) => {
+    const products = await Product.find();
     res.render('store_admin_dashboard', { products, activePage: 'dashboard', user: storeAdminUser, page: 'Store Admin Dashboard' });
 });
 
-router.get('/admin/products', isAdmin, (req, res) => {
+router.get('/admin/products', isAdmin, async (req, res) => {
+    const products = await Product.find();
     res.render('store_admin_products', { products, activePage: 'products', user: storeAdminUser, page: 'Products Management' });
+});
+
+// Add new product
+router.post('/admin/products', isAdmin, upload.single('image'), async (req, res) => {
+    try {
+        const { name, category, price, description } = req.body;
+        const imagePath = req.file ? '/uploads/products/' + req.file.filename : '';
+
+        const newProduct = new Product({
+            name,
+            category,
+            price,
+            description,
+            image: imagePath
+        });
+
+        await newProduct.save();
+        res.redirect('/store/admin/products');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error adding product");
+    }
+});
+
+// Delete product
+router.post('/admin/products/delete/:id', isAdmin, async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.redirect('/store/admin/products');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error deleting product");
+    }
+});
+
+// Edit product
+router.post('/admin/products/edit/:id', isAdmin, upload.single('image'), async (req, res) => {
+    try {
+        const { name, category, price, description } = req.body;
+        const updateData = { name, category, price, description };
+        
+        if (req.file) {
+            updateData.image = '/uploads/products/' + req.file.filename;
+        }
+
+        await Product.findByIdAndUpdate(req.params.id, updateData);
+        res.redirect('/store/admin/products');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error updating product");
+    }
 });
 
 router.get('/admin/users', isAdmin, (req, res) => {
@@ -118,21 +128,25 @@ router.get('/admin/orders', isAdmin, (req, res) => {
 });
 
 // Product Details Page
-router.get('/products/:id', (req, res) => {
-    const productId = parseInt(req.params.id);
-    const product = products.find(p => p.id === productId);
-    
-    if (!product) {
-        return res.status(404).send('Product not found');
+router.get('/products/:id', async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+        
+        // Find related products
+        const relatedProducts = await Product.find({ category: product.category, _id: { $ne: product._id } }).limit(3);
+        
+        res.render('store_product_details', { 
+            product,
+            relatedProducts
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
     }
-    
-    // Find related products
-    const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
-    
-    res.render('store_product_details', { 
-        product,
-        relatedProducts
-    });
 });
 
 module.exports = router;

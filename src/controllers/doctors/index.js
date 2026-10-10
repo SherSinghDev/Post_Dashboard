@@ -9,6 +9,7 @@ const patientForm = require('../../modals/patientForm')
 
 router.get('/dashboard', async (req, res) => {
   if (req.session.userId) {
+    if (req.session.userId === 'store_admin_123') return res.redirect('/store/admin');
     let user = await Doctor.findOne({ _id: req.session.userId })
 
     if (user) {
@@ -54,6 +55,7 @@ router.get('/dashboard', async (req, res) => {
 // GET all applications
 router.get('/patients/:type', async (req, res) => {
   if (req.session.userId) {
+    if (req.session.userId === 'store_admin_123') return res.redirect('/store/admin');
     try {
       let user = await Doctor.findOne({ _id: req.session.userId })
       let type = req.params.type

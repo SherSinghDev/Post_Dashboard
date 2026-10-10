@@ -15,6 +15,7 @@ const PatientForm = require('../../modals/patientForm'); // adjust path as neede
 router.get('/', async (req, res) => {
     console.log(req.session);
     if (req.session.userId) {
+        if (req.session.userId === 'store_admin_123') return res.redirect('/store/admin');
         let verified = (await Users.find({ role: "Coordinator" })).length
         let unverified = (await UserApplication.find({ approveStatus: "Pending" })).length
         let patients = (await PatientForm.find({ "otherStatus.doctorStatus": { $in: [null, ""] }, "otherStatus.supportStatus": { $in: [null, "", undefined] }, type: { $ne: "stockorder" } })).length
@@ -181,6 +182,7 @@ router.get('/', async (req, res) => {
 router.get('/aboutus', async (req, res) => {
     let user = null;
     if (req.session.userId) {
+        if (req.session.userId === 'store_admin_123') return res.redirect('/store/admin');
         const Users = require('../../modals/users');
         user = await Users.findOne({ _id: req.session.userId });
         if (!user) {
@@ -195,6 +197,7 @@ router.get('/aboutus', async (req, res) => {
 router.get('/legal', async (req, res) => {
     let user = null;
     if (req.session.userId) {
+        if (req.session.userId === 'store_admin_123') return res.redirect('/store/admin');
         const Users = require('../../modals/users');
         user = await Users.findOne({ _id: req.session.userId });
         if (!user) {

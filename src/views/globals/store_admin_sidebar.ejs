@@ -276,27 +276,30 @@
                 </a>
             </li>
             <li class="<%= activePage === 'products' ? 'mm-active' : '' %>">
-                <a href="/store/admin/products" aria-expanded="false" class="<%= activePage === 'products' ? 'active' : '' %>">
+                <a href="/store/admin/products" aria-expanded="false"
+                    class="<%= activePage === 'products' ? 'active' : '' %>">
                     <span class="nav-icon-box">
                         <i class="fas fa-box-open"></i>
                     </span>
                     <span class="nav-text">Products</span>
                 </a>
             </li>
-            <li class="<%= activePage === 'users' ? 'mm-active' : '' %>">
-                <a href="/store/admin/users" aria-expanded="false" class="<%= activePage === 'users' ? 'active' : '' %>">
+            <li class="<%= activePage === 'users' ? 'mm-active' : '' %> d-none">
+                <a href="/store/admin/users" aria-expanded="false"
+                    class="<%= activePage === 'users' ? 'active' : '' %>">
                     <span class="nav-icon-box">
                         <i class="fas fa-users"></i>
                     </span>
                     <span class="nav-text">Users Activity</span>
                 </a>
             </li>
-            <li class="<%= activePage === 'orders' ? 'mm-active' : '' %>">
-                <a href="/store/admin/orders" aria-expanded="false" class="<%= activePage === 'orders' ? 'active' : '' %>">
+            <li class="<%= activePage === 'orders' ? 'mm-active' : '' %> d-none">
+                <a href="/store/admin/orders" aria-expanded="false"
+                    class="<%= activePage === 'orders' ? 'active' : '' %>">
                     <span class="nav-icon-box">
                         <i class="fas fa-shopping-cart"></i>
                     </span>
-                    <span class="nav-text">Orders & Sales</span>
+                    <span class="nav-text ">Orders & Sales</span>
                 </a>
             </li>
             <div class="deznav-divider"></div>
