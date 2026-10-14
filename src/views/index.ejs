@@ -135,6 +135,43 @@
                                                             </div>
                                                             <% } %>
 
+                                                            <% if (user.type === 'stockorder' && typeof userInactivity !== 'undefined' && userInactivity) { %>
+                                                                <% const statusClass = userInactivity.remainingDays <= 15 ? 'status-danger' : ((userInactivity.remainingDays <= 30) ? 'status-warning' : 'status-safe'); %>
+                                                                <!-- Stock Order User Inactivity & Suspension Banner -->
+                                                                <div class="stock-inactivity-banner <%= statusClass %>">
+                                                                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                                                                        <div class="d-flex align-items-center gap-3">
+                                                                            <div class="icon-box">
+                                                                                <i class="fas <%= userInactivity.remainingDays <= 15 ? 'fa-exclamation-triangle' : 'fa-hourglass-half' %>"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <h5 class="mb-1 fw-bold text-white d-flex flex-wrap align-items-center gap-2">
+                                                                                    <span>Activity Status:</span>
+                                                                                    <span class="badge-pill-light">
+                                                                                        <%= userInactivity.inactiveDays %> Days Inactive
+                                                                                    </span>
+                                                                                    <span class="badge-pill-highlight">
+                                                                                        <%= userInactivity.remainingDays %> Days Remaining Before Suspension
+                                                                                    </span>
+                                                                                </h5>
+                                                                                <p class="mb-0 rule-text">
+                                                                                    <i class="fas fa-info-circle me-1"></i>
+                                                                                    संस्था नियम: 60 दिनों तक यदि आपके द्वारा कोई <strong>Patient Form</strong> रेफर नहीं किया गया या <strong>Stock Transaction</strong> नहीं किया गया, तो आपकी आईडी निष्क्रिय मानकर निलंबित (Suspended) कर दी जाएगी।
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="banner-actions d-flex flex-wrap gap-2 flex-shrink-0">
+                                                                            <a href="/patientform/<%= user.userId %>" target="_blank" class="banner-btn-light">
+                                                                                <i class="fas fa-file-medical text-primary"></i> Refer Patient
+                                                                            </a>
+                                                                            <a href="/stock/stocktransactions" class="banner-btn-accent">
+                                                                                <i class="fas fa-boxes-stacked"></i> Stock Transaction
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <% } %>
+
                                                                 <!-- Filter Bar with Search & Tabs -->
                                                                 <div class="dash-filter-container">
                                                                     <div
@@ -322,6 +359,88 @@
                                                                                 class="dash-card-action"
                                                                                 style="color:#059669;">
                                                                                 <span>View Commission History</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Inactive Days - Stock Order -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="inactivity days inactive duration suspension factor">
+                                                                        <% 
+                                                                            const inactSafe = (typeof userInactivity !== 'undefined' && userInactivity) ? userInactivity.inactiveDays : 0;
+                                                                            const inactBorderClass = inactSafe >= 45 ? 'inactivity-card-danger' : (inactSafe >= 30 ? 'inactivity-card-warning' : 'inactivity-card-safe');
+                                                                            const inactValClass = inactSafe >= 45 ? 'inactivity-val-danger' : (inactSafe >= 30 ? 'inactivity-val-warning' : 'inactivity-val-safe');
+                                                                            const inactIconClass = inactSafe >= 45 ? 'icon-rose' : (inactSafe >= 30 ? 'icon-amber' : 'icon-blue');
+                                                                        %>
+                                                                        <div class="dash-card <%= inactBorderClass %>">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Inactive Days / निष्क्रियता के दिन
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value <%= inactValClass %>">
+                                                                                        <%= inactSafe %> <span style="font-size: 15px; font-weight: normal; opacity: 0.7;">Days</span>
+                                                                                    </h3>
+                                                                                    <div class="small opacity-75 mt-1" style="font-size: 11.5px;">
+                                                                                        <% if (typeof userInactivity !== 'undefined' && userInactivity && userInactivity.lastActivityDate) { %>
+                                                                                            Last Activity: <%= new Date(userInactivity.lastActivityDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) %>
+                                                                                        <% } else { %>
+                                                                                            No recent patient or stock activity
+                                                                                        <% } %>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="dash-card-icon <%= inactIconClass %>">
+                                                                                    <i class="fas fa-user-clock"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/stock/stocktransactions" class="dash-card-action">
+                                                                                <span>Create Stock Tx / Refer Patient</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Remaining Days To Suspension - Stock Order -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type!='stockorder')?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="remaining days to suspension suspend countdown 60 days limit">
+                                                                        <% 
+                                                                            const remSafe = (typeof userInactivity !== 'undefined' && userInactivity) ? userInactivity.remainingDays : 60;
+                                                                            const remBorderClass = remSafe <= 15 ? 'inactivity-card-danger' : (remSafe <= 30 ? 'inactivity-card-warning' : 'inactivity-card-safe');
+                                                                            const remValClass = remSafe <= 15 ? 'inactivity-val-danger' : (remSafe <= 30 ? 'inactivity-val-warning' : 'inactivity-val-safe');
+                                                                            const remIconClass = remSafe <= 15 ? 'icon-rose' : (remSafe <= 30 ? 'icon-amber' : 'icon-emerald');
+                                                                        %>
+                                                                        <div class="dash-card <%= remBorderClass %>">
+                                                                            <div
+                                                                                class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">
+                                                                                        Days To Suspension / निलंबन में शेष दिन
+                                                                                    </div>
+                                                                                    <h3 class="dash-card-value <%= remValClass %>">
+                                                                                        <%= remSafe %> <span style="font-size: 15px; font-weight: normal; opacity: 0.7;">Days Remaining</span>
+                                                                                    </h3>
+                                                                                    <div class="small mt-1 fw-semibold <%= remSafe <= 15 ? 'text-danger' : (remSafe <= 30 ? 'text-warning' : 'text-success') %>" style="font-size: 11.5px;">
+                                                                                        <% if (remSafe <= 0) { %>
+                                                                                            <i class="fas fa-exclamation-triangle me-1"></i> Account is suspended (60 days passed)
+                                                                                        <% } else if (remSafe <= 15) { %>
+                                                                                            <i class="fas fa-exclamation-circle me-1"></i> Critical: Suspend in <%= remSafe %> days!
+                                                                                        <% } else { %>
+                                                                                            <i class="fas fa-shield-alt me-1"></i> 60 days activity window active
+                                                                                        <% } %>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="dash-card-icon <%= remIconClass %>">
+                                                                                    <i class="fas fa-hourglass-half"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="javascript:void(0)"
+                                                                                data-bs-toggle="modal" data-bs-target="#stockOrderNoticeModal"
+                                                                                class="dash-card-action">
+                                                                                <span>Rule: Refer Patient / Stock Tx</span>
                                                                                 <i class="fas fa-arrow-right"></i>
                                                                             </a>
                                                                         </div>
@@ -1111,8 +1230,7 @@
                                     </li>
                                     <li class="notice-list-item notice-warning">
                                         <div class="notice-number">6</div>
-                                        <p class="notice-text">सर्वे का कार्य विलंब हुआ तो 60 दिन के बाद उसको निष्कासित
-                                            कर दिया जाएगा</p>
+                                        <p class="notice-text">यदि कोई सदस्य लगातार 60 दिनों तक निष्क्रिय रहता है (अर्थात न तो कोई Patient Form रेफर करता है और न ही कोई Stock Transaction करता है), तो उसे 60 दिन बाद सिस्टम से निष्कासित / निलंबित (Suspended) कर दिया जाएगा।</p>
                                     </li>
                                     <li class="notice-list-item notice-success">
                                         <div class="notice-number">7</div>
@@ -1132,8 +1250,7 @@
                                     </li>
                                     <li class="notice-list-item notice-warning">
                                         <div class="notice-number">10</div>
-                                        <p class="notice-text">संस्था के नियम का पालन नहीं करते हैं तो 2 महीने बाद आपको
-                                            हमारे सिस्टम से भी एप्लीकेशन से आपको हटा दिया जाएगा</p>
+                                        <p class="notice-text">संस्था के नियम का पालन अनिवार्य है। निष्क्रियता के 60 दिन पूरे होते ही पोर्टल लॉगिन व एप्लीकेशन सुविधाएं निलंबित हो जाएंगी। सक्रिय बने रहने के लिए नियमित Patient Form रेफर करें अथवा Stock Transaction करें।</p>
                                     </li>
                                 </ul>
 

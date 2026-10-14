@@ -88,6 +88,7 @@
 																	<!-- <th>Membership Type</th>
                                                                     <th>Referral</th> -->
 																	<th>Created At</th>
+																	<th>Inactivity Status</th>
 																	<!-- <th>Approve Status</th> -->
 																	<th>Actions</th>
 																</tr>
@@ -138,6 +139,38 @@
 																					<%= new
 																						Date(app.createdAt).toLocaleDateString()
 																						%>
+																				</td>
+																				<td>
+																					<% if (app.type === 'stockorder') { %>
+																						<% const inact = (typeof inactivityMap !== 'undefined' && inactivityMap && inactivityMap[app._id.toString()]) || null; %>
+																						<% if (app.isSuspended) { %>
+																							<span class="badge bg-danger text-white">
+																								<i class="fas fa-ban me-1"></i>Suspended (<%= inact ? inact.inactiveDays : 60 %>d inactive)
+																							</span>
+																						<% } else if (inact) { %>
+																							<% if (inact.remainingDays <= 15) { %>
+																								<span class="badge bg-danger text-white" title="<%= inact.inactiveDays %> days inactive">
+																									<i class="fas fa-exclamation-triangle me-1"></i><%= inact.inactiveDays %>d inactive (<%= inact.remainingDays %>d left)
+																								</span>
+																							<% } else if (inact.remainingDays <= 30) { %>
+																								<span class="badge bg-warning text-dark" title="<%= inact.inactiveDays %> days inactive">
+																									<i class="fas fa-hourglass-half me-1"></i><%= inact.inactiveDays %>d inactive (<%= inact.remainingDays %>d left)
+																								</span>
+																							<% } else { %>
+																								<span class="badge bg-success text-white" title="<%= inact.inactiveDays %> days inactive">
+																									<i class="fas fa-check-circle me-1"></i><%= inact.inactiveDays %>d inactive (<%= inact.remainingDays %>d left)
+																								</span>
+																							<% } %>
+																						<% } else { %>
+																							<span class="badge bg-light text-dark">Active</span>
+																						<% } %>
+																					<% } else { %>
+																						<% if (app.isSuspended) { %>
+																							<span class="badge bg-danger text-white">Suspended</span>
+																						<% } else { %>
+																							<span class="badge bg-success text-white">Active</span>
+																						<% } %>
+																					<% } %>
 																				</td>
 																				<!-- <td>
 																					<%= app.approveStatus || 'N/A' %>

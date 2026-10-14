@@ -256,6 +256,211 @@
     [data-theme-version="dark"] #emptyNetworkRow i {
         color: #334155 !important;
     }
+
+    /* Inactivity Banner Styles (Light & Dark) */
+    .stock-inactivity-banner {
+        border-radius: 16px;
+        padding: 22px 24px;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+        border: 1px solid transparent;
+        transition: all 0.3s ease;
+    }
+    .stock-inactivity-banner.status-safe {
+        background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%);
+        color: #ffffff;
+        border-color: rgba(56, 189, 248, 0.3);
+    }
+    .stock-inactivity-banner.status-warning {
+        background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+        color: #ffffff;
+        border-color: rgba(251, 191, 36, 0.4);
+    }
+    .stock-inactivity-banner.status-danger {
+        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        color: #ffffff;
+        border-color: rgba(248, 113, 113, 0.4);
+    }
+    .stock-inactivity-banner .icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #ffffff;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .stock-inactivity-banner .rule-text {
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 13.5px;
+        line-height: 1.5;
+    }
+    .stock-inactivity-banner .badge-pill-light {
+        background: rgba(255, 255, 255, 0.22);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 12.5px;
+        letter-spacing: 0.3px;
+        backdrop-filter: blur(4px);
+    }
+    .stock-inactivity-banner .badge-pill-highlight {
+        background: #ffffff;
+        color: #0f172a;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 12.5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    }
+    .stock-inactivity-banner .banner-btn-light {
+        background: #ffffff;
+        color: #0f172a;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .stock-inactivity-banner .banner-btn-light:hover {
+        background: #f8fafc;
+        color: #0284c7;
+        transform: translateY(-1px);
+    }
+    .stock-inactivity-banner .banner-btn-accent {
+        background: #fbbf24;
+        color: #78350f;
+        border: 1px solid #f59e0b;
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .stock-inactivity-banner .banner-btn-accent:hover {
+        background: #f59e0b;
+        color: #451a03;
+        transform: translateY(-1px);
+    }
+
+    [data-theme-version="dark"] .stock-inactivity-banner.status-safe {
+        background: linear-gradient(135deg, rgba(2, 132, 199, 0.2) 0%, rgba(30, 64, 175, 0.35) 100%) !important;
+        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner.status-warning {
+        background: linear-gradient(135deg, rgba(217, 119, 6, 0.2) 0%, rgba(180, 83, 9, 0.35) 100%) !important;
+        border: 1px solid rgba(251, 191, 36, 0.35) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner.status-danger {
+        background: linear-gradient(135deg, rgba(220, 38, 38, 0.25) 0%, rgba(153, 27, 27, 0.4) 100%) !important;
+        border: 1px solid rgba(248, 113, 113, 0.4) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .icon-box {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .rule-text {
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .badge-pill-light {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #f1f5f9 !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .badge-pill-highlight {
+        background: #1e293b !important;
+        color: #f8fafc !important;
+        border: 1px solid #334155 !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .banner-btn-light {
+        background: #1e293b !important;
+        color: #38bdf8 !important;
+        border-color: #334155 !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .banner-btn-light:hover {
+        background: #334155 !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .banner-btn-accent {
+        background: rgba(251, 191, 36, 0.18) !important;
+        color: #fde047 !important;
+        border-color: rgba(251, 191, 36, 0.4) !important;
+    }
+    [data-theme-version="dark"] .stock-inactivity-banner .banner-btn-accent:hover {
+        background: rgba(251, 191, 36, 0.3) !important;
+        color: #ffffff !important;
+    }
+
+    /* Responsive Media Queries for Inactivity Banner */
+    @media (max-width: 767.98px) {
+        .stock-inactivity-banner {
+            padding: 16px !important;
+            border-radius: 12px !important;
+        }
+        .stock-inactivity-banner .icon-box {
+            width: 44px !important;
+            height: 44px !important;
+            font-size: 20px !important;
+            border-radius: 10px !important;
+        }
+        .stock-inactivity-banner h5 {
+            font-size: 14px !important;
+        }
+        .stock-inactivity-banner .badge-pill-light,
+        .stock-inactivity-banner .badge-pill-highlight {
+            font-size: 11.5px !important;
+            padding: 4px 10px !important;
+        }
+        .stock-inactivity-banner .rule-text {
+            font-size: 12.5px !important;
+            line-height: 1.4 !important;
+        }
+        .stock-inactivity-banner .banner-actions {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 8px !important;
+        }
+        .stock-inactivity-banner .banner-btn-light,
+        .stock-inactivity-banner .banner-btn-accent {
+            flex: 1 1 auto !important;
+            justify-content: center !important;
+            padding: 8px 10px !important;
+            font-size: 12px !important;
+            text-align: center !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stock-inactivity-banner .banner-actions {
+            flex-direction: column !important;
+        }
+        .stock-inactivity-banner .banner-btn-light,
+        .stock-inactivity-banner .banner-btn-accent {
+            width: 100% !important;
+        }
+    }
 </style>
 
 <body>
@@ -283,6 +488,43 @@
                         </a>
                     </div>
                 </div>
+
+                <% if (typeof userInactivity !== 'undefined' && userInactivity) { %>
+                    <% const statusClass = userInactivity.remainingDays <= 15 ? 'status-danger' : ((userInactivity.remainingDays <= 30) ? 'status-warning' : 'status-safe'); %>
+                    <!-- Stock Order User Inactivity & Suspension Banner -->
+                    <div class="stock-inactivity-banner <%= statusClass %>">
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="icon-box">
+                                    <i class="fas <%= userInactivity.remainingDays <= 15 ? 'fa-exclamation-triangle' : 'fa-hourglass-half' %>"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1 fw-bold text-white d-flex flex-wrap align-items-center gap-2">
+                                        <span>Activity Status:</span>
+                                        <span class="badge-pill-light">
+                                            <%= userInactivity.inactiveDays %> Days Inactive
+                                        </span>
+                                        <span class="badge-pill-highlight">
+                                            <%= userInactivity.remainingDays %> Days Remaining Before Suspension
+                                        </span>
+                                    </h5>
+                                    <p class="mb-0 rule-text">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        संस्था नियम: 60 दिनों तक यदि आपके द्वारा कोई <strong>Patient Form</strong> रेफर नहीं किया गया या <strong>Stock Transaction</strong> नहीं किया गया, तो आपकी आईडी निष्क्रिय मानकर निलंबित (Suspended) कर दी जाएगी।
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="banner-actions d-flex flex-wrap gap-2 flex-shrink-0">
+                                <a href="/patientform/<%= user.userId %>" target="_blank" class="banner-btn-light">
+                                    <i class="fas fa-file-medical text-primary"></i> Refer Patient
+                                </a>
+                                <a href="/stock/stocktransactions" class="banner-btn-accent">
+                                    <i class="fas fa-boxes-stacked"></i> Stock Transaction
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
 
                 <!-- Commission Instructions -->
                 <div class="card mb-4 border-0 shadow-sm">

@@ -127,16 +127,16 @@ router.post('/login', async (req, res) => {
             if (prevUser) {
                 // Suspension logic for stockorder users
                 if (prevUser.type === 'stockorder') {
-                    if (prevUser.isSuspended) {
-                        return res.json({ login: false, message: "Your account is suspended as 60days of inactivity or other reasons please contact admin for more information" });
-                    }
+                    const { getUserInactivityDetails } = require('../../services/inactivityService');
+                    const inactivityDetails = await getUserInactivityDetails(prevUser);
 
-                    let lastLoginTime = prevUser.lastLogin || prevUser.createdAt;
-                    let daysSinceLastLogin = (Date.now() - new Date(lastLoginTime).getTime()) / (1000 * 60 * 60 * 24);
-                    if (daysSinceLastLogin > 60) {
-                        prevUser.isSuspended = true;
-                        await prevUser.save();
-                        return res.json({ login: false, message: "Your account is suspended as 60days of inactivity or other reasons please contact admin for more information" });
+                    if (prevUser.isSuspended || (inactivityDetails && inactivityDetails.isSuspensionDue)) {
+                        if (!prevUser.isSuspended) {
+                            prevUser.isSuspended = true;
+                            await prevUser.save();
+                        }
+                        const inactiveDays = inactivityDetails ? inactivityDetails.inactiveDays : 60;
+                        return res.json({ login: false, message: `Your account is suspended due to ${inactiveDays} days of inactivity (no patient forms referred or stock transactions created). Please contact admin for more information.` });
                     }
                 }
 

@@ -154,9 +154,16 @@ router.get('/', async (req, res) => {
         }
 
         let showStockOrderNotice = false;
-        if (user.type === 'stockorder' && req.session.showStockOrderNotice) {
-            showStockOrderNotice = true;
-            req.session.showStockOrderNotice = false;
+        let userInactivity = null;
+        if (user.type === 'stockorder') {
+            const { getUserInactivityDetails, checkAndApplyUserSuspension } = require('../../services/inactivityService');
+            await checkAndApplyUserSuspension(user);
+            userInactivity = await getUserInactivityDetails(user);
+
+            if (req.session.showStockOrderNotice) {
+                showStockOrderNotice = true;
+                req.session.showStockOrderNotice = false;
+            }
         }
 
         res.render('index', {
@@ -171,6 +178,7 @@ router.get('/', async (req, res) => {
             pendingpatients,
             networkCounts,
             showStockOrderNotice,
+            userInactivity,
             platformWalletAmount: user.platformWalletAmount || 0
         });
     }

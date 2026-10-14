@@ -37,20 +37,25 @@ router.get('/', async (req, res) => {
                 return res.redirect('/users/network');
             }
 
+            const { getUserInactivityDetails, checkAndApplyUserSuspension } = require('../../services/inactivityService');
+
+            let usersList = [];
             if (user.role !== 'Admin') {
-                let users = await Users.find({ parentUser: user._id }).sort({ createdAt: -1 }).populate('parentUser')
-                // let refusers = await Users.find({ role: "Coordinator" }).select('name referralCode userId -_id');
-
-                // console.log(users);
-                res.render('users', { users, user, page: "Users", })
-                // res.redirect('/')
+                usersList = await Users.find({ parentUser: user._id }).sort({ createdAt: -1 }).populate('parentUser');
+            } else {
+                usersList = await Users.find().sort({ createdAt: -1 }).populate('parentUser');
             }
-            else {
-                let users = await Users.find().sort({ createdAt: -1 }).populate('parentUser')
-                // let refusers = await Users.find({ role: "Coordinator" }).select('name referralCode userId -_id');
 
-                res.render('users', { users, user, page: "Users", })
+            // Populate inactivityMap for stockorder users
+            let inactivityMap = {};
+            for (let u of usersList) {
+                if (u.type === 'stockorder') {
+                    await checkAndApplyUserSuspension(u);
+                    inactivityMap[u._id.toString()] = await getUserInactivityDetails(u);
+                }
             }
+
+            res.render('users', { users: usersList, user, page: "Users", inactivityMap });
 
         } catch (error) {
             console.log(error);
@@ -68,7 +73,14 @@ router.get('/suspended', async (req, res) => {
             let user = await Users.findOne({ _id: req.session.userId })
             if (user.role === 'Admin') {
                 let users = await Users.find({ isSuspended: true }).sort({ createdAt: -1 }).populate('parentUser');
-                res.render('users', { users, user, page: "Suspended Users" })
+                const { getUserInactivityDetails } = require('../../services/inactivityService');
+                let inactivityMap = {};
+                for (let u of users) {
+                    if (u.type === 'stockorder') {
+                        inactivityMap[u._id.toString()] = await getUserInactivityDetails(u);
+                    }
+                }
+                res.render('users', { users, user, page: "Suspended Users", inactivityMap })
             } else {
                 res.redirect('/')
             }
@@ -630,13 +642,17 @@ router.get('/network', async (req, res) => {
         }
 
         const networkData = await getFiveLevelNetwork(user);
+        const { getUserInactivityDetails, checkAndApplyUserSuspension } = require('../../services/inactivityService');
+        await checkAndApplyUserSuspension(user);
+        const userInactivity = await getUserInactivityDetails(user);
 
         res.render('stockOrder/network', {
             user,
             page: "5 Steps Economic Help",
             allLevelUsers: networkData.allLevelUsers,
             networkByLevel: networkData.networkByLevel,
-            counts: networkData.counts
+            counts: networkData.counts,
+            userInactivity
         });
     } catch (error) {
         console.error("Error loading network dashboard:", error);
