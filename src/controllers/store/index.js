@@ -26,9 +26,13 @@ router.get('/', async (req, res) => {
         }
         
         const products = await Product.find(query);
+        const dbCategories = await Product.distinct('category');
+        const defaultCategories = ['ayurveda', 'kids'];
+        const allCategories = Array.from(new Set([...defaultCategories, ...dbCategories.map(c => (c || '').trim().toLowerCase())])).filter(Boolean);
         
         res.render('store_home', { 
             products: products,
+            categories: allCategories,
             currentCategory: filterCategory
         });
     } catch (err) {
@@ -65,21 +69,36 @@ router.get('/admin', isAdmin, async (req, res) => {
 
 router.get('/admin/products', isAdmin, async (req, res) => {
     const products = await Product.find();
-    res.render('store_admin_products', { products, activePage: 'products', user: storeAdminUser, page: 'Products Management' });
+    const dbCategories = await Product.distinct('category');
+    const defaultCategories = ['ayurveda', 'kids', 'wellness'];
+    const allCategories = Array.from(new Set([...defaultCategories, ...dbCategories.map(c => (c || '').trim().toLowerCase())])).filter(Boolean);
+    res.render('store_admin_products', { 
+        products, 
+        categories: allCategories,
+        activePage: 'products', 
+        user: storeAdminUser, 
+        page: 'Products Management' 
+    });
 });
 
-// Add new product
-router.post('/admin/products', isAdmin, upload.single('image'), async (req, res) => {
+// Add new product (supports multiple images)
+router.post('/admin/products', isAdmin, upload.array('images', 10), async (req, res) => {
     try {
-        const { name, category, price, description } = req.body;
-        const imagePath = req.file ? '/uploads/products/' + req.file.filename : '';
+        let { name, category, otherCategory, price, description } = req.body;
+        const finalCategory = (category === '__other__' && otherCategory ? otherCategory : category || '').trim().toLowerCase();
+        
+        const uploadedImages = (req.files && req.files.length > 0) 
+            ? req.files.map(file => '/uploads/products/' + file.filename) 
+            : [];
+        const primaryImage = uploadedImages.length > 0 ? uploadedImages[0] : '';
 
         const newProduct = new Product({
             name,
-            category,
+            category: finalCategory,
             price,
             description,
-            image: imagePath
+            image: primaryImage,
+            images: uploadedImages
         });
 
         await newProduct.save();
@@ -101,14 +120,26 @@ router.post('/admin/products/delete/:id', isAdmin, async (req, res) => {
     }
 });
 
-// Edit product
-router.post('/admin/products/edit/:id', isAdmin, upload.single('image'), async (req, res) => {
+// Edit product (supports adding / replacing multiple images)
+router.post('/admin/products/edit/:id', isAdmin, upload.array('images', 10), async (req, res) => {
     try {
-        const { name, category, price, description } = req.body;
-        const updateData = { name, category, price, description };
+        let { name, category, otherCategory, price, description, keepExistingImages } = req.body;
+        const finalCategory = (category === '__other__' && otherCategory ? otherCategory : category || '').trim().toLowerCase();
+        const updateData = { name, category: finalCategory, price, description };
         
-        if (req.file) {
-            updateData.image = '/uploads/products/' + req.file.filename;
+        const currentProduct = await Product.findById(req.params.id);
+        
+        if (req.files && req.files.length > 0) {
+            const newUploadedImages = req.files.map(file => '/uploads/products/' + file.filename);
+            
+            // If user checked to keep existing or if there are existing images, we can append or replace
+            if (keepExistingImages === 'true' && currentProduct && currentProduct.images && currentProduct.images.length > 0) {
+                updateData.images = [...currentProduct.images, ...newUploadedImages];
+                updateData.image = updateData.images[0];
+            } else {
+                updateData.images = newUploadedImages;
+                updateData.image = newUploadedImages[0];
+            }
         }
 
         await Product.findByIdAndUpdate(req.params.id, updateData);
