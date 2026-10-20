@@ -958,6 +958,14 @@
 								if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
 								if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
 
+								try {
+									if (typeof $.fn.selectpicker === 'function') {
+										$('#parentUser').selectpicker('refresh');
+									}
+								} catch (e) {
+									console.error('Selectpicker error:', e);
+								}
+
 								$('.edit-modal').modal('show');
 							}
 						})

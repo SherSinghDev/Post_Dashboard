@@ -308,26 +308,19 @@ router.get('/one/:id', async (req, res) => {
             }
         ]);
 
-        // console.log(result);
-        let parents = await Users.find({ type: result[0].type })
-        let options = '<option value="">Select Parent User</option>';
-        parents.forEach((p) => {
-            console.log(p.type);
-            if (p.type && p._id != result[0]._id) {
-                options += `<option value="${p._id}">${p.name} - ${p.city || p.district || 'N/A'} - (${p.position}) [ID: ${p.userId || 'N/A'}]</option>`
-            }
-        })
-
-        // console.log(options);
-
-
-
-
-        if (!result.length) {
+        if (!result || !result.length) {
             return res.status(404).json({ success: false, message: "Application not found" });
         }
 
-        res.json({ success: true, data: result[0], options });
+        const appData = result[0];
+        let parents = await Users.find({ _id: { $ne: appData._id } }).sort({ name: 1 });
+        let options = '<option value="">Select Parent User</option>';
+        parents.forEach((p) => {
+            let isSelected = (appData.parentUser && appData.parentUser.toString() === p._id.toString()) ? 'selected' : '';
+            options += `<option value="${p._id}" ${isSelected}>${p.name} - ${p.city || p.district || 'N/A'} - (${p.position || 'N/A'}) [ID: ${p.userId || 'N/A'}]</option>`;
+        });
+
+        res.json({ success: true, data: appData, options });
 
     } catch (err) {
         console.error(err);
