@@ -236,6 +236,27 @@
 </head>
 
 <body>
+  <%
+    function formatDate(val) {
+      if (!val) return 'N/A';
+      if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val)) {
+        const parts = val.substring(0, 10).split('-');
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      }
+      const d = new Date(val);
+      if (isNaN(d.getTime())) return 'N/A';
+      if (d.getUTCHours() === 0 && d.getUTCMinutes() === 0 && d.getUTCSeconds() === 0) {
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const year = d.getUTCFullYear();
+        return `${day}/${month}/${year}`;
+      }
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+  %>
   <div class="container">
     <div class="cards-scroll-wrapper">
       <div class="row1" id="row">
@@ -290,14 +311,14 @@
                 <p>Valid From</p>
                 <p>: </p>
                 <p>
-                  <%= user.validstart ? new Date(user.validstart).toLocaleDateString() : 'N/A' %>
+                  <%= formatDate(user.validstart) %>
                 </p>
               </div>
               <div class="detail">
                 <p>Valid To</p>
                 <p>: </p>
                 <p>
-                  <%= user.validend ? new Date(user.validend).toLocaleDateString() : 'N/A' %>
+                  <%= formatDate(user.validend) %>
                 </p>
               </div>
             </div>
@@ -327,7 +348,7 @@
                 <p>DOB</p>
                 <p>:</p>
                 <p>
-                  <%= user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'N/A' %>
+                  <%= formatDate(user.dateOfBirth) %>
                 </p>
               </div>
               <div class="address">
