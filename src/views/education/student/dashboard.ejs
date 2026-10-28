@@ -1,0 +1,262 @@
+<%- include('../header') %>
+
+<main class="flex-1 py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-white/10 p-1 border border-white/20 flex items-center justify-center text-3xl font-black text-orange-400">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold text-orange-400 uppercase tracking-wider block">Student Workspace</span>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight"><%= student.fullName %></h1>
+                    <p class="text-xs text-slate-300 mt-0.5">
+                        Student ID: <strong class="text-white"><%= student.studentId %></strong> &bull; <%= student.email %> &bull; <%= student.phone %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <a href="/education/student/apply" class="px-4 sm:px-5 py-2.5 bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-pen"></i> New Admission Form
+                </a>
+                <a href="/education/student/logout" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl transition">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+            <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-2xl flex items-center gap-2 font-bold">
+                <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+                <span><%= successMsg %></span>
+            </div>
+        <% } %>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left 8 Cols: Applications & Status Tracker -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-graduation-cap text-orange-500"></i> My University Applications
+                            </h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Real-time status tracking for university degree enrollments</p>
+                        </div>
+                        <a href="/education/student/apply" class="text-xs text-orange-600 font-bold hover:underline">
+                            + Apply More
+                        </a>
+                    </div>
+
+                    <% if (applications && applications.length > 0) { %>
+                        <div class="space-y-6">
+                            <% applications.forEach(function(app) { %>
+                                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                                    
+                                    <!-- Header Info -->
+                                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-4 border-b border-slate-200">
+                                        <div>
+                                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-900">
+                                                <%= app.category %> &bull; <%= app.mode %> Mode
+                                            </span>
+                                            <h3 class="text-base font-extrabold text-slate-900 mt-1"><%= app.courseTitle %></h3>
+                                            <p class="text-xs text-orange-600 font-bold"><%= app.universityName %></p>
+                                        </div>
+                                        <div class="text-left sm:text-right">
+                                            <span class="text-[10px] text-slate-400 font-bold uppercase block">Application No</span>
+                                            <span class="text-xs font-black text-blue-900"><%= app.applicationNo %></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Status Roadmap Tracker -->
+                                    <div>
+                                        <span class="text-[10px] uppercase font-bold text-slate-400 mb-2 block">Application Progress Status</span>
+                                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                                            <div class="p-2 rounded-xl <%= app.status ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-slate-200 text-slate-500' %>">
+                                                <i class="fa-solid fa-check-circle"></i> Applied
+                                            </div>
+                                            <div class="p-2 rounded-xl <%= ['Under Review', 'Verified', 'Approved', 'Fee Paid', 'Enrolled'].includes(app.status) ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-slate-100 text-slate-400' %>">
+                                                <i class="fa-solid fa-file-shield"></i> Verified
+                                            </div>
+                                            <div class="p-2 rounded-xl <%= ['Approved', 'Fee Paid', 'Enrolled'].includes(app.status) ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-slate-100 text-slate-400' %>">
+                                                <i class="fa-solid fa-stamp"></i> Approved
+                                            </div>
+                                            <div class="p-2 rounded-xl <%= ['Fee Paid', 'Enrolled'].includes(app.status) ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-slate-100 text-slate-400' %>">
+                                                <i class="fa-solid fa-id-badge"></i> Enrolled
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 flex items-center justify-between text-xs">
+                                            <span class="text-slate-500">Current Status: <strong class="text-orange-600"><%= app.status %></strong></span>
+                                            <% if (app.admissionLetterNo) { %>
+                                                <span class="text-emerald-700 font-bold">Enrollment No: <%= app.admissionLetterNo %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fee & Payment Details -->
+                                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
+                                        <div>
+                                            <span class="text-slate-400 block text-[10px] font-bold uppercase">Tuition Fee</span>
+                                            <span class="text-base font-extrabold text-blue-900">₹<%= (app.feeAmount || 0).toLocaleString('en-IN') %></span>
+                                            <span class="text-[11px] text-slate-500 block">Paid: ₹<%= (app.feePaid || 0).toLocaleString('en-IN') %> &bull; Status: <strong class="<%= app.paymentStatus === 'Completed' ? 'text-emerald-600' : 'text-amber-600' %>"><%= app.paymentStatus %></strong></span>
+                                        </div>
+
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <% if (app.paymentStatus !== 'Completed') { %>
+                                                <!-- Pay Fee Button -->
+                                                <button type="button" onclick="document.getElementById('payFeeForm-<%= app._id %>').classList.toggle('hidden')" class="px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold rounded-xl shadow-sm hover:from-orange-600 hover:to-amber-600 transition">
+                                                    <i class="fa-solid fa-credit-card mr-1"></i> Submit Fee Info
+                                                </button>
+                                            <% } %>
+                                            <a href="/education/student/receipt/<%= app._id %>" target="_blank" class="px-4 py-2 bg-blue-900 text-white font-bold rounded-xl shadow-sm hover:bg-blue-800 transition flex items-center gap-1.5">
+                                                <i class="fa-solid fa-receipt"></i> Application Receipt
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Toggleable Pay Fee Form -->
+                                    <div id="payFeeForm-<%= app._id %>" class="hidden bg-orange-50 p-4 rounded-xl border border-orange-200 text-xs space-y-3">
+                                        <h4 class="font-bold text-orange-900">Record Fee Payment (UPI / Bank Transfer)</h4>
+                                        <form action="/education/student/pay-fee/<%= app._id %>" method="POST" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                            <div>
+                                                <label class="block font-bold text-slate-700 mb-1">Amount Paid (₹)</label>
+                                                <input type="number" name="amount" value="<%= app.feeAmount %>" required class="w-full px-3 py-2 bg-white rounded-lg border border-slate-300">
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-slate-700 mb-1">UTR / Transaction ID *</label>
+                                                <input type="text" name="txnId" required placeholder="e.g. 439011882200" class="w-full px-3 py-2 bg-white rounded-lg border border-slate-300">
+                                            </div>
+                                            <div class="flex items-end">
+                                                <button type="submit" class="w-full py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition">
+                                                    Verify & Submit Payment
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Upload Documents Section -->
+                                    <div class="pt-2 border-t border-slate-200">
+                                        <details class="cursor-pointer">
+                                            <summary class="text-xs font-bold text-blue-900 hover:text-orange-600">
+                                                <i class="fa-solid fa-folder-open mr-1"></i> Upload or Update Documents (Photo, Marksheets, Aadhar)
+                                            </summary>
+                                            <form action="/education/student/upload-docs/<%= app._id %>" method="POST" enctype="multipart/form-data" class="mt-4 p-4 bg-white rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                                <div>
+                                                    <label class="block font-bold text-slate-700 mb-1">Passport Photo</label>
+                                                    <input type="file" name="photo" accept="image/*" class="w-full text-slate-500">
+                                                </div>
+                                                <div>
+                                                    <label class="block font-bold text-slate-700 mb-1">10th Marksheet (PDF/Image)</label>
+                                                    <input type="file" name="tenthMarksheet" class="w-full text-slate-500">
+                                                </div>
+                                                <div>
+                                                    <label class="block font-bold text-slate-700 mb-1">12th Marksheet (PDF/Image)</label>
+                                                    <input type="file" name="twelfthMarksheet" class="w-full text-slate-500">
+                                                </div>
+                                                <div>
+                                                    <label class="block font-bold text-slate-700 mb-1">Aadhar Card / Gov ID</label>
+                                                    <input type="file" name="idProof" class="w-full text-slate-500">
+                                                </div>
+                                                <div class="sm:col-span-2 pt-2">
+                                                    <button type="submit" class="px-5 py-2 bg-blue-900 text-white font-bold rounded-lg text-xs hover:bg-blue-800 transition">
+                                                        Upload Documents for Verification
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </details>
+                                    </div>
+
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                            <i class="fa-solid fa-file-circle-plus text-4xl text-slate-400 mb-3"></i>
+                            <h3 class="text-sm font-bold text-slate-700">No Admission Applications Yet</h3>
+                            <p class="text-xs text-slate-500 mt-1 mb-4">Choose your favorite university and submit an online application form.</p>
+                            <a href="/education/student/apply" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs rounded-xl shadow transition">
+                                Fill Admission Form Now
+                            </a>
+                        </div>
+                    <% } %>
+
+                </div>
+
+            </div>
+
+            <!-- Right 4 Cols: Notices, Profile & Help -->
+            <div class="lg:col-span-4 space-y-6">
+                
+                <!-- Profile Summary -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 text-xs">
+                    <h3 class="font-extrabold text-slate-900 text-sm mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-id-card text-blue-900"></i> Student Profile
+                    </h3>
+                    <div class="space-y-2.5 text-slate-600">
+                        <div class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-400">Father's Name:</span>
+                            <span class="font-bold text-slate-800"><%= student.fatherName || 'Not Set' %></span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-400">Qualification:</span>
+                            <span class="font-bold text-slate-800"><%= student.qualification %></span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-400">Registered Center:</span>
+                            <span class="font-bold text-blue-900"><%= student.centerName || 'Direct Online' %></span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-400">City / State:</span>
+                            <span class="font-bold text-slate-800"><%= student.city %>, <%= student.state %></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notices -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+                    <h3 class="font-extrabold text-slate-900 text-sm mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-bullhorn text-orange-500"></i> Admission Notices
+                    </h3>
+                    <div class="space-y-3">
+                        <% if (notices && notices.length > 0) { %>
+                            <% notices.forEach(function(n) { %>
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs">
+                                    <span class="text-[10px] font-black uppercase text-orange-600 block"><%= n.type %></span>
+                                    <h4 class="font-bold text-slate-900 mt-0.5"><%= n.title %></h4>
+                                    <p class="text-[11px] text-slate-500 mt-1 leading-relaxed"><%= n.content %></p>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Academic Quick Links -->
+                <div class="bg-slate-900 text-white rounded-3xl p-6 shadow-md text-xs space-y-3">
+                    <h3 class="font-bold text-sm text-orange-400">Student Suvidha Hub</h3>
+                    <a href="/education/online-classes" class="flex items-center justify-between p-2.5 bg-slate-800 rounded-xl hover:bg-slate-700 transition">
+                        <span><i class="fa-solid fa-video mr-2 text-blue-400"></i> Online Live Classes</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+                    </a>
+                    <a href="/education/online-exam" class="flex items-center justify-between p-2.5 bg-slate-800 rounded-xl hover:bg-slate-700 transition">
+                        <span><i class="fa-solid fa-clipboard-question mr-2 text-yellow-400"></i> Online Examination</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+                    </a>
+                    <a href="/education/study-material" class="flex items-center justify-between p-2.5 bg-slate-800 rounded-xl hover:bg-slate-700 transition">
+                        <span><i class="fa-solid fa-book mr-2 text-emerald-400"></i> Download Study Material</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<%- include('../footer') %>

@@ -1,0 +1,132 @@
+<%- include('../header') %>
+
+<main class="flex-1 py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+        <!-- Top Header Banner -->
+        <div class="bg-gradient-to-r from-orange-600 via-amber-600 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-white/10 p-1 border border-white/20 flex items-center justify-center text-3xl font-black text-white">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold text-orange-200 uppercase tracking-wider block">Admission Counselor Portal</span>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight"><%= counsellor.name %></h1>
+                    <p class="text-xs text-orange-100 mt-0.5">
+                        ID: <strong class="text-white"><%= counsellor.counsellorId %></strong> &bull; Dept: <%= counsellor.department %> &bull; <%= counsellor.phone %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="/education/counsellor/logout" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl transition">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Performance & Conversion Metrics -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-center text-xs">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">Total Assigned Leads</span>
+                <span class="text-2xl font-black text-slate-800"><%= stats.totalLeads %></span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">In Discussion / Follow-Up</span>
+                <span class="text-2xl font-black text-amber-600"><%= stats.connectedCount %></span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">Converted Admissions</span>
+                <span class="text-2xl font-black text-emerald-600"><%= stats.convertedCount %></span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">Conversion Rate / Target</span>
+                <span class="text-2xl font-black text-blue-900"><%= stats.conversionRate %>% <span class="text-xs text-slate-400 font-normal">/ <%= stats.target %></span></span>
+            </div>
+        </div>
+
+        <!-- Leads & Call Records Table -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-phone-volume text-orange-500"></i> Student Leads & Calling Records
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Call prospective students, schedule follow-ups, and log conversation notes</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <% if (leads && leads.length > 0) { %>
+                    <% leads.forEach(function(lead) { %>
+                        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                            
+                            <!-- Lead Information -->
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-200">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="text-base font-extrabold text-slate-900"><%= lead.name %></h3>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full <%= lead.status === 'Converted / Applied' ? 'bg-emerald-100 text-emerald-800' : 'bg-orange-100 text-orange-800' %>">
+                                            <%= lead.status %>
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-0.5">
+                                        <i class="fa-solid fa-phone text-slate-400"></i> <a href="tel:<%= lead.phone %>" class="font-bold text-blue-900 hover:underline"><%= lead.phone %></a>
+                                        &bull; City: <%= lead.city || 'N/A' %> &bull; Mode: <%= lead.mode %>
+                                    </p>
+                                </div>
+                                <div class="text-left sm:text-right text-xs">
+                                    <span class="text-slate-400 text-[10px] uppercase font-bold block">Course Interested</span>
+                                    <span class="font-extrabold text-orange-600"><%= lead.courseInterested %></span>
+                                </div>
+                            </div>
+
+                            <!-- Conversation Notes History -->
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 mb-2 block">Calling Log & Counseling Notes</span>
+                                <% if (lead.notes && lead.notes.length > 0) { %>
+                                    <div class="space-y-2 mb-3">
+                                        <% lead.notes.forEach(function(n) { %>
+                                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-xs text-slate-700">
+                                                <span class="text-[10px] font-bold text-slate-400 block"><%= new Date(n.date).toLocaleString('en-IN') %> by <%= n.recordedBy %></span>
+                                                <p class="mt-0.5"><%= n.note %></p>
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                <% } else { %>
+                                    <p class="text-xs text-slate-400 italic mb-2">No calls logged yet.</p>
+                                <% } %>
+
+                                <!-- Add Call Note Form -->
+                                <form action="/education/counsellor/lead-note/<%= lead._id %>" method="POST" class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs bg-white p-3 rounded-xl border border-slate-200">
+                                    <div class="sm:col-span-6">
+                                        <input type="text" name="note" required placeholder="Type call conversation note..." class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                                    </div>
+                                    <div class="sm:col-span-3">
+                                        <select name="status" class="w-full px-2.5 py-2 rounded-lg border border-slate-300 text-xs font-semibold">
+                                            <option value="Connected / In Discussion" <%= lead.status === 'Connected / In Discussion' ? 'selected' : '' %>>Connected / In Discussion</option>
+                                            <option value="Follow-up Scheduled" <%= lead.status === 'Follow-up Scheduled' ? 'selected' : '' %>>Follow-up Scheduled</option>
+                                            <option value="Converted / Applied" <%= lead.status === 'Converted / Applied' ? 'selected' : '' %>>Converted / Applied</option>
+                                            <option value="Not Interested" <%= lead.status === 'Not Interested' ? 'selected' : '' %>>Not Interested</option>
+                                        </select>
+                                    </div>
+                                    <div class="sm:col-span-3">
+                                        <button type="submit" class="w-full py-2 bg-blue-900 hover:bg-blue-800 text-white font-bold rounded-lg text-xs transition">
+                                            Save Call Record
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="text-xs text-slate-400 italic">No assigned leads in your queue.</p>
+                <% } %>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<%- include('../footer') %>

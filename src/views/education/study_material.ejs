@@ -1,0 +1,67 @@
+<%- include('header') %>
+
+<main class="flex-1 py-12 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="text-orange-600 text-xs font-black uppercase tracking-wider">Self-Learning Resources</span>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mt-1">Download Study Material & E-Books</h1>
+            <p class="text-xs text-slate-500 mt-2">Access digital SLM (Self Learning Material), previous year question papers, and syllabus handbooks for distance & online degrees.</p>
+            <div class="w-16 h-1 bg-orange-500 mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <!-- Filter Streams -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
+            <a href="/education/study-material" class="px-5 py-2 rounded-full text-xs font-bold transition-all <%= selectedStream === 'All' ? 'bg-orange-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200' %>">
+                All Subjects
+            </a>
+            <a href="/education/study-material?stream=Computer%20Science" class="px-5 py-2 rounded-full text-xs font-bold transition-all <%= selectedStream === 'Computer Science' ? 'bg-orange-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200' %>">
+                Computer Science (BCA/MCA)
+            </a>
+            <a href="/education/study-material?stream=Management" class="px-5 py-2 rounded-full text-xs font-bold transition-all <%= selectedStream === 'Management' ? 'bg-orange-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200' %>">
+                Management (BBA/MBA)
+            </a>
+        </div>
+
+        <!-- Materials List -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if (materials && materials.length > 0) { %>
+                <% materials.forEach(function(item) { %>
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-black uppercase px-2.5 py-1 rounded bg-blue-50 text-blue-700">
+                                    <%= item.format %> &bull; <%= item.fileSize %>
+                                </span>
+                                <span class="text-xs text-slate-400">
+                                    <i class="fa-solid fa-download"></i> <%= item.downloadsCount %> downloads
+                                </span>
+                            </div>
+
+                            <h3 class="text-base font-extrabold text-slate-900 leading-snug mb-1">
+                                <%= item.title %>
+                            </h3>
+
+                            <p class="text-xs text-orange-600 font-bold mb-2">
+                                <%= item.courseTitle %> &bull; <%= item.semester %>
+                            </p>
+
+                            <p class="text-xs text-slate-500 mb-4">
+                                <strong>Topic:</strong> <%= item.subject %>
+                            </p>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="javascript:void(0)" onclick="alert('Downloading <%= item.title %>... E-Book has been queued for download.')" class="w-full py-2.5 bg-slate-900 hover:bg-orange-600 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-file-arrow-down"></i> Download E-Book (PDF)
+                            </a>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+
+    </div>
+</main>
+
+<%- include('footer') %>

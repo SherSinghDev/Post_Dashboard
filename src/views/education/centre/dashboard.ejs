@@ -1,0 +1,224 @@
+<%- include('../header') %>
+
+<main class="flex-1 py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+        <!-- Top Header Banner -->
+        <div class="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-white/10 p-1 border border-white/20 flex items-center justify-center text-3xl font-black text-amber-400">
+                    <i class="fa-solid fa-school"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">Authorized Study Centre</span>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight"><%= center.centerName %></h1>
+                    <p class="text-xs text-slate-300 mt-0.5">
+                        Code: <strong class="text-white"><%= center.centerCode %></strong> &bull; Director: <%= center.ownerName %> &bull; <%= center.city %>, <%= center.state %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <button type="button" onclick="document.getElementById('registerStudentModal').classList.remove('hidden')" class="px-4 sm:px-5 py-2.5 bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus"></i> Register Student From Centre
+                </button>
+                <a href="/education/centre/logout" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl transition">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Commission & Performance Ledger Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-center text-xs">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">Students Enrolled</span>
+                <span class="text-2xl font-black text-slate-800"><%= stats.totalStudents %></span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">Total Fee Mobilized</span>
+                <span class="text-2xl font-black text-blue-900">₹<%= stats.totalFeeCollected.toLocaleString('en-IN') %></span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">Commission Earned (<%= center.commissionRate %>%)</span>
+                <span class="text-2xl font-black text-emerald-600">₹<%= stats.totalCommissionEarned.toLocaleString('en-IN') %></span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[10px] block">Commission Paid / Due</span>
+                <span class="text-xl font-black text-orange-600">₹<%= stats.commissionPaid.toLocaleString('en-IN') %> <span class="text-xs text-slate-400">/ ₹<%= stats.pendingCommission.toLocaleString('en-IN') %></span></span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left 8 Cols: Registered Students & Admissions -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-users text-blue-900"></i> Centre Student Admissions & Reports
+                        </h2>
+                        <button type="button" onclick="document.getElementById('registerStudentModal').classList.remove('hidden')" class="text-xs font-bold text-orange-600 hover:underline">
+                            + Add Student
+                        </button>
+                    </div>
+
+                    <% if (applications && applications.length > 0) { %>
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold">
+                                    <tr>
+                                        <th class="p-3">Application No</th>
+                                        <th class="p-3">Student Particulars</th>
+                                        <th class="p-3">Program & University</th>
+                                        <th class="p-3">Fee & Status</th>
+                                        <th class="p-3">Commission</th>
+                                        <th class="p-3 text-right">Receipt</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 font-semibold">
+                                    <% applications.forEach(function(app) { %>
+                                        <tr class="hover:bg-slate-50 transition">
+                                            <td class="p-3 font-bold text-blue-900"><%= app.applicationNo %></td>
+                                            <td class="p-3">
+                                                <div class="font-bold text-slate-800"><%= app.studentName %></div>
+                                                <div class="text-[11px] text-slate-400"><%= app.phone %></div>
+                                            </td>
+                                            <td class="p-3">
+                                                <div class="text-slate-800 font-bold"><%= app.courseTitle %></div>
+                                                <div class="text-[11px] text-orange-600"><%= app.universityName %></div>
+                                            </td>
+                                            <td class="p-3">
+                                                <div class="text-slate-800">Paid: ₹<%= (app.feePaid || 0).toLocaleString('en-IN') %></div>
+                                                <span class="inline-block text-[10px] font-bold px-2 py-0.5 rounded <%= app.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' %>">
+                                                    <%= app.status %>
+                                                </span>
+                                            </td>
+                                            <td class="p-3 text-emerald-700 font-black">
+                                                ₹<%= Math.round((app.feePaid || 0) * (center.commissionRate / 100)).toLocaleString('en-IN') %>
+                                            </td>
+                                            <td class="p-3 text-right">
+                                                <a href="/education/student/receipt/<%= app._id %>" target="_blank" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition">
+                                                    <i class="fa-solid fa-receipt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                            <i class="fa-solid fa-user-plus text-4xl text-slate-400 mb-2"></i>
+                            <h3 class="text-sm font-bold text-slate-700">No Admissions Registered Yet</h3>
+                            <p class="text-xs text-slate-500 mt-1 mb-4">Start enrolling students from your study center to earn commissions.</p>
+                            <button type="button" onclick="document.getElementById('registerStudentModal').classList.remove('hidden')" class="px-5 py-2.5 bg-orange-600 text-white font-bold text-xs rounded-xl shadow">
+                                Register First Student
+                            </button>
+                        </div>
+                    <% } %>
+
+                </div>
+
+            </div>
+
+            <!-- Right 4 Cols: Center Profile & Commission Structure -->
+            <div class="lg:col-span-4 space-y-6">
+                
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 text-xs">
+                    <h3 class="font-extrabold text-slate-900 text-sm mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-percent text-orange-500"></i> Commission Agreement
+                    </h3>
+                    <div class="p-4 bg-orange-50 rounded-2xl border border-orange-200 space-y-2 mb-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-orange-900 font-bold">Authorized Rate:</span>
+                            <span class="text-lg font-black text-orange-700"><%= center.commissionRate %>% Flat</span>
+                        </div>
+                        <p class="text-[11px] text-orange-800">Earned immediately upon student fee verification by central admissions team.</p>
+                    </div>
+                    <div class="space-y-2.5 text-slate-600">
+                        <div class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-400">Payment Payout Cycle:</span>
+                            <span class="font-bold text-slate-800">Weekly / Monthly</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-100 pb-2">
+                            <span class="text-slate-400">Total Enrolled:</span>
+                            <span class="font-bold text-blue-900"><%= stats.totalStudents %> Students</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-white rounded-3xl p-6 shadow-md text-xs space-y-3">
+                    <h3 class="font-bold text-sm text-amber-400">Partner Helpdesk</h3>
+                    <p class="text-slate-300 text-xs leading-relaxed">Need promotional banners, brochures or university counseling material for your study center?</p>
+                    <a href="https://wa.me/919839332500" target="_blank" class="block w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-bold text-center rounded-xl transition">
+                        <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp Franchise Desk
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<!-- MODAL: Register Student from Center -->
+<div id="registerStudentModal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-5 sm:p-8 shadow-2xl border border-slate-200 animate-in fade-in zoom-in">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-black text-slate-900">Register Student From Centre</h3>
+            <button type="button" onclick="document.getElementById('registerStudentModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <form action="/education/centre/register-student" method="POST" class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Student Full Name *</label>
+                    <input type="text" name="fullName" required placeholder="Full Name" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-semibold">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Father's Name</label>
+                    <input type="text" name="fatherName" placeholder="Father's Name" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Mobile Contact *</label>
+                    <input type="tel" name="phone" required placeholder="10-digit Phone" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Email Address *</label>
+                    <input type="email" name="email" required placeholder="student@example.com" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs">
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">University *</label>
+                <select name="universityId" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-semibold">
+                    <% universities.forEach(function(u) { %>
+                        <option value="<%= u._id %>"><%= u.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Course *</label>
+                <select name="courseId" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-semibold">
+                    <% courses.forEach(function(c) { %>
+                        <option value="<%= c._id %>"><%= c.title %> - <%= c.category %> (₹<%= (c.feePerYear || 25000).toLocaleString('en-IN') %>/yr)</option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition">
+                Register Student & Enroll
+            </button>
+        </form>
+    </div>
+</div>
+
+<%- include('../footer') %>

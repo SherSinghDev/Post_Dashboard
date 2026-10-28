@@ -1,0 +1,73 @@
+<%- include('header') %>
+
+<main class="flex-1 py-12 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="text-orange-600 text-xs font-black uppercase tracking-wider">Assessment & Evaluation</span>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mt-1">Online Examination Portal</h1>
+            <p class="text-xs text-slate-500 mt-2">Take semester examinations, practice mock tests, and submit internal assignments through the secure digital assessment engine.</p>
+            <div class="w-16 h-1 bg-orange-500 mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <!-- Instructions Card -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-10">
+            <h3 class="text-base font-black text-slate-900 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-clipboard-check text-blue-900"></i> महत्त्वपूर्ण परीक्षा निर्देश (Important Examination Guidelines)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600">
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 font-bold flex items-center justify-center mb-2">1</span>
+                    <h4 class="font-bold text-slate-800 mb-1">स्थिर इंटरनेट कनेक्शन</h4>
+                    <p class="text-[11px] text-slate-500">परीक्षा शुरू करने से पहले न्यूनतम 2 Mbps का हाई-स्पीड इंटरनेट सुनिश्चित करें।</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <span class="w-7 h-7 rounded-lg bg-orange-100 text-orange-800 font-bold flex items-center justify-center mb-2">2</span>
+                    <h4 class="font-bold text-slate-800 mb-1">वेबकैम और माइक्रोफ़ोन</h4>
+                    <p class="text-[11px] text-slate-500">परीक्षा AI प्रोक्टर्ड है। ब्राउज़र में कैमरा और माइक अनुमति देना अनिवार्य है।</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center mb-2">3</span>
+                    <h4 class="font-bold text-slate-800 mb-1">ऑटो-सबमिट समय सीमा</h4>
+                    <p class="text-[11px] text-slate-500">टाइमर समाप्त होने पर आपके सभी हल किए गए उत्तर स्वतः सबमिट हो जाएंगे।</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam List -->
+        <div class="space-y-4">
+            <h3 class="text-lg font-black text-slate-900">Scheduled Exams & Mock Tests</h3>
+
+            <% if (exams && exams.length > 0) { %>
+                <% exams.forEach(function(exam) { %>
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="space-y-1.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-800">
+                                    <%= exam.courseStream %>
+                                </span>
+                                <span class="text-xs font-bold text-blue-900">
+                                    <i class="fa-regular fa-calendar"></i> <%= exam.examDate %>
+                                </span>
+                            </div>
+                            <h4 class="text-base font-extrabold text-slate-900"><%= exam.examTitle %></h4>
+                            <p class="text-xs text-slate-500">
+                                <strong>Subject:</strong> <%= exam.subject %> &bull; <strong>Duration:</strong> <%= exam.durationMinutes %> Mins &bull; <strong>Marks:</strong> <%= exam.totalMarks %>
+                            </p>
+                            <p class="text-[11px] text-slate-400 italic"><%= exam.instructions %></p>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button type="button" onclick="alert('Exam window will activate on <%= exam.examDate %> at 10:00 AM. Please ensure student login is active.')" class="px-5 py-2.5 bg-blue-900 hover:bg-blue-800 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-play"></i> Start Assessment
+                            </button>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+
+    </div>
+</main>
+
+<%- include('footer') %>

@@ -1,0 +1,455 @@
+<%- include('../header') %>
+
+<main class="flex-1 py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+        <!-- Top Master Admin Header -->
+        <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-orange-500/20 p-1 border border-orange-500/40 flex items-center justify-center text-3xl font-black text-orange-400">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold text-orange-400 uppercase tracking-wider block">Master Control Room</span>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight">Main Admin Panel &bull; BSRF Education</h1>
+                    <p class="text-xs text-slate-300 mt-0.5">
+                        Logged in as: <strong class="text-white"><%= typeof adminUser !== 'undefined' ? adminUser.name : 'Master Admin' %></strong> &bull; Central management for Universities, Courses, Students, Counselors, Franchises & Commissions
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <button type="button" onclick="window.print()" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-arrow-down"></i> Export Reports
+                </button>
+                <a href="/education" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl transition">
+                    View Live Site
+                </a>
+                <a href="/education/admin/logout" class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Master KPI Metrics Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-3 mb-8 text-center text-xs">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Universities</span>
+                <span class="text-xl font-black text-slate-900"><%= stats.totalUniversities %></span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Programs</span>
+                <span class="text-xl font-black text-blue-900"><%= stats.totalCourses %></span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Students</span>
+                <span class="text-xl font-black text-indigo-900"><%= stats.totalStudents %></span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Applications</span>
+                <span class="text-xl font-black text-orange-600"><%= stats.totalApplications %></span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Counselors</span>
+                <span class="text-xl font-black text-purple-900"><%= stats.totalCounsellors %></span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Franchises</span>
+                <span class="text-xl font-black text-amber-600"><%= stats.totalCenters %></span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Total Revenue</span>
+                <span class="text-xl font-black text-emerald-600">₹<%= (stats.totalRevenue / 1000).toFixed(1) %>k</span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-slate-400 font-bold uppercase text-[9px] block">Total Leads</span>
+                <span class="text-xl font-black text-teal-700"><%= stats.totalLeads %></span>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs for Sub-Panels -->
+        <div class="flex flex-wrap items-center gap-2 mb-8 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm text-xs font-bold">
+            <button type="button" onclick="switchAdminTab('tab-applications')" id="btn-tab-applications" class="admin-nav-btn active px-4 py-2 rounded-xl bg-blue-900 text-white transition shadow-sm">
+                <i class="fa-solid fa-file-signature mr-1.5"></i> Applications Approval (<%= applications.length %>)
+            </button>
+            <button type="button" onclick="switchAdminTab('tab-universities')" id="btn-tab-universities" class="admin-nav-btn px-4 py-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+                <i class="fa-solid fa-building-columns mr-1.5"></i> Universities & Courses (<%= universities.length %>)
+            </button>
+            <button type="button" onclick="switchAdminTab('tab-students')" id="btn-tab-students" class="admin-nav-btn px-4 py-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+                <i class="fa-solid fa-user-graduate mr-1.5"></i> Students (<%= students.length %>)
+            </button>
+            <button type="button" onclick="switchAdminTab('tab-counsellors')" id="btn-tab-counsellors" class="admin-nav-btn px-4 py-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+                <i class="fa-solid fa-headset mr-1.5"></i> Counselors (<%= counsellors.length %>)
+            </button>
+            <button type="button" onclick="switchAdminTab('tab-centers')" id="btn-tab-centers" class="admin-nav-btn px-4 py-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+                <i class="fa-solid fa-school mr-1.5"></i> Franchises & Commissions (<%= centers.length %>)
+            </button>
+            <button type="button" onclick="switchAdminTab('tab-notices')" id="btn-tab-notices" class="admin-nav-btn px-4 py-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+                <i class="fa-solid fa-bullhorn mr-1.5"></i> Website Notices & Marquee
+            </button>
+        </div>
+
+        <!-- 1. TAB: APPLICATIONS APPROVAL / REJECTION -->
+        <div id="tab-applications" class="admin-tab-panel">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-stamp text-orange-500"></i> Admission Applications Management
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Approve, verify documents, reject or issue admission letters</p>
+                    </div>
+                </div>
+
+                <% if (applications && applications.length > 0) { %>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold">
+                                <tr>
+                                    <th class="p-3">Application No</th>
+                                    <th class="p-3">Student Details</th>
+                                    <th class="p-3">University & Course</th>
+                                    <th class="p-3">Current Status</th>
+                                    <th class="p-3">Fee Paid</th>
+                                    <th class="p-3 text-right">Review Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-semibold">
+                                <% applications.forEach(function(app) { %>
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-3 text-blue-900 font-bold">
+                                            <%= app.applicationNo %>
+                                            <span class="block text-[10px] text-slate-400 font-normal"><%= new Date(app.createdAt).toLocaleDateString('en-IN') %></span>
+                                        </td>
+                                        <td class="p-3">
+                                            <div class="font-bold text-slate-800"><%= app.studentName %></div>
+                                            <div class="text-[11px] text-slate-500"><%= app.phone %> &bull; <%= app.email %></div>
+                                        </td>
+                                        <td class="p-3">
+                                            <div class="text-slate-800 font-bold"><%= app.courseTitle %></div>
+                                            <div class="text-[11px] text-orange-600"><%= app.universityName %> (<%= app.mode %>)</div>
+                                        </td>
+                                        <td class="p-3">
+                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold <%= app.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : (app.status === 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800') %>">
+                                                <%= app.status %>
+                                            </span>
+                                            <% if (app.admissionLetterNo) { %>
+                                                <span class="block text-[10px] text-emerald-700 font-bold mt-1">Enrollment: <%= app.admissionLetterNo %></span>
+                                            <% } %>
+                                        </td>
+                                        <td class="p-3">
+                                            <div class="text-slate-800 font-bold">₹<%= (app.feePaid || 0).toLocaleString('en-IN') %></div>
+                                            <span class="text-[10px] text-slate-400">Total: ₹<%= (app.feeAmount || 0).toLocaleString('en-IN') %></span>
+                                        </td>
+                                        <td class="p-3 text-right">
+                                            <div class="flex items-center justify-end gap-1.5">
+                                                <!-- Quick Approve Form -->
+                                                <form action="/education/admin/application/update-status" method="POST" class="inline">
+                                                    <input type="hidden" name="applicationId" value="<%= app._id %>">
+                                                    <input type="hidden" name="status" value="Approved">
+                                                    <button type="submit" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shadow-sm" title="Approve Admission">
+                                                        <i class="fa-solid fa-check"></i> Approve
+                                                    </button>
+                                                </form>
+                                                <!-- Quick Reject Form -->
+                                                <form action="/education/admin/application/update-status" method="POST" class="inline" onsubmit="return confirm('Reject this application?')">
+                                                    <input type="hidden" name="applicationId" value="<%= app._id %>">
+                                                    <input type="hidden" name="status" value="Rejected">
+                                                    <button type="submit" class="px-2.5 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs font-bold transition" title="Reject Admission">
+                                                        <i class="fa-solid fa-xmark"></i> Reject
+                                                    </button>
+                                                </form>
+                                                <a href="/education/student/receipt/<%= app._id %>" target="_blank" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition" title="Print Receipt">
+                                                    <i class="fa-solid fa-receipt"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <p class="text-xs text-slate-400 italic">No applications to review.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- 2. TAB: UNIVERSITIES & COURSES -->
+        <div id="tab-universities" class="admin-tab-panel hidden">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-building-columns text-orange-500"></i> Partner Universities (<%= universities.length %>)
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Manage partner institutions, fees, and program offerings</p>
+                    </div>
+                    <a href="/education/university" class="px-4 py-2 bg-blue-900 text-white rounded-xl text-xs font-bold hover:bg-blue-800 transition">
+                        Open Full University Panel &rarr;
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <% universities.forEach(function(u) { %>
+                        <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-slate-900"><%= u.name %></h3>
+                                <span class="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded">Active</span>
+                            </div>
+                            <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-red-500"></i> <%= u.location %></p>
+                            <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-200">
+                                <span class="text-slate-400 font-bold">Deadline: <%= u.admissionDeadline %></span>
+                                <a href="/education/university" class="text-orange-600 font-bold hover:underline">Manage &rarr;</a>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. TAB: STUDENTS -->
+        <div id="tab-students" class="admin-tab-panel hidden">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-user-graduate text-blue-900"></i> Registered Students Directory (<%= students.length %>)
+                    </h2>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold">
+                            <tr>
+                                <th class="p-3">Student ID</th>
+                                <th class="p-3">Full Name</th>
+                                <th class="p-3">Contact</th>
+                                <th class="p-3">City / State</th>
+                                <th class="p-3">Study Centre</th>
+                                <th class="p-3">Registered On</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-semibold">
+                            <% students.forEach(function(s) { %>
+                                <tr class="hover:bg-slate-50 transition">
+                                    <td class="p-3 font-bold text-blue-900"><%= s.studentId %></td>
+                                    <td class="p-3 text-slate-800 font-bold"><%= s.fullName %></td>
+                                    <td class="p-3 text-slate-600"><%= s.phone %><br><span class="text-[10px] text-slate-400"><%= s.email %></span></td>
+                                    <td class="p-3 text-slate-600"><%= s.city %>, <%= s.state %></td>
+                                    <td class="p-3 text-orange-600"><%= s.centerName || 'Direct' %></td>
+                                    <td class="p-3 text-slate-400"><%= new Date(s.createdAt).toLocaleDateString('en-IN') %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. TAB: COUNSELLORS -->
+        <div id="tab-counsellors" class="admin-tab-panel hidden">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-headset text-orange-500"></i> Admission Counselors & Performance
+                    </h2>
+                    <button type="button" onclick="document.getElementById('addCounsellorModal').classList.remove('hidden')" class="px-4 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-xl text-xs font-bold transition">
+                        + Add Counselor
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <% counsellors.forEach(function(cou) { %>
+                        <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-900"><%= cou.counsellorId %></span>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Active</span>
+                            </div>
+                            <h3 class="font-extrabold text-slate-900 text-sm"><%= cou.name %></h3>
+                            <p class="text-slate-500"><%= cou.email %> &bull; <%= cou.phone %></p>
+                            <div class="pt-2 border-t border-slate-200 flex justify-between">
+                                <span class="text-slate-400">Monthly Target:</span>
+                                <span class="font-bold text-blue-900"><%= cou.target %> Admissions</span>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. TAB: FRANCHISES & COMMISSIONS -->
+        <div id="tab-centers" class="admin-tab-panel hidden">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-school text-amber-500"></i> Franchise & Study Center Management
+                    </h2>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold">
+                            <tr>
+                                <th class="p-3">Code</th>
+                                <th class="p-3">Center Particulars</th>
+                                <th class="p-3">Location</th>
+                                <th class="p-3">Commission Rate</th>
+                                <th class="p-3">Earned / Paid</th>
+                                <th class="p-3 text-right">Commission Payout</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 font-semibold">
+                            <% centers.forEach(function(c) { %>
+                                <tr class="hover:bg-slate-50 transition">
+                                    <td class="p-3 font-bold text-blue-900"><%= c.centerCode %></td>
+                                    <td class="p-3">
+                                        <div class="text-slate-800 font-bold"><%= c.centerName %></div>
+                                        <div class="text-[11px] text-slate-400"><%= c.ownerName %> &bull; <%= c.phone %></div>
+                                    </td>
+                                    <td class="p-3 text-slate-600"><%= c.city %>, <%= c.state %></td>
+                                    <td class="p-3 font-bold text-orange-600"><%= c.commissionRate %>%</td>
+                                    <td class="p-3">
+                                        <span class="text-emerald-700 font-bold">₹<%= (c.totalCommissionEarned || 0).toLocaleString('en-IN') %></span>
+                                        <span class="block text-[10px] text-slate-400">Paid: ₹<%= (c.totalCommissionPaid || 0).toLocaleString('en-IN') %></span>
+                                    </td>
+                                    <td class="p-3 text-right">
+                                        <form action="/education/admin/center/pay-commission/<%= c._id %>" method="POST" class="inline-flex gap-2 items-center">
+                                            <input type="number" name="amount" placeholder="Amount" class="w-24 px-2 py-1 bg-white border border-slate-200 rounded text-xs font-bold">
+                                            <button type="submit" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold transition">
+                                                Pay
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. TAB: WEBSITE NOTICES & MARQUEE SETTINGS -->
+        <div id="tab-notices" class="admin-tab-panel hidden">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-bullhorn text-orange-500"></i> Website Announcements & Notices
+                    </h2>
+                    <button type="button" onclick="document.getElementById('addNoticeModal').classList.remove('hidden')" class="px-4 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-xl text-xs font-bold transition">
+                        + Add Announcement
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <% notices.forEach(function(n) { %>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-start gap-4 text-xs">
+                            <div>
+                                <span class="text-[10px] font-black uppercase text-orange-600"><%= n.type %></span>
+                                <h4 class="font-bold text-slate-900 mt-0.5"><%= n.title %></h4>
+                                <p class="text-slate-600 mt-1"><%= n.content %></p>
+                            </div>
+                            <form action="/education/admin/notice/delete/<%= n._id %>" method="POST" onsubmit="return confirm('Delete notice?')">
+                                <button type="submit" class="text-red-500 hover:text-red-700 p-2">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- MODAL: Add Notice -->
+<div id="addNoticeModal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-md w-full max-h-[90vh] overflow-y-auto p-5 sm:p-6 shadow-2xl border border-slate-200">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-black text-slate-900">Add Announcement / Notice</h3>
+            <button type="button" onclick="document.getElementById('addNoticeModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <form action="/education/admin/notice/add" method="POST" class="space-y-3 text-xs">
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Notice Title *</label>
+                <input type="text" name="title" required placeholder="Announcement title" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+            </div>
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Type</label>
+                <select name="type" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
+                    <option value="Admissions">Admissions</option>
+                    <option value="Exams">Exams</option>
+                    <option value="Classes">Classes</option>
+                    <option value="General">General</option>
+                </select>
+            </div>
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Content *</label>
+                <textarea name="content" rows="3" required placeholder="Announcement text..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs"></textarea>
+            </div>
+            <button type="submit" class="w-full py-3 bg-blue-900 hover:bg-blue-800 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition">
+                Publish Notice
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: Add Counselor -->
+<div id="addCounsellorModal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-md w-full max-h-[90vh] overflow-y-auto p-5 sm:p-6 shadow-2xl border border-slate-200">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-black text-slate-900">Add Admission Counselor</h3>
+            <button type="button" onclick="document.getElementById('addCounsellorModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <form action="/education/admin/counsellor/add" method="POST" class="space-y-3 text-xs">
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Counselor Full Name *</label>
+                <input type="text" name="name" required placeholder="Name" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+            </div>
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Official Email *</label>
+                <input type="email" name="email" required placeholder="counsellor@bsrf.org" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+            </div>
+            <div>
+                <label class="block font-bold text-slate-700 mb-1">Mobile Contact *</label>
+                <input type="tel" name="phone" required placeholder="Mobile" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Monthly Target</label>
+                    <input type="number" name="target" value="25" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Commission (%)</label>
+                    <input type="number" name="commissionRate" value="5" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs">
+                </div>
+            </div>
+            <button type="submit" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition">
+                Create Counselor Account
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function switchAdminTab(tabId) {
+        document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.add('hidden'));
+        document.getElementById(tabId).classList.remove('hidden');
+
+        document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+            btn.classList.remove('bg-blue-900', 'text-white', 'shadow-sm');
+            btn.classList.add('text-slate-700', 'hover:bg-slate-100');
+        });
+        const activeBtn = document.getElementById('btn-' + tabId);
+        if (activeBtn) {
+            activeBtn.classList.remove('text-slate-700', 'hover:bg-slate-100');
+            activeBtn.classList.add('bg-blue-900', 'text-white', 'shadow-sm');
+        }
+    }
+</script>
+
+<%- include('../footer') %>

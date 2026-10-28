@@ -1,0 +1,85 @@
+<%- include('../header') %>
+
+<main class="flex-1 py-12 bg-slate-50">
+    <div class="max-w-2xl mx-auto px-4">
+        
+        <div class="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 mx-auto flex items-center justify-center text-2xl shadow-inner mb-3">
+                    <i class="fa-solid fa-handshake"></i>
+                </div>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Apply for BSRF Study Centre / Franchise</h1>
+                <p class="text-xs text-slate-500 mt-1">Join as an authorized admission partner and earn up to 15-20% commission per enrollment</p>
+            </div>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="mb-5 p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation flex-shrink-0"></i>
+                    <span><%= error %></span>
+                </div>
+            <% } %>
+
+            <form action="/education/centre/register" method="POST" class="space-y-4 text-xs">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Center / Institute Name *</label>
+                        <input type="text" name="centerName" required placeholder="e.g. Apex Career Institute" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Director / Owner Full Name *</label>
+                        <input type="text" name="ownerName" required placeholder="Director's Name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Official Email Address *</label>
+                        <input type="email" name="email" required placeholder="center@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Mobile / WhatsApp Number *</label>
+                        <input type="tel" name="phone" required placeholder="10-digit Phone" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Create Account Password *</label>
+                    <input type="password" name="password" required placeholder="Min 6 characters" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Institute Physical Address *</label>
+                    <input type="text" name="address" required placeholder="Shop/Office No., Street, Landmark" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">City / District *</label>
+                        <input type="text" name="city" required placeholder="City" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">State *</label>
+                        <input type="text" name="state" required placeholder="State" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Pincode</label>
+                        <input type="text" name="pincode" placeholder="Pincode" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full mt-4 py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Franchise Application & Open Workspace
+                </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
+                Already registered center? 
+                <a href="/education/centre/login" class="font-extrabold text-blue-900 hover:underline">Center Login</a>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<%- include('../footer') %>

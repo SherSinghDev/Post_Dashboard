@@ -1,0 +1,116 @@
+<%- include('header') %>
+
+<main class="flex-1 py-12 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-orange-600 text-xs font-black uppercase tracking-wider">Connect With Us</span>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mt-1">Student Helpline & Contact</h1>
+            <p class="text-xs text-slate-500 mt-2">Have questions about university admissions, eligibility, fees or exams? Our counseling team is here to assist you.</p>
+            <div class="w-16 h-1 bg-orange-500 mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            
+            <!-- Contact Info Cards -->
+            <div class="lg:col-span-5 space-y-4">
+                
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900">Student Helpline</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Mon - Sat: 9:00 AM - 7:00 PM</p>
+                        <a href="tel:+919839332500" class="text-sm font-black text-blue-900 hover:text-orange-600 block mt-1">+91 9839332500</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900">WhatsApp Counseling</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Instant admission guidance on WhatsApp</p>
+                        <a href="https://wa.me/919839332500" target="_blank" class="text-sm font-black text-emerald-700 hover:text-emerald-800 block mt-1">Chat on WhatsApp &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900">Official Admissions Email</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">For university queries & document verifications</p>
+                        <a href="mailto:education@bsrfindia.com" class="text-xs font-black text-blue-900 hover:text-orange-600 block mt-1">education@bsrfindia.com</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm text-slate-900">Office Location</h4>
+                        <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                            Office-1 B, Sinha Complex, Pratap Market, 1st Floor, Golghar, Gorakhpur - 273001, Uttar Pradesh
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Enquiry Form -->
+            <div class="lg:col-span-7">
+                <div class="bg-white rounded-3xl p-8 shadow-md border border-slate-200">
+                    <h3 class="text-xl font-black text-slate-900 mb-2">Send Us a Message</h3>
+                    <p class="text-xs text-slate-500 mb-6">Our academic counselors respond within 24 business hours.</p>
+
+                    <form action="/education/quick-enquiry" method="POST" class="space-y-4 text-xs">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">Your Full Name *</label>
+                                <input type="text" name="name" required placeholder="Full Name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">Mobile Number *</label>
+                                <input type="tel" name="phone" required placeholder="10-digit Phone" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">Email Address</label>
+                                <input type="email" name="email" placeholder="student@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">City / State</label>
+                                <input type="text" name="city" placeholder="e.g. Lucknow, UP" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Course You Are Interested In</label>
+                            <input type="text" name="courseInterested" placeholder="e.g. MBA / BCA / Distance BA / Ph.D." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Your Query / Message</label>
+                            <textarea name="address" rows="3" placeholder="Tell us what you are looking for..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition">
+                            Submit Message & Request Call
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<%- include('footer') %>

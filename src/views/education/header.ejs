@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'BSRF Education - Leading Admission & Distance Learning Portal' %></title>
+    <link rel="shortcut icon" type="image/png" href="https://bsrfindia.com/images/logo/logo.png">
+    
+    <!-- Meta SEO -->
+    <meta name="description" content="BSRF Education Portal connects students with UGC, AICTE & NAAC A+ approved universities for Online, Distance and Regular UG, PG, Diploma and Certificate programs.">
+    <meta name="keywords" content="BSRF Education, Online Degree, Distance Learning, UGC Approved Universities, MBA, MCA, BCA, Free Education">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        eduNavy: '#0c1a40',
+                        eduBlue: '#1e40af',
+                        eduOrange: '#f97316',
+                        eduAmber: '#f59e0b',
+                        eduDark: '#0f172a'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --edu-navy: #0b1a48;
+            --edu-orange: #ff6600;
+            --edu-blue: #2563eb;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Header */
+        .edu-topbar {
+            background: #0b1a48;
+            color: #e2e8f0;
+            font-size: 12px;
+        }
+
+        /* Announcement Marquee */
+        .edu-marquee-bar {
+            background: linear-gradient(90deg, #ff6600 0%, #ea580c 100%);
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 32s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Desktop Nav Link */
+        .nav-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 1280px) {
+            .nav-link {
+                font-size: 13.5px;
+                padding: 7px 12px;
+                gap: 5px;
+            }
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ff6600;
+            background: #fff7ed;
+        }
+
+        /* Pulse glow for buttons */
+        .pulse-btn {
+            animation: pulse-orange 2s infinite;
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(255, 102, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
+        }
+
+        /* Floating WhatsApp */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            width: 52px;
+            height: 52px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+            transition: transform 0.3s ease;
+        }
+
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+        }
+
+        /* Floating Enquire Tab */
+        .floating-enquire-btn {
+            position: fixed;
+            top: 55%;
+            right: 0;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: right bottom;
+            z-index: 990;
+            background: #ff6600;
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+            padding: 6px 14px;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.5px;
+        }
+
+        /* Dropdown Styling */
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(6px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .group:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen w-full">
+
+    <!-- 1. Top Header -->
+    <header class="edu-topbar py-1.5 px-4 sm:px-6 lg:px-8 border-b border-blue-950/60 w-full hidden sm:block">
+        <div class="w-full max-w-[1500px] mx-auto flex flex-wrap justify-between items-center gap-2">
+            
+            <!-- Left Contacts -->
+            <div class="flex items-center gap-4 lg:gap-6 flex-wrap">
+                <a href="mailto:education@bsrfindia.com" class="flex items-center gap-1.5 hover:text-white transition text-slate-300">
+                    <i class="fa-solid fa-envelope text-orange-400"></i>
+                    <span>education@bsrfindia.com</span>
+                </a>
+                <a href="tel:+919839332500" class="flex items-center gap-1.5 hover:text-white transition text-slate-300">
+                    <i class="fa-solid fa-phone text-orange-400"></i>
+                    <span>+91 9839332500</span>
+                </a>
+                <span class="hidden lg:flex items-center gap-1.5 text-slate-400">
+                    <i class="fa-solid fa-clock text-orange-400"></i>
+                    <span>Helpline: 9 AM - 7 PM</span>
+                </span>
+            </div>
+
+            <!-- Right Portals -->
+            <div class="flex items-center gap-3.5 sm:gap-4 ml-auto">
+                <button type="button" onclick="openFeeModal()" class="text-orange-400 hover:text-orange-300 font-bold flex items-center gap-1 transition">
+                    <i class="fa-solid fa-qrcode text-xs"></i> Fee Submission
+                </button>
+                <div class="h-3 w-px bg-slate-700"></div>
+                <div class="flex items-center gap-2.5 text-slate-300">
+                    <a href="https://wa.me/919839332500?text=Hello%20BSRF%20Education" target="_blank" class="hover:text-green-400 transition" title="WhatsApp"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+                    <a href="#" class="hover:text-blue-400 transition" title="Facebook"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="hover:text-pink-400 transition" title="Instagram"><i class="fa-brands fa-instagram text-xs"></i></a>
+                </div>
+                <div class="h-3 w-px bg-slate-700"></div>
+                <div class="flex items-center gap-3 text-xs">
+                    <a href="/education/centre/login" class="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-building-columns text-[10px]"></i> Center Login
+                    </a>
+                    <span class="text-slate-600">|</span>
+                    <% if (typeof userSession !== 'undefined' && userSession && userSession.eduAdminAuth) { %>
+                        <a href="/education/admin" class="text-orange-400 hover:text-orange-300 font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-[10px]"></i> Admin Panel
+                        </a>
+                        <span class="text-slate-600">|</span>
+                        <a href="/education/admin/logout" class="text-slate-400 hover:text-red-400 font-medium" title="Logout Admin">
+                            <i class="fa-solid fa-arrow-right-from-bracket text-[10px]"></i>
+                        </a>
+                    <% } else { %>
+                        <a href="/education/admin/login" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-[10px]"></i> Admin Login
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Announcement Marquee Bar -->
+    <div class="edu-marquee-bar py-1 px-4 sm:px-6 lg:px-8 w-full shadow-inner">
+        <div class="w-full max-w-[1500px] mx-auto flex items-center gap-2.5 sm:gap-3">
+            <span class="bg-black/25 text-white uppercase text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded tracking-wider flex items-center gap-1 flex-shrink-0">
+                <i class="fa-solid fa-bullhorn text-yellow-300 animate-pulse"></i> Announcements
+            </span>
+            <div class="marquee-container flex-1 overflow-hidden">
+                <div class="marquee-content text-[11px] sm:text-xs">
+                    🎓 Admission Open for Session 2026-2027 | Top UGC, AICTE & NAAC A+ Approved Universities | COMPUTER SCIENCE | MBA | MCA | B.TECH | PHARMACY | LAW | AGRICULTURE | 100% Online & Distance Learning with Placement Support | Call: +91 9839332500
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Main Navbar (Full-width responsive container, never clips right button) -->
+    <nav class="bg-white sticky top-0 z-50 shadow-md border-b border-slate-100 w-full">
+        <div class="w-full max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-18 lg:h-20 gap-2 sm:gap-4">
+                
+                <!-- Brand / Logo -->
+                <a href="/education" class="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
+                    <img src="https://bsrfindia.com/images/logo/logo.png" alt="BSRF Logo" class="h-9 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform" onerror="this.src='/images/logo/logo.png'">
+                    <div class="flex flex-col">
+                        <span class="font-black text-lg sm:text-xl lg:text-2xl text-blue-900 tracking-tight leading-none group-hover:text-orange-600 transition-colors">
+                            BSRF <span class="text-orange-600">EDUCATION</span>
+                        </span>
+                        <span class="text-[9px] text-slate-500 font-bold tracking-wider uppercase mt-0.5 hidden xs:inline">
+                            Admission & Distance Portal
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Menu (Visible on lg and above: >= 1024px) -->
+                <div class="hidden lg:flex items-center space-x-0.5 xl:space-x-1 flex-shrink">
+                    <a href="/education" class="nav-link <%= typeof activeNav !== 'undefined' && activeNav === 'home' ? 'active text-orange-600 bg-orange-50' : '' %>">
+                        Home
+                    </a>
+
+                    <!-- About Dropdown -->
+                    <div class="relative group">
+                        <button type="button" class="nav-link flex items-center gap-1 <%= typeof activeNav !== 'undefined' && activeNav === 'about' ? 'active text-orange-600 bg-orange-50' : '' %>">
+                            <span>About</span>
+                            <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 group-hover:text-orange-600 transition-transform group-hover:rotate-180"></i>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 mt-1 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50">
+                            <a href="/education/about" class="block px-4 py-2.5 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold transition">
+                                <i class="fa-solid fa-building-columns text-orange-500 mr-2"></i> About BSRF
+                            </a>
+                            <a href="/education/about#tab-director" class="block px-4 py-2.5 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold transition">
+                                <i class="fa-solid fa-user-tie text-blue-600 mr-2"></i> Director's Message
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="/education/universities" class="nav-link <%= typeof activeNav !== 'undefined' && activeNav === 'universities' ? 'active text-orange-600 bg-orange-50' : '' %>">
+                        Universities
+                    </a>
+
+                    <a href="/education/courses" class="nav-link <%= typeof activeNav !== 'undefined' && activeNav === 'courses' ? 'active text-orange-600 bg-orange-50' : '' %>">
+                        Courses
+                    </a>
+
+                    <!-- Free Education Link (Sleek badge style) -->
+                    <a href="/education/free-education" class="nav-link text-emerald-700 hover:text-emerald-800 font-bold <%= typeof activeNav !== 'undefined' && activeNav === 'free-education' ? 'active text-orange-600 bg-orange-50' : '' %>">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span>Free Education</span>
+                    </a>
+
+                    <!-- Academic Services Dropdown (Includes Fee Submission Modal link) -->
+                    <div class="relative group">
+                        <button type="button" class="nav-link flex items-center gap-1 <%= typeof activeNav !== 'undefined' && ['classes', 'exam', 'verify', 'study-material'].includes(activeNav) ? 'active text-orange-600 bg-orange-50' : '' %>">
+                            <span>Services</span>
+                            <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 group-hover:text-orange-600 transition-transform group-hover:rotate-180"></i>
+                        </button>
+                        <div class="dropdown-menu absolute left-0 mt-1 w-60 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50">
+                            <a href="javascript:void(0)" onclick="openFeeModal()" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-orange-600 hover:bg-orange-50 font-bold transition">
+                                <i class="fa-solid fa-qrcode text-orange-500 w-4 text-center"></i> Fee Submission (UPI / QR)
+                            </a>
+                            <div class="border-t border-slate-100 my-1"></div>
+                            <a href="/education/online-classes" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold transition">
+                                <i class="fa-solid fa-video text-blue-600 w-4 text-center"></i> Online Live Classes
+                            </a>
+                            <a href="/education/online-exam" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold transition">
+                                <i class="fa-solid fa-clipboard-question text-yellow-600 w-4 text-center"></i> Online Examination
+                            </a>
+                            <a href="/education/verify-certificate" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold transition">
+                                <i class="fa-solid fa-shield-halved text-emerald-600 w-4 text-center"></i> Certificate Verification
+                            </a>
+                            <a href="/education/study-material" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold transition">
+                                <i class="fa-solid fa-book text-indigo-600 w-4 text-center"></i> Download Study Material
+                            </a>
+                            <div class="border-t border-slate-100 my-1"></div>
+                            <a href="/education/contact" class="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold transition">
+                                <i class="fa-solid fa-headset text-orange-500 w-4 text-center"></i> Student Helpline
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="/education/contact" class="nav-link <%= typeof activeNav !== 'undefined' && activeNav === 'contact' ? 'active text-orange-600 bg-orange-50' : '' %>">
+                        Contact
+                    </a>
+                </div>
+
+                <!-- Action Buttons: Exactly 2 compact buttons (Student Portal + Apply Now) -->
+                <div class="hidden lg:flex items-center gap-2 xl:gap-3 flex-shrink-0">
+                    <!-- Student Portal Dropdown -->
+                    <div class="relative group">
+                        <button type="button" class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white hover:from-blue-800 hover:to-indigo-800 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm whitespace-nowrap">
+                            <i class="fa-solid fa-user-graduate text-orange-400"></i>
+                            <span>Student Portal</span>
+                            <i class="fa-solid fa-chevron-down text-[9px] opacity-75"></i>
+                        </button>
+                        <div class="dropdown-menu absolute right-0 mt-1 w-52 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50">
+                            <a href="/education/student/login" class="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold">
+                                <i class="fa-solid fa-right-to-bracket text-blue-600"></i> Student Login
+                            </a>
+                            <a href="/education/student/register" class="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold">
+                                <i class="fa-solid fa-id-card text-emerald-600"></i> Online Registration
+                            </a>
+                            <a href="/education/student/dashboard" class="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-700 hover:bg-orange-50 hover:text-orange-600 font-semibold">
+                                <i class="fa-solid fa-gauge text-indigo-600"></i> Student Dashboard
+                            </a>
+                            <div class="border-t border-slate-100 my-1"></div>
+                            <a href="/education/counsellor/login" class="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 font-medium">
+                                <i class="fa-solid fa-headset text-orange-500"></i> Counsellor Login
+                            </a>
+                            <a href="/education/centre/login" class="flex items-center gap-2.5 px-4 py-2 text-xs text-slate-600 hover:bg-slate-50 font-medium">
+                                <i class="fa-solid fa-school text-amber-500"></i> Franchise / Centre
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Admission Apply Now CTA (Always 100% visible, flex-shrink-0) -->
+                    <button type="button" onclick="openEnquiryModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-4 py-2 rounded-xl text-xs font-black transition shadow-md pulse-btn flex items-center gap-1.5 flex-shrink-0 whitespace-nowrap">
+                        <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                        <span>Apply Now</span>
+                    </button>
+                </div>
+
+                <!-- Mobile & Tablet Action Bar (< 1024px) -->
+                <div class="flex lg:hidden items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                    <button type="button" onclick="openFeeModal()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition flex items-center gap-1 border border-slate-200" title="Fee Submission">
+                        <i class="fa-solid fa-qrcode text-blue-700"></i>
+                        <span class="hidden sm:inline">Fee</span>
+                    </button>
+                    <button type="button" onclick="openEnquiryModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-3 py-1.5 rounded-xl text-xs font-black shadow-sm flex items-center gap-1 flex-shrink-0">
+                        <i class="fa-solid fa-paper-plane text-[10px]"></i> Apply
+                    </button>
+                    <button id="edu-mobile-toggle" type="button" class="p-2 text-slate-700 hover:text-blue-900 focus:outline-none rounded-xl hover:bg-slate-100 transition" aria-label="Toggle Navigation">
+                        <i id="edu-toggle-icon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Overlay & Menu (< 1024px) -->
+        <div id="edu-mobile-drawer" class="hidden lg:hidden bg-white border-t border-slate-200 shadow-2xl transition-all duration-300 max-h-[85vh] overflow-y-auto w-full">
+            <div class="p-4 sm:p-6 space-y-4">
+                
+                <!-- Quick Portals Grid -->
+                <div class="grid grid-cols-2 gap-2 text-xs font-bold pb-2">
+                    <a href="/education/student/login" class="flex items-center justify-center gap-2 p-2.5 bg-blue-50 text-blue-900 rounded-xl border border-blue-200">
+                        <i class="fa-solid fa-user-graduate"></i> Student Login
+                    </a>
+                    <a href="/education/student/register" class="flex items-center justify-center gap-2 p-2.5 bg-orange-50 text-orange-700 rounded-xl border border-orange-200">
+                        <i class="fa-solid fa-id-card"></i> Registration
+                    </a>
+                </div>
+
+                <!-- Navigation List -->
+                <div class="space-y-1 text-sm font-semibold text-slate-800">
+                    <a href="/education" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-house text-slate-400 w-5"></i> 1. Home Page
+                    </a>
+                    <a href="/education/about" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-building-columns text-slate-400 w-5"></i> 2. About Us & Director's Message
+                    </a>
+                    <a href="/education/free-education" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-emerald-50 text-emerald-800 font-bold transition">
+                        <i class="fa-solid fa-hand-holding-heart text-emerald-600 w-5"></i> 3. Free Education Project
+                    </a>
+                    <a href="/education/courses" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-book-open text-slate-400 w-5"></i> 4. Online Courses Catalog
+                    </a>
+                    <a href="/education/universities" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-university text-slate-400 w-5"></i> Partner Universities
+                    </a>
+                    <a href="javascript:void(0)" onclick="openFeeModal()" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition text-orange-600 font-bold">
+                        <i class="fa-solid fa-qrcode w-5"></i> Fee Submission (UPI / QR / Bank)
+                    </a>
+                    <a href="/education/online-classes" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-video text-slate-400 w-5"></i> 7. Online Classes
+                    </a>
+                    <a href="/education/online-exam" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-clipboard-question text-slate-400 w-5"></i> 8. Online Examination
+                    </a>
+                    <a href="/education/verify-certificate" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-shield-halved text-slate-400 w-5"></i> 9. Certificate Verification
+                    </a>
+                    <a href="/education/study-material" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-book text-slate-400 w-5"></i> 10. Download Study Material
+                    </a>
+                    <a href="/education/contact" class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-orange-50 hover:text-orange-600 transition">
+                        <i class="fa-solid fa-headset text-slate-400 w-5"></i> 11. Student Helpline & Contact
+                    </a>
+                </div>
+
+                <!-- Panel Logins Footer -->
+                <div class="border-t border-slate-200 pt-3 grid grid-cols-2 gap-2 text-xs font-bold">
+                    <a href="/education/counsellor/login" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl text-center hover:bg-slate-200 transition">
+                        Counsellor Login
+                    </a>
+                    <a href="/education/centre/login" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl text-center hover:bg-slate-200 transition">
+                        Franchise Login
+                    </a>
+                    <a href="/education/university" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl text-center hover:bg-slate-200 transition">
+                        University Panel
+                    </a>
+                    <% if (typeof userSession !== 'undefined' && userSession && userSession.eduAdminAuth) { %>
+                        <a href="/education/admin" class="p-2.5 bg-blue-900 text-white rounded-xl text-center hover:bg-blue-800 transition">
+                            Admin Dashboard
+                        </a>
+                    <% } else { %>
+                        <a href="/education/admin/login" class="p-2.5 bg-blue-900 text-white rounded-xl text-center hover:bg-blue-800 transition">
+                            Admin Login
+                        </a>
+                    <% } %>
+                </div>
+
+                <!-- Helpline in Drawer -->
+                <div class="bg-orange-50 p-3 rounded-2xl border border-orange-200 text-xs flex items-center justify-between">
+                    <div>
+                        <span class="text-orange-800 font-bold block">Admissions Helpline</span>
+                        <a href="tel:+919839332500" class="text-slate-700 font-bold">+91 9839332500</a>
+                    </div>
+                    <a href="https://wa.me/919839332500" target="_blank" class="px-3 py-1.5 bg-green-600 text-white font-bold rounded-lg text-xs">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </nav>

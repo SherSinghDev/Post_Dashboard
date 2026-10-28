@@ -1,0 +1,123 @@
+<%- include('header') %>
+
+<main class="flex-1 py-12 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+        <!-- Page Hero -->
+        <div class="bg-gradient-to-r from-emerald-800 via-teal-900 to-slate-900 text-white rounded-3xl p-8 sm:p-12 mb-12 shadow-xl relative overflow-hidden">
+            <div class="max-w-3xl space-y-4 relative z-10">
+                <span class="bg-emerald-500/30 text-emerald-300 text-xs font-black uppercase px-3 py-1 rounded-full border border-emerald-500/40">
+                    BSRF Vidya Abhiyan (मुफ्त शिक्षा अभियान)
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                    100% Free Education & Scholarship Project
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Binupur Seva Research Foundation believes that financial adversity should never stand between talent and university education. Apply under our flagship Vidya Abhiyan for 100% sponsored tuition fee programs in recognized universities.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-4 text-xs font-semibold">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> Zero Tuition Fee</span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> E-Books & Study Kit Included</span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> Job Assistance Support</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- Left: Eligibility & Scheme Details -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-black text-slate-900 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-id-card-clip text-emerald-600"></i> पात्रता और नियम (Eligibility Criteria)
+                    </h3>
+                    <ul class="space-y-3 text-xs text-slate-600">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+                            <span>विद्यार्थी 10वीं या 12वीं मान्यता प्राप्त बोर्ड से उत्तीर्ण होना चाहिए (न्यूनतम 50% अंक)।</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+                            <span>परिवार की वार्षिक आय ₹2.5 लाख से कम होनी चाहिए (आय प्रमाण पत्र आवश्यक)।</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+                            <span>अनाथ, दिव्यांग, सिंगल पेरेंट या आर्थिक रूप से कमजोर छात्रों को प्राथमिकता।</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+                            <span>चयन ऑनलाइन टेस्ट या पर्सनल इंटरव्यू के आधार पर किया जाएगा।</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-black text-slate-900 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-blue-600"></i> उपलब्ध कोर्स (Courses Covered)
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-semibold text-slate-700">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">BCA (Computer App)</div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">BBA (Management)</div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">BA / B.Com</div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">Web Development</div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">Digital Marketing</div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">Library Science</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right: Application Form -->
+            <div class="lg:col-span-5">
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-slate-200">
+                    <div class="mb-5">
+                        <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Online Form</span>
+                        <h3 class="text-xl font-black text-slate-900">Apply for Free Education</h3>
+                        <p class="text-xs text-slate-500 mt-1">Submit your preliminary application for BSRF Vidya Abhiyan scholarship.</p>
+                    </div>
+
+                    <form action="/education/quick-enquiry" method="POST" class="space-y-3.5 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Student Full Name *</label>
+                            <input type="text" name="name" required placeholder="Full Name as in 10th marksheet" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-500 bg-slate-50 text-xs">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Mobile / WhatsApp Number *</label>
+                            <input type="tel" name="phone" required placeholder="10-digit number" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-500 bg-slate-50 text-xs">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Email Address</label>
+                            <input type="email" name="email" placeholder="student@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-500 bg-slate-50 text-xs">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">Qualification</label>
+                                <select name="fatherName" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                                    <option value="10th Pass">10th Pass</option>
+                                    <option value="12th Pass">12th Pass</option>
+                                    <option value="Graduate">Graduation</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">City / District</label>
+                                <input type="text" name="city" placeholder="City" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Course Applied For *</label>
+                            <input type="text" name="courseInterested" required value="Free Education Scholarship" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-100 font-bold text-slate-800 text-xs" readonly>
+                        </div>
+                        <button type="submit" class="w-full mt-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-xs tracking-wider uppercase flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Scholarship Application
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<%- include('footer') %>

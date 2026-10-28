@@ -1,0 +1,58 @@
+<%- include('../header') %>
+
+<main class="flex-1 py-14 bg-slate-50 flex items-center justify-center">
+    <div class="max-w-md w-full mx-4">
+        
+        <div class="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 rounded-2xl bg-orange-100 text-orange-600 mx-auto flex items-center justify-center text-2xl shadow-inner mb-3">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Counsellor Workspace</h1>
+                <p class="text-xs text-slate-500 mt-1">Manage student leads, call logs, follow-ups & admission conversions</p>
+            </div>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="mb-5 p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation flex-shrink-0"></i>
+                    <span><%= error %></span>
+                </div>
+            <% } %>
+
+            <form action="/education/counsellor/login" method="POST" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Counsellor Email or ID *</label>
+                    <div class="relative">
+                        <i class="fa-regular fa-envelope absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <input type="text" id="counsellorUser" name="email" required value="counsellor@bsrf.org" placeholder="e.g. counsellor@bsrf.org or BSRF-COU-101" class="w-full pl-10 pr-3.5 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Password *</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <input type="password" id="counsellorPass" name="password" required value="123456" placeholder="Enter password" class="w-full pl-10 pr-3.5 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div class="p-3 bg-orange-50 rounded-2xl border border-orange-200 text-[11px] text-orange-950 flex items-center justify-between">
+                    <div>
+                        <span class="font-bold block">Demo Counsellor Credentials:</span>
+                        <span>ID: <strong>counsellor@bsrf.org</strong> &bull; Pass: <strong>123456</strong></span>
+                    </div>
+                    <button type="button" onclick="document.getElementById('counsellorUser').value='counsellor@bsrf.org';document.getElementById('counsellorPass').value='123456';" class="px-2.5 py-1 bg-orange-200 hover:bg-orange-300 text-orange-950 font-bold rounded-lg text-[10px] transition">
+                        Autofill
+                    </button>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login to Counsellor Panel
+                </button>
+            </form>
+        </div>
+
+    </div>
+</main>
+
+<%- include('../footer') %>

@@ -1,0 +1,118 @@
+<%- include('../header') %>
+
+<main class="flex-1 py-12 bg-slate-50">
+    <div class="max-w-2xl mx-auto px-4">
+        
+        <div class="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 rounded-2xl bg-orange-100 text-orange-600 mx-auto flex items-center justify-center text-2xl shadow-inner mb-3">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Student Online Registration</h1>
+                <p class="text-xs text-slate-500 mt-1">Register to start admission applications across 50+ UGC-approved universities</p>
+            </div>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="mb-5 p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation flex-shrink-0"></i>
+                    <span><%= error %></span>
+                </div>
+            <% } %>
+
+            <form action="/education/student/register" method="POST" class="space-y-4 text-xs">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Student Full Name *</label>
+                        <input type="text" name="fullName" required placeholder="Full Name as per 10th marksheet" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Email Address *</label>
+                        <input type="email" name="email" required placeholder="student@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Mobile Number *</label>
+                        <input type="tel" name="phone" required placeholder="10-digit Mobile No." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">WhatsApp Number</label>
+                        <input type="tel" name="whatsapp" placeholder="WhatsApp No." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Create Password *</label>
+                        <input type="password" name="password" required placeholder="Min 6 characters" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Date of Birth</label>
+                        <input type="date" name="dob" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-orange-500 bg-slate-50 text-xs font-semibold">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Father's Name</label>
+                        <input type="text" name="fatherName" placeholder="Father's name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Gender</label>
+                        <select name="gender" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Highest Qualification</label>
+                        <select name="qualification" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                            <option value="12th Pass">12th Pass</option>
+                            <option value="10th Pass">10th Pass</option>
+                            <option value="Graduate">Graduation</option>
+                            <option value="Post Graduate">Post Graduation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="sm:col-span-2">
+                        <label class="block font-bold text-slate-700 mb-1">Full Address</label>
+                        <input type="text" name="address" placeholder="House/Street, Landmark" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">City / District</label>
+                        <input type="text" name="city" placeholder="City" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                    </div>
+                </div>
+
+                <% if (centers && centers.length > 0) { %>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Admitted Via Franchise / Study Centre (Optional)</label>
+                        <select name="centerId" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                            <option value="">Direct Online Admission (BSRF Central Portal)</option>
+                            <% centers.forEach(function(c) { %>
+                                <option value="<%= c._id %>"><%= c.centerName %> (<%= c.city %> - <%= c.centerCode %>)</option>
+                            <% }); %>
+                        </select>
+                    </div>
+                <% } %>
+
+                <button type="submit" class="w-full mt-4 py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-user-check"></i> Complete Registration & Open Dashboard
+                </button>
+            </form>
+
+            <div class="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
+                Already registered? 
+                <a href="/education/student/login" class="font-extrabold text-blue-900 hover:underline">Student Login</a>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<%- include('../footer') %>
