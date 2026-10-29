@@ -327,7 +327,7 @@ async function seedEducationData() {
             name: "Rajesh Sharma",
             email: "counsellor@bsrf.org",
             password: hashedPass,
-            phone: "+91 9839332500",
+            phone: "+91 9403893297",
             department: "Central Admissions",
             target: 30,
             commissionRate: 5
@@ -341,10 +341,10 @@ async function seedEducationData() {
             email: "center@bsrf.org",
             password: hashedPass,
             phone: "+91 9876543210",
-            address: "Golghar, Pratap Market, Office-1B",
-            city: "Gorakhpur",
+            address: "Panchsheel Colony Chipyana Buzurg",
+            city: "Gaziabad",
             state: "Uttar Pradesh",
-            pincode: "273001",
+            pincode: "201009",
             commissionRate: 15,
             totalCommissionEarned: 12500,
             totalCommissionPaid: 5000
