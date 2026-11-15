@@ -15,13 +15,28 @@
     ***********************************-->
                             <div class="content-body">
                                 <div class="container">
-                                    <div class="d-flex justify-content-between mb-4 flex-wrap">
+                                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
                                         <div class="input-group w-auto mb-2 mb-xxl-0">
                                             <input type="text" placeholder="Search by name, city, or mobile"
                                                 class="form-control search-input" style="width: 300px;">
                                         </div>
 
-
+                                        <!-- Status Filter Buttons -->
+                                        <div class="d-flex align-items-center flex-wrap gap-2" id="statusFilterButtons">
+                                            <span class="fw-bold me-1 text-secondary"><i class="fa-solid fa-filter me-1"></i>Filter Status:</span>
+                                            <button type="button" class="btn btn-sm <%= (typeof currentStatus === 'undefined' || currentStatus === 'all' || !currentStatus) ? 'btn-primary active' : 'btn-outline-primary' %> status-filter-btn" data-filter="all" onclick="filterByStatus('all', this)">
+                                                All (<span id="count-all"><%= (typeof counts !== 'undefined' && counts.all !== undefined) ? counts.all : applications.length %></span>)
+                                            </button>
+                                            <button type="button" class="btn btn-sm <%= (typeof currentStatus !== 'undefined' && currentStatus === 'pending') ? 'btn-warning text-dark active' : 'btn-outline-warning' %> status-filter-btn" data-filter="pending" onclick="filterByStatus('pending', this)">
+                                                Pending (<span id="count-pending"><%= (typeof counts !== 'undefined' && counts.pending !== undefined) ? counts.pending : 0 %></span>)
+                                            </button>
+                                            <button type="button" class="btn btn-sm <%= (typeof currentStatus !== 'undefined' && currentStatus === 'interested') ? 'btn-success text-white active' : 'btn-outline-success' %> status-filter-btn" data-filter="interested" onclick="filterByStatus('interested', this)">
+                                                Interested (<span id="count-interested"><%= (typeof counts !== 'undefined' && counts.interested !== undefined) ? counts.interested : 0 %></span>)
+                                            </button>
+                                            <button type="button" class="btn btn-sm <%= (typeof currentStatus !== 'undefined' && (currentStatus === 'not interested' || currentStatus === 'not_interested')) ? 'btn-danger text-white active' : 'btn-outline-danger' %> status-filter-btn" data-filter="not interested" onclick="filterByStatus('not interested', this)">
+                                                Not Interested (<span id="count-not-interested"><%= (typeof counts !== 'undefined' && counts.notInterested !== undefined) ? counts.notInterested : 0 %></span>)
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -40,6 +55,7 @@
                                                                     <th>Post</th>
                                                                     <th>Experienced</th>
                                                                     <th>Address</th>
+                                                                    <th>Status</th>
                                                                     <th>Applied On</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -47,7 +63,7 @@
                                                             <tbody>
                                                                 <% if (applications.length> 0) { %>
                                                                     <% applications.forEach((app, index)=> { %>
-                                                                        <tr id="tr-<%= app._id %>">
+                                                                        <tr id="tr-<%= app._id %>" class="app-row" data-status="<%= (app.approveStatus || 'Pending').toLowerCase().trim() %>">
                                                                             <td>
                                                                                 <%= index + 1 %>
                                                                             </td>
@@ -73,33 +89,80 @@
                                                                                 <%= app.address %>
                                                                             </td>
                                                                             <td>
+                                                                                <% 
+                                                                                    let statusClass = "badge-warning";
+                                                                                    let currStatus = app.approveStatus || "Pending";
+                                                                                    let sLower = currStatus.toLowerCase().trim();
+                                                                                    if (sLower === "interested") {
+                                                                                        statusClass = "badge-success";
+                                                                                    } else if (sLower === "not interested") {
+                                                                                        statusClass = "badge-danger";
+                                                                                    } else if (sLower === "pending") {
+                                                                                        statusClass = "badge-warning";
+                                                                                    }
+                                                                                %>
+                                                                                <span class="badge <%= statusClass %> status-badge status-badge-<%= app._id %>" style="font-size: 12px; padding: 6px 12px;">
+                                                                                    <%= currStatus %>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td>
                                                                                 <%= new Date(app.createdAt).toLocaleString() %>
                                                                             </td>
                                                                             <td>
-                                                                                <a href="tel:+91 <%= app.mob %>"
-                                                                                    class=" btn btn-sm btn-info">
-                                                                                    <i class="fa-solid fa-phone"
-                                                                                        style="color:white;"></i>
-                                                                                </a>
-                                                                                <a href="javascript:void(0)"
-                                                                                    data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-success view-btn"
-                                                                                    title="View Details"><i
-                                                                                        class="fa-solid fa-eye"></i></a>
-                                                                                <a href="javascript:void(0)"
-                                                                                    data-id="<%= app._id %>"
-                                                                                    class="btn btn-sm btn-danger delete-btn"><i
-                                                                                        class="fa-solid fa-trash"></i></a>
+                                                                                <div class="d-flex align-items-center justify-content-center gap-1">
+                                                                                    <a href="tel:+91 <%= app.mob %>"
+                                                                                        class=" btn btn-sm btn-info" title="Call">
+                                                                                        <i class="fa-solid fa-phone"
+                                                                                            style="color:white;"></i>
+                                                                                    </a>
+                                                                                    <a href="javascript:void(0)"
+                                                                                        data-id="<%= app._id %>"
+                                                                                        class="btn btn-sm btn-success view-btn"
+                                                                                        title="View Details"><i
+                                                                                            class="fa-solid fa-eye"></i></a>
+                                                                                    <!-- Change Status Dropdown Action Button -->
+                                                                                    <div class="dropdown d-inline-block">
+                                                                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Change Status">
+                                                                                            <i class="fa-solid fa-pen-to-square"></i> Status
+                                                                                        </button>
+                                                                                        <ul class="dropdown-menu shadow">
+                                                                                            <li><h6 class="dropdown-header">Change Status</h6></li>
+                                                                                            <li>
+                                                                                                <a class="dropdown-item change-status-btn text-warning fw-semibold" href="javascript:void(0)" data-id="<%= app._id %>" data-status="Pending">
+                                                                                                    <i class="fa-solid fa-clock me-1"></i> Pending
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <a class="dropdown-item change-status-btn text-success fw-semibold" href="javascript:void(0)" data-id="<%= app._id %>" data-status="Interested">
+                                                                                                    <i class="fa-solid fa-check-circle me-1"></i> Interested
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <a class="dropdown-item change-status-btn text-danger fw-semibold" href="javascript:void(0)" data-id="<%= app._id %>" data-status="Not Interested">
+                                                                                                    <i class="fa-solid fa-circle-xmark me-1"></i> Not Interested
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <a href="javascript:void(0)"
+                                                                                        data-id="<%= app._id %>"
+                                                                                        class="btn btn-sm btn-danger delete-btn" title="Delete"><i
+                                                                                            class="fa-solid fa-trash"></i></a>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                         <% }) %>
                                                                             <% } else { %>
-                                                                                <tr>
-                                                                                    <td colspan="10"
+                                                                                <tr id="no-records-row">
+                                                                                    <td colspan="11"
                                                                                         class="text-center text-muted">
                                                                                         No applications found</td>
                                                                                 </tr>
                                                                                 <% } %>
+                                                                            <tr id="no-filtered-records-row" style="display: none;">
+                                                                                <td colspan="11" class="text-center text-muted">
+                                                                                    No applications found matching filter</td>
+                                                                            </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -235,11 +298,156 @@
             <script src="/js/pages/patients.js"></script>
 
             <script>
-                // 🔍 Search filter
+                // 🔍 Filter & Search Functions
+                function applyFilters() {
+                    const activeBtn = $('.status-filter-btn.active');
+                    const activeFilter = (activeBtn.data('filter') || 'all').toLowerCase().trim();
+                    const searchVal = ($('.search-input').val() || '').toLowerCase().trim();
+
+                    let visibleCount = 0;
+                    $('.app-row').each(function () {
+                        const rowStatus = ($(this).attr('data-status') || '').toLowerCase().trim();
+                        const rowText = $(this).text().toLowerCase();
+
+                        const matchesStatus = (activeFilter === 'all' || rowStatus === activeFilter);
+                        const matchesSearch = (!searchVal || rowText.indexOf(searchVal) > -1);
+
+                        if (matchesStatus && matchesSearch) {
+                            $(this).show();
+                            visibleCount++;
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    if (visibleCount === 0 && $('.app-row').length > 0) {
+                        $('#no-filtered-records-row').show();
+                    } else {
+                        $('#no-filtered-records-row').hide();
+                    }
+                }
+
+                function filterByStatus(filterValue, btnElement) {
+                    const totalRowsInDom = $('.app-row').length;
+                    const totalCountAll = parseInt($('#count-all').text()) || 0;
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const serverStatus = urlParams.get('status');
+
+                    // If loaded with a server filter and doesn't contain all rows, navigate
+                    if (serverStatus && serverStatus !== 'all' && totalRowsInDom < totalCountAll) {
+                        window.location.href = `/applications/rojgaar/applied?status=${encodeURIComponent(filterValue)}`;
+                        return;
+                    }
+
+                    // Update button styling
+                    $('.status-filter-btn').removeClass('active btn-primary btn-warning text-dark btn-success btn-danger text-white');
+                    $('.status-filter-btn[data-filter="all"]').addClass('btn-outline-primary');
+                    $('.status-filter-btn[data-filter="pending"]').addClass('btn-outline-warning');
+                    $('.status-filter-btn[data-filter="interested"]').addClass('btn-outline-success');
+                    $('.status-filter-btn[data-filter="not interested"]').addClass('btn-outline-danger');
+
+                    if (filterValue === 'all') {
+                        $(btnElement).removeClass('btn-outline-primary').addClass('btn-primary active');
+                    } else if (filterValue === 'pending') {
+                        $(btnElement).removeClass('btn-outline-warning').addClass('btn-warning text-dark active');
+                    } else if (filterValue === 'interested') {
+                        $(btnElement).removeClass('btn-outline-success').addClass('btn-success text-white active');
+                    } else if (filterValue === 'not interested') {
+                        $(btnElement).removeClass('btn-outline-danger').addClass('btn-danger text-white active');
+                    }
+
+                    applyFilters();
+                }
+
+                function updateCounts() {
+                    let all = 0, pending = 0, interested = 0, notInterested = 0;
+                    $('.app-row').each(function () {
+                        if ($(this).is(':visible') || $(this).css('display') !== 'none' || $(this).data('deleted') !== true) {
+                            all++;
+                            const s = ($(this).attr('data-status') || '').toLowerCase().trim();
+                            if (s === 'interested') interested++;
+                            else if (s === 'not interested') notInterested++;
+                            else pending++;
+                        }
+                    });
+                    $('#count-all').text(all);
+                    $('#count-pending').text(pending);
+                    $('#count-interested').text(interested);
+                    $('#count-not-interested').text(notInterested);
+                }
+
                 $(document).on('keyup', '.search-input', function () {
-                    const value = $(this).val().toLowerCase();
-                    $('tbody tr').filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                    applyFilters();
+                });
+
+                // Change status handler
+                $(document).on('click', '.change-status-btn', function (e) {
+                    e.preventDefault();
+                    const id = $(this).data('id');
+                    const newStatus = $(this).data('status');
+                    const $row = $(`#tr-${id}`);
+
+                    Swal.fire({
+                        title: `Change status to "${newStatus}"?`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, update',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch(`/applications/rojgaar/update-status/${id}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ status: newStatus })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Updated!',
+                                        text: data.message || `Status updated to ${newStatus}`,
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+
+                                    // Update data-status on the row
+                                    $row.attr('data-status', newStatus.toLowerCase().trim());
+
+                                    // Update badge
+                                    let badgeClass = 'badge-warning';
+                                    const sLower = newStatus.toLowerCase().trim();
+                                    if (sLower === 'interested') badgeClass = 'badge-success';
+                                    else if (sLower === 'not interested') badgeClass = 'badge-danger';
+                                    else if (sLower === 'pending') badgeClass = 'badge-warning';
+
+                                    $(`.status-badge-${id}`)
+                                        .removeClass('badge-warning badge-success badge-danger')
+                                        .addClass(badgeClass)
+                                        .text(newStatus);
+
+                                    // Update counts and re-apply filters
+                                    updateCounts();
+                                    applyFilters();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Failed',
+                                        text: data.message || 'Could not update status'
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: err.message || 'Network error'
+                                });
+                            });
+                        }
                     });
                 });
 
@@ -565,7 +773,11 @@
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.success) {
-                                        $(`#tr-${id}`).fadeOut(800);
+                                        $(`#tr-${id}`).fadeOut(400, function() {
+                                            $(this).remove();
+                                            updateCounts();
+                                            applyFilters();
+                                        });
                                         Swal.fire("Deleted!", "Application deleted successfully.", "success");
                                     }
                                 })

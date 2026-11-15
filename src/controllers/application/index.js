@@ -449,113 +449,100 @@ router.get('/rojgaar/applied', async (req, res) => {
   if (req.session.userId) {
     try {
       let user = await Users.findOne({ _id: req.session.userId })
-      // const applications = await UserApplication.find().sort({ createdAt: -1 });
-      let result;
+      
+      let baseMatch = {};
       if (user.role == "Coordinator") {
-        result = await rojgaar.aggregate([
-          {
-            $sort: { createdAt: -1 } // latest first
-          },
-          {
-            $match: { approveStatus: "Pending", parentUser: user._id }
-          },
-          {
-            $lookup: {
-              from: "users",              // collection name (must match in lowercase plural)
-              localField: "parentUser",   // field in UserApplication
-              foreignField: "_id", // field in User
-              as: "referrer",             // alias for matched user
-            },
-          },
-          {
-            $unwind: {
-              path: "$referrer",
-              preserveNullAndEmptyArrays: true, // keep even if no referrer found
-            },
-          },
-          {
-            $project: {
-              // keep all original fields
-              name: 1,
-              address: 1,
-              mob: 1,
-              qualification: 1,
-              isExperienced: 1,
-              experiences: 1,
-              age: 1,
-              selfPhoto: 1,
-              idProofFront: 1,
-              idProofBack: 1,
-              post: 1,
-              approveStatus: 1,
-              referredBy: 1,
-              referrerName: 1,
-              type: 1,
-              position: 1,
-              createdAt: 1,
-              // only specific fields from referral user
-              'referrer._id': 1,
-              'referrer.name': 1,
-            }
-          },
-        ]);
+        baseMatch.parentUser = user._id;
       }
-      else {
-        result = await rojgaar.aggregate([
-          {
-            $sort: { createdAt: -1 } // latest first
-          },
-          {
-            $match: { approveStatus: "Pending" }
-          },
-          {
-            $lookup: {
-              from: "users",              // collection name (must match in lowercase plural)
-              localField: "parentUser",   // field in UserApplication
-              foreignField: "_id", // field in User
-              as: "referrer",             // alias for matched user
-            },
-          },
-          {
-            $unwind: {
-              path: "$referrer",
-              preserveNullAndEmptyArrays: true, // keep even if no referrer found
-            },
-          },
-          {
-            $project: {
-              // keep all original fields
-              name: 1,
-              address: 1,
-              mob: 1,
-              qualification: 1,
-              isExperienced: 1,
-              experiences: 1,
-              age: 1,
-              selfPhoto: 1,
-              idProofFront: 1,
-              idProofBack: 1,
-              post: 1,
-              approveStatus: 1,
-              referredBy: 1,
-              referrerName: 1,
-              type: 1,
-              position: 1,
-              createdAt: 1,
-              // only specific fields from referral user
-              'referrer._id': 1,
-              'referrer.name': 1,
-            }
-          },
-        ]);
+      baseMatch.approveStatus = { $nin: ["Approved", "Cancelled"] };
+
+      // Compute counts for tabs/filter buttons
+      const countAgg = await rojgaar.aggregate([
+        { $match: baseMatch },
+        {
+          $group: {
+            _id: { $toLower: "$approveStatus" },
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+
+      let counts = { all: 0, pending: 0, interested: 0, notInterested: 0 };
+      countAgg.forEach(c => {
+        counts.all += c.count;
+        if (c._id === "interested") counts.interested += c.count;
+        else if (c._id === "not interested" || c._id === "not_interested") counts.notInterested += c.count;
+        else counts.pending += c.count;
+      });
+
+      // Filter query based on req.query.status
+      let matchQuery = { ...baseMatch };
+      const currentStatus = (req.query.status || 'all').toLowerCase().trim();
+
+      if (currentStatus === 'pending') {
+        matchQuery.approveStatus = { $in: ["Pending", "pending", null] };
+      } else if (currentStatus === 'interested') {
+        matchQuery.approveStatus = { $in: ["Interested", "interested"] };
+      } else if (currentStatus === 'not interested' || currentStatus === 'not_interested') {
+        matchQuery.approveStatus = { $in: ["Not Interested", "not interested"] };
       }
 
+      let result = await rojgaar.aggregate([
+        {
+          $match: matchQuery
+        },
+        {
+          $sort: { createdAt: -1 } // latest first
+        },
+        {
+          $lookup: {
+            from: "users",              // collection name
+            localField: "parentUser",   // field in UserApplication
+            foreignField: "_id",        // field in User
+            as: "referrer",             // alias for matched user
+          },
+        },
+        {
+          $unwind: {
+            path: "$referrer",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $project: {
+            name: 1,
+            address: 1,
+            mob: 1,
+            qualification: 1,
+            isExperienced: 1,
+            experiences: 1,
+            age: 1,
+            selfPhoto: 1,
+            idProofFront: 1,
+            idProofBack: 1,
+            post: 1,
+            approveStatus: 1,
+            referredBy: 1,
+            referrerName: 1,
+            type: 1,
+            position: 1,
+            createdAt: 1,
+            'referrer._id': 1,
+            'referrer.name': 1,
+          }
+        },
+      ]);
 
-      // console.log(result);
       let users = await Users.find({ role: "Coordinator" }).select('name referralCode userId -_id');
 
-
-      res.render('rojgaarsathi', { applications: result, page: "Rojgaar Sathi", user, users });
+      res.render('rojgaarsathi', { 
+        applications: result, 
+        page: "Rojgaar Sathi", 
+        user, 
+        users,
+        currentStatus,
+        counts
+      });
     } catch (error) {
       console.log(error);
       res.redirect('/auth/login')
@@ -733,6 +720,44 @@ router.delete('/rojgaar/delete/:id', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+// Update status of Rojgaar application (pending, interested, not interested)
+const handleRojgaarStatusUpdate = async (req, res) => {
+  try {
+    const { status } = req.body;
+    let formattedStatus = "Pending";
+    if (status) {
+      const lower = status.toLowerCase().trim();
+      if (lower === "interested") formattedStatus = "Interested";
+      else if (lower === "not interested" || lower === "not_interested") formattedStatus = "Not Interested";
+      else if (lower === "pending") formattedStatus = "Pending";
+      else formattedStatus = status;
+    }
+
+    const updated = await rojgaar.findByIdAndUpdate(
+      req.params.id,
+      { $set: { approveStatus: formattedStatus } },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ success: false, message: "Application not found" });
+    }
+
+    res.json({
+      success: true,
+      message: `Status updated to ${formattedStatus}`,
+      status: formattedStatus
+    });
+  } catch (err) {
+    console.error("Error updating rojgaar status:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+router.post('/rojgaar/update-status/:id', handleRojgaarStatusUpdate);
+router.put('/rojgaar/update-status/:id', handleRojgaarStatusUpdate);
+router.post('/rojgaar/status/:id', handleRojgaarStatusUpdate);
 
 
 router.get('/type/:type', async (req, res) => {

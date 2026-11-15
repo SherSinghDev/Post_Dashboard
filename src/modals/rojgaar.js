@@ -55,6 +55,11 @@ const userApplySchema = new Schema({
             "Approved",
             "Pending",
             "Cancelled",
+            "Interested",
+            "Not Interested",
+            "pending",
+            "interested",
+            "not interested"
         ],
         default: "Pending",
     },
