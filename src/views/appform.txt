@@ -268,14 +268,10 @@
                                                     class="form-select">
                                                     <option value="">Select Position</option>
                                                     <% if(type=='singleorder' ){ %>
-                                                        <option value="Team Captain">Team Captain</option>
-                                                        <option value="District Advisor">District Advisor</option>
-                                                        <option value="Assistant District Advisor">Assistant District
-                                                            Advisor</option>
-                                                        <option value="Block Advisor">Block Advisor</option>
-                                                        <option value="City Advisor">City Advisor</option>
-                                                        <option value="Centre Advisor">Centre Advisor</option>
-                                                        </option>
+                                                        <option value="State head">State head</option>
+                                                        <option value="District officer">District officer</option>
+                                                        <option value="Block officer">Block officer</option>
+                                                        <option value="Field officer">Field officer</option>
                                                         <% } else { %>
                                                             <option value="Program Manager">Program Manager</option>
                                                             <option value="District Head">District Head</option>
