@@ -98,6 +98,37 @@ router.get('/', async (req, res) => {
             })).length
         }
 
+        if (user.role == 'single_order_manager') {
+            const singleOrderTypeRegex = new RegExp("^singleorder$", "i");
+            patients = (await PatientForm.find({
+                type: singleOrderTypeRegex,
+                "otherStatus.doctorStatus": { $in: [null, ""] },
+                "otherStatus.supportStatus": { $in: [null, "", undefined] }
+            })).length;
+            varifiedPatients = (await PatientForm.find({
+                type: singleOrderTypeRegex,
+                "otherStatus.doctorStatus": { $nin: [null, ""] },
+                "otherStatus.trackingIdStatus": { $in: [null, ""] },
+                "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+            })).length;
+            pendingpatients = (await PatientForm.find({
+                type: singleOrderTypeRegex,
+                "otherStatus.doctorStatus": { $in: [null, ""] },
+                "otherStatus.supportStatus": { $nin: [null, ""] },
+                "otherStatus.trackingIdStatus": { $in: [null, ""] },
+                "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+            })).length;
+            patientsOrders = (await PatientForm.find({
+                type: singleOrderTypeRegex,
+                "otherStatus.trackingIdStatus": { $nin: [null, ""] },
+                "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] }
+            })).length;
+            deliveredOrders = (await PatientForm.find({
+                type: singleOrderTypeRegex,
+                "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] }
+            })).length;
+        }
+
         let networkCounts = { total: 0, l1: 0 };
         if (user.type === 'stockorder') {
             const l1Conditions = [{ parentUser: user._id }];

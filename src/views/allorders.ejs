@@ -12,7 +12,7 @@
         <!--**********************************
             Sidebar start
         ***********************************-->
-        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" || user.role=="stock_operator"){%>
+        <% if(user.role=="Admin" || user.role=="Coordinator" || user.role=="doc" || user.role=="stock_operator" || user.role=="single_order_manager"){%>
             <%- include('./globals/sidebar') %>
                 <%} else{ %>
                     <div class="deznav">

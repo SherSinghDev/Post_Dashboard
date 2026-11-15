@@ -360,7 +360,19 @@
                 </li>
                 <% } %>
 
-                    <% if(user.role!='doc' && user.type!='stockorder' && user.role!='stock_operator' ) { %>
+                <% if(user.role=='single_order_manager' ) { %>
+                <!-- Not Interested Patients (Single Order Manager) -->
+                <li>
+                    <a href="/patientform/notinterestedpatients" aria-expanded="false">
+                        <span class="nav-icon-box">
+                            <i class="fas fa-user-times"></i>
+                        </span>
+                        <span class="nav-text">Not Interested Patients</span>
+                    </a>
+                </li>
+                <% } %>
+
+                    <% if(user.role!='doc' && user.type!='stockorder' && user.role!='stock_operator' && user.role!='single_order_manager' ) { %>
                         <!-- Verified Users / Your Users -->
                         <li>
                             <a href="/users" aria-expanded="false">
@@ -501,7 +513,7 @@
                                                     </a>
                                                 </li>
 
-                                                <% if(user.role!='doc' && user.type!='singleorder' ) { %>
+                                                <% if(user.role!='doc' && user.type!='singleorder' && user.role!='single_order_manager' ) { %>
                                                     <!-- Money Transactions -->
                                                     <li
                                                         class="<%- (user.role=='Admin' || user.type=='stockorder' || user.role=='stock_operator') ? 'd-none' : '' %>">

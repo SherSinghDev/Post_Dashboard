@@ -226,6 +226,12 @@ router.get('/patients', async (req, res) => {
           "otherStatus.supportStatus": { $in: [null, "", undefined] },
           
         };
+      } else if (user.role == "single_order_manager") {
+        matchQuery = {
+          "otherStatus.doctorStatus": { $in: [null, ""] },
+          "otherStatus.supportStatus": { $in: [null, "", undefined] },
+          type: { $regex: new RegExp("^singleorder$", "i") }
+        };
       } else {
         matchQuery = {
           "otherStatus.doctorStatus": { $in: [null, ""] },
@@ -356,6 +362,13 @@ router.get('/varifiedpatients', async (req, res) => {
           "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
           
         };
+      } else if (user.role == "single_order_manager") {
+        matchQuery = {
+          "otherStatus.doctorStatus": { $nin: [null, ""] },
+          "otherStatus.trackingIdStatus": { $in: [null, ""] },
+          "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+          type: { $regex: new RegExp("^singleorder$", "i") }
+        };
       } else {
         matchQuery = {
           "otherStatus.doctorStatus": { $nin: [null, ""] },
@@ -473,17 +486,25 @@ router.get('/notinterestedpatients', async (req, res) => {
       
 
 
+      let notInterestedMatch = {
+        "otherStatus.patientStatus": "not interested",
+        "otherStatus.supportStatus": "not interested",
+        "otherStatus.officeStatus": "not interested",
+        "otherStatus.adminStatus": "not interested",
+        "otherStatus.postOfficeStatus": "not interested",
+        "otherStatus.trackingIdStatus": "not interested",
+        "otherStatus.deliveryStatus": "not interested"
+      };
+
+      if (user.role === 'single_order_manager') {
+        notInterestedMatch.type = { $regex: new RegExp("^singleorder$", "i") };
+      }
+
       result = await PatientForm.aggregate([
         {
           $match: {
               ...dateMatch,
-            "otherStatus.patientStatus": "not interested",
-            "otherStatus.supportStatus": "not interested",
-            "otherStatus.officeStatus": "not interested",
-            "otherStatus.adminStatus": "not interested",
-            "otherStatus.postOfficeStatus": "not interested",
-            "otherStatus.trackingIdStatus": "not interested",
-            "otherStatus.deliveryStatus": "not interested"
+              ...notInterestedMatch
           }
         }
         ,
@@ -754,6 +775,72 @@ router.get('/pendingpatients', async (req, res) => {
             "allParents": 1}
           }
         ]);
+      } else if (user.role == "single_order_manager") {
+      result = await PatientForm.aggregate([
+          {
+            $match: {
+              ...dateMatch,
+              "otherStatus.doctorStatus": { $in: [null, ""] },
+              "otherStatus.supportStatus": { $nin: [null, ""] },
+              "otherStatus.trackingIdStatus": { $in: [null, ""] },
+              "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+              type: { $regex: new RegExp("^singleorder$", "i") }
+            }
+          }
+          ,
+          {
+            $sort: { createdAt: -1 } // latest first
+          },
+          {
+            $lookup: {
+              from: "users",                // users collection
+              localField: "referredBy",     // referral code in PatientForm
+              foreignField: "userId", // referral code in User
+              as: "referrer"
+            }
+          },
+          {
+            $unwind: {
+              path: "$referrer",
+              preserveNullAndEmptyArrays: true // keep even if no referrer
+            }
+          },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$referrer.parentUser",
+            connectFromField: "parentUser",
+            connectToField: "_id",
+            as: "allParents",
+            depthField: "level"
+          }
+        },
+          {
+            $project: {
+              patientName: 1,
+              fatherOrHusbandName: 1,
+              gender: 1,
+              houseOrStreet: 1,
+              locality: 1,
+              cityOrDistrict: 1,
+              state: 1,
+              landmark: 1,
+              pinCode: 1,
+              mobileNumber: 1,
+              emergencyContact: 1,
+              referredBy: 1,
+              diseaseName: 1,
+              medicalReport: 1,
+              otherStatus: 1,
+              registerNo: 1,
+              createdAt: 1,
+              duration: 1,
+              type: 1,
+              // only select _id and name from the referred user
+              "referrer": 1,
+            "allParents": 1}
+          }
+        ]);
       } else {
 
         
@@ -940,14 +1027,23 @@ router.get('/orders', async (req, res) => {
         
 
 
+      let ordersMatch = {
+        // "otherStatus.doctorStatus": { $nin: [null, ""] },
+        "otherStatus.trackingIdStatus": { $nin: [null, ""] },
+        // "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
+      };
+
+      if (user.role === 'single_order_manager') {
+        ordersMatch.type = { $regex: new RegExp("^singleorder$", "i") };
+      } else {
+        ordersMatch.type = { $ne: "stockorder" };
+      }
+
       result = await PatientForm.aggregate([
           {
             $match: {
               ...dateMatch,
-              // "otherStatus.doctorStatus": { $nin: [null, ""] },
-              "otherStatus.trackingIdStatus": { $nin: [null, ""] },
-              // "otherStatus.deliveryStatus": { $nin: ["delivered", "Delivered", "DELIVERED"] },
-              type: { $ne: "stockorder" }
+              ...ordersMatch
             }
           }
           ,
@@ -1119,12 +1215,21 @@ router.get('/delivered', async (req, res) => {
         
 
 
+      let deliveredMatch = {
+        "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] }
+      };
+
+      if (user.role === 'single_order_manager') {
+        deliveredMatch.type = { $regex: new RegExp("^singleorder$", "i") };
+      } else {
+        deliveredMatch.type = { $ne: "stockorder" };
+      }
+
       result = await PatientForm.aggregate([
           {
             $match: {
               ...dateMatch,
-              "otherStatus.deliveryStatus": { $in: ["delivered", "Delivered", "DELIVERED"] },
-              type: { $ne: "stockorder" }
+              ...deliveredMatch
             }
           }
           ,
