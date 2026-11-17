@@ -11,6 +11,7 @@ const users = require('../../modals/users');
 const rojgaar = require('../../modals/rojgaar');
 const stock = require('../../modals/stock');
 const { sendToSuperfone } = require('../../services/superfoneWebhook');
+const { sendSalaryGuideEmail } = require('../../services/resendService');
 
 const fs = require('fs');
 
@@ -836,18 +837,21 @@ router.post(
       console.log(req.body);
 
 
-      let appUser = await UserApplication.findOne({ _id: req.params.id }).select('-approveStatus -_id -__v -createdAt')
-
+      let appUser = await UserApplication.findOne({ _id: req.params.id }).select('-approveStatus -_id -__v -createdAt');
+      if (!appUser) {
+        appUser = await rojgaar.findOne({ _id: req.params.id }).select('-approveStatus -_id -__v -createdAt');
+      }
 
       // extract file paths safely
-      const profilePicture = req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : appUser.profilePicture;
-      const idDocument = req.files['idDocument'] ? `/uploads/documents/${req.files['idDocument'][0].filename}` : appUser.idDocument;
-      const otherDocument = req.files['otherDocument'] ? `/uploads/documents/${req.files['otherDocument'][0].filename}` : appUser.otherDocument;
-      const receiptUrl = req.files['receiptUrl'] ? `/uploads/documents/${req.files['receiptUrl'][0].filename}` : appUser.payment.receiptUrl;
+      const profilePicture = req.files && req.files['profilePicture'] ? `/uploads/documents/${req.files['profilePicture'][0].filename}` : (appUser ? appUser.profilePicture : '');
+      const idDocument = req.files && req.files['idDocument'] ? `/uploads/documents/${req.files['idDocument'][0].filename}` : (appUser ? appUser.idDocument : '');
+      const otherDocument = req.files && req.files['otherDocument'] ? `/uploads/documents/${req.files['otherDocument'][0].filename}` : (appUser ? appUser.otherDocument : '');
+      const receiptUrl = req.files && req.files['receiptUrl'] ? `/uploads/documents/${req.files['receiptUrl'][0].filename}` : (appUser && appUser.payment ? appUser.payment.receiptUrl : '');
 
-      let referralCode = "TL-" + nanoid(6).toUpperCase()
+      let referralCode = "TL-" + nanoid(6).toUpperCase();
 
       await UserApplication.findByIdAndUpdate(req.params.id, { approveStatus: "Approved" });
+      await rojgaar.findByIdAndUpdate(req.params.id, { approveStatus: "Approved" });
 
       // 🧩 Find the last patient entry for this formType
       const lastUser = await Users.findOne().sort({ createdAt: -1 }).select("userId")
@@ -941,6 +945,38 @@ router.post(
         PowerWellnessCare: 0,
         TotalWellnessCare: 0,
       });
+
+      // Send Salary Guide Email via Resend for Single Order users only (not for stock order)
+      try {
+        const userType = (type || (appUser && appUser.type) || '').toLowerCase().trim();
+        const isStockOrder = userType === 'stockorder' || userType === 'stock_order';
+        const recipientEmail = (email || (appUser && appUser.email) || '').trim();
+
+        if (!isStockOrder && recipientEmail) {
+          const candidateName = name || (appUser && appUser.name) || 'Candidate';
+          const candidatePosition = position || (appUser && appUser.position) || 'Field Officer';
+
+          sendSalaryGuideEmail({
+            to: recipientEmail,
+            name: candidateName,
+            position: candidatePosition
+          }).then((emailResult) => {
+            if (emailResult && emailResult.success) {
+              console.log(`[Resend] Successfully sent salary guide to ${recipientEmail} for position ${candidatePosition}`);
+            } else {
+              console.error(`[Resend] Failed to send email to ${recipientEmail}:`, emailResult ? emailResult.error : 'Unknown error');
+            }
+          }).catch((err) => {
+            console.error(`[Resend] Error sending email to ${recipientEmail}:`, err.message);
+          });
+        } else if (isStockOrder) {
+          console.log(`[Resend] Skipping salary guide email: user "${name}" is of stock order type.`);
+        } else if (!recipientEmail) {
+          console.log(`[Resend] Skipping salary guide email: no email address provided for user "${name}".`);
+        }
+      } catch (emailErr) {
+        console.error('[Resend] Unexpected error triggering salary guide email:', emailErr);
+      }
 
       res.status(201).json({
         success: true,
