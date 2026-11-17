@@ -115,6 +115,15 @@
                                                                                         <i class="fa-solid fa-phone"
                                                                                             style="color:white;"></i>
                                                                                     </a>
+                                                                                    <% if (app.mob) { 
+                                                                                        let cleanMob = app.mob.toString().replace(/[^0-9]/g, '');
+                                                                                        if (cleanMob.length === 10) cleanMob = '91' + cleanMob;
+                                                                                    %>
+                                                                                    <a href="https://wa.me/<%= cleanMob %>" target="_blank"
+                                                                                        class="btn btn-sm text-white" style="background-color: #25D366; border-color: #25D366;" title="WhatsApp">
+                                                                                        <i class="fa-brands fa-whatsapp" style="color:white; font-size: 15px;"></i>
+                                                                                    </a>
+                                                                                    <% } %>
                                                                                     <a href="javascript:void(0)"
                                                                                         data-id="<%= app._id %>"
                                                                                         class="btn btn-sm btn-success view-btn"
