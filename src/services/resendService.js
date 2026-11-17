@@ -4,7 +4,9 @@
  */
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const RESEND_FROM = process.env.RESEND_FROM || 'BINUPUR SEVA RESEARCH FOUNDATION <onboarding@resend.dev>';
+const RESEND_FROM = process.env.RESEND_FROM || 'BSRF india <info@bsrfindia.com>';
+const RESEND_REPLY_TO = 'info@bsrfindia.com';
+const FALLBACK_FROM = 'BSRF india <onboarding@resend.dev>';
 
 /**
  * Returns plain text and HTML templates for Field Officer
@@ -686,22 +688,41 @@ async function sendSalaryGuideEmail({ to, name, position }) {
   const { subject, text, html } = getGuideContent(position, name);
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    let emailPayload = {
+      from: RESEND_FROM,
+      to: [to],
+      subject,
+      text,
+      html,
+      reply_to: RESEND_REPLY_TO
+    };
+
+    let response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        from: RESEND_FROM,
-        to: [to],
-        subject,
-        text,
-        html
-      })
+      body: JSON.stringify(emailPayload)
     });
 
-    const data = await response.json();
+    let data = await response.json();
+
+    // If custom domain is not yet verified on Resend, automatically fallback to sandbox sender
+    if (!response.ok && data && data.message && data.message.includes('not verified')) {
+      console.warn(`[ResendService] ${RESEND_FROM} domain not verified on Resend yet. Retrying with verified sandbox sender...`);
+      emailPayload.from = FALLBACK_FROM;
+
+      response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emailPayload)
+      });
+      data = await response.json();
+    }
 
     if (response.ok) {
       console.log(`[ResendService] Email sent successfully to ${to} for position ${position}. ID: ${data.id}`);
