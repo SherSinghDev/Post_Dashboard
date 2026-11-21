@@ -46,23 +46,6 @@ router.post(
 
       let ref = referredBy || "Filled By Patient";
 
-      // Check if mobile or emergency number already exists anywhere
-      const existingPatient = await PatientForm.findOne({
-        $or: [
-          { mobileNumber: mobileNumber },
-          { emergencyContact: mobileNumber },
-          { mobileNumber: emergencyContact },
-          { emergencyContact: emergencyContact }
-        ]
-      });
-
-      if (existingPatient) {
-        return res.status(400).json({
-          created: false,
-          message: "This number is already used as a mobile or emergency contact for another patient."
-        });
-      }
-
       // extract file paths safely
       let medicalReport = req.file ? `/uploads/documents/${req.file.filename}` : null;
 
