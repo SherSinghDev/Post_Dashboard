@@ -334,7 +334,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Direct Officers (Single Order) -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
+                                                                    <div class="col-xl-3 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
                                                                         data-category="users"
                                                                         data-title="direct officers team child single order">
                                                                         <div class="dash-card">
@@ -357,7 +357,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Total Organization Team (Single Order) -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
+                                                                    <div class="col-xl-3 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
                                                                         data-category="users"
                                                                         data-title="total organization team downline single order">
                                                                         <div class="dash-card">
@@ -380,7 +380,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Team Referred Patients (Single Order) -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
+                                                                    <div class="col-xl-3 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
                                                                         data-category="patients"
                                                                         data-title="team referred patients single order">
                                                                         <div class="dash-card">
@@ -397,6 +397,49 @@
                                                                             </div>
                                                                             <a href="/users/team?tab=patients" class="dash-card-action">
                                                                                 <span>View Team Patients</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Team Delivered Orders (Single Order) with Month Chooser -->
+                                                                    <div class="col-xl-3 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
+                                                                        data-category="orders"
+                                                                        data-title="team delivered orders single order month">
+                                                                        <div class="dash-card">
+                                                                            <div class="d-flex align-items-start justify-content-between mb-2">
+                                                                                <div style="flex: 1; min-width: 0;">
+                                                                                    <div class="dash-card-title text-truncate">Delivered Orders / डिलीवर ऑर्डर</div>
+                                                                                    <div class="d-flex align-items-baseline gap-2 mt-1">
+                                                                                        <h3 class="dash-card-value" style="color: #16a34a; margin-bottom: 0;" id="dashDeliveredCountDisplay">
+                                                                                            <%= (typeof singleOrderCounts !== 'undefined' && singleOrderCounts.deliveredCurrentMonth) || 0 %>
+                                                                                        </h3>
+                                                                                        <small class="text-muted fw-semibold" id="dashDeliveredMonthLabel" style="font-size: 11px;">
+                                                                                            This Month
+                                                                                        </small>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-emerald ms-2" style="flex-shrink: 0;">
+                                                                                    <i class="fas fa-truck-ramp-box"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mb-2">
+                                                                                <select id="dashDeliveredMonthSelect" class="form-select form-select-sm" onchange="filterDashDeliveredByMonth(this.value)" style="font-size: 11.5px; height: 30px; border-radius: 6px;">
+                                                                                    <% if (typeof singleOrderCounts !== 'undefined' && singleOrderCounts.monthsList && singleOrderCounts.monthsList.length > 0) { %>
+                                                                                        <% singleOrderCounts.monthsList.forEach(function(m) { %>
+                                                                                            <option value="<%= m.key %>" <%= m.isCurrent ? 'selected' : '' %>>
+                                                                                                <%= m.label %>
+                                                                                            </option>
+                                                                                        <% }); %>
+                                                                                        <option value="all">All Months / कुल (<%= singleOrderCounts.deliveredPatients || 0 %>)</option>
+                                                                                    <% } else { %>
+                                                                                        <option value="current">Current Month</option>
+                                                                                        <option value="all">All Months</option>
+                                                                                    <% } %>
+                                                                                </select>
+                                                                            </div>
+                                                                            <a href="/users/team?tab=patients" class="dash-card-action">
+                                                                                <span>View Team Delivered</span>
                                                                                 <i class="fas fa-arrow-right"></i>
                                                                             </a>
                                                                         </div>
@@ -582,7 +625,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Verified Patients -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.type=='singleorder')?'d-none':'' %>"
                                                                         data-category="patients"
                                                                         data-title="verified patients">
                                                                         <div class="dash-card">
@@ -667,7 +710,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Delivered Orders -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator')?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator' || user.type=='singleorder')?'d-none':'' %>"
                                                                         data-category="orders"
                                                                         data-title="total delivered orders">
                                                                         <div class="dash-card">
@@ -1361,6 +1404,30 @@
                 </script>
                 <% } %>
 
+                <script>
+                    // Single Order Dashboard - Monthly Delivered Orders Filter
+                    const dashDeliveredByMonthData = <%- JSON.stringify((typeof singleOrderCounts !== 'undefined' && singleOrderCounts.deliveredByMonth) || {}) %>;
+                    const dashTotalDeliveredAllTime = <%= (typeof singleOrderCounts !== 'undefined' && singleOrderCounts.deliveredPatients) || 0 %>;
+
+                    function filterDashDeliveredByMonth(selectedYm) {
+                        const countDisplay = document.getElementById('dashDeliveredCountDisplay');
+                        const monthLabel = document.getElementById('dashDeliveredMonthLabel');
+                        if (!countDisplay) return;
+
+                        if (selectedYm === 'all') {
+                            countDisplay.textContent = dashTotalDeliveredAllTime;
+                            if (monthLabel) monthLabel.textContent = 'All Time';
+                        } else {
+                            const count = dashDeliveredByMonthData[selectedYm] || 0;
+                            countDisplay.textContent = count;
+                            if (monthLabel) {
+                                const select = document.getElementById('dashDeliveredMonthSelect');
+                                const selectedText = select ? select.options[select.selectedIndex].text.replace('(Current)', '').trim() : '';
+                                monthLabel.textContent = selectedText || 'Selected';
+                            }
+                        }
+                    }
+                </script>
     </body>
 
 </html>

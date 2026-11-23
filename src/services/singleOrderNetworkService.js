@@ -184,24 +184,49 @@ async function getSingleOrderDescendantNetwork(currentUser) {
         });
     }
 
-    // Compute patient status counts
+    // Compute patient status counts & monthly delivered stats
     let verifiedPatients = 0;
     let pendingPatients = 0;
     let deliveredPatients = 0;
+    let deliveredCurrentMonth = 0;
+    const deliveredByMonth = {};
+
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
     descendantPatients.forEach(p => {
         const docStatus = p.otherStatus ? p.otherStatus.doctorStatus : '';
         const delivStatus = p.otherStatus ? p.otherStatus.deliveryStatus : '';
-        const trackStatus = p.otherStatus ? p.otherStatus.trackingIdStatus : '';
+        const isDelivered = delivStatus && ['delivered', 'Delivered', 'DELIVERED'].includes(delivStatus);
 
-        if (delivStatus && ['delivered', 'Delivered', 'DELIVERED'].includes(delivStatus)) {
+        if (isDelivered) {
             deliveredPatients++;
+            const pDate = p.createdAt ? new Date(p.createdAt) : new Date();
+            const ym = `${pDate.getFullYear()}-${String(pDate.getMonth() + 1).padStart(2, '0')}`;
+            deliveredByMonth[ym] = (deliveredByMonth[ym] || 0) + 1;
+            if (ym === currentMonthKey) {
+                deliveredCurrentMonth++;
+            }
         } else if (docStatus && docStatus !== '' && docStatus !== 'pending' && docStatus !== 'Pending') {
             verifiedPatients++;
         } else {
             pendingPatients++;
         }
     });
+
+    // Generate list of the last 12 months for dropdown selection
+    const monthsList = [];
+    for (let i = 0; i < 12; i++) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        const label = d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        monthsList.push({
+            key: ym,
+            label: i === 0 ? `${label} (Current)` : label,
+            isCurrent: i === 0,
+            count: deliveredByMonth[ym] || 0
+        });
+    }
 
     // Distinct positions present among descendants for filtering pills
     const presentPositions = Array.from(
@@ -226,6 +251,10 @@ async function getSingleOrderDescendantNetwork(currentUser) {
             verifiedPatients,
             pendingPatients,
             deliveredPatients,
+            deliveredCurrentMonth,
+            deliveredByMonth,
+            currentMonthKey,
+            monthsList,
             byPosition,
             byLevel
         }

@@ -242,6 +242,28 @@
         color: #64748b;
     }
 
+    /* Month Filter Select */
+    .month-filter-select {
+        background-color: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #1e293b;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .month-filter-select:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.2);
+    }
+    [data-theme-version="dark"] .month-filter-select {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #38bdf8 !important;
+    }
+    [data-theme-version="dark"] .month-filter-select option {
+        background-color: #0f172a !important;
+        color: #f1f5f9 !important;
+    }
+
     /* Filter Pills */
     .filter-pill-btn {
         background: #f8fafc;
@@ -737,16 +759,39 @@
                         </div>
                     </div>
 
-                    <!-- Verified Patients -->
+                    <!-- Team Delivered Orders (Current Month with Month Chooser) -->
                     <div class="col-xl-3 col-sm-6">
-                        <div class="team-stat-card">
-                            <div>
-                                <div class="team-stat-title">Verified Patients / सत्यापित मरीज</div>
-                                <div class="team-stat-val text-success"><%= counts.verifiedPatients || 0 %></div>
-                                <small class="text-muted">Doctor approved forms</small>
+                        <div class="team-stat-card" style="padding: 14px 16px;">
+                            <div style="flex: 1; min-width: 0;">
+                                <div class="team-stat-title text-truncate" title="Team Delivered Orders">
+                                    Delivered Orders / डिलीवर ऑर्डर
+                                </div>
+                                <div class="d-flex align-items-baseline gap-2 mb-2">
+                                    <div class="team-stat-val text-success" id="teamDeliveredCountDisplay" style="font-size: 24px;">
+                                        <%= (typeof counts !== 'undefined' && counts.deliveredCurrentMonth) || 0 %>
+                                    </div>
+                                    <small class="text-muted fw-semibold" id="teamDeliveredMonthLabel" style="font-size: 11px;">
+                                        This Month
+                                    </small>
+                                </div>
+                                <div>
+                                    <select id="teamDeliveredMonthSelect" class="form-select form-select-sm month-filter-select" onchange="filterTeamDeliveredByMonth(this.value)" style="font-size: 12px; height: 30px; padding: 2px 8px; border-radius: 6px;">
+                                        <% if (typeof counts !== 'undefined' && counts.monthsList && counts.monthsList.length > 0) { %>
+                                            <% counts.monthsList.forEach(function(m) { %>
+                                                <option value="<%= m.key %>" <%= m.isCurrent ? 'selected' : '' %>>
+                                                    <%= m.label %>
+                                                </option>
+                                            <% }); %>
+                                            <option value="all">All Months / कुल ऑर्डर (<%= counts.deliveredPatients || 0 %>)</option>
+                                        <% } else { %>
+                                            <option value="current">Current Month</option>
+                                            <option value="all">All Months</option>
+                                        <% } %>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="team-stat-icon" style="background: #dcfce7; color: #16a34a;">
-                                <i class="fas fa-check-circle"></i>
+                            <div class="team-stat-icon ms-2" style="background: #dcfce7; color: #16a34a; flex-shrink: 0; width: 44px; height: 44px;">
+                                <i class="fas fa-truck-ramp-box"></i>
                             </div>
                         </div>
                     </div>
@@ -1331,6 +1376,29 @@
             document.getElementById('mDate').textContent = dateStr ? new Date(dateStr).toLocaleString('en-IN') : '';
 
             new bootstrap.Modal(document.getElementById('patientQuickModal')).show();
+        }
+
+        // Delivered Orders Monthly Filter
+        const deliveredByMonthData = <%- JSON.stringify((typeof counts !== 'undefined' && counts.deliveredByMonth) || {}) %>;
+        const totalDeliveredAllTime = <%= (typeof counts !== 'undefined' && counts.deliveredPatients) || 0 %>;
+
+        function filterTeamDeliveredByMonth(selectedYm) {
+            const countDisplay = document.getElementById('teamDeliveredCountDisplay');
+            const monthLabel = document.getElementById('teamDeliveredMonthLabel');
+            if (!countDisplay) return;
+
+            if (selectedYm === 'all') {
+                countDisplay.textContent = totalDeliveredAllTime;
+                if (monthLabel) monthLabel.textContent = 'All Time';
+            } else {
+                const count = deliveredByMonthData[selectedYm] || 0;
+                countDisplay.textContent = count;
+                if (monthLabel) {
+                    const select = document.getElementById('teamDeliveredMonthSelect');
+                    const selectedText = select ? select.options[select.selectedIndex].text.replace('(Current)', '').trim() : '';
+                    monthLabel.textContent = selectedText || 'Selected';
+                }
+            }
         }
 
         // URL param handling on initial page load
