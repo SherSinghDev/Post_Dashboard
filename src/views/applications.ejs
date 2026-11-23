@@ -668,6 +668,15 @@
                                 if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
                                 if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
 
+                                // 📅 Default Validity Start to current date if not already set
+                                if (!app.validstart || !$('[name="validstart"]').val()) {
+                                    const now = new Date();
+                                    const yyyy = now.getFullYear();
+                                    const mm = String(now.getMonth() + 1).padStart(2, '0');
+                                    const dd = String(now.getDate()).padStart(2, '0');
+                                    $('[name="validstart"]').val(`${yyyy}-${mm}-${dd}`);
+                                }
+
                                 // 🧩 Populate Parent User dropdown in Transfer To Verify modal
                                 if (data.options) {
                                     $('#parentuser-select').html(data.options);
