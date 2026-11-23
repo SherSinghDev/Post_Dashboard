@@ -699,10 +699,17 @@
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <div>
                         <h3 class="fw-bold text-dark mb-1">
-                            <i class="fas fa-sitemap text-primary me-2"></i>My Organization Team & Referred Patients
+                            <i class="fas fa-sitemap text-primary me-2"></i><%= user.role === 'stock_operator' ? 'Single Order Teams & Patients Manager' : 'My Organization Team & Referred Patients' %>
+                            <% if (user.role === 'stock_operator') { %>
+                                <span class="badge bg-primary ms-2" style="font-size: 13px;">Team Manager</span>
+                            <% } %>
                         </h3>
                         <p class="text-muted mb-0 small">
-                            Hierarchy: <strong>State Head</strong> &rarr; <strong>District Officer</strong> &rarr; <strong>Block Officer</strong> &rarr; <strong>Field Officer</strong>
+                            <% if (user.role === 'stock_operator') { %>
+                                Managerial View: <strong>Stock Operator</strong> &rarr; <strong>State Head</strong> &rarr; <strong>District Officer</strong> &rarr; <strong>Block Officer</strong> &rarr; <strong>Field Officer</strong>
+                            <% } else { %>
+                                Hierarchy: <strong>State Head</strong> &rarr; <strong>District Officer</strong> &rarr; <strong>Block Officer</strong> &rarr; <strong>Field Officer</strong>
+                            <% } %>
                         </p>
                     </div>
                     <div class="d-flex gap-2 flex-wrap">
@@ -717,13 +724,13 @@
 
                 <!-- Summary Overview Cards -->
                 <div class="row g-3 mb-4">
-                    <!-- Direct Child Officers -->
+                    <!-- Direct Child Officers / State Heads -->
                     <div class="col-xl-3 col-sm-6">
                         <div class="team-stat-card">
                             <div>
-                                <div class="team-stat-title">Direct Officers / सीधे अधिकारी</div>
+                                <div class="team-stat-title"><%= user.role === 'stock_operator' ? 'State Heads / राज्य प्रमुख' : 'Direct Officers / सीधे अधिकारी' %></div>
                                 <div class="team-stat-val text-primary"><%= counts.direct || 0 %></div>
-                                <small class="text-muted">Directly reporting to you</small>
+                                <small class="text-muted"><%= user.role === 'stock_operator' ? 'State heads under management' : 'Directly reporting to you' %></small>
                             </div>
                             <div class="team-stat-icon" style="background: #e0f2fe; color: #0284c7;">
                                 <i class="fas fa-user-friends"></i>

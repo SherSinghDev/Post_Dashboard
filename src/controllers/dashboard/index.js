@@ -198,7 +198,7 @@ router.get('/', async (req, res) => {
         }
 
         let singleOrderCounts = { direct: 0, totalTeam: 0, totalPatients: 0, verifiedPatients: 0, pendingPatients: 0 };
-        if (user.type === 'singleorder') {
+        if (user.type === 'singleorder' || user.role === 'stock_operator') {
             const { getSingleOrderDescendantNetwork } = require('../../services/singleOrderNetworkService');
             const singleOrderNetwork = await getSingleOrderDescendantNetwork(user);
             singleOrderCounts = singleOrderNetwork.counts;

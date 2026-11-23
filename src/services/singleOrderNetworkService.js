@@ -34,22 +34,72 @@ async function getSingleOrderDescendantNetwork(currentUser) {
     };
     let byLevel = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
-    if (currentUser.role === 'Admin') {
-        // Admin views all single order users
+    const isManagerRole = currentUser.role === 'Admin' || 
+                          currentUser.role === 'stock_operator' || 
+                          (currentUser.position && currentUser.position.toLowerCase().includes('stock operator'));
+
+    if (isManagerRole) {
+        // Stock Operator / Admin acts as Overall Manager viewing all Single Order users and downlines
         const allSingleOrderUsers = await Users.find({
             type: { $regex: new RegExp("^singleorder$", "i") },
             _id: { $ne: currentUser._id }
         }).populate('parentUser', 'name position userId').lean();
 
-        for (let u of allSingleOrderUsers) {
-            u.level = 1;
+        // Map to quickly find parent info
+        const userByIdMap = new Map();
+        allSingleOrderUsers.forEach(u => {
             u.normPosition = normalizePosition(u.position);
-            u.parentName = (u.parentUser && u.parentUser.name) ? u.parentUser.name : (u.referrerName || 'Head Office / Direct');
-            u.parentPosition = (u.parentUser && u.parentUser.position) ? u.parentUser.position : 'Administration';
-            u.parentDisplayId = (u.parentUser && u.parentUser.userId) ? u.parentUser.userId : (u.referredBy || '');
+            userByIdMap.set(u._id.toString(), u);
+            if (u.userId) userByIdMap.set(u.userId.toString(), u);
+            if (u.referralCode) userByIdMap.set(u.referralCode.toString(), u);
+        });
+
+        for (let u of allSingleOrderUsers) {
+            // Determine hierarchical level under the Stock Operator Manager
+            if (u.normPosition === 'State Head') {
+                u.level = 1;
+                u.parentName = currentUser.name || 'Stock Operator (Manager)';
+                u.parentPosition = 'Stock Operator';
+                u.parentDisplayId = currentUser.userId || '';
+            } else if (u.normPosition === 'District Officer') {
+                u.level = 2;
+            } else if (u.normPosition === 'Block Officer') {
+                u.level = 3;
+            } else if (u.normPosition === 'Field Officer') {
+                u.level = 4;
+            } else {
+                u.level = 5;
+            }
+
+            // Fill parent details if not State Head
+            if (u.normPosition !== 'State Head') {
+                let parent = null;
+                if (u.parentUser && typeof u.parentUser === 'object' && u.parentUser.name) {
+                    parent = u.parentUser;
+                } else if (u.parentUser && userByIdMap.has(u.parentUser.toString())) {
+                    parent = userByIdMap.get(u.parentUser.toString());
+                } else if (u.referredBy && userByIdMap.has(u.referredBy.toString())) {
+                    parent = userByIdMap.get(u.referredBy.toString());
+                }
+
+                if (parent) {
+                    u.parentName = parent.name;
+                    u.parentPosition = parent.position || 'Supervisor';
+                    u.parentDisplayId = parent.userId || '';
+                } else {
+                    u.parentName = u.referrerName || 'State Head';
+                    u.parentPosition = 'Officer';
+                    u.parentDisplayId = u.referredBy || '';
+                }
+            }
+
             descendants.push(u);
             byPosition[u.normPosition] = (byPosition[u.normPosition] || 0) + 1;
+            byLevel[u.level] = (byLevel[u.level] || 0) + 1;
         }
+
+        // Natural hierarchical sort: State Head -> District -> Block -> Field
+        descendants.sort((a, b) => a.level - b.level);
     } else {
         // --- LEVEL 1: Direct Children of currentUser ---
         const l1Conditions = [{ parentUser: currentUser._id }];
