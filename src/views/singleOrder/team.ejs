@@ -42,36 +42,155 @@
         font-size: 20px;
     }
 
-    /* Position Badges */
+    /* Position Badges - Base & Light Mode */
+    .pos-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 11px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+        line-height: 1.4;
+    }
+    .pos-badge i {
+        font-size: 10.5px;
+    }
     .badge-pos-state { background-color: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
     .badge-pos-district { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
     .badge-pos-block { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
     .badge-pos-field { background-color: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
     .badge-pos-default { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
 
-    .pos-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        white-space: nowrap;
-    }
-
     /* Hierarchy Level Badges */
     .level-badge {
         display: inline-flex;
         align-items: center;
-        padding: 3px 8px;
-        border-radius: 12px;
+        padding: 4px 10px;
+        border-radius: 20px;
         font-size: 11px;
         font-weight: 600;
-        background: #f8fafc;
+        background: #f1f5f9;
         border: 1px solid #e2e8f0;
         color: #475569;
+        white-space: nowrap;
+    }
+
+    /* User ID Code Badge */
+    .team-uid-badge {
+        display: inline-block;
+        font-family: var(--bs-font-monospace, monospace);
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 6px;
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid #e2e8f0;
+        letter-spacing: 0.3px;
+        line-height: 1.3;
+    }
+
+    /* Avatar Circle */
+    .team-avatar-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        background: #e0f2fe;
+        color: #0284c7;
+        border: 1px solid #bae6fd;
+        flex-shrink: 0;
+    }
+
+    /* Referrer Level Pill (L1, L2, L3) */
+    .referrer-lvl-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 10px;
+        background: #e2e8f0;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+
+    /* Patient Disease Tag */
+    .patient-disease-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 9px;
+        border-radius: 6px;
+        background: #f8fafc;
+        color: #1e293b;
+        border: 1px solid #e2e8f0;
+        white-space: nowrap;
+    }
+
+    /* Patient Status Badges */
+    .patient-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 11.5px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .patient-status-delivered {
+        background: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+    }
+    .patient-status-verified {
+        background: #e0f2fe;
+        color: #0369a1;
+        border: 1px solid #bae6fd;
+    }
+    .patient-status-pending {
+        background: #fef3c7;
+        color: #b45309;
+        border: 1px solid #fde68a;
+    }
+
+    /* Action Table Button */
+    .btn-table-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    .btn-table-action:hover {
+        background: #0284c7;
+        border-color: #0284c7;
+        color: #ffffff;
+    }
+
+    /* Table text styling */
+    .table-main-text {
+        color: #0f172a;
+    }
+    .table-sub-text {
+        color: #64748b;
     }
 
     /* Filter Pills */
@@ -156,7 +275,7 @@
     .team-table thead th {
         background: #f8fafc;
         color: #475569;
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -167,9 +286,10 @@
     .team-table tbody td {
         padding: 13px 14px;
         vertical-align: middle;
-        font-size: 13.5px;
+        font-size: 13px;
+        border-bottom: 1px solid #f1f5f9;
     }
-    .team-table tbody tr:hover {
+    .team-table tbody tr:hover td {
         background-color: #f8fafc;
     }
 
@@ -263,7 +383,8 @@
         background-color: #1e293b !important;
     }
 
-    /* CRITICAL FIX: Ensure dark mode text is fully visible (not black/dark on dark bg) */
+    /* Text elements in Dark Mode */
+    [data-theme-version="dark"] .table-main-text,
     [data-theme-version="dark"] .text-dark,
     [data-theme-version="dark"] .team-table .text-dark,
     [data-theme-version="dark"] h3.text-dark,
@@ -271,83 +392,115 @@
     [data-theme-version="dark"] .fw-semibold.text-dark {
         color: #f1f5f9 !important;
     }
-
+    [data-theme-version="dark"] .table-sub-text,
     [data-theme-version="dark"] .text-muted,
     [data-theme-version="dark"] .team-table .text-muted {
         color: #94a3b8 !important;
     }
-
     [data-theme-version="dark"] .hierarchy-chain {
         color: #94a3b8 !important;
     }
 
-    /* Avatars */
-    [data-theme-version="dark"] .avatar-sm.bg-light {
-        background: #1e293b !important;
+    /* Avatars in Dark Mode */
+    [data-theme-version="dark"] .team-avatar-circle {
+        background: rgba(2, 132, 199, 0.22) !important;
         color: #38bdf8 !important;
+        border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    }
+
+    /* User ID Badge in Dark Mode */
+    [data-theme-version="dark"] .team-uid-badge {
+        background: #1e293b !important;
+        color: #93c5fd !important;
         border: 1px solid #334155 !important;
     }
 
-    /* Badges in Dark Mode */
+    /* Hierarchy Level Badges in Dark Mode */
     [data-theme-version="dark"] .level-badge {
-        background: #1e293b !important;
-        border-color: #334155 !important;
+        background: rgba(30, 41, 59, 0.85) !important;
+        border: 1px solid #334155 !important;
         color: #cbd5e1 !important;
     }
-    [data-theme-version="dark"] .badge.bg-light.text-dark,
-    [data-theme-version="dark"] .badge.bg-light {
-        background-color: #1e293b !important;
-        color: #e2e8f0 !important;
-        border-color: #334155 !important;
-    }
-    [data-theme-version="dark"] .badge.rounded-pill.bg-light.text-muted {
-        background: #1e293b !important;
-        color: #94a3b8 !important;
-        border-color: #334155 !important;
-    }
-
-    /* Position Badges Dark Mode */
-    [data-theme-version="dark"] .badge-pos-state {
-        background-color: rgba(126, 34, 206, 0.25) !important;
-        color: #d8b4fe !important;
-        border-color: #7e22ce !important;
-    }
-    [data-theme-version="dark"] .badge-pos-district {
-        background-color: rgba(29, 78, 216, 0.25) !important;
-        color: #93c5fd !important;
-        border-color: #1d4ed8 !important;
-    }
-    [data-theme-version="dark"] .badge-pos-block {
-        background-color: rgba(180, 83, 9, 0.25) !important;
-        color: #fde047 !important;
-        border-color: #b45309 !important;
-    }
-    [data-theme-version="dark"] .badge-pos-field {
-        background-color: rgba(4, 120, 87, 0.25) !important;
-        color: #6ee7b7 !important;
-        border-color: #047857 !important;
-    }
-    [data-theme-version="dark"] .badge-pos-default {
-        background-color: rgba(71, 85, 105, 0.3) !important;
-        color: #cbd5e1 !important;
-        border-color: #475569 !important;
-    }
-
-    /* Patient Status Subtle Badges */
-    [data-theme-version="dark"] .bg-success-subtle {
-        background-color: rgba(22, 163, 74, 0.2) !important;
-        color: #4ade80 !important;
-        border-color: rgba(22, 163, 74, 0.4) !important;
-    }
-    [data-theme-version="dark"] .bg-primary-subtle {
-        background-color: rgba(2, 132, 199, 0.2) !important;
+    [data-theme-version="dark"] .level-badge i.text-primary {
         color: #38bdf8 !important;
-        border-color: rgba(2, 132, 199, 0.4) !important;
     }
-    [data-theme-version="dark"] .bg-warning-subtle {
-        background-color: rgba(217, 119, 6, 0.2) !important;
+    [data-theme-version="dark"] .level-badge i.text-muted {
+        color: #94a3b8 !important;
+    }
+
+    /* Referrer Downline Level Pill in Dark Mode */
+    [data-theme-version="dark"] .referrer-lvl-pill {
+        background: #1e293b !important;
+        color: #cbd5e1 !important;
+        border: 1px solid #334155 !important;
+    }
+
+    /* Disease Tag in Dark Mode */
+    [data-theme-version="dark"] .patient-disease-tag {
+        background: #1e293b !important;
+        color: #f1f5f9 !important;
+        border: 1px solid #334155 !important;
+    }
+
+    /* Position Badges in Dark Mode - High Contrast Translucent Aesthetic */
+    [data-theme-version="dark"] .pos-badge.badge-pos-state,
+    [data-theme-version="dark"] .badge-pos-state {
+        background-color: rgba(168, 85, 247, 0.2) !important;
+        color: #d8b4fe !important;
+        border: 1px solid rgba(168, 85, 247, 0.45) !important;
+    }
+    [data-theme-version="dark"] .pos-badge.badge-pos-district,
+    [data-theme-version="dark"] .badge-pos-district {
+        background-color: rgba(56, 189, 248, 0.2) !important;
+        color: #38bdf8 !important;
+        border: 1px solid rgba(56, 189, 248, 0.45) !important;
+    }
+    [data-theme-version="dark"] .pos-badge.badge-pos-block,
+    [data-theme-version="dark"] .badge-pos-block {
+        background-color: rgba(245, 158, 11, 0.2) !important;
         color: #fbbf24 !important;
-        border-color: rgba(217, 119, 6, 0.4) !important;
+        border: 1px solid rgba(245, 158, 11, 0.45) !important;
+    }
+    [data-theme-version="dark"] .pos-badge.badge-pos-field,
+    [data-theme-version="dark"] .badge-pos-field {
+        background-color: rgba(52, 211, 153, 0.2) !important;
+        color: #34d399 !important;
+        border: 1px solid rgba(52, 211, 153, 0.45) !important;
+    }
+    [data-theme-version="dark"] .pos-badge.badge-pos-default,
+    [data-theme-version="dark"] .badge-pos-default {
+        background-color: rgba(148, 163, 184, 0.2) !important;
+        color: #cbd5e1 !important;
+        border: 1px solid rgba(148, 163, 184, 0.4) !important;
+    }
+
+    /* Patient Status Badges in Dark Mode */
+    [data-theme-version="dark"] .patient-status-delivered {
+        background-color: rgba(34, 197, 94, 0.18) !important;
+        color: #4ade80 !important;
+        border: 1px solid rgba(34, 197, 94, 0.4) !important;
+    }
+    [data-theme-version="dark"] .patient-status-verified {
+        background-color: rgba(56, 189, 248, 0.18) !important;
+        color: #38bdf8 !important;
+        border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    }
+    [data-theme-version="dark"] .patient-status-pending {
+        background-color: rgba(245, 158, 11, 0.18) !important;
+        color: #fbbf24 !important;
+        border: 1px solid rgba(245, 158, 11, 0.4) !important;
+    }
+
+    /* Action Buttons in Dark Mode */
+    [data-theme-version="dark"] .btn-table-action {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] .btn-table-action:hover {
+        background: #0284c7 !important;
+        border-color: #0284c7 !important;
+        color: #ffffff !important;
     }
 
     /* Search & Inputs */
@@ -612,12 +765,15 @@
                                                     <td class="text-muted"><%= idx + 1 %></td>
                                                     <td>
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <div class="avatar-sm rounded-circle d-flex align-items-center justify-content-center fw-bold bg-light text-primary" style="width: 36px; height: 36px;">
+                                                            <div class="team-avatar-circle">
                                                                 <%= (m.name || 'U').charAt(0).toUpperCase() %>
                                                             </div>
                                                             <div>
-                                                                <div class="fw-bold text-dark"><%= m.name %></div>
-                                                                <small class="text-muted">ID: <span class="badge bg-light text-dark border">#<%= m.userId || 'N/A' %></span></small>
+                                                                <div class="fw-bold table-main-text"><%= m.name %></div>
+                                                                <div class="d-flex align-items-center gap-1 mt-1">
+                                                                    <span class="table-sub-text small">ID:</span>
+                                                                    <span class="team-uid-badge">#<%= m.userId || 'N/A' %></span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -637,7 +793,7 @@
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <div class="fw-semibold text-dark small"><%= m.parentName || 'Direct' %></div>
+                                                            <div class="fw-semibold table-main-text small"><%= m.parentName || 'Direct' %></div>
                                                             <div class="hierarchy-chain">
                                                                 <span><%= m.parentPosition || '' %></span>
                                                                 <% if (m.parentDisplayId) { %>
@@ -648,24 +804,24 @@
                                                     </td>
                                                     <td>
                                                         <div class="small">
-                                                            <div class="fw-semibold text-dark"><%= m.district || m.city || 'N/A' %></div>
-                                                            <div class="text-muted"><%= m.block ? 'Block: ' + m.block + ', ' : '' %><%= m.state || '' %></div>
+                                                            <div class="fw-semibold table-main-text"><%= m.district || m.city || 'N/A' %></div>
+                                                            <div class="table-sub-text"><%= m.block ? 'Block: ' + m.block + ', ' : '' %><%= m.state || '' %></div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="small">
-                                                            <div><i class="fas fa-phone-alt text-muted me-1"></i><%= m.mobile || 'N/A' %></div>
+                                                            <div class="table-main-text"><i class="fas fa-phone-alt table-sub-text me-1"></i><%= m.mobile || 'N/A' %></div>
                                                             <% if (m.email) { %>
-                                                                <div class="text-muted"><i class="fas fa-envelope text-muted me-1"></i><%= m.email %></div>
+                                                                <div class="table-sub-text"><i class="fas fa-envelope table-sub-text me-1"></i><%= m.email %></div>
                                                             <% } %>
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <span class="badge rounded-pill <%= m.totalPatientsReferred > 0 ? 'bg-info text-white' : 'bg-light text-muted border' %> px-3 py-2 fw-bold" style="font-size: 13px;">
+                                                        <span class="badge rounded-pill <%= m.totalPatientsReferred > 0 ? 'bg-info text-white' : 'team-uid-badge' %> px-3 py-2 fw-bold" style="font-size: 13px;">
                                                             <%= m.totalPatientsReferred || 0 %>
                                                         </span>
                                                     </td>
-                                                    <td class="text-muted small">
+                                                    <td class="table-sub-text small">
                                                         <%= m.createdAt ? new Date(m.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A' %>
                                                     </td>
                                                     <td class="text-end">
@@ -748,22 +904,22 @@
                                 <table class="table table-hover team-table mb-0" id="patientsTable">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Reg. No & Date</th>
-                                            <th>Patient Name / मरीज का नाम</th>
-                                            <th>Disease / बीमारी</th>
-                                            <th>Location / क्षेत्र</th>
-                                            <th>Referred By / रेफरर</th>
-                                            <th>Referrer Position</th>
-                                            <th>Status / स्थिति</th>
-                                            <th class="text-end">Details</th>
+                                            <th style="min-width: 45px;">#</th>
+                                            <th style="min-width: 135px;">Reg. No & Date</th>
+                                            <th style="min-width: 170px;">Patient Name / मरीज का नाम</th>
+                                            <th style="min-width: 170px;">Disease / बीमारी</th>
+                                            <th style="min-width: 130px;">Location / क्षेत्र</th>
+                                            <th style="min-width: 180px;">Referred By / रेफरर</th>
+                                            <th style="min-width: 150px;">Referrer Position</th>
+                                            <th style="min-width: 140px;">Status / स्थिति</th>
+                                            <th style="min-width: 70px;" class="text-end">Details</th>
                                         </tr>
                                     </thead>
                                     <tbody id="patientsTableBody">
                                         <% if (patients && patients.length > 0) { %>
                                             <% patients.forEach(function(p, pIdx) { %>
                                                 <%
-                                                    let docStatus = (p.otherStatus && p.otherStatus.doctorStatus) || 'pending';
+                                                     let docStatus = (p.otherStatus && p.otherStatus.doctorStatus) || 'pending';
                                                     let delivStatus = (p.otherStatus && p.otherStatus.deliveryStatus) || '';
                                                     let isDelivered = ['delivered', 'Delivered', 'DELIVERED'].includes(delivStatus);
                                                     let isVerified = !isDelivered && docStatus && docStatus !== '' && docStatus.toLowerCase() !== 'pending';
@@ -779,65 +935,67 @@
                                                     data-ref-id="<%= p.referrerUserId || '' %>"
                                                     data-status="<%= isDelivered ? 'delivered' : (isVerified ? 'verified' : 'pending') %>"
                                                     data-search="<%= (p.patientName || '') + ' ' + (p.registerNo || '') + ' ' + (p.mobileNumber || '') + ' ' + (p.diseaseName || '') + ' ' + (p.referrerName || '') + ' ' + (p.referrerUserId || '') + ' ' + (p.referrerNormPosition || '') %>">
-                                                    <td class="text-muted"><%= pIdx + 1 %></td>
+                                                    <td class="table-sub-text"><%= pIdx + 1 %></td>
                                                     <td>
                                                         <div class="fw-bold text-primary font-monospace"><%= p.registerNo || 'N/A' %></div>
-                                                        <small class="text-muted">
+                                                        <div class="table-sub-text small">
                                                             <%= p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '' %>
-                                                        </small>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-dark"><%= p.patientName %></div>
-                                                        <small class="text-muted"><i class="fas fa-phone-alt me-1"></i><%= p.mobileNumber || 'N/A' %></small>
+                                                        <div class="fw-bold table-main-text"><%= p.patientName %></div>
+                                                        <div class="table-sub-text small"><i class="fas fa-phone-alt me-1"></i><%= p.mobileNumber || 'N/A' %></div>
                                                     </td>
                                                     <td>
-                                                        <div class="badge bg-light text-dark border px-2 py-1">
-                                                            <%= p.diseaseName || 'General Care' %>
+                                                        <div class="patient-disease-tag">
+                                                            <i class="fas fa-notes-medical me-1 text-primary"></i><%= p.diseaseName || 'General Care' %>
                                                         </div>
                                                         <% if (p.duration) { %>
-                                                            <div class="small text-muted mt-1"><%= p.duration %></div>
+                                                            <div class="small table-sub-text mt-1"><%= p.duration %></div>
                                                         <% } %>
                                                     </td>
                                                     <td>
                                                         <div class="small">
-                                                            <div class="text-dark fw-semibold"><%= p.cityOrDistrict || 'N/A' %></div>
-                                                            <div class="text-muted"><%= p.state || '' %></div>
+                                                            <div class="table-main-text fw-semibold"><%= p.cityOrDistrict || 'N/A' %></div>
+                                                            <div class="table-sub-text"><%= p.state || '' %></div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <div class="fw-bold text-dark small"><%= p.referrerName %></div>
-                                                            <div class="text-muted small">
-                                                                ID: <span class="badge bg-light text-dark border">#<%= p.referrerUserId %></span>
+                                                            <div class="fw-bold table-main-text small"><%= p.referrerName %></div>
+                                                            <div class="d-flex align-items-center gap-1 mt-1">
+                                                                <span class="table-sub-text small">ID:</span>
+                                                                <span class="team-uid-badge">#<%= p.referrerUserId %></span>
                                                                 <% if (p.referrerLevel) { %>
-                                                                    <span class="level-badge ms-1">L<%= p.referrerLevel %></span>
+                                                                    <span class="referrer-lvl-pill ms-1">L<%= p.referrerLevel %></span>
                                                                 <% } %>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <span class="pos-badge <%= refPosClass %>">
-                                                            <%= p.referrerPosition || p.referrerNormPosition %>
+                                                            <i class="fas fa-id-badge"></i> <%= p.referrerPosition || p.referrerNormPosition %>
                                                         </span>
                                                     </td>
                                                     <td>
                                                         <% if (isDelivered) { %>
-                                                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                                            <span class="patient-status-badge patient-status-delivered">
                                                                 <i class="fas fa-truck-ramp-box me-1"></i>Delivered
                                                             </span>
                                                         <% } else if (isVerified) { %>
-                                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                                                            <span class="patient-status-badge patient-status-verified">
                                                                 <i class="fas fa-user-check me-1"></i>Verified (<%= docStatus %>)
                                                             </span>
                                                         <% } else { %>
-                                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-1">
+                                                            <span class="patient-status-badge patient-status-pending">
                                                                 <i class="fas fa-hourglass-half me-1"></i>Pending Review
                                                             </span>
                                                         <% } %>
                                                     </td>
                                                     <td class="text-end">
                                                         <button type="button" 
-                                                                class="btn btn-sm btn-outline-secondary" 
+                                                                class="btn-table-action" 
+                                                                title="View Details"
                                                                 onclick="showPatientModal('<%= p.registerNo %>', '<%= p.patientName %>', '<%= p.mobileNumber %>', '<%= p.diseaseName %>', '<%= p.cityOrDistrict %>', '<%= p.state %>', '<%= p.referrerName %>', '<%= p.referrerPosition %>', '<%= p.createdAt %>')">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
@@ -877,35 +1035,35 @@
                 </div>
                 <div class="modal-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <span class="text-muted">Registration No:</span>
+                        <span class="table-sub-text">Registration No:</span>
                         <span class="fw-bold font-monospace text-primary" id="mRegNo"></span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <span class="text-muted">Patient Name:</span>
-                        <span class="fw-bold text-dark" id="mName"></span>
+                        <span class="table-sub-text">Patient Name:</span>
+                        <span class="fw-bold table-main-text" id="mName"></span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <span class="text-muted">Mobile Number:</span>
-                        <span class="fw-bold" id="mMobile"></span>
+                        <span class="table-sub-text">Mobile Number:</span>
+                        <span class="fw-bold table-main-text" id="mMobile"></span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <span class="text-muted">Disease / Condition:</span>
-                        <span class="badge bg-light text-dark border px-2 py-1" id="mDisease"></span>
+                        <span class="table-sub-text">Disease / Condition:</span>
+                        <span class="patient-disease-tag" id="mDisease"></span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <span class="text-muted">Location:</span>
-                        <span class="fw-semibold" id="mLocation"></span>
+                        <span class="table-sub-text">Location:</span>
+                        <span class="fw-semibold table-main-text" id="mLocation"></span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <span class="text-muted">Referred By:</span>
-                        <div>
-                            <span class="fw-bold text-dark" id="mRefName"></span>
-                            <span class="badge bg-light text-dark border ms-1" id="mRefPos"></span>
+                        <span class="table-sub-text">Referred By:</span>
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="fw-bold table-main-text" id="mRefName"></span>
+                            <span class="pos-badge badge-pos-default ms-1" id="mRefPos"></span>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-muted">Submission Date:</span>
-                        <span class="text-muted small" id="mDate"></span>
+                        <span class="table-sub-text">Submission Date:</span>
+                        <span class="table-sub-text small" id="mDate"></span>
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
