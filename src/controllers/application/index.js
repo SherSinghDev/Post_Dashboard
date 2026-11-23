@@ -359,9 +359,13 @@ router.get('/applied', async (req, res) => {
               assignedDistrict: 1,
               payment: 1,
               createdAt: 1,
+              parentUser: 1,
               // only specific fields from referral user
               'referrer._id': 1,
               'referrer.name': 1,
+              'referrer.userId': 1,
+              'referrer.position': 1,
+              'referrer.role': 1,
             }
           },
         ]);
@@ -421,12 +425,48 @@ router.get('/applied', async (req, res) => {
               assignedDistrict: 1,
               payment: 1,
               createdAt: 1,
+              parentUser: 1,
               // only specific fields from referral user
               'referrer._id': 1,
               'referrer.name': 1,
+              'referrer.userId': 1,
+              'referrer.position': 1,
+              'referrer.role': 1,
             }
           },
         ]);
+      }
+
+      // Resolve any applications where parentUser wasn't populated but referredBy exists
+      const missingRefCodes = [];
+      result.forEach(app => {
+        if (!app.referrer && app.referredBy) {
+          missingRefCodes.push(app.referredBy.trim());
+        }
+      });
+
+      if (missingRefCodes.length > 0) {
+        const foundUsers = await Users.find({
+          $or: [
+            { userId: { $in: missingRefCodes } },
+            { referralCode: { $in: missingRefCodes } }
+          ]
+        }).select('_id name userId position role referralCode').lean();
+
+        const refUserMap = new Map();
+        foundUsers.forEach(u => {
+          if (u.userId) refUserMap.set(u.userId.toString(), u);
+          if (u.referralCode) refUserMap.set(u.referralCode.toString(), u);
+        });
+
+        result.forEach(app => {
+          if (!app.referrer && app.referredBy) {
+            const matched = refUserMap.get(app.referredBy.trim());
+            if (matched) {
+              app.referrer = matched;
+            }
+          }
+        });
       }
 
 

@@ -42,7 +42,7 @@
                                                                     <th>Form Type</th>
                                                                     <th>Position</th>
                                                                     <th>Assigned District</th>
-                                                                    <!-- <th>Referrer Name & ID</th> -->
+                                                                    <th>Parent User / पालक</th>
                                                                     <th>Applied On</th>
                                                                     <th>Approve Status</th>
                                                                     <th>Actions</th>
@@ -82,6 +82,30 @@
                                                                             <td>
                                                                                 <%= app.assignedDistrict || 'N/A' %>
                                                                             </td>
+                                                                            <td>
+                                                                                <% if (app.referrer && app.referrer.name) { %>
+                                                                                    <div>
+                                                                                        <div class="fw-bold small"><%= app.referrer.name %></div>
+                                                                                        <div class="small text-muted d-flex align-items-center gap-1 flex-wrap mt-1">
+                                                                                            <% if (app.referrer.userId) { %>
+                                                                                                <span class="badge bg-light text-dark border">#<%= app.referrer.userId %></span>
+                                                                                            <% } %>
+                                                                                            <% if (app.referrer.position) { %>
+                                                                                                <span class="text-primary font-weight-500" style="font-size: 11px;"><%= app.referrer.position %></span>
+                                                                                            <% } %>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <% } else if (app.referrerName || app.referredBy) { %>
+                                                                                    <div>
+                                                                                        <div class="fw-semibold small"><%= app.referrerName || 'Parent User' %></div>
+                                                                                        <% if (app.referredBy) { %>
+                                                                                            <span class="badge bg-light text-dark border mt-1">ID: <%= app.referredBy %></span>
+                                                                                        <% } %>
+                                                                                    </div>
+                                                                                <% } else { %>
+                                                                                    <span class="badge bg-light text-muted border">Direct / None</span>
+                                                                                <% } %>
+                                                                            </td>
 
                                                                             <td>
                                                                                 <%= new
@@ -110,7 +134,7 @@
                                                                         <% }) %>
                                                                             <% } else { %>
                                                                                 <tr>
-                                                                                    <td colspan="10"
+                                                                                    <td colspan="14"
                                                                                         class="text-center text-muted">
                                                                                         No applications found</td>
                                                                                 </tr>
