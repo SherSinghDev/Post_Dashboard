@@ -185,6 +185,55 @@
         color: #ffffff;
     }
 
+    /* Call Button & Pill Styling */
+    .btn-call-member {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        background-color: #10b981;
+        color: #ffffff !important;
+        border: 1px solid #059669;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+    .btn-call-member:hover {
+        background-color: #059669;
+        color: #ffffff !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+    .btn-call-member:active {
+        transform: translateY(0);
+    }
+
+    .table-call-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+        background: rgba(16, 185, 129, 0.1);
+        color: #047857;
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+    .table-call-pill:hover {
+        background: #10b981;
+        color: #ffffff !important;
+        border-color: #10b981;
+    }
+    .table-call-pill:hover i {
+        color: #ffffff !important;
+    }
+
     /* Table text styling */
     .table-main-text {
         color: #0f172a;
@@ -502,6 +551,26 @@
         border-color: #0284c7 !important;
         color: #ffffff !important;
     }
+    [data-theme-version="dark"] .btn-call-member {
+        background-color: #059669 !important;
+        border-color: #10b981 !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .btn-call-member:hover {
+        background-color: #10b981 !important;
+        border-color: #34d399 !important;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+    }
+    [data-theme-version="dark"] .table-call-pill {
+        background: rgba(16, 185, 129, 0.18) !important;
+        color: #34d399 !important;
+        border-color: rgba(16, 185, 129, 0.4) !important;
+    }
+    [data-theme-version="dark"] .table-call-pill:hover {
+        background: #059669 !important;
+        color: #ffffff !important;
+        border-color: #059669 !important;
+    }
 
     /* Search & Inputs */
     [data-theme-version="dark"] .input-group-text.bg-light {
@@ -741,10 +810,10 @@
                                             <th>Hierarchy Level</th>
                                             <th>Reporting To / पालक</th>
                                             <th>Location / क्षेत्र</th>
-                                            <th>Contact / संपर्क</th>
+                                            <th style="min-width: 145px;">Contact / संपर्क</th>
                                             <th class="text-center">Referred Patients</th>
                                             <th>Joined Date</th>
-                                            <th class="text-end">Action</th>
+                                            <th class="text-end" style="min-width: 180px;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="membersTableBody">
@@ -810,9 +879,17 @@
                                                     </td>
                                                     <td>
                                                         <div class="small">
-                                                            <div class="table-main-text"><i class="fas fa-phone-alt table-sub-text me-1"></i><%= m.mobile || 'N/A' %></div>
+                                                            <% if (m.mobile) { %>
+                                                                <div>
+                                                                    <a href="tel:<%= m.mobile %>" class="table-call-pill" title="Click to Call <%= m.mobile %>">
+                                                                        <i class="fas fa-phone-alt text-success me-1"></i><%= m.mobile %>
+                                                                    </a>
+                                                                </div>
+                                                            <% } else { %>
+                                                                <div class="table-sub-text"><i class="fas fa-phone-slash me-1"></i>N/A</div>
+                                                            <% } %>
                                                             <% if (m.email) { %>
-                                                                <div class="table-sub-text"><i class="fas fa-envelope table-sub-text me-1"></i><%= m.email %></div>
+                                                                <div class="table-sub-text mt-1"><i class="fas fa-envelope table-sub-text me-1"></i><%= m.email %></div>
                                                             <% } %>
                                                         </div>
                                                     </td>
@@ -825,12 +902,21 @@
                                                         <%= m.createdAt ? new Date(m.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A' %>
                                                     </td>
                                                     <td class="text-end">
-                                                        <button type="button" 
-                                                                class="btn btn-sm btn-outline-info" 
-                                                                title="View Patients Referred by this Member"
-                                                                onclick="filterPatientsByMember('<%= m.userId %>', '<%= m.name %>')">
-                                                            <i class="fas fa-notes-medical me-1"></i>Patients
-                                                        </button>
+                                                        <div class="d-inline-flex align-items-center gap-1 justify-content-end">
+                                                            <% if (m.mobile) { %>
+                                                                <a href="tel:<%= m.mobile %>" 
+                                                                   class="btn-call-member" 
+                                                                   title="Call <%= m.name %> (<%= m.mobile %>)">
+                                                                    <i class="fas fa-phone-alt"></i> Call
+                                                                </a>
+                                                            <% } %>
+                                                            <button type="button" 
+                                                                    class="btn btn-sm btn-outline-info" 
+                                                                    title="View Patients Referred by this Member"
+                                                                    onclick="filterPatientsByMember('<%= m.userId %>', '<%= m.name %>')">
+                                                                <i class="fas fa-notes-medical me-1"></i>Patients
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             <% }); %>
@@ -944,7 +1030,15 @@
                                                     </td>
                                                     <td>
                                                         <div class="fw-bold table-main-text"><%= p.patientName %></div>
-                                                        <div class="table-sub-text small"><i class="fas fa-phone-alt me-1"></i><%= p.mobileNumber || 'N/A' %></div>
+                                                        <div class="table-sub-text small mt-1">
+                                                            <% if (p.mobileNumber) { %>
+                                                                <a href="tel:<%= p.mobileNumber %>" class="table-call-pill" style="font-size: 11px; padding: 2px 7px;" title="Call Patient">
+                                                                    <i class="fas fa-phone-alt text-success me-1"></i><%= p.mobileNumber %>
+                                                                </a>
+                                                            <% } else { %>
+                                                                <i class="fas fa-phone-slash me-1"></i>N/A
+                                                            <% } %>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <div class="patient-disease-tag">
@@ -1044,7 +1138,12 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                         <span class="table-sub-text">Mobile Number:</span>
-                        <span class="fw-bold table-main-text" id="mMobile"></span>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fw-bold table-main-text" id="mMobile"></span>
+                            <a id="mCallBtn" href="#" class="btn btn-sm btn-success px-2 py-1" style="font-size: 11.5px; border-radius: 6px; display: none;">
+                                <i class="fas fa-phone-alt me-1"></i>Call
+                            </a>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                         <span class="table-sub-text">Disease / Condition:</span>
@@ -1214,6 +1313,17 @@
             document.getElementById('mRegNo').textContent = regNo || 'N/A';
             document.getElementById('mName').textContent = name || 'N/A';
             document.getElementById('mMobile').textContent = mobile || 'N/A';
+            
+            const mCallBtn = document.getElementById('mCallBtn');
+            if (mCallBtn) {
+                if (mobile && mobile !== 'N/A') {
+                    mCallBtn.href = 'tel:' + mobile;
+                    mCallBtn.style.display = 'inline-flex';
+                } else {
+                    mCallBtn.style.display = 'none';
+                }
+            }
+
             document.getElementById('mDisease').textContent = disease || 'General Care';
             document.getElementById('mLocation').textContent = (city || '') + (state ? ', ' + state : '');
             document.getElementById('mRefName').textContent = refName || 'Direct';
