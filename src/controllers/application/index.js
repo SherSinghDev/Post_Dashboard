@@ -605,6 +605,20 @@ router.get('/one/:id', async (req, res) => {
       },
       {
         $lookup: {
+          from: 'users',
+          localField: 'parentUser',
+          foreignField: '_id',
+          as: 'parentDoc'
+        }
+      },
+      {
+        $unwind: {
+          path: '$parentDoc',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
           from: 'users', // same collection name
           localField: 'referredBy',
           foreignField: 'userId',
@@ -652,30 +666,70 @@ router.get('/one/:id', async (req, res) => {
           payment: 1,
           createdAt: 1,
 
-          // only name and id for referral user
+          // fields for parentDoc
+          'parentDoc._id': 1,
+          'parentDoc.name': 1,
+          'parentDoc.userId': 1,
+          'parentDoc.position': 1,
+          'parentDoc.district': 1,
+          'parentDoc.role': 1,
+
+          // fields for referral user
           'referralUser._id': 1,
           'referralUser.name': 1,
+          'referralUser.userId': 1,
+          'referralUser.position': 1,
+          'referralUser.district': 1,
         }
       }
     ]);
-
-    let appData = result[0] || {};
-    let parents = await users.find({ type: appData.type });
-    let options = '<option value="">Direct Came (No Parent User)</option>';
-    parents.forEach((p) => {
-      if (p.type) {
-        let isSelected = (appData.parentUser && appData.parentUser.toString() === p._id.toString()) ? 'selected' : '';
-        options += `<option value="${p._id}" ${isSelected}>${p.name} - ${p.district || 'N/A'} - (${p.position}) [ID: ${p.userId || 'N/A'}]</option>`;
-      }
-    });
-
-
 
     if (!result.length) {
       return res.status(404).json({ success: false, message: "Application not found" });
     }
 
-    res.json({ success: true, data: result[0], options });
+    let appData = result[0] || {};
+    let resolvedParent = appData.parentDoc || appData.referralUser || null;
+
+    if (!resolvedParent && appData.referredBy) {
+      resolvedParent = await Users.findOne({
+        $or: [
+          { userId: appData.referredBy.toString().trim() },
+          { referralCode: appData.referredBy.toString().trim() }
+        ]
+      }).select('_id name userId position district role').lean();
+    }
+
+    // Determine query for available parent users
+    let parentQuery = {};
+    if (appData.type) {
+      parentQuery.type = appData.type;
+    } else {
+      parentQuery.role = "Coordinator";
+    }
+
+    let parents = await Users.find(parentQuery).select('_id name district position userId role').sort({ name: 1 }).lean();
+
+    // Ensure resolvedParent is included in dropdown list if not already present
+    if (resolvedParent && !parents.some(p => p._id.toString() === resolvedParent._id.toString())) {
+      parents.unshift(resolvedParent);
+    }
+
+    const currentParentId = (appData.parentUser ? appData.parentUser.toString() : '') || (resolvedParent ? resolvedParent._id.toString() : '');
+
+    let options = '<option value="">Direct Came (No Parent User)</option>';
+    parents.forEach((p) => {
+      let isSelected = (currentParentId && currentParentId === p._id.toString()) ? 'selected' : '';
+      options += `<option value="${p._id}" ${isSelected}>${p.name} - ${p.district || 'N/A'} - (${p.position || 'Member'}) [ID: #${p.userId || 'N/A'}]</option>`;
+    });
+
+    res.json({ 
+      success: true, 
+      data: appData, 
+      options,
+      parent: resolvedParent || null,
+      parentId: currentParentId || ''
+    });
 
   } catch (err) {
     console.error(err);
@@ -912,7 +966,8 @@ router.post(
       const password = await bcrypt.hash('1234', 10);
 
       // Resolve parent user reference
-      let finalParentUser = parentuser || (appUser && appUser.parentUser) || null;
+      const incomingParentUser = req.body.parentUser || req.body.parentuser || parentuser || null;
+      let finalParentUser = incomingParentUser || (appUser && appUser.parentUser) || null;
       if (!finalParentUser && referredBy) {
         const foundParent = await Users.findOne({
           $or: [

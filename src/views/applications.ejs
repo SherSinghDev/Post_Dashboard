@@ -363,7 +363,7 @@
                                                     <input type="file" name="otherDocument" class="form-control d-none">
                                                 </div>
 
-                                                <!-- Row 8: Membership & Referred By -->
+                                                <!-- Row 8: Membership & Assigned District -->
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
                                                         <label class="mb-1"><strong>Membership Type</strong></label>
@@ -376,38 +376,50 @@
                                                             <option value="Centre Level Membership - ₹865">Centre Level Membership - ₹865</option>
                                                         </select>
                                                     </div>
-
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Assigned District</strong></label>
+                                                        <input type="text" name="assignedDistrict" class="form-control" placeholder="Assigned District">
+                                                    </div>
                                                 </div>
 
+                                                <!-- Row 9: Position & Form Type -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Member Position*</strong></label>
+                                                        <select name="position" id="position-select"
+                                                            style="padding-block: 11px;" class="form-select">
+                                                            <option value="">Select Position</option>
+                                                            <option value="State head">State head</option>
+                                                            <option value="District officer">District officer</option>
+                                                            <option value="Block officer">Block officer</option>
+                                                            <option value="Field officer">Field officer</option>
+                                                            <option value="Program Manager">Program Manager</option>
+                                                            <option value="District Head">District Head</option>
+                                                            <option value="Assistant District Head">Assistant District Head</option>
+                                                            <option value="Block Head">Block Head</option>
+                                                            <option value="City Head">City Head</option>
+                                                            <option value="Centre Head">Centre Head</option>
+                                                            <option value="Field Officer">Field Officer</option>
+                                                        </select>
+                                                    </div>
 
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="mb-1"><strong>Member Position*</strong></label>
-                                                    <select name="position" id="position-select"
-                                                        style="padding-block: 11px;" class="form-select">
-                                                        <option value="">Select Position</option>
-                                                        <option value="State head">State head</option>
-                                                        <option value="District officer">District officer</option>
-                                                        <option value="Block officer">Block officer</option>
-                                                        <option value="Field officer">Field officer</option>
-                                                        <option value="Program Manager">Program Manager</option>
-                                                        <option value="District Head">District Head</option>
-                                                        <option value="Assistant District Head">Assistant
-                                                            District
-                                                            Head</option>
-                                                        <option value="Block Head">Block Head</option>
-                                                        <option value="City Head">City Head</option>
-                                                        <option value="Centre Head">Centre Head</option>
-                                                        <option value="Field Officer">Field Officer</option>
-
-                                                    </select>
+                                                    <div class="col-md-6">
+                                                        <label class="mb-1"><strong>Form Type</strong></label>
+                                                        <input type="text" name="type" class="form-control" readonly>
+                                                    </div>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    <label class="mb-1"><strong>Form Type</strong></label>
-                                                    <input type="text" name="type" class="form-control">
+                                                <!-- Row 10: Parent User / पालक -->
+                                                <div class="row mb-3">
+                                                    <div class="col-12">
+                                                        <label class="mb-1"><strong>Parent User / पालक (Senior User)</strong></label>
+                                                        <select name="parentUser" id="parentuser-select" class="form-select" style="padding-block: 11px;">
+                                                            <option value="">Direct (No Parent User)</option>
+                                                        </select>
+                                                        <input type="hidden" name="parentuser" id="parentuser-hidden">
+                                                        <div id="parentuser-badge-preview" class="mt-2"></div>
+                                                    </div>
                                                 </div>
-
-                                                <!-- <input type="text" name="type"  value=""> -->
 
 
 
@@ -657,10 +669,87 @@
                                 if (app.payment && typeof app.payment === 'object') fillForm(app.payment, 'payment');
                                 if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
 
+                                // 🧩 Populate Parent User dropdown & preview in Transfer To Verify modal
+                                if (data.options) {
+                                    $('#parentuser-select').html(data.options);
+                                }
+                                const currentParentId = data.parentId || (app.parentUser && app.parentUser._id ? app.parentUser._id : (app.parentUser || (data.parent ? data.parent._id : '')));
+                                if (currentParentId) {
+                                    $('#parentuser-select').val(String(currentParentId));
+                                    $('#parentuser-hidden').val(String(currentParentId));
+                                } else {
+                                    $('#parentuser-select').val('');
+                                    $('#parentuser-hidden').val('');
+                                }
+                                updateParentUserPreview(data.parent || app.parentDoc || app.referralUser || null, app);
+
                                 $('.view-modal').modal('show');
                             }
                         })
                         .catch(err => console.error(err));
+                });
+
+                function updateParentUserPreview(parentObj, app) {
+                    const container = $('#parentuser-badge-preview');
+                    if (!container.length) return;
+
+                    if (parentObj && parentObj.name) {
+                        container.html(`
+                            <div class="p-2 px-3 rounded border bg-light d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div>
+                                    <span class="text-muted small">Parent User / पालक:</span>
+                                    <strong class="ms-1 text-primary">${parentObj.name}</strong>
+                                    ${parentObj.userId ? `<span class="badge bg-dark text-white ms-1">#${parentObj.userId}</span>` : ''}
+                                    ${parentObj.position ? `<span class="badge bg-info text-white ms-1">${parentObj.position}</span>` : ''}
+                                    ${parentObj.district ? `<span class="small text-muted ms-1">(${parentObj.district})</span>` : ''}
+                                </div>
+                                <span class="badge bg-success text-white"><i class="fa fa-check me-1"></i> Assigned</span>
+                            </div>
+                        `);
+                    } else if (app && (app.referrerName || app.referredBy)) {
+                        container.html(`
+                            <div class="p-2 px-3 rounded border bg-light d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div>
+                                    <span class="text-muted small">Referred By / रेफरल:</span>
+                                    <strong class="ms-1 text-primary">${app.referrerName || 'Parent User'}</strong>
+                                    ${app.referredBy ? `<span class="badge bg-dark text-white ms-1">ID: ${app.referredBy}</span>` : ''}
+                                </div>
+                                <span class="badge bg-warning text-dark">Referral Link</span>
+                            </div>
+                        `);
+                    } else {
+                        container.html(`
+                            <div class="p-2 px-3 rounded border bg-light text-muted small">
+                                <i class="fa fa-info-circle me-1"></i> Direct Application (No Parent User assigned)
+                            </div>
+                        `);
+                    }
+                }
+
+                $(document).on('change', '#parentuser-select', function() {
+                    const val = $(this).val();
+                    $('#parentuser-hidden').val(val);
+                    const selectedText = $(this).find('option:selected').text();
+                    const container = $('#parentuser-badge-preview');
+                    if (!container.length) return;
+
+                    if (val) {
+                        container.html(`
+                            <div class="p-2 px-3 rounded border bg-light d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div>
+                                    <span class="text-muted small">Selected Parent / पालक:</span>
+                                    <strong class="ms-1 text-primary">${selectedText}</strong>
+                                </div>
+                                <span class="badge bg-primary text-white"><i class="fa fa-check me-1"></i> Selected</span>
+                            </div>
+                        `);
+                    } else {
+                        container.html(`
+                            <div class="p-2 px-3 rounded border bg-light text-muted small">
+                                <i class="fa fa-info-circle me-1"></i> Direct Application (No Parent User)
+                            </div>
+                        `);
+                    }
                 });
 
 
