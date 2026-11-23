@@ -197,6 +197,13 @@ router.get('/', async (req, res) => {
             }
         }
 
+        let singleOrderCounts = { direct: 0, totalTeam: 0, totalPatients: 0, verifiedPatients: 0, pendingPatients: 0 };
+        if (user.type === 'singleorder' || user.role === 'Admin') {
+            const { getSingleOrderDescendantNetwork } = require('../../services/singleOrderNetworkService');
+            const singleOrderNetwork = await getSingleOrderDescendantNetwork(user);
+            singleOrderCounts = singleOrderNetwork.counts;
+        }
+
         res.render('index', {
             user,
             page: "Dashboard",
@@ -208,6 +215,7 @@ router.get('/', async (req, res) => {
             deliveredOrders,
             pendingpatients,
             networkCounts,
+            singleOrderCounts,
             showStockOrderNotice,
             userInactivity,
             platformWalletAmount: user.platformWalletAmount || 0

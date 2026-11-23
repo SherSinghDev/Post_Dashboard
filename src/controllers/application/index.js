@@ -766,6 +766,8 @@ router.get('/type/:type', async (req, res) => {
   let users;
   if (type === 'stockorder') {
     users = await Users.find({ type: 'stockorder' }).select('name userId position city district -_id');
+  } else if (type === 'singleorder') {
+    users = await Users.find({ type: { $regex: new RegExp("^singleorder$", "i") } }).select('name userId position city district -_id');
   } else {
     users = await Users.find({ role: "Coordinator" }).select('name referralCode userId city position district -_id');
   }
@@ -869,6 +871,18 @@ router.post(
       // password 
       const password = await bcrypt.hash('1234', 10);
 
+      // Resolve parent user reference
+      let finalParentUser = parentuser || (appUser && appUser.parentUser) || null;
+      if (!finalParentUser && referredBy) {
+        const foundParent = await Users.findOne({
+          $or: [
+            { userId: referredBy.toString().trim() },
+            { referralCode: referredBy.toString().trim() }
+          ]
+        });
+        if (foundParent) finalParentUser = foundParent._id;
+      }
+
       // create a new application document
       let newApplication = new Users({
         name,
@@ -906,7 +920,7 @@ router.post(
         userId,
         type,
         position,
-        parentUser: parentuser || null,
+        parentUser: finalParentUser,
         role: "Coordinator",
         payment: {
           mode: paymentMode,

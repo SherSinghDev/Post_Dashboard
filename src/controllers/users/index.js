@@ -634,6 +634,10 @@ router.get('/network', async (req, res) => {
             return res.redirect('/auth/login');
         }
 
+        if (user.type === 'singleorder') {
+            return res.redirect('/users/team');
+        }
+
         const networkData = await getFiveLevelNetwork(user);
         const { getUserInactivityDetails, checkAndApplyUserSuspension } = require('../../services/inactivityService');
         await checkAndApplyUserSuspension(user);
@@ -650,6 +654,52 @@ router.get('/network', async (req, res) => {
     } catch (error) {
         console.error("Error loading network dashboard:", error);
         res.status(500).send("Error loading member network.");
+    }
+});
+
+// ==========================================
+// SINGLE ORDER ORGANIZATION TEAM & PATIENTS
+// ==========================================
+router.get('/team', async (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/auth/login');
+    }
+
+    try {
+        let user = await Users.findOne({ _id: req.session.userId });
+        if (!user) {
+            return res.redirect('/auth/login');
+        }
+
+        const { getSingleOrderDescendantNetwork } = require('../../services/singleOrderNetworkService');
+        const networkData = await getSingleOrderDescendantNetwork(user);
+
+        res.render('singleOrder/team', {
+            user,
+            page: "My Organization Team & Patients",
+            descendants: networkData.descendants,
+            patients: networkData.patients,
+            distinctPositions: networkData.distinctPositions,
+            counts: networkData.counts,
+            activeTab: req.query.tab || 'members',
+            initialPosition: req.query.position || 'all'
+        });
+    } catch (error) {
+        console.error("Error loading single order team dashboard:", error);
+        res.status(500).send("Error loading organization team.");
+    }
+});
+
+router.get('/team/details/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+    try {
+        let targetUser = await Users.findById(req.params.id).populate('parentUser', 'name position userId');
+        if (!targetUser) return res.status(404).json({ success: false, message: "User not found" });
+        res.json({ success: true, user: targetUser });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
     }
 });
 

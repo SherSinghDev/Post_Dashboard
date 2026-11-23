@@ -288,7 +288,7 @@
                                                     <option value="">-- Choose Parent User by Name --</option>
                                                     <% if (users && users.length> 0) { %>
                                                         <% users.forEach(function(u) { %>
-                                                            <option value="<%= u.userId %>" data-name="<%= u.name %>">
+                                                            <option value="<%= u.userId %>" data-name="<%= u.name %>" data-position="<%= u.position %>">
                                                                 <%= u.name %> - <%= u.city || u.district || 'N/A' %> -
                                                                         <%= u.position ? '(' + u.position + ')' : '' %>
                                                                             [ID: <%= u.userId %>]
@@ -298,7 +298,7 @@
                                                 </select>
                                                 <input type="hidden" name="referrerName" id="referrerNameInput"
                                                     value="">
-                                                <small class="text-muted">Select the member who referred you to join
+                                                <small class="text-muted" id="parentUserHelpText">Select the member who referred you to join
                                                     their network.</small>
                                             </div>
                                         </div>
@@ -622,6 +622,32 @@
             const selectedOpt = $(this).find('option:selected');
             const refName = selectedOpt.data('name') || '';
             $('#referrerNameInput').val(refName);
+        });
+
+        // Hierarchy linking for single order positions:
+        // State Head -> District Officer -> Block Officer -> Field Officer
+        $('select[name="position"]').change(function () {
+            const pos = ($(this).val() || '').toLowerCase();
+            const formType = $('input[name="type"]').val();
+
+            if (formType === 'singleorder') {
+                let hint = '';
+
+                if (pos.includes('district')) {
+                    hint = 'District Officer reports to State Head. Please select your State Head parent.';
+                } else if (pos.includes('block')) {
+                    hint = 'Block Officer reports to District Officer. Please select your District Officer parent.';
+                } else if (pos.includes('field')) {
+                    hint = 'Field Officer reports to Block Officer. Please select your Block Officer parent.';
+                }
+
+                if (hint) {
+                    $('#referralMode').val('referred').trigger('change');
+                    $('#parentUserHelpText').html('<span class="text-primary fw-bold"><i class="fas fa-sitemap me-1"></i>Hierarchy Requirement: ' + hint + '</span>');
+                } else if (pos.includes('state')) {
+                    $('#parentUserHelpText').html('State Head is a top-level position. Choose Direct or your referring State Head / Admin.');
+                }
+            }
         });
 
         async function checkDistrictHead() {

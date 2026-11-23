@@ -81,6 +81,12 @@
                                                     <i class="fas fa-bullhorn me-1"></i>आवश्यक सूचना
                                                 </button>
                                                 <% } %>
+
+                                            <% if (user.type=='singleorder' ) { %>
+                                                <a href="/users/team"
+                                                    class="btn btn-primary flex-grow-1 flex-md-grow-0"><i
+                                                        class="fas fa-sitemap me-1"></i>My Organization Team & Patients</a>
+                                                <% } %>
                                         </div>
                                         <% } %>
                                             <%- include('globals/dash_cards_style') %>
@@ -211,7 +217,7 @@
                                                                 <div class="row" id="dashboardCardsContainer">
 
                                                                     <!-- Card: Verified Users -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator' || user.role=='single_order_manager')?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.type=='singleorder' || user.role=='stock_operator' || user.role=='single_order_manager')?'d-none':'' %>"
                                                                         data-category="users"
                                                                         data-title="verified users your users">
                                                                         <div class="dash-card">
@@ -239,7 +245,7 @@
                                                                     </div>
 
                                                                     <!-- Card: Unverified Users -->
-                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.role=='stock_operator' || user.role=='single_order_manager')?'d-none':'' %>"
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || user.type=='stockorder' || user.type=='singleorder' || user.role=='stock_operator' || user.role=='single_order_manager')?'d-none':'' %>"
                                                                         data-category="users"
                                                                         data-title="unverified users pending applications">
                                                                         <div class="dash-card">
@@ -322,6 +328,75 @@
                                                                             <a href="/users/network"
                                                                                 class="dash-card-action">
                                                                                 <span>Explore 5 Steps</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Direct Officers (Single Order) -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="direct officers team child single order">
+                                                                        <div class="dash-card">
+                                                                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Direct Officers / सीधे अधिकारी</div>
+                                                                                    <h3 class="dash-card-value" style="color: #2563eb;">
+                                                                                        <%= (typeof singleOrderCounts !== 'undefined' && singleOrderCounts.direct) || 0 %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-blue">
+                                                                                    <i class="fas fa-user-friends"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/users/team?tab=members" class="dash-card-action">
+                                                                                <span>View Direct Team</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Total Organization Team (Single Order) -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
+                                                                        data-category="users"
+                                                                        data-title="total organization team downline single order">
+                                                                        <div class="dash-card">
+                                                                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Total Team / कुल संगठन टीम</div>
+                                                                                    <h3 class="dash-card-value" style="color: #7c3aed;">
+                                                                                        <%= (typeof singleOrderCounts !== 'undefined' && singleOrderCounts.totalTeam) || 0 %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-purple">
+                                                                                    <i class="fas fa-sitemap"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/users/team?tab=members" class="dash-card-action">
+                                                                                <span>Explore Organization</span>
+                                                                                <i class="fas fa-arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Card: Team Referred Patients (Single Order) -->
+                                                                    <div class="col-xl-4 col-lg-6 col-sm-6 dash-card-item <%- (user.role=='doc' || (user.type!='singleorder' && user.role!='Admin'))?'d-none':'' %>"
+                                                                        data-category="patients"
+                                                                        data-title="team referred patients single order">
+                                                                        <div class="dash-card">
+                                                                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                                                                <div>
+                                                                                    <div class="dash-card-title">Team Patients / टीम के मरीज</div>
+                                                                                    <h3 class="dash-card-value" style="color: #0891b2;">
+                                                                                        <%= (typeof singleOrderCounts !== 'undefined' && singleOrderCounts.totalPatients) || 0 %>
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="dash-card-icon icon-cyan">
+                                                                                    <i class="fas fa-hospital-user"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <a href="/users/team?tab=patients" class="dash-card-action">
+                                                                                <span>View Team Patients</span>
                                                                                 <i class="fas fa-arrow-right"></i>
                                                                             </a>
                                                                         </div>

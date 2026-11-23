@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../globals/head') %>
+
+<style>
+    /* Single Order Organization Team Dashboard Styling */
+    .team-stat-card {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 18px 20px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .team-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px -3px rgba(15, 23, 42, 0.08);
+    }
+    .team-stat-title {
+        font-size: 12.5px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+    .team-stat-val {
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+    .team-stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    /* Position Badges */
+    .badge-pos-state { background-color: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+    .badge-pos-district { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge-pos-block { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .badge-pos-field { background-color: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
+    .badge-pos-default { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+    .pos-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+    }
+
+    /* Hierarchy Level Badges */
+    .level-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+    }
+
+    /* Filter Pills */
+    .filter-pill-btn {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 7px 16px;
+        border-radius: 20px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .filter-pill-btn:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+    }
+    .filter-pill-btn.active {
+        background: #0284c7;
+        color: #ffffff;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+    .filter-pill-btn .pill-count {
+        background: rgba(0, 0, 0, 0.08);
+        padding: 1px 7px;
+        border-radius: 10px;
+        font-size: 11px;
+    }
+    .filter-pill-btn.active .pill-count {
+        background: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+    }
+
+    /* Custom Navigation Tabs */
+    .team-tabs {
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .team-tab-btn {
+        padding: 12px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #64748b;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+    }
+    .team-tab-btn:hover {
+        color: #0284c7;
+    }
+    .team-tab-btn.active {
+        color: #0284c7;
+        border-bottom-color: #0284c7;
+        font-weight: 700;
+    }
+    .team-tab-btn .tab-badge {
+        font-size: 12px;
+        padding: 3px 9px;
+        border-radius: 20px;
+        background: #e2e8f0;
+        color: #475569;
+    }
+    .team-tab-btn.active .tab-badge {
+        background: #e0f2fe;
+        color: #0284c7;
+    }
+
+    /* Custom Tables */
+    .team-table thead th {
+        background: #f8fafc;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+        padding: 12px 14px;
+        white-space: nowrap;
+    }
+    .team-table tbody td {
+        padding: 13px 14px;
+        vertical-align: middle;
+        font-size: 13.5px;
+    }
+    .team-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    /* Hierarchy path display */
+    .hierarchy-chain {
+        font-size: 11.5px;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /* Dark Mode Overrides */
+    [data-theme-version="dark"] .team-stat-card {
+        background: #0f172a !important;
+        border-color: #1e293b !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+    }
+    [data-theme-version="dark"] .team-stat-title {
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] .team-tabs {
+        border-bottom-color: #334155 !important;
+    }
+    [data-theme-version="dark"] .team-tab-btn {
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] .team-tab-btn:hover {
+        color: #38bdf8 !important;
+    }
+    [data-theme-version="dark"] .team-tab-btn.active {
+        color: #38bdf8 !important;
+        border-bottom-color: #38bdf8 !important;
+    }
+    [data-theme-version="dark"] .filter-pill-btn {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .filter-pill-btn:hover {
+        background: #334155 !important;
+        color: #f8fafc !important;
+    }
+    [data-theme-version="dark"] .filter-pill-btn.active {
+        background: #0284c7 !important;
+        color: #ffffff !important;
+        border-color: #0284c7 !important;
+    }
+    [data-theme-version="dark"] .team-table thead th {
+        background: #1e293b !important;
+        color: #cbd5e1 !important;
+        border-bottom-color: #334155 !important;
+    }
+    [data-theme-version="dark"] .team-table tbody tr:hover {
+        background-color: #1e293b !important;
+    }
+    [data-theme-version="dark"] .level-badge {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        color: #94a3b8 !important;
+    }
+</style>
+
+<body>
+    <%- include('../globals/preloader') %>
+
+    <div id="main-wrapper" class="show">
+        <%- include('../globals/navHeader') %>
+        <%- include('../globals/header') %>
+        <%- include('../globals/sidebar') %>
+
+        <div class="content-body">
+            <div class="container-fluid">
+
+                <!-- Page Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <div>
+                        <h3 class="fw-bold text-dark mb-1">
+                            <i class="fas fa-sitemap text-primary me-2"></i>My Organization Team & Referred Patients
+                        </h3>
+                        <p class="text-muted mb-0 small">
+                            Hierarchy: <strong>State Head</strong> &rarr; <strong>District Officer</strong> &rarr; <strong>Block Officer</strong> &rarr; <strong>Field Officer</strong>
+                        </p>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="/patientform/<%= user.userId %>" target="_blank" class="btn btn-outline-primary fw-semibold">
+                            <i class="fas fa-file-medical me-1"></i>Refer Patient
+                        </a>
+                        <a href="/applications/type/singleorder" target="_blank" class="btn btn-primary fw-semibold">
+                            <i class="fas fa-user-plus me-1"></i>Refer Team Member
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Summary Overview Cards -->
+                <div class="row g-3 mb-4">
+                    <!-- Direct Child Officers -->
+                    <div class="col-xl-3 col-sm-6">
+                        <div class="team-stat-card">
+                            <div>
+                                <div class="team-stat-title">Direct Officers / सीधे अधिकारी</div>
+                                <div class="team-stat-val text-primary"><%= counts.direct || 0 %></div>
+                                <small class="text-muted">Directly reporting to you</small>
+                            </div>
+                            <div class="team-stat-icon" style="background: #e0f2fe; color: #0284c7;">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Team Downline -->
+                    <div class="col-xl-3 col-sm-6">
+                        <div class="team-stat-card">
+                            <div>
+                                <div class="team-stat-title">Total Team / कुल संगठन टीम</div>
+                                <div class="team-stat-val" style="color: #7c3aed;"><%= counts.totalTeam || 0 %></div>
+                                <small class="text-muted">All descendants in network</small>
+                            </div>
+                            <div class="team-stat-icon" style="background: #f3e8ff; color: #7c3aed;">
+                                <i class="fas fa-users-line"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Team Referred Patients -->
+                    <div class="col-xl-3 col-sm-6">
+                        <div class="team-stat-card">
+                            <div>
+                                <div class="team-stat-title">Team Patients / टीम के मरीज</div>
+                                <div class="team-stat-val text-info"><%= counts.totalPatients || 0 %></div>
+                                <small class="text-muted">Forms filled by team</small>
+                            </div>
+                            <div class="team-stat-icon" style="background: #cffafe; color: #0891b2;">
+                                <i class="fas fa-hospital-user"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verified Patients -->
+                    <div class="col-xl-3 col-sm-6">
+                        <div class="team-stat-card">
+                            <div>
+                                <div class="team-stat-title">Verified Patients / सत्यापित मरीज</div>
+                                <div class="team-stat-val text-success"><%= counts.verifiedPatients || 0 %></div>
+                                <small class="text-muted">Doctor approved forms</small>
+                            </div>
+                            <div class="team-stat-icon" style="background: #dcfce7; color: #16a34a;">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div class="team-tabs">
+                    <button type="button" class="team-tab-btn active" id="tabBtnMembers" onclick="switchTeamTab('members')">
+                        <i class="fas fa-users"></i>
+                        <span>Team Members / संगठन सदस्य</span>
+                        <span class="tab-badge" id="membersCountBadge"><%= descendants.length %></span>
+                    </button>
+                    <button type="button" class="team-tab-btn" id="tabBtnPatients" onclick="switchTeamTab('patients')">
+                        <i class="fas fa-file-medical-alt"></i>
+                        <span>Team Referred Patients / टीम द्वारा रेफर मरीज</span>
+                        <span class="tab-badge" id="patientsCountBadge"><%= patients.length %></span>
+                    </button>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- TAB 1: TEAM MEMBERS LIST                   -->
+                <!-- ========================================== -->
+                <div id="sectionMembers" class="team-section">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-3">
+                            <!-- Filters & Search Toolbar -->
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                <!-- Position Filter Pills -->
+                                <div class="d-flex flex-wrap gap-2 align-items-center" id="memberPositionFilters">
+                                    <span class="text-muted small fw-bold me-1">Position:</span>
+                                    <button type="button" class="filter-pill-btn active" data-pos="all" onclick="filterMembersByPos('all', this)">
+                                        All <span class="pill-count"><%= descendants.length %></span>
+                                    </button>
+                                    <% ['State Head', 'District Officer', 'Block Officer', 'Field Officer'].forEach(function(pos) { %>
+                                        <% const count = (counts.byPosition && counts.byPosition[pos]) || 0; %>
+                                        <% if (count > 0 || distinctPositions.includes(pos)) { %>
+                                            <button type="button" class="filter-pill-btn" data-pos="<%= pos %>" onclick="filterMembersByPos('<%= pos %>', this)">
+                                                <%= pos %> <span class="pill-count"><%= count %></span>
+                                            </button>
+                                        <% } %>
+                                    <% }); %>
+                                </div>
+
+                                <!-- Search Input -->
+                                <div class="input-group" style="max-width: 320px;">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" id="memberSearchInput" class="form-control border-start-0 ps-0" placeholder="Search member by name, ID, mobile, district...">
+                                </div>
+                            </div>
+
+                            <!-- Members Table -->
+                            <div class="table-responsive">
+                                <table class="table table-hover team-table mb-0" id="membersTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Member / अधिकारी</th>
+                                            <th>Position / पद</th>
+                                            <th>Hierarchy Level</th>
+                                            <th>Reporting To / पालक</th>
+                                            <th>Location / क्षेत्र</th>
+                                            <th>Contact / संपर्क</th>
+                                            <th class="text-center">Referred Patients</th>
+                                            <th>Joined Date</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="membersTableBody">
+                                        <% if (descendants && descendants.length > 0) { %>
+                                            <% descendants.forEach(function(m, idx) { %>
+                                                <% 
+                                                    let posClass = 'badge-pos-default';
+                                                    if (m.normPosition === 'State Head') posClass = 'badge-pos-state';
+                                                    else if (m.normPosition === 'District Officer') posClass = 'badge-pos-district';
+                                                    else if (m.normPosition === 'Block Officer') posClass = 'badge-pos-block';
+                                                    else if (m.normPosition === 'Field Officer') posClass = 'badge-pos-field';
+                                                %>
+                                                <tr class="member-row" 
+                                                    data-pos="<%= m.normPosition || '' %>"
+                                                    data-raw-pos="<%= m.position || '' %>"
+                                                    data-id="<%= m.userId || '' %>"
+                                                    data-search="<%= (m.name || '') + ' ' + (m.userId || '') + ' ' + (m.mobile || '') + ' ' + (m.district || '') + ' ' + (m.block || '') + ' ' + (m.normPosition || '') %>">
+                                                    <td class="text-muted"><%= idx + 1 %></td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <div class="avatar-sm rounded-circle d-flex align-items-center justify-content-center fw-bold bg-light text-primary" style="width: 36px; height: 36px;">
+                                                                <%= (m.name || 'U').charAt(0).toUpperCase() %>
+                                                            </div>
+                                                            <div>
+                                                                <div class="fw-bold text-dark"><%= m.name %></div>
+                                                                <small class="text-muted">ID: <span class="badge bg-light text-dark border">#<%= m.userId || 'N/A' %></span></small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="pos-badge <%= posClass %>">
+                                                            <i class="fas fa-id-badge"></i> <%= m.position || m.normPosition %>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="level-badge">
+                                                            <% if (m.level === 1) { %>
+                                                                <i class="fas fa-check-circle text-primary me-1"></i>Direct Child (L1)
+                                                            <% } else { %>
+                                                                <i class="fas fa-level-down-alt text-muted me-1"></i>Level <%= m.level %> Downline
+                                                            <% } %>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <div class="fw-semibold text-dark small"><%= m.parentName || 'Direct' %></div>
+                                                            <div class="hierarchy-chain">
+                                                                <span><%= m.parentPosition || '' %></span>
+                                                                <% if (m.parentDisplayId) { %>
+                                                                    <span>[ID: <%= m.parentDisplayId %>]</span>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="small">
+                                                            <div class="fw-semibold text-dark"><%= m.district || m.city || 'N/A' %></div>
+                                                            <div class="text-muted"><%= m.block ? 'Block: ' + m.block + ', ' : '' %><%= m.state || '' %></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="small">
+                                                            <div><i class="fas fa-phone-alt text-muted me-1"></i><%= m.mobile || 'N/A' %></div>
+                                                            <% if (m.email) { %>
+                                                                <div class="text-muted"><i class="fas fa-envelope text-muted me-1"></i><%= m.email %></div>
+                                                            <% } %>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="badge rounded-pill <%= m.totalPatientsReferred > 0 ? 'bg-info text-white' : 'bg-light text-muted border' %> px-3 py-2 fw-bold" style="font-size: 13px;">
+                                                            <%= m.totalPatientsReferred || 0 %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-muted small">
+                                                        <%= m.createdAt ? new Date(m.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A' %>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <button type="button" 
+                                                                class="btn btn-sm btn-outline-info" 
+                                                                title="View Patients Referred by this Member"
+                                                                onclick="filterPatientsByMember('<%= m.userId %>', '<%= m.name %>')">
+                                                            <i class="fas fa-notes-medical me-1"></i>Patients
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <tr id="emptyMemberRow">
+                                                <td colspan="10" class="text-center py-5 text-muted">
+                                                    <i class="fas fa-users-slash fa-3x text-light mb-3 d-block"></i>
+                                                    <h5>No Team Members Found</h5>
+                                                    <p class="small">You do not have any child users reporting under your organization hierarchy yet.</p>
+                                                    <a href="/applications/type/singleorder" target="_blank" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-user-plus me-1"></i>Refer First Member
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- TAB 2: TEAM REFERRED PATIENTS LIST         -->
+                <!-- ========================================== -->
+                <div id="sectionPatients" class="team-section" style="display: none;">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-3">
+                            <!-- Filters & Search Toolbar -->
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                <!-- Filter Pills by Referrer's Position -->
+                                <div class="d-flex flex-wrap gap-2 align-items-center" id="patientPositionFilters">
+                                    <span class="text-muted small fw-bold me-1">Referrer Position:</span>
+                                    <button type="button" class="filter-pill-btn active" data-pos="all" onclick="filterPatientsByPos('all', this)">
+                                        All Positions <span class="pill-count"><%= patients.length %></span>
+                                    </button>
+                                    <% ['State Head', 'District Officer', 'Block Officer', 'Field Officer'].forEach(function(pos) { %>
+                                        <button type="button" class="filter-pill-btn" data-pos="<%= pos %>" onclick="filterPatientsByPos('<%= pos %>', this)">
+                                            <%= pos %>
+                                        </button>
+                                    <% }); %>
+                                </div>
+
+                                <!-- Active Member Filter Tag (if filtered by clicking specific member) -->
+                                <div id="activeMemberFilterPill" style="display: none;" class="align-items-center gap-2">
+                                    <span class="badge bg-primary px-3 py-2 d-inline-flex align-items-center gap-2">
+                                        <span>Filtered by Referrer: <strong id="activeMemberFilterName"></strong></span>
+                                        <button type="button" class="btn-close btn-close-white" style="font-size: 10px;" onclick="clearMemberPatientFilter()"></button>
+                                    </span>
+                                </div>
+
+                                <!-- Status & Search Controls -->
+                                <div class="d-flex gap-2 flex-wrap" style="max-width: 450px;">
+                                    <select id="patientStatusFilter" class="form-select form-select-sm" style="width: 140px;" onchange="applyPatientFilters()">
+                                        <option value="all">All Status</option>
+                                        <option value="verified">Verified</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="delivered">Delivered</option>
+                                    </select>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fas fa-search text-muted"></i>
+                                        </span>
+                                        <input type="text" id="patientSearchInput" class="form-control form-control-sm border-start-0 ps-0" placeholder="Search patient, reg no, referrer...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Patients Table -->
+                            <div class="table-responsive">
+                                <table class="table table-hover team-table mb-0" id="patientsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Reg. No & Date</th>
+                                            <th>Patient Name / मरीज का नाम</th>
+                                            <th>Disease / बीमारी</th>
+                                            <th>Location / क्षेत्र</th>
+                                            <th>Referred By / रेफरर</th>
+                                            <th>Referrer Position</th>
+                                            <th>Status / स्थिति</th>
+                                            <th class="text-end">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patientsTableBody">
+                                        <% if (patients && patients.length > 0) { %>
+                                            <% patients.forEach(function(p, pIdx) { %>
+                                                <%
+                                                    let docStatus = (p.otherStatus && p.otherStatus.doctorStatus) || 'pending';
+                                                    let delivStatus = (p.otherStatus && p.otherStatus.deliveryStatus) || '';
+                                                    let isDelivered = ['delivered', 'Delivered', 'DELIVERED'].includes(delivStatus);
+                                                    let isVerified = !isDelivered && docStatus && docStatus !== '' && docStatus.toLowerCase() !== 'pending';
+
+                                                    let refPosClass = 'badge-pos-default';
+                                                    if (p.referrerNormPosition === 'State Head') refPosClass = 'badge-pos-state';
+                                                    else if (p.referrerNormPosition === 'District Officer') refPosClass = 'badge-pos-district';
+                                                    else if (p.referrerNormPosition === 'Block Officer') refPosClass = 'badge-pos-block';
+                                                    else if (p.referrerNormPosition === 'Field Officer') refPosClass = 'badge-pos-field';
+                                                %>
+                                                <tr class="patient-row"
+                                                    data-ref-pos="<%= p.referrerNormPosition || '' %>"
+                                                    data-ref-id="<%= p.referrerUserId || '' %>"
+                                                    data-status="<%= isDelivered ? 'delivered' : (isVerified ? 'verified' : 'pending') %>"
+                                                    data-search="<%= (p.patientName || '') + ' ' + (p.registerNo || '') + ' ' + (p.mobileNumber || '') + ' ' + (p.diseaseName || '') + ' ' + (p.referrerName || '') + ' ' + (p.referrerUserId || '') + ' ' + (p.referrerNormPosition || '') %>">
+                                                    <td class="text-muted"><%= pIdx + 1 %></td>
+                                                    <td>
+                                                        <div class="fw-bold text-primary font-monospace"><%= p.registerNo || 'N/A' %></div>
+                                                        <small class="text-muted">
+                                                            <%= p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '' %>
+                                                        </small>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-bold text-dark"><%= p.patientName %></div>
+                                                        <small class="text-muted"><i class="fas fa-phone-alt me-1"></i><%= p.mobileNumber || 'N/A' %></small>
+                                                    </td>
+                                                    <td>
+                                                        <div class="badge bg-light text-dark border px-2 py-1">
+                                                            <%= p.diseaseName || 'General Care' %>
+                                                        </div>
+                                                        <% if (p.duration) { %>
+                                                            <div class="small text-muted mt-1"><%= p.duration %></div>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <div class="small">
+                                                            <div class="text-dark fw-semibold"><%= p.cityOrDistrict || 'N/A' %></div>
+                                                            <div class="text-muted"><%= p.state || '' %></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <div class="fw-bold text-dark small"><%= p.referrerName %></div>
+                                                            <div class="text-muted small">
+                                                                ID: <span class="badge bg-light text-dark border">#<%= p.referrerUserId %></span>
+                                                                <% if (p.referrerLevel) { %>
+                                                                    <span class="level-badge ms-1">L<%= p.referrerLevel %></span>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="pos-badge <%= refPosClass %>">
+                                                            <%= p.referrerPosition || p.referrerNormPosition %>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <% if (isDelivered) { %>
+                                                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                                                <i class="fas fa-truck-ramp-box me-1"></i>Delivered
+                                                            </span>
+                                                        <% } else if (isVerified) { %>
+                                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                                                                <i class="fas fa-user-check me-1"></i>Verified (<%= docStatus %>)
+                                                            </span>
+                                                        <% } else { %>
+                                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-1">
+                                                                <i class="fas fa-hourglass-half me-1"></i>Pending Review
+                                                            </span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <button type="button" 
+                                                                class="btn btn-sm btn-outline-secondary" 
+                                                                onclick="showPatientModal('<%= p.registerNo %>', '<%= p.patientName %>', '<%= p.mobileNumber %>', '<%= p.diseaseName %>', '<%= p.cityOrDistrict %>', '<%= p.state %>', '<%= p.referrerName %>', '<%= p.referrerPosition %>', '<%= p.createdAt %>')">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <tr id="emptyPatientRow">
+                                                <td colspan="9" class="text-center py-5 text-muted">
+                                                    <i class="fas fa-file-medical fa-3x text-light mb-3 d-block"></i>
+                                                    <h5>No Referred Patient Forms Yet</h5>
+                                                    <p class="small">None of your descendant team members have referred any patient forms so far.</p>
+                                                    <a href="/patientform/<%= user.userId %>" target="_blank" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-plus me-1"></i>Refer Patient Form
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <%- include('../globals/footer') %>
+    </div>
+
+    <!-- Quick Patient Details Modal -->
+    <div class="modal fade" id="patientQuickModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold" id="modalPatientTitle">Patient Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <span class="text-muted">Registration No:</span>
+                        <span class="fw-bold font-monospace text-primary" id="mRegNo"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <span class="text-muted">Patient Name:</span>
+                        <span class="fw-bold text-dark" id="mName"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <span class="text-muted">Mobile Number:</span>
+                        <span class="fw-bold" id="mMobile"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <span class="text-muted">Disease / Condition:</span>
+                        <span class="badge bg-light text-dark border px-2 py-1" id="mDisease"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <span class="text-muted">Location:</span>
+                        <span class="fw-semibold" id="mLocation"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <span class="text-muted">Referred By:</span>
+                        <div>
+                            <span class="fw-bold text-dark" id="mRefName"></span>
+                            <span class="badge bg-light text-dark border ms-1" id="mRefPos"></span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Submission Date:</span>
+                        <span class="text-muted small" id="mDate"></span>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../globals/scripts') %>
+
+    <script>
+        // Tab switching logic
+        function switchTeamTab(tabName) {
+            const btnMembers = document.getElementById('tabBtnMembers');
+            const btnPatients = document.getElementById('tabBtnPatients');
+            const secMembers = document.getElementById('sectionMembers');
+            const secPatients = document.getElementById('sectionPatients');
+
+            if (tabName === 'members') {
+                btnMembers.classList.add('active');
+                btnPatients.classList.remove('active');
+                secMembers.style.display = 'block';
+                secPatients.style.display = 'none';
+            } else {
+                btnPatients.classList.add('active');
+                btnMembers.classList.remove('active');
+                secPatients.style.display = 'block';
+                secMembers.style.display = 'none';
+            }
+        }
+
+        // --- MEMBER FILTERING LOGIC ---
+        let currentMemberPosFilter = 'all';
+
+        function filterMembersByPos(pos, btn) {
+            currentMemberPosFilter = pos;
+            document.querySelectorAll('#memberPositionFilters .filter-pill-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            applyMemberFilters();
+        }
+
+        function applyMemberFilters() {
+            const query = (document.getElementById('memberSearchInput').value || '').toLowerCase().trim();
+            const rows = document.querySelectorAll('#membersTableBody tr.member-row');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const rowPos = (row.getAttribute('data-pos') || '').toLowerCase();
+                const searchData = (row.getAttribute('data-search') || '').toLowerCase();
+
+                let matchesPos = (currentMemberPosFilter === 'all') || 
+                                 (rowPos === currentMemberPosFilter.toLowerCase()) ||
+                                 (currentMemberPosFilter.toLowerCase().includes(rowPos));
+
+                let matchesSearch = !query || searchData.includes(query);
+
+                if (matchesPos && matchesSearch) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            const emptyRow = document.getElementById('emptyMemberRow');
+            if (emptyRow) {
+                emptyRow.style.display = (visibleCount === 0 && rows.length > 0) ? '' : (rows.length === 0 ? '' : 'none');
+            }
+        }
+
+        document.getElementById('memberSearchInput').addEventListener('input', applyMemberFilters);
+
+        // --- PATIENT FILTERING LOGIC ---
+        let currentPatientPosFilter = 'all';
+        let currentPatientMemberId = null;
+
+        function filterPatientsByPos(pos, btn) {
+            currentPatientPosFilter = pos;
+            document.querySelectorAll('#patientPositionFilters .filter-pill-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            applyPatientFilters();
+        }
+
+        function filterPatientsByMember(userId, name) {
+            currentPatientMemberId = userId;
+            switchTeamTab('patients');
+
+            const pill = document.getElementById('activeMemberFilterPill');
+            const nameEl = document.getElementById('activeMemberFilterName');
+            if (pill && nameEl) {
+                nameEl.textContent = name + ' (#' + userId + ')';
+                pill.style.display = 'inline-flex';
+            }
+            applyPatientFilters();
+        }
+
+        function clearMemberPatientFilter() {
+            currentPatientMemberId = null;
+            const pill = document.getElementById('activeMemberFilterPill');
+            if (pill) pill.style.display = 'none';
+            applyPatientFilters();
+        }
+
+        function applyPatientFilters() {
+            const query = (document.getElementById('patientSearchInput').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('patientStatusFilter').value;
+            const rows = document.querySelectorAll('#patientsTableBody tr.patient-row');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const refPos = (row.getAttribute('data-ref-pos') || '').toLowerCase();
+                const refId = row.getAttribute('data-ref-id') || '';
+                const rowStatus = row.getAttribute('data-status') || '';
+                const searchData = (row.getAttribute('data-search') || '').toLowerCase();
+
+                let matchesPos = (currentPatientPosFilter === 'all') || 
+                                 (refPos === currentPatientPosFilter.toLowerCase()) ||
+                                 (currentPatientPosFilter.toLowerCase().includes(refPos));
+
+                let matchesMember = !currentPatientMemberId || (refId === currentPatientMemberId);
+                let matchesStatus = (statusFilter === 'all') || (rowStatus === statusFilter);
+                let matchesSearch = !query || searchData.includes(query);
+
+                if (matchesPos && matchesMember && matchesStatus && matchesSearch) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            const emptyRow = document.getElementById('emptyPatientRow');
+            if (emptyRow) {
+                emptyRow.style.display = (visibleCount === 0 && rows.length > 0) ? '' : (rows.length === 0 ? '' : 'none');
+            }
+        }
+
+        document.getElementById('patientSearchInput').addEventListener('input', applyPatientFilters);
+
+        // Modal display helper
+        function showPatientModal(regNo, name, mobile, disease, city, state, refName, refPos, dateStr) {
+            document.getElementById('mRegNo').textContent = regNo || 'N/A';
+            document.getElementById('mName').textContent = name || 'N/A';
+            document.getElementById('mMobile').textContent = mobile || 'N/A';
+            document.getElementById('mDisease').textContent = disease || 'General Care';
+            document.getElementById('mLocation').textContent = (city || '') + (state ? ', ' + state : '');
+            document.getElementById('mRefName').textContent = refName || 'Direct';
+            document.getElementById('mRefPos').textContent = refPos || '';
+            document.getElementById('mDate').textContent = dateStr ? new Date(dateStr).toLocaleString('en-IN') : '';
+
+            new bootstrap.Modal(document.getElementById('patientQuickModal')).show();
+        }
+
+        // URL param handling on initial page load
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab');
+            if (tab === 'patients') {
+                switchTeamTab('patients');
+            }
+            const pos = urlParams.get('position');
+            if (pos) {
+                const targetBtn = document.querySelector(`[data-pos="${pos}"]`);
+                if (targetBtn) targetBtn.click();
+            }
+        })();
+    </script>
+</body>
+</html>

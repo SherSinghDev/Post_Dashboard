@@ -372,7 +372,7 @@
                 </li>
                 <% } %>
 
-                    <% if(user.role!='doc' && user.type!='stockorder' && user.role!='stock_operator' && user.role!='single_order_manager' ) { %>
+                    <% if(user.role!='doc' && user.type!='stockorder' && user.type!='singleorder' && user.role!='stock_operator' && user.role!='single_order_manager' ) { %>
                         <!-- Verified Users / Your Users -->
                         <li>
                             <a href="/users" aria-expanded="false">
@@ -396,6 +396,18 @@
                         </li>
                         <% } %>
                         <% } %>
+
+                            <% if(user.type=='singleorder' || user.role=='Admin' ) { %>
+                                <!-- Organization Team & Patients (Single Order) -->
+                                <li>
+                                    <a href="/users/team" aria-expanded="false">
+                                        <span class="nav-icon-box text-primary">
+                                            <i class="fas fa-sitemap"></i>
+                                        </span>
+                                        <span class="nav-text">My Team & Patients / मेरी टीम और मरीज</span>
+                                    </a>
+                                </li>
+                            <% } %>
 
                             <% if(user.type=='stockorder' ) { %>
                                 <!-- 5-Level Member Network (Stock Order) -->
