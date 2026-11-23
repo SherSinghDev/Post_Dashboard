@@ -182,15 +182,33 @@
         gap: 4px;
     }
 
-    /* Dark Mode Overrides */
+    /* ========================================================
+       DARK MODE OVERRIDES FOR SINGLE ORDER TEAM & PATIENTS
+       ======================================================== */
     [data-theme-version="dark"] .team-stat-card {
         background: #0f172a !important;
         border-color: #1e293b !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
     }
+    [data-theme-version="dark"] .team-stat-card:hover {
+        border-color: #38bdf8 !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    }
     [data-theme-version="dark"] .team-stat-title {
         color: #94a3b8 !important;
     }
+    [data-theme-version="dark"] .team-stat-icon {
+        opacity: 0.95;
+    }
+
+    /* Cards & Containers in Dark Mode */
+    [data-theme-version="dark"] .card {
+        background: #0f172a !important;
+        border: 1px solid #1e293b !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* Tabs */
     [data-theme-version="dark"] .team-tabs {
         border-bottom-color: #334155 !important;
     }
@@ -204,6 +222,16 @@
         color: #38bdf8 !important;
         border-bottom-color: #38bdf8 !important;
     }
+    [data-theme-version="dark"] .team-tab-btn .tab-badge {
+        background: #1e293b !important;
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] .team-tab-btn.active .tab-badge {
+        background: rgba(2, 132, 199, 0.25) !important;
+        color: #38bdf8 !important;
+    }
+
+    /* Filter Buttons */
     [data-theme-version="dark"] .filter-pill-btn {
         background: #1e293b !important;
         border-color: #334155 !important;
@@ -212,24 +240,203 @@
     [data-theme-version="dark"] .filter-pill-btn:hover {
         background: #334155 !important;
         color: #f8fafc !important;
+        border-color: #475569 !important;
     }
     [data-theme-version="dark"] .filter-pill-btn.active {
         background: #0284c7 !important;
         color: #ffffff !important;
         border-color: #0284c7 !important;
+        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4) !important;
     }
+
+    /* Table Structure & Text Contrast */
     [data-theme-version="dark"] .team-table thead th {
         background: #1e293b !important;
         color: #cbd5e1 !important;
         border-bottom-color: #334155 !important;
     }
-    [data-theme-version="dark"] .team-table tbody tr:hover {
+    [data-theme-version="dark"] .team-table tbody td {
+        border-bottom-color: #1e293b !important;
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .team-table tbody tr:hover td {
         background-color: #1e293b !important;
     }
+
+    /* CRITICAL FIX: Ensure dark mode text is fully visible (not black/dark on dark bg) */
+    [data-theme-version="dark"] .text-dark,
+    [data-theme-version="dark"] .team-table .text-dark,
+    [data-theme-version="dark"] h3.text-dark,
+    [data-theme-version="dark"] .fw-bold.text-dark,
+    [data-theme-version="dark"] .fw-semibold.text-dark {
+        color: #f1f5f9 !important;
+    }
+
+    [data-theme-version="dark"] .text-muted,
+    [data-theme-version="dark"] .team-table .text-muted {
+        color: #94a3b8 !important;
+    }
+
+    [data-theme-version="dark"] .hierarchy-chain {
+        color: #94a3b8 !important;
+    }
+
+    /* Avatars */
+    [data-theme-version="dark"] .avatar-sm.bg-light {
+        background: #1e293b !important;
+        color: #38bdf8 !important;
+        border: 1px solid #334155 !important;
+    }
+
+    /* Badges in Dark Mode */
     [data-theme-version="dark"] .level-badge {
         background: #1e293b !important;
         border-color: #334155 !important;
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .badge.bg-light.text-dark,
+    [data-theme-version="dark"] .badge.bg-light {
+        background-color: #1e293b !important;
+        color: #e2e8f0 !important;
+        border-color: #334155 !important;
+    }
+    [data-theme-version="dark"] .badge.rounded-pill.bg-light.text-muted {
+        background: #1e293b !important;
         color: #94a3b8 !important;
+        border-color: #334155 !important;
+    }
+
+    /* Position Badges Dark Mode */
+    [data-theme-version="dark"] .badge-pos-state {
+        background-color: rgba(126, 34, 206, 0.25) !important;
+        color: #d8b4fe !important;
+        border-color: #7e22ce !important;
+    }
+    [data-theme-version="dark"] .badge-pos-district {
+        background-color: rgba(29, 78, 216, 0.25) !important;
+        color: #93c5fd !important;
+        border-color: #1d4ed8 !important;
+    }
+    [data-theme-version="dark"] .badge-pos-block {
+        background-color: rgba(180, 83, 9, 0.25) !important;
+        color: #fde047 !important;
+        border-color: #b45309 !important;
+    }
+    [data-theme-version="dark"] .badge-pos-field {
+        background-color: rgba(4, 120, 87, 0.25) !important;
+        color: #6ee7b7 !important;
+        border-color: #047857 !important;
+    }
+    [data-theme-version="dark"] .badge-pos-default {
+        background-color: rgba(71, 85, 105, 0.3) !important;
+        color: #cbd5e1 !important;
+        border-color: #475569 !important;
+    }
+
+    /* Patient Status Subtle Badges */
+    [data-theme-version="dark"] .bg-success-subtle {
+        background-color: rgba(22, 163, 74, 0.2) !important;
+        color: #4ade80 !important;
+        border-color: rgba(22, 163, 74, 0.4) !important;
+    }
+    [data-theme-version="dark"] .bg-primary-subtle {
+        background-color: rgba(2, 132, 199, 0.2) !important;
+        color: #38bdf8 !important;
+        border-color: rgba(2, 132, 199, 0.4) !important;
+    }
+    [data-theme-version="dark"] .bg-warning-subtle {
+        background-color: rgba(217, 119, 6, 0.2) !important;
+        color: #fbbf24 !important;
+        border-color: rgba(217, 119, 6, 0.4) !important;
+    }
+
+    /* Search & Inputs */
+    [data-theme-version="dark"] .input-group-text.bg-light {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] #memberSearchInput,
+    [data-theme-version="dark"] #patientSearchInput,
+    [data-theme-version="dark"] #patientStatusFilter {
+        background-color: #0f172a !important;
+        border-color: #334155 !important;
+        color: #f1f5f9 !important;
+    }
+    [data-theme-version="dark"] #memberSearchInput::placeholder,
+    [data-theme-version="dark"] #patientSearchInput::placeholder {
+        color: #64748b !important;
+    }
+    [data-theme-version="dark"] #memberSearchInput:focus,
+    [data-theme-version="dark"] #patientSearchInput:focus,
+    [data-theme-version="dark"] #patientStatusFilter:focus {
+        border-color: #38bdf8 !important;
+        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.2) !important;
+    }
+    [data-theme-version="dark"] #patientStatusFilter option {
+        background-color: #0f172a !important;
+        color: #f1f5f9 !important;
+    }
+
+    /* Buttons in Dark Mode */
+    [data-theme-version="dark"] .btn-outline-primary {
+        border-color: #38bdf8 !important;
+        color: #38bdf8 !important;
+    }
+    [data-theme-version="dark"] .btn-outline-primary:hover {
+        background-color: #0284c7 !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .btn-outline-info {
+        border-color: #06b6d4 !important;
+        color: #22d3ee !important;
+    }
+    [data-theme-version="dark"] .btn-outline-info:hover {
+        background-color: #0891b2 !important;
+        color: #ffffff !important;
+    }
+    [data-theme-version="dark"] .btn-outline-secondary {
+        border-color: #64748b !important;
+        color: #cbd5e1 !important;
+    }
+    [data-theme-version="dark"] .btn-outline-secondary:hover {
+        background-color: #334155 !important;
+        color: #f8fafc !important;
+    }
+
+    /* Modal in Dark Mode */
+    [data-theme-version="dark"] #patientQuickModal .modal-content {
+        background-color: #0f172a !important;
+        border: 1px solid #1e293b !important;
+        color: #f1f5f9 !important;
+    }
+    [data-theme-version="dark"] #patientQuickModal .modal-header.bg-light,
+    [data-theme-version="dark"] #patientQuickModal .modal-footer.bg-light {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #f1f5f9 !important;
+    }
+    [data-theme-version="dark"] #patientQuickModal .modal-title {
+        color: #f1f5f9 !important;
+    }
+    [data-theme-version="dark"] #patientQuickModal .border-bottom {
+        border-bottom-color: #1e293b !important;
+    }
+    [data-theme-version="dark"] #patientQuickModal .text-muted {
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] #patientQuickModal .btn-close {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    /* Empty state rows */
+    [data-theme-version="dark"] #emptyMemberRow td,
+    [data-theme-version="dark"] #emptyPatientRow td {
+        color: #94a3b8 !important;
+    }
+    [data-theme-version="dark"] #emptyMemberRow i,
+    [data-theme-version="dark"] #emptyPatientRow i {
+        color: #334155 !important;
     }
 </style>
 
