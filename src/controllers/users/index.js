@@ -906,4 +906,58 @@ router.post('/admin/kyc-approvals/:id', async (req, res) => {
     }
 });
 
+// Resend Salary Guide Email
+router.post('/resend-salary-email/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ success: false, message: 'Unauthorized. Please log in.' });
+    }
+    try {
+        const currentUser = await Users.findById(req.session.userId);
+        if (!currentUser || (currentUser.role !== 'Admin' && currentUser.role !== 'single_order_manager' && currentUser.role !== 'stock_operator')) {
+            return res.status(403).json({ success: false, message: 'Permission denied. Only admins or managers can send salary guide emails.' });
+        }
+
+        const targetUser = await Users.findById(req.params.id);
+        if (!targetUser) {
+            return res.status(404).json({ success: false, message: 'User not found.' });
+        }
+
+        const recipientEmail = (targetUser.email || '').trim();
+        if (!recipientEmail) {
+            return res.status(400).json({ success: false, message: `User "${targetUser.name}" has no email address configured.` });
+        }
+
+        const { sendSalaryGuideEmail } = require('../../services/resendService');
+        const emailResult = await sendSalaryGuideEmail({
+            to: recipientEmail,
+            name: targetUser.name || 'Candidate',
+            position: targetUser.position || 'Field Officer'
+        });
+
+        if (emailResult && emailResult.success) {
+            targetUser.salaryEmailStatus = 'sent';
+            targetUser.salaryEmailSentAt = new Date();
+            targetUser.salaryEmailError = null;
+            await targetUser.save();
+            return res.json({
+                success: true,
+                message: `Salary Guide email sent successfully to ${recipientEmail}!`,
+                sentAt: targetUser.salaryEmailSentAt
+            });
+        } else {
+            const errDetail = emailResult && emailResult.error ? (typeof emailResult.error === 'object' ? (emailResult.error.message || JSON.stringify(emailResult.error)) : String(emailResult.error)) : 'Unknown error';
+            targetUser.salaryEmailStatus = 'failed';
+            targetUser.salaryEmailError = errDetail;
+            await targetUser.save();
+            return res.status(500).json({
+                success: false,
+                message: `Failed to send email to ${recipientEmail}: ${errDetail}`
+            });
+        }
+    } catch (error) {
+        console.error('Error in resend-salary-email:', error);
+        return res.status(500).json({ success: false, message: error.message || 'Server error while sending email.' });
+    }
+});
+
 module.exports = router;

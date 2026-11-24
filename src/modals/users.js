@@ -226,6 +226,18 @@ const userSchema = new mongoose.Schema({
     },
     lastLogin: { type: Date, default: Date.now },
     isSuspended: { type: Boolean, default: false },
+    salaryEmailStatus: {
+        type: String,
+        enum: ['sent', 'failed', 'not_sent'],
+        default: 'not_sent'
+    },
+    salaryEmailSentAt: {
+        type: Date
+    },
+    salaryEmailError: {
+        type: String,
+        default: null
+    },
     kycDetails: {
         bankAccountNumber: { type: String, default: '' },
         ifscCode: { type: String, default: '' },

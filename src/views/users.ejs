@@ -89,6 +89,7 @@
                                                                     <th>Referral</th> -->
 																	<th>Created At</th>
 																	<th>Inactivity Status</th>
+																	<th>Email Status</th>
 																	<!-- <th>Approve Status</th> -->
 																	<th>Actions</th>
 																</tr>
@@ -172,6 +173,33 @@
 																						<% } %>
 																					<% } %>
 																				</td>
+																				<td>
+																					<% if (app.type === 'stockorder') { %>
+																						<span class="badge bg-light text-muted border" style="font-size: 11px;">N/A (Stock Order)</span>
+																					<% } else if (app.salaryEmailStatus === 'sent') { %>
+																						<div>
+																							<span class="badge bg-success text-white" title="<%= app.salaryEmailSentAt ? 'Sent: ' + new Date(app.salaryEmailSentAt).toLocaleString('en-IN') : 'Email Sent' %>">
+																								<i class="fa-solid fa-circle-check me-1"></i>Email Sent
+																							</span>
+																							<div class="mt-1">
+																								<button type="button" class="btn btn-outline-secondary btn-xs py-0 px-2 resend-email-btn" data-id="<%= app._id %>" data-name="<%= app.name %>" data-email="<%= app.email %>" title="Resend salary guide email">
+																									<i class="fa-solid fa-rotate-right me-1"></i>Resend
+																								</button>
+																							</div>
+																						</div>
+																					<% } else { %>
+																						<div>
+																							<span class="badge bg-danger text-white mb-1" title="<%= app.salaryEmailError || 'Email not sent' %>">
+																								<i class="fa-solid fa-circle-xmark me-1"></i>Not Sent
+																							</span>
+																							<div>
+																								<button type="button" class="btn btn-primary btn-xs py-0 px-2 resend-email-btn" data-id="<%= app._id %>" data-name="<%= app.name %>" data-email="<%= app.email %>" title="Send salary guide email now">
+																									<i class="fa-solid fa-paper-plane me-1"></i>Send Email
+																								</button>
+																							</div>
+																						</div>
+																					<% } %>
+																				</td>
 																				<!-- <td>
 																					<%= app.approveStatus || 'N/A' %>
 																				</td> -->
@@ -238,7 +266,7 @@
 																				<% }) %>
 																					<% } else { %>
 																						<tr>
-																							<td colspan="10"
+																							<td colspan="15"
 																								class="text-center text-muted">
 																								No users found
 																							</td>
@@ -1247,6 +1275,71 @@
 							});
 					}
 				}
+
+				// Resend Salary Guide Email handler
+				$(document).on('click', '.resend-email-btn', async function () {
+					const btn = $(this);
+					const userId = btn.data('id');
+					const userName = btn.data('name') || 'Candidate';
+					const userEmail = (btn.data('email') || '').trim();
+
+					if (!userEmail) {
+						Swal.fire({
+							icon: 'warning',
+							title: 'No Email Found',
+							text: `No email address is associated with ${userName}. Please edit the user to add an email first.`
+						});
+						return;
+					}
+
+					const confirm = await Swal.fire({
+						title: 'Send Salary Guide Email?',
+						html: `Send position details and salary structure to:<br><strong>${userName}</strong> (${userEmail})?`,
+						icon: 'question',
+						showCancelButton: true,
+						confirmButtonText: 'Yes, Send Email',
+						cancelButtonText: 'Cancel'
+					});
+
+					if (!confirm.isConfirmed) return;
+
+					const originalHtml = btn.html();
+					btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin me-1"></i>Sending...');
+
+					try {
+						const response = await fetch(`/users/resend-salary-email/${userId}`, {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' }
+						});
+						const result = await response.json();
+
+						if (result.success) {
+							Swal.fire({
+								icon: 'success',
+								title: 'Email Sent!',
+								text: result.message || 'Salary Guide email has been sent successfully.',
+								timer: 2000,
+								showConfirmButton: false
+							});
+							setTimeout(() => location.reload(), 2000);
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: 'Email Delivery Failed',
+								text: result.message || 'Could not send email.'
+							});
+							btn.prop('disabled', false).html(originalHtml);
+						}
+					} catch (err) {
+						console.error(err);
+						Swal.fire({
+							icon: 'error',
+							title: 'Network Error',
+							text: err.message
+						});
+						btn.prop('disabled', false).html(originalHtml);
+					}
+				});
 			</script>
 	</body>
 

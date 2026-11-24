@@ -1035,18 +1035,19 @@
                         const result = await res.json();
 
                         if (result.success) {
+                            const isEmailSent = result.emailStatus ? result.emailStatus.sent : false;
                             Swal.fire({
-                                title: "Success!",
-                                icon: "success",
+                                title: isEmailSent ? "Application Verified & Email Sent!" : "Application Verified!",
+                                icon: isEmailSent ? "success" : "info",
                                 text: result.message || "Application approved successfully!",
-                                timer: 1500,
+                                timer: 2500,
                                 showConfirmButton: false,
                             });
 
                             setTimeout(() => {
                                 $('.view-modal').modal('hide');
                                 location.reload();
-                            }, 1500);
+                            }, 2500);
                         } else {
                             Swal.fire({
                                 icon: "error",

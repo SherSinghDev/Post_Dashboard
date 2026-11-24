@@ -1056,6 +1056,7 @@ router.post(
       });
 
       // Send Salary Guide Email via Resend for Single Order users only (not for stock order)
+      let emailStatusInfo = { sent: false, message: 'Email not sent' };
       try {
         const userType = (type || (appUser && appUser.type) || '').toLowerCase().trim();
         const isStockOrder = userType === 'stockorder' || userType === 'stock_order';
@@ -1065,32 +1066,54 @@ router.post(
           const candidateName = name || (appUser && appUser.name) || 'Candidate';
           const candidatePosition = position || (appUser && appUser.position) || 'Field Officer';
 
-          sendSalaryGuideEmail({
-            to: recipientEmail,
-            name: candidateName,
-            position: candidatePosition
-          }).then((emailResult) => {
+          try {
+            const emailResult = await sendSalaryGuideEmail({
+              to: recipientEmail,
+              name: candidateName,
+              position: candidatePosition
+            });
+
             if (emailResult && emailResult.success) {
+              newApplication.salaryEmailStatus = 'sent';
+              newApplication.salaryEmailSentAt = new Date();
+              newApplication.salaryEmailError = null;
+              await newApplication.save();
               console.log(`[Resend] Successfully sent salary guide to ${recipientEmail} for position ${candidatePosition}`);
+              emailStatusInfo = { sent: true, message: `Salary guide email sent to ${recipientEmail}` };
             } else {
-              console.error(`[Resend] Failed to send email to ${recipientEmail}:`, emailResult ? emailResult.error : 'Unknown error');
+              const errDetail = emailResult && emailResult.error ? (typeof emailResult.error === 'object' ? (emailResult.error.message || JSON.stringify(emailResult.error)) : String(emailResult.error)) : 'Unknown error';
+              newApplication.salaryEmailStatus = 'failed';
+              newApplication.salaryEmailError = errDetail;
+              await newApplication.save();
+              console.error(`[Resend] Failed to send email to ${recipientEmail}:`, errDetail);
+              emailStatusInfo = { sent: false, message: `Email failed: ${errDetail}` };
             }
-          }).catch((err) => {
+          } catch (err) {
+            newApplication.salaryEmailStatus = 'failed';
+            newApplication.salaryEmailError = err.message;
+            await newApplication.save();
             console.error(`[Resend] Error sending email to ${recipientEmail}:`, err.message);
-          });
+            emailStatusInfo = { sent: false, message: `Email failed: ${err.message}` };
+          }
         } else if (isStockOrder) {
           console.log(`[Resend] Skipping salary guide email: user "${name}" is of stock order type.`);
+          emailStatusInfo = { sent: false, message: 'Stock order candidate (no salary guide email required)' };
         } else if (!recipientEmail) {
           console.log(`[Resend] Skipping salary guide email: no email address provided for user "${name}".`);
+          emailStatusInfo = { sent: false, message: 'No email address provided for this user' };
         }
       } catch (emailErr) {
         console.error('[Resend] Unexpected error triggering salary guide email:', emailErr);
       }
 
+      const alertMsg = emailStatusInfo.sent
+        ? `Application verified! ✉️ Salary Guide email has been sent to ${newApplication.email}.`
+        : `Application verified! (Email Status: ${emailStatusInfo.message})`;
+
       res.status(201).json({
         success: true,
-        message: 'Application submitted successfully!',
-        // data: newApplication
+        message: alertMsg,
+        emailStatus: emailStatusInfo
       });
     } catch (error) {
       console.error('Error saving user application:', error);
