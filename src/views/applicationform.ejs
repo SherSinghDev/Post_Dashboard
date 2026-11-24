@@ -290,7 +290,7 @@
                                                         <% users.forEach(function(u) { %>
                                                             <option value="<%= u.userId %>" data-name="<%= u.name %>" data-position="<%= u.position %>">
                                                                 <%= u.name %> - <%= u.city || u.district || 'N/A' %> -
-                                                                        <%= u.position ? '(' + u.position + ')' : '' %>
+                                                                        <%= u.position ? '(' + u.position + ')' : (u.role ? '(' + u.role + ')' : '') %>
                                                                             [ID: <%= u.userId %>]
                                                             </option>
                                                             <% }); %>
@@ -645,7 +645,9 @@
                     $('#referralMode').val('referred').trigger('change');
                     $('#parentUserHelpText').html('<span class="text-primary fw-bold"><i class="fas fa-sitemap me-1"></i>Hierarchy Requirement: ' + hint + '</span>');
                 } else if (pos.includes('state')) {
-                    $('#parentUserHelpText').html('State Head is a top-level position. Choose Direct or your referring State Head / Admin.');
+                    hint = 'State Head: You can choose any parent user (Stock Operator, Admin, Senior Officer, etc.) or Direct Came.';
+                    $('#parentUserHelpText').html('<span class="text-info fw-bold"><i class="fas fa-info-circle me-1"></i>' + hint + '</span>');
+                    $('#referralMode').val('referred').trigger('change');
                 }
             }
         });
@@ -714,6 +716,7 @@
                     // Ignore buttons & hidden fields
                     if (type === 'button' || type === 'submit' || type === 'hidden') return;
                     if ($(this).attr('name') === 'type') return;
+                    if ($(this).attr('name') === 'referredBy' && $('#referralMode').val() === 'direct') return;
 
                     if (!value) {
                         isValid = false;

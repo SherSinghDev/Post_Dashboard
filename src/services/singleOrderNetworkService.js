@@ -71,26 +71,28 @@ async function getSingleOrderDescendantNetwork(currentUser) {
                 u.level = 5;
             }
 
-            // Fill parent details if not State Head
-            if (u.normPosition !== 'State Head') {
-                let parent = null;
-                if (u.parentUser && typeof u.parentUser === 'object' && u.parentUser.name) {
-                    parent = u.parentUser;
-                } else if (u.parentUser && userByIdMap.has(u.parentUser.toString())) {
-                    parent = userByIdMap.get(u.parentUser.toString());
-                } else if (u.referredBy && userByIdMap.has(u.referredBy.toString())) {
-                    parent = userByIdMap.get(u.referredBy.toString());
-                }
+            // Fill parent details
+            let parent = null;
+            if (u.parentUser && typeof u.parentUser === 'object' && u.parentUser.name) {
+                parent = u.parentUser;
+            } else if (u.parentUser && userByIdMap.has(u.parentUser.toString())) {
+                parent = userByIdMap.get(u.parentUser.toString());
+            } else if (u.referredBy && userByIdMap.has(u.referredBy.toString())) {
+                parent = userByIdMap.get(u.referredBy.toString());
+            }
 
-                if (parent) {
-                    u.parentName = parent.name;
-                    u.parentPosition = parent.position || 'Supervisor';
-                    u.parentDisplayId = parent.userId || '';
-                } else {
-                    u.parentName = u.referrerName || 'State Head';
-                    u.parentPosition = 'Officer';
-                    u.parentDisplayId = u.referredBy || '';
-                }
+            if (parent) {
+                u.parentName = parent.name;
+                u.parentPosition = parent.position || (parent.role === 'stock_operator' ? 'Stock Operator' : 'Supervisor');
+                u.parentDisplayId = parent.userId || '';
+            } else if (u.normPosition === 'State Head') {
+                u.parentName = u.referrerName || (currentUser.role === 'stock_operator' ? (currentUser.name || 'Stock Operator (Manager)') : 'Direct / None');
+                u.parentPosition = currentUser.role === 'stock_operator' ? 'Stock Operator' : 'Management';
+                u.parentDisplayId = currentUser.role === 'stock_operator' ? (currentUser.userId || '') : '';
+            } else {
+                u.parentName = u.referrerName || 'State Head';
+                u.parentPosition = 'Officer';
+                u.parentDisplayId = u.referredBy || '';
             }
 
             descendants.push(u);

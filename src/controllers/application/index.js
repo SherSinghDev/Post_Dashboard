@@ -702,7 +702,15 @@ router.get('/one/:id', async (req, res) => {
 
     // Determine query for available parent users
     let parentQuery = {};
-    if (appData.type) {
+    if (appData.type === 'singleorder') {
+      parentQuery = {
+        $or: [
+          { type: { $regex: new RegExp("^singleorder$", "i") } },
+          { role: { $in: ['Admin', 'stock_operator', 'Coordinator'] } },
+          { position: { $exists: true, $ne: '' } }
+        ]
+      };
+    } else if (appData.type) {
       parentQuery.type = appData.type;
     } else {
       parentQuery.role = "Coordinator";
@@ -861,7 +869,13 @@ router.get('/type/:type', async (req, res) => {
   if (type === 'stockorder') {
     users = await Users.find({ type: 'stockorder' }).select('name userId position city district -_id');
   } else if (type === 'singleorder') {
-    users = await Users.find({ type: { $regex: new RegExp("^singleorder$", "i") } }).select('name userId position city district -_id');
+    users = await Users.find({
+      $or: [
+        { type: { $regex: new RegExp("^singleorder$", "i") } },
+        { role: { $in: ['Admin', 'stock_operator', 'Coordinator'] } },
+        { position: { $exists: true, $ne: '' } }
+      ]
+    }).select('name userId position city district role -_id').sort({ name: 1 });
   } else {
     users = await Users.find({ role: "Coordinator" }).select('name referralCode userId city position district -_id');
   }
