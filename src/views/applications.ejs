@@ -669,12 +669,33 @@
                                 if (app.documents && typeof app.documents === 'object') fillForm(app.documents, 'documents');
 
                                 // 📅 Default Validity Start to current date if not already set
+                                const now = new Date();
+                                const yyyy = now.getFullYear();
+                                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                                const dd = String(now.getDate()).padStart(2, '0');
+
                                 if (!app.validstart || !$('[name="validstart"]').val()) {
-                                    const now = new Date();
-                                    const yyyy = now.getFullYear();
-                                    const mm = String(now.getMonth() + 1).padStart(2, '0');
-                                    const dd = String(now.getDate()).padStart(2, '0');
                                     $('[name="validstart"]').val(`${yyyy}-${mm}-${dd}`);
+                                }
+
+                                // 📅 Default Validity End (Valid To) to one year from current date
+                                if (!app.validend || !$('[name="validend"]').val()) {
+                                    const nextYear = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+                                    const nextYyyy = nextYear.getFullYear();
+                                    const nextMm = String(nextYear.getMonth() + 1).padStart(2, '0');
+                                    const nextDd = String(nextYear.getDate()).padStart(2, '0');
+                                    $('[name="validend"]').val(`${nextYyyy}-${nextMm}-${nextDd}`);
+                                }
+
+                                // 🏛️ Default Authority & Head fields to the user's Position
+                                const userPosition = app.position || $('#position-select').val() || '';
+                                if (userPosition) {
+                                    if (!app.authority || !$('[name="authority"]').val()) {
+                                        $('[name="authority"]').val(userPosition);
+                                    }
+                                    if (!app.head || !$('[name="head"]').val()) {
+                                        $('[name="head"]').val(userPosition);
+                                    }
                                 }
 
                                 // 🧩 Populate Parent User dropdown in Transfer To Verify modal
@@ -698,6 +719,14 @@
 
                 $(document).on('change', '#parentuser-select', function() {
                     $('#parentuser-hidden').val($(this).val());
+                });
+
+                $(document).on('change', '#position-select', function() {
+                    const selectedPos = $(this).val();
+                    if (selectedPos) {
+                        $('[name="authority"]').val(selectedPos);
+                        $('[name="head"]').val(selectedPos);
+                    }
                 });
 
 
